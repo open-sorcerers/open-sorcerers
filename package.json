@@ -1,0 +1,16 @@
+{
+  "name": "open-sorcerers",
+  "version": "0.0.0",
+  "description": "functional programming in javascript for open-source porpoises",
+  "main": "index.js",
+  "repository": "//github.com/open-sorcerers",
+  "author": "brekk",
+  "license": "ISC",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "workspaces": [
+    "projects/*"
+  ]
+}

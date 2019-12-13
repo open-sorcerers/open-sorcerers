@@ -1,0 +1,10 @@
+{
+  "name": "eslint-config-sorcerers",
+  "version": "0.0.0",
+  "description": "open-sorcerers x eslint",
+  "main": "eslint.config.js",
+  "repository": "//github.com/open-sorcerers/eslint-config-sorcerers",
+  "author": "brekk",
+  "license": "ISC",
+  "private": false
+}

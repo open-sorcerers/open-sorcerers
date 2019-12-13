@@ -1,0 +1,10 @@
+{
+  "name": "glossary",
+  "version": "0.0.0",
+  "description": "open-sorcerers like to use correct words",
+  "main": "index.js",
+  "repository": "//github.com/open-sorcerers/glossary",
+  "author": "brekk",
+  "license": "ISC",
+  "private": false
+}

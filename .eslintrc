@@ -1,0 +1,1 @@
+extends: ./projects/eslint-config-sorcerers/eslint.config.js

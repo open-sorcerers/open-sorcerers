@@ -8,7 +8,9 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.16.4"
+    "lerna": "^3.16.4",
+    "nps": "^5.9.5",
+    "nps-utils": "^1.7.0"
   },
   "workspaces": [
     "projects/*"

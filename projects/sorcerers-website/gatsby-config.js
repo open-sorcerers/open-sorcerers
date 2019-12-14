@@ -27,6 +27,10 @@ module.exports = {
       options: {
         alias: {
           '@src': 'src',
+          '@assets': 'src/assets',
+          '@components': 'src/components',
+          '@pages': 'src/pages',
+          '@templates': 'src/templates',
         },
         extensions: ['js'],
       },

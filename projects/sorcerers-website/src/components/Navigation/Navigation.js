@@ -22,11 +22,11 @@ const socialData = [
         />
       </svg>
     ),
-    href: 'https://github.com/South-Paw/awesome-gatsby-starter',
+    href: 'https://github.com/open-sorcerers/gatsby-starter',
   },
 ];
 
-const Navigation = ({ path }) => {
+export const Navigation = ({ path }) => {
   const {
     site: {
       siteMetadata: { name },
@@ -77,5 +77,3 @@ Navigation.propTypes = {
 };
 
 Navigation.defaultProps = {};
-
-export { Navigation };

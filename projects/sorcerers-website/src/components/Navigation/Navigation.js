@@ -40,7 +40,6 @@ export const Navigation = ({ path }) => {
       }
     }
   `);
-
   return (
     <nav css={navigation}>
       <Container maxWidth={1200}>

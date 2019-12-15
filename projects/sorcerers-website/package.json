@@ -6,12 +6,16 @@
     "start": "gatsby develop",
     "start:storybook": "cross-env NODE_ENV=production start-storybook -p 9000 -c .storybook",
     "lint": "eslint .",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^10.0.23",
+    "@emotion/core": "^10.0.22",
     "@mdx-js/mdx": "^1.5.1",
     "@mdx-js/react": "^1.5.1",
+    "@reach/router": "^1.2.1",
     "emotion-theming": "^10.0.19",
     "gatsby": "^2.18.11",
     "gatsby-image": "^2.2.31",
@@ -35,9 +39,15 @@
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@emotion/core": "^10.0.22",
-    "@storybook/addon-actions": "^5.2.6",
+    "@storybook/addon-actions": "^5.2.8",
+    "@storybook/addon-centered": "^5.2.8",
     "@storybook/addon-docs": "^5.2.6",
-    "@storybook/react": "^5.2.6",
+    "@storybook/addon-knobs": "^5.2.8",
+    "@storybook/addon-links": "^5.2.8",
+    "@storybook/addon-viewport": "^5.2.8",
+    "@storybook/addons": "^5.2.8",
+    "@storybook/react": "^5.2.8",
+    "@storybook/theming": "^5.2.8",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
@@ -56,7 +66,9 @@
     "gatsby-plugin-emotion": "^4.1.18",
     "nps": "^5.9.5",
     "prettier": "^1.19.1",
-    "react-markdown": "^4.2.2"
+    "react-markdown": "^4.2.2",
+    "react-scripts": "^3.3.0",
+    "storybook-addon-smart-knobs": "^6.0.0"
   },
   "name": "sorcerers-website",
   "version": "0.0.0",

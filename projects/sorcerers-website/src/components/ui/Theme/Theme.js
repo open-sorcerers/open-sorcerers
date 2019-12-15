@@ -7,10 +7,8 @@ import { system } from './system';
 
 const Theme = ({ children }) => (
   <ThemeProvider theme={system}>
-    <>
-      <BaseCSS />
-      {children}
-    </>
+    <BaseCSS />
+    {children}
   </ThemeProvider>
 );
 

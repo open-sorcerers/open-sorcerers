@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import { map } from 'ramda';
 
 import { Container } from '../ui/Container';

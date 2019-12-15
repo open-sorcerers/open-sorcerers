@@ -70,7 +70,7 @@
     "react-scripts": "^3.3.0",
     "storybook-addon-smart-knobs": "^6.0.0"
   },
-  "name": "sorcerers-website",
+  "name": "website",
   "version": "0.0.0",
   "description": "javascript x open-source x functional-programming",
   "main": "index.js",

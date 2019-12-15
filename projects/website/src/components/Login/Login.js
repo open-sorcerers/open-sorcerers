@@ -1,52 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { handleLogin, isLoggedIn } from '../services/auth';
+import { handleLogin, isLoggedIn, getUser } from '@services/auth';
 
-class Login extends React.Component {
-  state = {
-    username: ``,
-    password: ``,
-  };
+export const Login = () => {
+  const [username, setUser] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleUpdate = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    handleLogin(this.state);
-  };
-
-  render() {
-    if (isLoggedIn()) {
-      navigate(`/app/profile`);
-    }
-
-    return (
-      <>
-        <h1>Log in</h1>
-        <form
-          method="post"
-          onSubmit={event => {
-            this.handleSubmit(event);
-            navigate(`/app/profile`);
-          }}
-        >
-          <label>
-            Username
-            <input type="text" name="username" onChange={this.handleUpdate} />
-          </label>
-          <label>
-            Password
-            <input type="password" name="password" onChange={this.handleUpdate} />
-          </label>
-          <input type="submit" value="Log In" />
-        </form>
-      </>
-    );
+  console.log('getUser', getUser());
+  if (isLoggedIn()) {
+    navigate(`/app/profile`);
   }
-}
+
+  return (
+    <>
+      <h1>Log in</h1>
+      <label>Username</label>
+      <input type="text" name="username" onChange={e => setUser(e.target.value)} />
+      <label>Password</label>
+      <input type="password" name="password" onChange={e => setPassword(e.target.value)} />
+      <button
+        onClick={() => {
+          const success = handleLogin({ username, password });
+          if (success) navigate('/app/profile');
+        }}
+      >
+        Login
+      </button>
+    </>
+  );
+};
 
 export default Login;

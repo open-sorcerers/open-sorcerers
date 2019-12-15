@@ -1,10 +1,12 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import { Site } from '../components/Site';
-import { Container } from '../components/ui/Container';
+import { Site } from '@components/Site';
+import { Container } from '@components/ui/Container';
+import { Login } from '@components/Login';
+import { PrivateRoute } from '@components/PrivateRoute';
+import { Profile } from '@components/Profile';
 
 const Home = () => <span>cool</span>;
-const Login = () => <span>login</span>;
 
 import Readme from '../../README.md';
 
@@ -16,10 +18,7 @@ const IndexPage = ({ ...other }) => {
   return (
     <Site seo={seo} {...other}>
       <Container>
-        <Router>
-          <Home path="app/home" />
-          <Login path="app/login" />
-        </Router>
+        <Readme />
       </Container>
     </Site>
   );

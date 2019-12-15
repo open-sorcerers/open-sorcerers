@@ -31,6 +31,7 @@ module.exports = {
           '@components': 'src/components',
           '@pages': 'src/pages',
           '@templates': 'src/templates',
+          '@services': 'src/services',
         },
         extensions: ['js'],
       },

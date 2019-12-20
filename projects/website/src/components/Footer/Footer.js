@@ -1,7 +1,7 @@
 import React from 'react';
 import { map } from 'ramda';
 
-import { Container } from '../ui/Container';
+import { Container } from '@components/Container';
 import { footer, inner, left, right } from './styled';
 
 const soSoSocial = [

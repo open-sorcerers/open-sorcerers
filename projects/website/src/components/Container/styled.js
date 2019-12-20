@@ -11,6 +11,13 @@ export const StyledContainer = props => {
         padding: 0 24px;
         max-width: ${maxWidth || 800}px;
         width: 100%;
+        pre {
+          background-color: #111;
+          color: #ddd;
+          margin: 0;
+          padding: 0.5rem;
+          width: calc(100% - 0.5rem);
+        }
       `}
       {...rest}
     >

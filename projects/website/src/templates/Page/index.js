@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container } from '../../components/ui/Container';
-import { Site } from '../../components/Site';
+import { Container } from '@components/Container';
+import { Site } from '@components/Site';
 
 const Page = ({ children, ...other }) => {
   return (

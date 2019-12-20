@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Theme } from '../ui/Theme';
-import { Navigation } from '../Navigation';
-import { Footer } from '../Footer';
+import { Theme } from '@components/Theme';
+import { Navigation } from '@components/Navigation';
+import { Footer } from '@components/Footer';
 import { SEO } from './SEO';
 import { main } from './styled';
 

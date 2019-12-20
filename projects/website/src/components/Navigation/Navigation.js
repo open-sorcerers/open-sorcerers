@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useStaticQuery, graphql } from 'gatsby';
 import { uid } from 'react-uid';
 
-import { Container } from '../ui/Container';
+import { Container } from '@components/Container';
 import { navigation, inner, Brand, nav, Item, social } from './styled';
 
 const items = [

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from '@reach/router';
 import { Site } from '@components/Site';
-import { Container } from '@components/ui/Container';
+import { Container } from '@components/Container';
 import { Login } from '@components/Login';
 import { PrivateRoute } from '@components/PrivateRoute';
 import { Profile } from '@components/Profile';

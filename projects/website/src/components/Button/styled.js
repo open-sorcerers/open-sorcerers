@@ -1,6 +1,6 @@
-import { css } from '@emotion/core';
+import styled from '@emotion/styled'
 
-export const button = css`
+export const StyledButton = styled.button`
   padding: 4px 12px;
   margin: 0;
   background: none;
@@ -21,4 +21,4 @@ export const button = css`
     color: #fff;
     background-color: #663399;
   }
-`;
+`

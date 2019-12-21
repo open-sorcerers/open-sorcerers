@@ -1,6 +1,6 @@
-import { css } from '@emotion/core';
+import styled from '@emotion/styled'
 
-export const footer = css`
+export const StyledFooter = styled.footer`
   padding: 24px 0;
   background-color: #222;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
@@ -16,18 +16,18 @@ export const footer = css`
       text-decoration: underline;
     }
   }
-`;
+`
 
-export const inner = css`
+export const Inner = styled.div`
   display: flex;
   flex-flow: nowrap row;
 
   @media (max-width: 648px) {
     flex-flow: nowrap column;
   }
-`;
+`
 
-export const left = css`
+export const Left = styled.div`
   margin-right: auto;
 
   @media (max-width: 648px) {
@@ -41,9 +41,9 @@ export const left = css`
       margin-right: 8px;
     }
   }
-`;
+`
 
-export const right = css`
+export const Right = styled.div`
   margin-left: auto;
   text-align: right;
 
@@ -58,4 +58,4 @@ export const right = css`
       margin-right: 8px;
     }
   }
-`;
+`

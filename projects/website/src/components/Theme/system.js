@@ -1,1 +1,1 @@
-export const system = {};
+export const system = {}

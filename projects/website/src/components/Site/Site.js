@@ -1,29 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { Theme } from '@components/Theme';
-import { Navigation } from '@components/Navigation';
-import { Footer } from '@components/Footer';
-import { SEO } from './SEO';
-import { main } from './styled';
+import { Theme } from '@components/Theme'
+import { Navigation } from '@components/Navigation'
+import { Footer } from '@components/Footer'
+import { SEO } from './SEO'
+import { Main } from './styled'
 
 const Site = ({ children, seo, ...other }) => (
   <Theme>
     <SEO seo={seo} {...other} />
     <Navigation {...other} />
-    <div css={main}>{children}</div>
+    <Main>{children}</Main>
     <Footer {...other} />
   </Theme>
-);
+)
 
 Site.propTypes = {
   children: PropTypes.node,
-  seo: SEO.propTypes.seo,
-};
+  seo: SEO.propTypes.seo
+}
 
 Site.defaultProps = {
   children: null,
-  seo: {},
-};
+  seo: {}
+}
 
-export { Site };
+export { Site }

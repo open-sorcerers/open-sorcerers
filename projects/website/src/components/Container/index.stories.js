@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import { Container } from '.';
+import { Container } from '.'
 
 export default {
   title: 'UI|Container',
-  component: Container,
-};
+  component: Container
+}
 
-export const simple = () => <Container>[container children]</Container>;
+export const simple = () => <Container>[container children]</Container>

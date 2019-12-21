@@ -1,18 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { StyledContainer } from './styled';
+import { StyledContainer } from './styled'
 
-const Container = ({ children, maxWidth }) => <StyledContainer maxWidth={maxWidth}>{children}</StyledContainer>;
+const Container = ({ children, maxWidth }) => (
+  <StyledContainer maxWidth={maxWidth}>{children}</StyledContainer>
+)
 
 Container.propTypes = {
   children: PropTypes.node,
-  maxWidth: PropTypes.number,
-};
+  maxWidth: PropTypes.number
+}
 
 Container.defaultProps = {
   children: null,
-  maxWidth: 800,
-};
+  maxWidth: 800
+}
 
-export { Container };
+export { Container }

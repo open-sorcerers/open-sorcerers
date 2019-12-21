@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import { Navigation } from '.';
+import { Navigation } from '.'
 
 export default {
   title: 'Components|Navigation',
-  component: Navigation,
-};
+  component: Navigation
+}
 
-export const simple = () => <Navigation />;
+export const simple = () => <Navigation />

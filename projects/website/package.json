@@ -71,6 +71,7 @@
     "prettier": "^1.19.1",
     "react-markdown": "^4.2.2",
     "react-scripts": "^3.3.0",
+    "rimraf": "^3.0.0",
     "storybook-addon-smart-knobs": "^6.0.0"
   },
   "name": "website",

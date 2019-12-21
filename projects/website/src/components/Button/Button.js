@@ -1,19 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { button } from './styled';
+import { StyledButton } from './styled'
 
-const Button = ({ children, ...other }) =>
-  (
-    <div css={button} {...other}>
-      {children}
-    </div>
-  );
+const Button = ({ children, ...other }) => {
+  return <StyledButton {...other}>{children}</StyledButton>
+}
 
 Button.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  children: PropTypes.node.isRequired
+}
 
-Button.defaultProps = {};
+Button.defaultProps = {}
 
-export { Button };
+export { Button }

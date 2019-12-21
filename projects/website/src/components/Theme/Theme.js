@@ -1,19 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { ThemeProvider } from 'emotion-theming';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { ThemeProvider } from 'emotion-theming'
+import { Normalize } from 'styled-normalize'
 
-import { BaseCSS } from './BaseCSS';
-import { system } from './system';
+import { BaseCSS } from './BaseCSS'
+import { system } from './system'
 
 const Theme = ({ children }) => (
   <ThemeProvider theme={system}>
-    <BaseCSS />
-    {children}
+    <>
+      <Normalize />
+      <BaseCSS />
+      {children}
+    </>
   </ThemeProvider>
-);
+)
 
 Theme.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  children: PropTypes.node.isRequired
+}
 
-export { Theme };
+export { Theme }

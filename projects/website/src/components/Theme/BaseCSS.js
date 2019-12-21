@@ -1,10 +1,8 @@
-import React from 'react';
-import { Global, css } from '@emotion/core';
+import React from 'react'
+import { css, Global } from '@emotion/core'
 
-export const BaseCSS = () => (
-  <Global
-    styles={css`
-  * {
+const styles = css`
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -55,6 +53,6 @@ export const BaseCSS = () => (
     max-width: 100%;
     overflow: auto;
   }
-`}
-  />
-);
+`
+
+export const BaseCSS = props => <Global styles={styles} />

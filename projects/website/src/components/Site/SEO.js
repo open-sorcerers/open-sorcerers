@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
-import Helmet from 'react-helmet';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useStaticQuery, graphql } from 'gatsby'
+import Helmet from 'react-helmet'
 
 const SEO = ({ location: { pathname }, pageContext: { frontmatter }, seo }) => {
   const {
-    site: { siteMetadata },
+    site: { siteMetadata }
   } = useStaticQuery(graphql`
     {
       site {
@@ -19,15 +19,15 @@ const SEO = ({ location: { pathname }, pageContext: { frontmatter }, seo }) => {
         }
       }
     }
-  `);
+  `)
 
   const { name, basepath, title, description, keywords, type, image } = {
     ...siteMetadata,
     ...seo,
-    ...frontmatter,
-  };
+    ...frontmatter
+  }
 
-  const url = `${basepath}${pathname}`;
+  const url = `${basepath}${pathname}`
 
   return (
     <Helmet titleTemplate={`%s • ${name}`} defaultTitle={name}>
@@ -46,15 +46,15 @@ const SEO = ({ location: { pathname }, pageContext: { frontmatter }, seo }) => {
       <meta property="og:image" content={image} />
       <meta property="og:url" content={url} />
     </Helmet>
-  );
-};
+  )
+}
 
 SEO.propTypes = {
   location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired
   }).isRequired,
   pageContext: PropTypes.shape({
-    frontmatter: PropTypes.object,
+    frontmatter: PropTypes.object
   }),
   seo: PropTypes.shape({
     name: PropTypes.string,
@@ -63,13 +63,13 @@ SEO.propTypes = {
     description: PropTypes.string,
     keywords: PropTypes.arrayOf(PropTypes.string),
     type: PropTypes.string,
-    image: PropTypes.string,
-  }),
-};
+    image: PropTypes.string
+  })
+}
 
 SEO.defaultProps = {
   pageContext: {},
-  seo: {},
-};
+  seo: {}
+}
 
-export { SEO };
+export { SEO }

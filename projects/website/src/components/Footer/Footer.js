@@ -1,41 +1,42 @@
-import React from 'react';
-import { map } from 'ramda';
+import React from 'react'
 
-import { Container } from '@components/Container';
-import { footer, inner, left, right } from './styled';
+import { Container } from '@components/Container'
+import { StyledFooter, Inner, Left, Right } from './styled'
 
-const soSoSocial = [
-  ['Github', '//github.com/open-sorcerers'],
-  ['Twitter', '//twitter.com/osorcerers'],
-  ['Slack', '//open-sorcerers.slack.com'],
-];
-
-const Colophon = () => (
-  <ul>
-    {map(
-      ([what, where]) => (
-        <li key={what}>
-          <a href={where}>{what}</a>
-        </li>
-      ),
-      soSoSocial,
-    )}
-  </ul>
-);
-
-const Footer = () => (
-  <footer css={footer}>
+export const Footer = () => (
+  <StyledFooter>
     <Container maxWidth={1200}>
-      <div css={inner}>
-        <div css={left}>
-          <Colophon />
-        </div>
-        <div css={right}>
-          Built with ❤️ in Berlin by <a href="/contributors">open sorcerers</a>
-        </div>
-      </div>
+      <Inner>
+        <Left>
+          <div>
+            Contribute on{' '}
+            <a href="https://github.com/open-sorcerers/foresight-gatsby-starter">Github</a>
+          </div>
+          <div>
+            Created with{' '}
+            <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener noreferrer">
+              Gatsby
+            </a>
+          </div>
+        </Left>
+        <Right>
+          <div>
+            Copyright &copy;{' '}
+            <a href="https://open.sorcerers.dev" target="_blank" rel="noopener noreferrer">
+              Open Sorcerers
+            </a>{' '}
+            2019
+          </div>
+          <div>
+            <a href="https://github.com/open-sorcerers/foresight-gatsby-starter/blob/master/LICENSE">
+              MIT
+            </a>{' '}
+            Licensed
+          </div>
+        </Right>
+      </Inner>
     </Container>
-  </footer>
-);
+  </StyledFooter>
+)
 
-export { Footer };
+export default Footer

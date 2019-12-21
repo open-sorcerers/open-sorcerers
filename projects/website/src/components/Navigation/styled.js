@@ -1,8 +1,8 @@
 import React from 'react';
-import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 
-export const navigation = css`
+export const StyledNavigation = styled.nav`
   display: flex;
   align-items: center;
   background-color: #663399;
@@ -10,7 +10,7 @@ export const navigation = css`
   overflow: hidden;
 `;
 
-export const inner = css`
+export const Inner = styled.div`
   display: flex;
   flex-flow: nowrap row;
 
@@ -19,37 +19,34 @@ export const inner = css`
   }
 `;
 
-export const Brand = ({ to, children }) => (
-  <Link
-    css={css`
-      margin-right: 24px;
-      display: flex;
-      align-items: center;
-      flex: 0 0 auto;
-      color: #fff;
-      font-size: 20px;
-      line-height: 24px;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-weight: 900;
+export const Brand = styled(Link)`
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: 20px;
+  line-height: 24px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 900;
 
-      @media (max-width: 648px) {
-        margin: 8px 0;
-        justify-content: center;
-      }
+  svg {
+    fill: white;
+    max-height: 50px;
+  }
 
-      :hover {
-        text-decoration: none;
-      }
-    `}
-    to={to}
-    onClick={e => console.log(e)}
-  >
-    {children}
-  </Link>
-);
+  @media (max-width: 648px) {
+    margin: 8px 0;
+    justify-content: center;
+  }
 
-export const nav = css`
+  :hover {
+    text-decoration: none;
+  }
+`;
+
+export const Nav = styled.div`
   display: flex;
   flex-flow: nowrap row;
   flex: 1 1 auto;
@@ -62,32 +59,25 @@ export const nav = css`
   }
 `;
 
-export const Item = ({ children, isActive, href, to }) => (
-  <Link
-    {...(href ? { href } : { to })}
-    css={css`
-      padding: 16px 8px;
-      color: #fff;
-      font-weight: 500;
-      line-height: 24px;
-      opacity: ${isActive ? '1' : '0.6'};
-      text-decoration: none;
+export const Item = styled(({ isActive, ...other }) => <Link {...other} />)`
+  padding: 16px 8px;
+  color: #fff;
+  font-weight: 500;
+  line-height: 24px;
+  opacity: ${p => (p.isActive ? '1' : '0.6')};
+  text-decoration: none;
 
-      :hover {
-        opacity: 1;
-        text-decoration: none;
-      }
+  :hover {
+    opacity: 1;
+    text-decoration: none;
+  }
 
-      @media (max-width: 648px) {
-        padding: 8px;
-      }
-    `}
-  >
-    {children || null}
-  </Link>
-);
+  @media (max-width: 648px) {
+    padding: 8px;
+  }
+`;
 
-export const social = css`
+export const Social = styled.div`
   margin: 0;
   display: flex;
   flex-flow: nowrap row;

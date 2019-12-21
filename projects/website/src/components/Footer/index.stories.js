@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import { Footer } from '.';
+import { Footer } from '.'
 
 export default {
   title: 'Components|Footer',
-  component: Footer,
-};
+  component: Footer
+}
 
-export const simple = () => <Footer />;
+export const simple = () => <Footer />

@@ -1,18 +1,18 @@
-import React from 'react';
-import { Router } from '@reach/router';
-import { Site } from '@components/Site';
-import { Container } from '@components/Container';
-import { Login } from '@components/Login';
-import { PrivateRoute } from '@components/PrivateRoute';
-import { Profile } from '@components/Profile';
+import React from 'react'
+import { Router } from '@reach/router'
+import { Site } from '@components/Site'
+import { Container } from '@components/Container'
+import { Login } from '@components/Login'
+import { PrivateRoute } from '@components/PrivateRoute'
+import { Profile } from '@components/Profile'
 
-const Home = () => <span>cool</span>;
+const Home = () => <span>cool</span>
 
-import Readme from '../../README.md';
+import Readme from '../../README.md'
 
 const seo = {
-  title: 'Home',
-};
+  title: 'Home'
+}
 
 const IndexPage = ({ ...other }) => {
   return (
@@ -21,7 +21,7 @@ const IndexPage = ({ ...other }) => {
         <Readme />
       </Container>
     </Site>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

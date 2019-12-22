@@ -1,8 +1,11 @@
-import React from 'react';
-import { getUser } from '@services/auth';
+import React from 'react'
+import Auth from '@services/auth'
+
+const auth = Auth()
 
 export const Profile = ({}) => {
-  const user = getUser();
+  const { getUser } = auth
+  const user = getUser()
   return (
     <>
       <h1>Your profile</h1>
@@ -11,6 +14,6 @@ export const Profile = ({}) => {
         <li>E-mail: {user.email}</li>
       </ul>
     </>
-  );
-};
-export default Profile;
+  )
+}
+export default Profile

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { navigate } from 'gatsby';
-import { handleLogin, isLoggedIn, getUser } from '@services/auth';
+import React, { useState } from 'react'
+import { navigate } from 'gatsby'
+import { handleLogin, isLoggedIn, getUser } from '@services/auth'
 
 export const Login = () => {
-  const [username, setUser] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUser] = useState('')
+  const [password, setPassword] = useState('')
 
-  console.log('getUser', getUser());
+  console.log('getUser', getUser())
   if (isLoggedIn()) {
-    navigate(`/app/profile`);
+    navigate(`/app/profile`)
   }
 
   return (
@@ -20,14 +20,14 @@ export const Login = () => {
       <input type="password" name="password" onChange={e => setPassword(e.target.value)} />
       <button
         onClick={() => {
-          const success = handleLogin({ username, password });
-          if (success) navigate('/app/profile');
+          const success = handleLogin({ username, password })
+          if (success) navigate('/app/profile')
         }}
       >
         Login
       </button>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

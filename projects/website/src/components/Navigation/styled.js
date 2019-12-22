@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { Link } from 'gatsby';
+import React from 'react'
+import styled from '@emotion/styled'
+import { Link } from 'gatsby'
 
 export const StyledNavigation = styled.nav`
   display: flex;
@@ -8,7 +8,7 @@ export const StyledNavigation = styled.nav`
   background-color: #663399;
   color: #fff;
   overflow: hidden;
-`;
+`
 
 export const Inner = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Inner = styled.div`
   @media (max-width: 648px) {
     flex-flow: nowrap column;
   }
-`;
+`
 
 export const Brand = styled(Link)`
   margin-right: 24px;
@@ -44,7 +44,7 @@ export const Brand = styled(Link)`
   :hover {
     text-decoration: none;
   }
-`;
+`
 
 export const Nav = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ export const Nav = styled.div`
     justify-content: center;
     overflow-x: auto;
   }
-`;
+`
 
 export const Item = styled(({ isActive, ...other }) => <Link {...other} />)`
   padding: 16px 8px;
@@ -75,7 +75,7 @@ export const Item = styled(({ isActive, ...other }) => <Link {...other} />)`
   @media (max-width: 648px) {
     padding: 8px;
   }
-`;
+`
 
 export const Social = styled.div`
   margin: 0;
@@ -86,4 +86,4 @@ export const Social = styled.div`
   @media (max-width: 648px) {
     display: none;
   }
-`;
+`

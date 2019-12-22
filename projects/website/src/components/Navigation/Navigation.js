@@ -1,30 +1,30 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
-import { uid } from 'react-uid';
-import Github from '@assets/github.svg';
-import OpenSorcerersLogo from '@assets/open-sorcerers.svg';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useStaticQuery, graphql } from 'gatsby'
+import { uid } from 'react-uid'
+import Github from '@assets/github.svg'
+import OpenSorcerersLogo from '@assets/open-sorcerers.svg'
 
-import { Container } from '@components/Container';
-import { StyledNavigation, Inner, Brand, Nav, Item, Social } from './styled';
+import { Container } from '@components/Container'
+import { StyledNavigation, Inner, Brand, Nav, Item, Social } from './styled'
 
 const items = [
   { label: 'Home', to: '/' },
-  { label: 'Markdown', to: '/markdown/' },
-];
+  { label: 'Markdown', to: '/markdown/' }
+]
 
 const social = [
   {
     label: <Github />,
-    href: 'https://github.com/open-sorcerers/foresight-gatsby-starter',
-  },
-];
+    href: 'https://github.com/open-sorcerers/foresight-gatsby-starter'
+  }
+]
 
 const Navigation = ({ path }) => {
   const {
     site: {
-      siteMetadata: { name },
-    },
+      siteMetadata: { name }
+    }
   } = useStaticQuery(graphql`
     {
       site {
@@ -33,7 +33,7 @@ const Navigation = ({ path }) => {
         }
       }
     }
-  `);
+  `)
 
   return (
     <StyledNavigation>
@@ -52,7 +52,7 @@ const Navigation = ({ path }) => {
                 <Item key={uid(label)} as="a" href={href}>
                   {label}
                 </Item>
-              ),
+              )
             )}
           </Nav>
           <Social>
@@ -65,13 +65,13 @@ const Navigation = ({ path }) => {
         </Inner>
       </Container>
     </StyledNavigation>
-  );
-};
+  )
+}
 
 Navigation.propTypes = {
-  path: PropTypes.string.isRequired,
-};
+  path: PropTypes.string.isRequired
+}
 
-Navigation.defaultProps = {};
+Navigation.defaultProps = {}
 
-export { Navigation };
+export { Navigation }

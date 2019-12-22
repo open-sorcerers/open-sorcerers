@@ -9,8 +9,9 @@ import { Container } from '@components/Container'
 import { StyledNavigation, Inner, Brand, Nav, Item, Social } from './styled'
 
 const items = [
-  { label: 'Home', to: '/' },
-  { label: 'Markdown', to: '/markdown/' }
+  { label: 'Learn', to: '/learn/' },
+  { label: 'Contribute', to: '/contribute/' },
+  { label: 'Ask', to: '/ask/' }
 ]
 
 const social = [
@@ -34,13 +35,12 @@ const Navigation = ({ path }) => {
       }
     }
   `)
-
   return (
     <StyledNavigation>
       <Container maxWidth={1200}>
         <Inner>
           <Brand to="/">
-            <OpenSorcerersLogo />
+            <OpenSorcerersLogo title={name} />
           </Brand>
           <Nav>
             {items.map(({ label, to, href }) =>

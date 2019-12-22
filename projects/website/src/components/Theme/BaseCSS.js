@@ -9,7 +9,7 @@ const styles = css`
   }
 
   html {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
     font-size: 16px;
     line-height: 24px;
   }
@@ -55,4 +55,4 @@ const styles = css`
   }
 `
 
-export const BaseCSS = props => <Global styles={styles} />
+export const BaseCSS = () => <Global styles={styles} />

@@ -1,10 +1,20 @@
 module.exports = {
   siteMetadata: {
-    name: 'Foresight Gatsby Starter',
-    basepath: 'https://open.sorcerers.dev/gatsby-starter',
-    description:
-      'A starter for GatsbyJS with a preconfigured MDX, Storybook and ESLint environment',
-    keywords: ['gatsby', 'gatsbyjs', 'gatsby starter', 'github'],
+    name: 'Open Sorcerers',
+    basepath: 'https://open.sorcerers.dev',
+    description: 'open-source x functional programming x javascript | collective',
+    keywords: [
+      'open sorcerers',
+      'open source',
+      'open-source',
+      'oss',
+      'foss',
+      'javascript',
+      'js',
+      'functional programming',
+      'fp',
+      'fp js'
+    ],
     type: 'website',
     image: 'https://open.sorcerers.dev/logo-open-sorcerers.png'
   },
@@ -62,12 +72,14 @@ module.exports = {
       options: {
         alias: {
           '@root': '.',
-          '@src': 'src',
+
           '@assets': 'src/assets',
           '@components': 'src/components',
           '@pages': 'src/pages',
+          '@services': 'src/services',
+          '@src': 'src',
           '@templates': 'src/templates',
-          '@services': 'src/services'
+          '@utils': 'src/utils'
         },
         extensions: ['js', 'mdx']
       }

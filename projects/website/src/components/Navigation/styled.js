@@ -1,13 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { css } from '@emotion/core'
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 
 export const StyledNavigation = styled.nav`
   display: flex;
   align-items: center;
-  background-color: #663399;
+  background-color: #409;
   color: #fff;
   overflow: hidden;
+  height: 10vh;
+  min-height: 5rem;
 `
 
 export const Inner = styled.div`
@@ -59,23 +63,29 @@ export const Nav = styled.div`
   }
 `
 
-export const Item = styled(({ isActive, ...other }) => <Link {...other} />)`
-  padding: 16px 8px;
-  color: #fff;
-  font-weight: 500;
-  line-height: 24px;
-  opacity: ${p => (p.isActive ? '1' : '0.6')};
-  text-decoration: none;
+export const Item = ({ isActive, ...other }) => (
+  <Link
+    {...other}
+    css={css`
+      padding: 16px 8px;
+      color: #fff;
+      font-weight: 500;
+      line-height: 24px;
+      opacity: ${isActive ? '1' : '0.6'};
+      text-decoration: none;
 
-  :hover {
-    opacity: 1;
-    text-decoration: none;
-  }
+      :hover {
+        opacity: 1;
+        text-decoration: none;
+      }
 
-  @media (max-width: 648px) {
-    padding: 8px;
-  }
-`
+      @media (max-width: 648px) {
+        padding: 8px;
+      }
+    `}
+  />
+)
+Item.propTypes = { isActive: PropTypes.bool }
 
 export const Social = styled.div`
   margin: 0;

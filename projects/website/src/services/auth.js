@@ -2,49 +2,58 @@ import auth0 from 'auth0-js'
 import { navigate } from 'gatsby'
 import { once } from 'ramda'
 
-const user = 'gatsbyUser'
+const CONSTANTS = Object.freeze({
+  ACCESS_TOKEN: 'access_token',
+  ID_TOKEN: 'id_token',
+  EXPIRES_AT: 'expires_at',
+  USER: 'user'
+})
+const { ACCESS_TOKEN, ID_TOKEN, EXPIRES_AT, USER } = CONSTANTS
 
 export const windowExists = () => typeof window !== 'undefined'
-/* export const getUser = () => */
-/*   windowExists() && window.localStorage.getItem(user) ? JSON.parse(window.localStorage.getItem(user)) : {}; */
-/* const setUser = raw => window.localStorage.setItem(user, JSON.stringify(raw)); */
-
-/* const users = { */
-/*   brekk: { */
-/*     username: 'brekk', */
-/*     name: 'Brekk Bockrath', */
-/*     email: 'brekk@brekkbockrath.com', */
-/*   }, */
-/* }; */
-/* export const handleLogin = ({ username, password }) => { */
-/*   if (!windowExists()) return false; */
-/*   if (username === `brekk` && password === `cool`) { */
-/*     setUser(users.brekk); */
-/*     return true; */
-/*   } */
-/*   return false; */
-/* }; */
-/* export const isLoggedIn = () => { */
-/*   const user = getUser(); */
-/*   return !!user.username; */
-/* }; */
-/* export const logout = callback => { */
-/*   setUser({}); */
-/*   callback(); */
-/* }; */
-
-// src/utils/auth.js
 
 const AUTH0_DOMAIN = 'open-sorcerers.eu.auth0.com'
 const AUTH0_CLIENT_ID = 'zkUBHhxYTV8IwnASqWDkQOiDx31CNuDI'
 
+/* use this to spoof the user profile when working offline
+const spoof = () => {
+  const CONSTANTS = Object.freeze({
+    ACCESS_TOKEN: 'access_token',
+    ID_TOKEN: 'id_token',
+    EXPIRES_AT: 'expires_at',
+    USER: 'user'
+  })
+  const { ACCESS_TOKEN, ID_TOKEN, EXPIRES_AT, USER } = CONSTANTS
+  const now = new Date()
+  localStorage.setItem(ACCESS_TOKEN, 'cool')
+  localStorage.setItem(ID_TOKEN, 'so-cool')
+  localStorage.setItem(EXPIRES_AT, now.valueOf() + 1e10)
+  localStorage.setItem(USER, JSON.stringify({
+    sub: 'subsub',
+    given_name: 'Open',
+    family_name: 'Sorcerers',
+    nickname: 'fpopensorcerers',
+    name: 'Open Sorcerers',
+    picture: 'invalid picture. deal with it!',
+    locale: 'en',
+    updated_at: now.toISOString(),
+    email: 'cool@sorcerers.dev',
+    email_verified: true
+  }))
+}
+*/
+
 export const Auth = once(() => {
+  const DOMAIN =
+    process.env.NODE_ENV === 'production'
+      ? 'https://open-sorcerers.brekk.now.sh'
+      : 'http://localhost:8000'
   const zero = new auth0.WebAuth({
     domain: AUTH0_DOMAIN,
     clientID: AUTH0_CLIENT_ID,
-    redirectUri: 'http://localhost:8000/authenticate',
+    redirectUri: `${DOMAIN}/authenticate`,
     audience: `https://${AUTH0_DOMAIN}/api/v2/`,
-    responseType: 'token id_token',
+    responseType: `token ${ID_TOKEN}`,
     scope: 'openid profile email'
   })
 
@@ -53,15 +62,16 @@ export const Auth = once(() => {
   }
 
   const logout = cb => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('id_token')
-    localStorage.removeItem('expires_at')
-    localStorage.removeItem('user')
+    if (!windowExists()) return
+    localStorage.removeItem(ACCESS_TOKEN)
+    localStorage.removeItem(ID_TOKEN)
+    localStorage.removeItem(EXPIRES_AT)
+    localStorage.removeItem(USER)
     if (typeof cb === 'function') return cb()
   }
 
   const handleAuthentication = () => {
-    if (typeof window !== 'undefined') {
+    if (windowExists()) {
       // this must've been the trick
       zero.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -77,24 +87,24 @@ export const Auth = once(() => {
   }
 
   const isAuthenticated = () => {
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+    const expiresAt = JSON.parse(localStorage.getItem(EXPIRES_AT))
     return new Date().getTime() < expiresAt
   }
 
   const setSession = authResult => {
     const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime())
-    localStorage.setItem('access_token', authResult.accessToken)
-    localStorage.setItem('id_token', authResult.idToken)
-    localStorage.setItem('expires_at', expiresAt)
+    localStorage.setItem(ACCESS_TOKEN, authResult.accessToken)
+    localStorage.setItem(ID_TOKEN, authResult.idToken)
+    localStorage.setItem(EXPIRES_AT, expiresAt)
 
     zero.client.userInfo(authResult.accessToken, (err, user) => {
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem(USER, JSON.stringify(user))
     })
   }
 
   const getUser = () => {
-    if (localStorage.getItem('user')) {
-      return JSON.parse(localStorage.getItem('user'))
+    if (localStorage.getItem(USER)) {
+      return JSON.parse(localStorage.getItem(USER))
     }
   }
 

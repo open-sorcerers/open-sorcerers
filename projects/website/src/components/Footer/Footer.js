@@ -21,17 +21,10 @@ export const Footer = () => (
         </Left>
         <Right>
           <div>
-            Copyright &copy;{' '}
+            Built with ❤️ by{' '}
             <a href="https://open.sorcerers.dev" target="_blank" rel="noopener noreferrer">
               Open Sorcerers
-            </a>{' '}
-            2019
-          </div>
-          <div>
-            <a href="https://github.com/open-sorcerers/foresight-gatsby-starter/blob/master/LICENSE">
-              MIT
-            </a>{' '}
-            Licensed
+            </a>
           </div>
         </Right>
       </Inner>

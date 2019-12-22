@@ -1,5 +1,6 @@
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
+// eslint-disable-next-line space-before-function-paren
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions
 

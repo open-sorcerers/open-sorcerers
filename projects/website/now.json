@@ -1,0 +1,5 @@
+{
+  "name": "open-sorcerers",
+  "version": 2,
+  "rewrites": [{ "source": "/app/:appRoute", "destination": "/app" }]
+}

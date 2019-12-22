@@ -52,11 +52,12 @@ export const Auth = once(() => {
     zero.authorize()
   }
 
-  const logout = () => {
+  const logout = cb => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     localStorage.removeItem('user')
+    if (typeof cb === 'function') return cb()
   }
 
   const handleAuthentication = () => {

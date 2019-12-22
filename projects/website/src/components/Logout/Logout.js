@@ -1,6 +1,8 @@
 import React from 'react'
 import { navigate } from 'gatsby'
-import { logout } from '@services/auth'
+import Auth from '@services/auth'
+
+const { logout } = Auth()
 
 export const Logout = () => {
   logout(() => navigate('/app/login'))

@@ -29,14 +29,22 @@ module.exports = {
       }
     },
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: `${__dirname}/src/posts/`
+      }
+    },
+    {
       resolve: 'gatsby-plugin-mdx',
       options: {
         extensions: ['.mdx', '.md'],
         defaultLayouts: {
-          pages: require.resolve('./src/templates/Page/index.js')
+          posts: require.resolve('./src/templates/Page/index.js')
         }
       }
     },
+
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
     {

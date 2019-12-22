@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { navigate } from 'gatsby'
 import { handleLogin, isLoggedIn, getUser } from '@services/auth'
+import { PROFILE } from '@constants/routes'
 
 export const Login = () => {
   const [username, setUser] = useState('')
@@ -8,7 +9,7 @@ export const Login = () => {
 
   console.log('getUser', getUser())
   if (isLoggedIn()) {
-    navigate(`/app/profile`)
+    navigate(PROFILE)
   }
 
   return (
@@ -21,7 +22,7 @@ export const Login = () => {
       <button
         onClick={() => {
           const success = handleLogin({ username, password })
-          if (success) navigate('/app/profile')
+          if (success) navigate(PROFILE)
         }}
       >
         Login

@@ -1,31 +1,18 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Auth from '@services/auth'
 import { Link } from 'gatsby'
 import { pipe, replace } from 'ramda'
 import { validDomain } from '@utils/url'
-import { ProfilePage, Img, logoutButton, placeholder } from './styled'
+import { LOGOUT } from '@constants/routes'
+import { ProfileImg } from './ProfileImg'
+import { ProfilePage, logoutButton } from './styled'
 
 const LogoutButton = () => (
-  <Link to="/app/logout" css={logoutButton}>
+  <Link to={LOGOUT} css={logoutButton}>
     Log Out
   </Link>
 )
-
-const Fallback = () => <div css={placeholder} />
-
-const ProfileImg = ({ src }) => {
-  const isValidImage = validDomain(src)
-  console.log('isValidImage', isValidImage)
-  return isValidImage ? (
-    <Img>
-      <img src={src} />
-    </Img>
-  ) : (
-    <Fallback />
-  )
-}
-
-const auth = Auth()
 
 const formatUsername = pipe(
   z => z.toLowerCase(),
@@ -34,15 +21,15 @@ const formatUsername = pipe(
 )
 
 export const Profile = ({}) => {
-  const { getUser } = auth
+  const { getUser } = Auth()
   const user = getUser()
-  const { name, picture } = user
+  const { name } = user
   return (
     <>
       <ProfilePage>
         <h1>Profile</h1>
         <LogoutButton />
-        <ProfileImg src={picture} />
+        <ProfileImg />
         <em>{formatUsername(name)}</em>
       </ProfilePage>
     </>

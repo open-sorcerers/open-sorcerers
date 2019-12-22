@@ -82,6 +82,7 @@ module.exports = {
           '@root': '.',
 
           '@assets': 'src/assets',
+          '@constants': 'src/constants',
           '@components': 'src/components',
           '@pages': 'src/pages',
           '@services': 'src/services',

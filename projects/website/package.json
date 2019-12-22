@@ -68,6 +68,8 @@
     "eslint-plugin-react": "^7.16.0",
     "gatsby-plugin-alias-imports": "^1.0.5",
     "gatsby-plugin-emotion": "^4.1.18",
+    "husky": ">=1",
+    "lint-staged": ">=8",
     "nps": "^5.9.5",
     "prettier": "^1.19.1",
     "react-markdown": "^4.2.2",
@@ -82,5 +84,10 @@
   "repository": "//github.com/open-sorcerers/website",
   "author": "brekk",
   "license": "ISC",
-  "private": false
+  "private": false,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

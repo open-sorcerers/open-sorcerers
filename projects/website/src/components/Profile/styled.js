@@ -22,6 +22,10 @@ export const pseudo = css`
 export const pseudoHeight = 28
 export const red = '#c00'
 export const placeholderColor = 'white'
+export const rainbowShadows = css`
+  box-shadow: 0 0 6rem rgba(255, 0, 0, 0.75), -3rem -3rem 6rem rgba(0, 255, 0, 0.75),
+    3rem 3rem 6rem rgba(0, 0, 255, 0.75);
+`
 export const placeholder = css`
   display: block;
   position: relative;
@@ -29,10 +33,7 @@ export const placeholder = css`
   background-color: ${placeholderColor};
   width: ${PLACEHOLDER_SIZE}px;
   height: ${PLACEHOLDER_SIZE * 0.55}px;
-  box-shadow: 0 0 6rem rgba(255,0,0,0.75)
-           ,  -3rem -3rem 6rem rgba(0,255,0,0.75)
-           ,  3rem 3rem 6rem rgba(0,0,255,0.75)
-           ;
+  ${rainbowShadows} 
   &:before {
     ${pseudo}
     top: -${pseudoHeight}px;
@@ -46,7 +47,20 @@ export const placeholder = css`
 `
 
 export const Img = styled.div`
-  ${placeholder}
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  width: 10rem;
+  position: relative;
+  text-align: center;
+  img {
+    max-width: 8rem;
+    max-height: 8rem;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: inline;
+    margin: 0 auto;
+    position: relative;
+  }
 `
 
 export const logoutButton = css`

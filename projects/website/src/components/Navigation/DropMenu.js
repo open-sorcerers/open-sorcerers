@@ -8,7 +8,7 @@ export const DropMenu = () => {
   const [active, setActive] = useState(false)
   return (
     <div onMouseOver={() => setActive(true)} onMouseOut={() => setActive(false)}>
-      <ProfileImg />
+      <ProfileImg variant="DropMenu" />
       {active ? (
         <ul>
           <li>

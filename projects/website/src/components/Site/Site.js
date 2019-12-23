@@ -1,14 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import preset from '@rebass/preset'
 
 import { Theme } from '@components/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
+
 import { SEO } from './SEO'
 import { Main } from './styled'
 
+const theme = {
+  ...preset
+}
+
 const Site = ({ children, seo, ...other }) => (
-  <Theme>
+  <Theme theme={theme}>
     <SEO seo={seo} {...other} />
     <Navigation {...other} />
     <Main>{children}</Main>

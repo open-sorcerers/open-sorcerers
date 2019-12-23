@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
+import { Button } from 'rebass'
 
-export const StyledButton = styled.button`
+export const StyledButton = styled(Button)`
   padding: 4px 12px;
   margin: 0;
   background: none;

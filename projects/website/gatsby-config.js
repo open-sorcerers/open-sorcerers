@@ -81,12 +81,17 @@ module.exports = {
         alias: {
           '@root': '.',
 
-          '@assets': 'src/assets',
-          '@constants': 'src/constants',
-          '@components': 'src/components',
-          '@pages': 'src/pages',
-          '@services': 'src/services',
           '@src': 'src',
+
+          '@assets': 'src/assets',
+          '@components': 'src/components',
+          '@constants': 'src/constants',
+          '@domain': 'src/domain',
+          '@pages': 'src/pages',
+          '@queries': 'src/queries',
+          '@routes': 'src/routes',
+          '@services': 'src/services',
+          '@styles': 'src/styles',
           '@templates': 'src/templates',
           '@utils': 'src/utils'
         },

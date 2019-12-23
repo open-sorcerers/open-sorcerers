@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import { Container } from '@components/Container'
-import { Site } from '@components/Site'
+import { Site } from '@domain/Site'
 
 export const MDXPage = ({ data, ...other }) => (
   <Site {...other}>

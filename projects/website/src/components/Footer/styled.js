@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
+import { Box } from 'rebass'
+import { offWhite } from '@styles/colors'
+import { maxBreak } from '@styles/media'
 
-export const StyledFooter = styled.footer`
-  padding: 24px 0;
+export const StyledFooter = styled(Box)`
+  padding: 1.5rem 0;
   background-color: #222;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
-  color: rgba(255, 255, 255, 0.54);
+  color: ${offWhite};
   font-size: 14px;
   line-height: 24px;
 
@@ -18,19 +21,18 @@ export const StyledFooter = styled.footer`
   }
 `
 
-export const Inner = styled.div`
+export const Inner = styled(Box)`
   display: flex;
   flex-flow: nowrap row;
 
-  @media (max-width: 648px) {
-    flex-flow: nowrap column;
-  }
+  ${maxBreak.S(`
+    flex-flow: nowrap column;`)}
 `
 
-export const Left = styled.div`
+export const Left = styled(Box)`
   margin-right: auto;
 
-  @media (max-width: 648px) {
+  ${maxBreak.S(`
     margin: 0;
     display: flex;
     flex-flow: nowrap row;
@@ -40,14 +42,14 @@ export const Left = styled.div`
     > *:first-child {
       margin-right: 8px;
     }
-  }
+  `)}
 `
 
-export const Right = styled.div`
+export const Right = styled(Box)`
   margin-left: auto;
   text-align: right;
 
-  @media (max-width: 648px) {
+  ${maxBreak.S(`
     margin: 0;
     display: flex;
     flex-flow: nowrap row;
@@ -57,5 +59,5 @@ export const Right = styled.div`
     > *:first-child {
       margin-right: 8px;
     }
-  }
+`)}
 `

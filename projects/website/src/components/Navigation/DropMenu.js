@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
-import { ProfileImg } from '@components/Profile/ProfileImg'
+import { ProfileImg } from '@routes/Profile/ProfileImg'
 import { SETTINGS } from '@constants/routes'
 
 export const DropMenu = () => {

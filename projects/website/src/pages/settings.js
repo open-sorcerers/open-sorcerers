@@ -1,24 +1,30 @@
 import React from 'react'
-import {Link} from 'gatsby'
+import { Link } from 'gatsby'
 import { Router } from '@reach/router'
-import { PrivateRoute } from '@components/PrivateRoute'
-import { Profile } from '@components/Profile'
-import { Login } from '@components/Login'
-import { Logout } from '@components/Logout'
-import { Site } from '@components/Site'
+import { PrivateRoute } from '@routes/Private'
+import { Profile } from '@routes/Profile'
+import { Login } from '@routes/Login'
+import { Logout } from '@routes/Logout'
+import { Site } from '@domain/Site'
+import { Auth } from '@services/auth'
 import { PROFILE, LOGIN, LOGOUT, SETTINGS } from '@constants/routes'
 const seo = { title: 'Open Sorcerers' }
 
-const SettingsRoot = () => (
-  <section>
-    <h1>Settings</h1>
-    <ul>
-      <li>
-        <Link to={PROFILE}>Profile</Link>
-      </li>
-    </ul>
-  </section>
-)
+const SettingsRoot = () => {
+  const auth = Auth()
+  console.log('auth', auth)
+  const { isAuthenticated } = auth
+  return (
+    <section>
+      <h1>Settings</h1>
+      <ul>
+        <li>
+          {isAuthenticated() ? <Link to={PROFILE}>Profile</Link> : <Link to={LOGIN}>Login</Link>}
+        </li>
+      </ul>
+    </section>
+  )
+}
 
 const Settings = ({ ...rest }) => (
   <Site seo={seo} {...rest}>

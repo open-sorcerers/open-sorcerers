@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 import { uid } from 'react-uid'
-import { DropMenu} from './DropMenu'
+import { DropMenu } from './DropMenu'
 import Github from '@assets/github.svg'
 import OpenSorcerersLogo from '@assets/open-sorcerers.svg'
 
@@ -30,7 +30,7 @@ const Navigation = ({ path }) => {
     }
   `)
   return (
-    <StyledNavigation>
+    <StyledNavigation as="nav">
       <Container maxWidth={1200}>
         <Inner>
           <Brand to="/">

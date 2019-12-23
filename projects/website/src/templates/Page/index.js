@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Container } from '@components/Container'
-import { Site } from '@components/Site'
+import { Site } from '@domain/Site'
 
 const Page = ({ children, ...other }) => {
   return (

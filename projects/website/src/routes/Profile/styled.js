@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
+import { Box } from 'rebass'
 
 const PLACEHOLDER_SIZE = 100
 
-export const ProfilePage = styled.section`
+export const ProfilePage = styled(Box)`
   text-align: center;
   display: block;
   margin-top: 10vh;
@@ -46,7 +47,7 @@ export const placeholder = css`
   }
 `
 
-export const Img = styled.div`
+export const Img = styled(Box)`
   display: block;
   margin: 0 auto;
   padding: 0;

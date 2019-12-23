@@ -44,7 +44,8 @@ exports.createPages = async ({ actions, graphql }) => {
 
 const clientOnlyMatches = {
   settings: /^\/settings/,
-  contribute: /^\/contribute/
+  contribute: /^\/contribute/,
+  learn: /^\/learn/
 }
 
 const setClientOnlyRoute = curry((createPage, page, [key, match]) => {

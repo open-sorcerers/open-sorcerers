@@ -4,6 +4,7 @@ import { useStaticQuery, graphql, Link } from 'gatsby'
 import { map } from 'ramda'
 
 import { Container } from '@components/Container'
+import { getPosts } from '@queries/posts'
 
 const waysOfLearning = [
   /* ['/learn/by-reading', 'By reading'], */
@@ -12,27 +13,7 @@ const waysOfLearning = [
 ]
 
 export const Learn = () => {
-  const data = useStaticQuery(graphql`
-    query getPosts {
-      allSitePage(filter: { path: { regex: "/writing/" } }) {
-        nodes {
-          id
-          path
-          matchPath
-          component
-          componentPath
-          context {
-            frontmatter {
-              author
-              path
-              title
-            }
-            fileAbsolutePath
-          }
-        }
-      }
-    }
-  `)
+  const data = getPosts()
   return (
     <Container>
       <h1>Learn</h1>

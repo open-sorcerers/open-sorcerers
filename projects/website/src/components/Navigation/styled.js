@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Box } from 'rebass'
 import { css } from '@emotion/core'
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 
-export const StyledNavigation = styled.nav`
+export const StyledNavigation = styled(Box)`
   display: flex;
   align-items: center;
   background-color: #409;
@@ -14,7 +15,7 @@ export const StyledNavigation = styled.nav`
   min-height: 5rem;
 `
 
-export const Inner = styled.div`
+export const Inner = styled(Box)`
   display: flex;
   flex-flow: nowrap row;
 
@@ -50,7 +51,7 @@ export const Brand = styled(Link)`
   }
 `
 
-export const Nav = styled.div`
+export const Nav = styled(Box)`
   display: flex;
   flex-flow: nowrap row;
   flex: 1 1 auto;

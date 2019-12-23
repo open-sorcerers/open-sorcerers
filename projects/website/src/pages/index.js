@@ -1,5 +1,5 @@
 import React from 'react'
-import { Site } from '@components/Site'
+import { Site } from '@domain/Site'
 import { Container } from '@components/Container'
 
 import Readme from '../../README.md'

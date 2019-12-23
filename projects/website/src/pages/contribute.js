@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router } from '@reach/router'
-import { Site } from '@components/Site'
-import { Contribute } from '@components/Contribute'
-import { PrivateRoute } from '@components/PrivateRoute'
-import { SubmitExample } from '@components/Contribute/SubmitExample'
+import { Site } from '@domain/Site'
+import { Contribute } from '@routes/Contribute'
+import { SubmitExample } from '@routes/Contribute/SubmitExample'
+import { PrivateRoute } from '@routes/Private'
 const seo = { title: 'Open Sorcerers' }
 
 /* <ByReading path="/Contribute/by-reading" /> */

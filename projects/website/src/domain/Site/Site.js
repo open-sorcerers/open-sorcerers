@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import preset from '@rebass/preset'
 
-import { Theme } from '@components/Theme'
+import { Theme } from '@domain/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
 

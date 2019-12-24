@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql, Link } from 'gatsby'
+import { Box } from 'rebass'
+import { Li } from '@styles/List'
 import { map } from 'ramda'
 
 import { Container } from '@components/Container'
@@ -15,16 +17,16 @@ export const Contribute = () => {
   return (
     <Container>
       <h1>Contribute</h1>
-      <ul>
+      <Box as="ul">
         {map(
           ([route, path]) => (
-            <li key={route}>
+            <Li as="li" key={route}>
               <Link to={route}>{path}</Link>
-            </li>
+            </Li>
           ),
           waysOfContributing
         )}
-      </ul>
+      </Box>
     </Container>
   )
 }

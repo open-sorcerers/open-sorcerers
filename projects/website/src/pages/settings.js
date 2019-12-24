@@ -7,12 +7,12 @@ import { Login } from '@routes/Login'
 import { Logout } from '@routes/Logout'
 import { Site } from '@domain/Site'
 import { Auth } from '@services/auth'
+
+
 import { PROFILE, LOGIN, LOGOUT, SETTINGS } from '@constants/routes'
-const seo = { title: 'Open Sorcerers' }
 
 const SettingsRoot = () => {
   const auth = Auth()
-  console.log('auth', auth)
   const { isAuthenticated } = auth
   return (
     <section>
@@ -26,15 +26,22 @@ const SettingsRoot = () => {
   )
 }
 
-const Settings = ({ ...rest }) => (
-  <Site seo={seo} {...rest}>
+const Routes =(
+  () => (
     <Router>
       <PrivateRoute path={PROFILE} component={Profile} />
       <Login path={LOGIN} />
       <Logout path={LOGOUT} />
       <SettingsRoot path={SETTINGS} />
     </Router>
-  </Site>
+  )
 )
+
+const Settings = ({ ...rest }) =>
+  console.log('>>@@>@>@', rest) || (
+    <Site {...rest}>
+      <Routes />
+    </Site>
+  )
 
 export default Settings

@@ -2,9 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Auth from '@services/auth'
 import { validDomain } from '@utils/url'
-import { placeholder, Img } from './styled'
+import { Box } from 'rebass'
+import styled from '@emotion/styled'
+import { placeholder, Img, menuPlaceholder } from './styled'
 
-const Fallback = () => <div css={placeholder} />
+const Fallback = styled(Box)`
+  ${placeholder}
+`
+const MenuFallback = styled(Box)`
+  ${menuPlaceholder}
+`
 
 export const ProfileImg = ({ variant }) => {
   const { getUser } = Auth()
@@ -18,7 +25,7 @@ export const ProfileImg = ({ variant }) => {
       <img src={picture} />
     </Img>
   ) : variant === 'DropMenu' ? (
-    <Img>?</Img>
+    <MenuFallback>🖤</MenuFallback>
   ) : (
     <Fallback />
   )

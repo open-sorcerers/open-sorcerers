@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Box } from 'rebass'
 
+import { tertiary } from '@styles/colors'
+
 const PLACEHOLDER_SIZE = 100
 
 export const ProfilePage = styled(Box)`
@@ -26,6 +28,17 @@ export const placeholderColor = 'white'
 export const rainbowShadows = css`
   box-shadow: 0 0 6rem rgba(255, 0, 0, 0.75), -3rem -3rem 6rem rgba(0, 255, 0, 0.75),
     3rem 3rem 6rem rgba(0, 0, 255, 0.75);
+`
+export const menuPlaceholder = css`
+  display: block;
+  width: 3.5rem;
+  height: 3.5rem;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1.5rem;
+  padding: 1rem;
+  border-radius: 9999rem;
+  background-color: ${tertiary};
 `
 export const placeholder = css`
   display: block;

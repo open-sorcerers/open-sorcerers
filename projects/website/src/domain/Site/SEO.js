@@ -1,9 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
+import { pathOr, propOr } from 'ramda'
 import Helmet from 'react-helmet'
 
-const SEO = ({ location: { pathname }, pageContext: { frontmatter }, seo }) => {
+const SEO = props => {
+  const pathname = pathOr('', ['location', 'pathname'], props)
+  const frontmatter = pathOr({}, ['pageContext', 'frontmatter'], props)
+  const seo = propOr({}, 'seo', props)
+
   const {
     site: { siteMetadata }
   } = useStaticQuery(graphql`

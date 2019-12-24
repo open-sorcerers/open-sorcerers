@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useStaticQuery, graphql, Link } from 'gatsby'
+import { Link } from 'gatsby'
+import { Box } from 'rebass'
 import { map } from 'ramda'
 
+import { Li } from '@styles/List'
+import { Heading } from '@styles/Heading'
 import { Container } from '@components/Container'
 import { getPosts } from '@queries/posts'
 
@@ -16,33 +19,33 @@ export const Learn = () => {
   const data = getPosts()
   return (
     <Container>
-      <h1>Learn</h1>
-      <ul>
-        <li>
+      <Heading as="h1">Learn</Heading>
+      <Box as="ul">
+        <Li as="li">
           <Link to="/learn/by-reading">By reading</Link>
-          <ul>
+          <Box as="ul">
             {map(
               node => (
-                <li key={node.id}>
+                <Li as="li" key={node.id}>
                   <Link to={node.path}>{node.context.frontmatter.title}</Link> by{' '}
                   <Link to={'/contributors/' + node.context.frontmatter.author}>
                     @{node.context.frontmatter.author}
                   </Link>
-                </li>
+                </Li>
               ),
               data.allSitePage.nodes
             )}
-          </ul>
-        </li>
+          </Box>
+        </Li>
         {map(
           ([route, path]) => (
-            <li key={route}>
+            <Li as="li" key={route}>
               <Link to={route}>{path}</Link>
-            </li>
+            </Li>
           ),
           waysOfLearning
         )}
-      </ul>
+      </Box>
     </Container>
   )
 }

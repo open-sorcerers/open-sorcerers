@@ -3,6 +3,8 @@
   "version": 2,
   "rewrites": [
     { "source": "/settings/:setting", "destination": "/settings" },
-    { "source": "/contribute/:setting", "destination": "/contribute" }
+    { "source": "/ask/:setting", "destination": "/ask" },
+    { "source": "/contribute/:setting", "destination": "/contribute" },
+    { "source": "/learn/:setting", "destination": "/learn" }
   ]
 }

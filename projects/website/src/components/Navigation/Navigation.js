@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { css } from '@emotion/core'
 import { useStaticQuery, graphql } from 'gatsby'
 import { uid } from 'react-uid'
-import { DropMenu } from './DropMenu'
-import Github from '@assets/github.svg'
+import { stateView } from '@domain/Site'
+import { checkWindowExists } from '@utils/url'
 import OpenSorcerersLogo from '@assets/open-sorcerers.svg'
-
 import { Container } from '@components/Container'
+import { DropMenu } from './DropMenu'
+
 import { StyledNavigation, Inner, Brand, Nav, Item, Social } from './styled'
 
 const items = [
@@ -15,7 +17,10 @@ const items = [
   { label: 'Ask', to: '/ask/' }
 ]
 
-const Navigation = ({ path }) => {
+const Navigation = props => {
+  const state = stateView(props)
+  let { path } = props
+  if (!path && checkWindowExists()) path = window.location + ''
   const {
     site: {
       siteMetadata: { name }
@@ -29,17 +34,30 @@ const Navigation = ({ path }) => {
       }
     }
   `)
+  console.log('state', state)
+  const menuActive =
+    state.view === 'menu-active'
+      ? css`
+          background: red;
+          padding-left: 0;
+          padding-right: 0;
+        `
+      : css`
+          padding-left: 13vw;
+          padding-right: 16vw;
+        `
+
   return (
-    <StyledNavigation as="nav">
+    <StyledNavigation as="section" css={menuActive}>
       <Container maxWidth={1200}>
         <Inner>
           <Brand to="/">
             <OpenSorcerersLogo title={name} />
           </Brand>
-          <Nav>
+          <Nav as="nav">
             {items.map(({ label, to, href }) =>
               to ? (
-                <Item key={uid(label)} to={to} isActive={to === path}>
+                <Item key={uid(label)} to={to} isActive={path.includes(to)}>
                   {label}
                 </Item>
               ) : (
@@ -50,7 +68,7 @@ const Navigation = ({ path }) => {
             )}
           </Nav>
           <Social>
-            <DropMenu />
+            <DropMenu {...state} />
           </Social>
         </Inner>
       </Container>

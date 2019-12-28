@@ -24,6 +24,7 @@ const pathToInlineSVG = localize('../src/assets')
 module.exports = ({ config }) => {
   /* const gPlugins = gatsbyConfig.plugins */
   const aliases = getAliasedImportsFromGatsby(gatsbyConfig)
+  console.log('storybook aliases:', aliases)
   config.resolve.alias = aliases
   // Transpile Gatsby module because Gatsby includes un-transpiled ES6 code.
   config.module.rules[0].exclude = [/node_modules\/(?!(gatsby)\/)/]

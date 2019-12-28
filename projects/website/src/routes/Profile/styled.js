@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Box } from 'rebass'
+import { Z_INDEX } from '@styles/constants'
 
 import { tertiary } from '@styles/colors'
 
@@ -79,7 +80,7 @@ export const Img = styled(Box)`
 
 export const logoutButton = css`
   float: right;
-  z-index: 100;
+  z-index: ${Z_INDEX.INTERACTIVE};
   height: 46px;
   background-color: #c00;
   border: 4px solid #c00;

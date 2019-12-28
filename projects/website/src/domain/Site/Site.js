@@ -1,49 +1,29 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { css } from '@emotion/core'
 
 import { Theme } from '@domain/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
 import { injectChildren } from '@utils/react'
+import { Z_INDEX, VIEW_STATES } from '@styles/constants'
 
 import { SEO } from './SEO'
-import { Main } from './styled'
-import { map, join, pipe } from 'ramda'
+import { Main, StyledSite, menuActive } from './styled'
 
 export const stateView = ({ setView, view }) => ({ setView, view })
 
-const eased = pipe(
-  map(x => `${x} 0.6s ease-in`),
-  join(', ')
-)(['position', 'top', 'left', 'padding'])
+const Styled = ({ children, ...other }) => {
+  const { view, seo } = other
+  const isActive = view === VIEW_STATES.MENU_ACTIVE
+  const props = isActive ? { css: menuActive } : {}
 
-const defaultStyles = css`
-  width: 100%;
-  height: 100%;
-  display: block;
-  left: 0;
-  top: 0;
-  position: relative;
-  transition: ${eased};
-`
-
-const Styled = ({ view, seo, children, ...other }) => {
-  const siteStyles =
-    view === 'default'
-      ? defaultStyles
-      : css`
-          ${defaultStyles}
-          background-color: transparent;
-          padding-right: 33vw;
-        `
   return (
-    <div css={siteStyles}>
+    <StyledSite {...props}>
       <SEO seo={seo} {...other} />
       <Navigation {...other} />
       <Main {...other}>{children}</Main>
       <Footer {...other} />
-    </div>
+    </StyledSite>
   )
 }
 Styled.propTypes = {
@@ -53,7 +33,7 @@ Styled.propTypes = {
 }
 
 const Site = ({ children, seo, ...rest }) => {
-  const viewState = useState('default')
+  const viewState = useState(VIEW_STATES.DEFAULT)
   const [view, setView] = viewState
   const viewable = { view, setView }
   const other = { ...rest, seo, ...viewable }
@@ -69,7 +49,8 @@ const Site = ({ children, seo, ...rest }) => {
           padding: 0,
           margin: 0,
           left: 0,
-          top: 0
+          top: 0,
+          zIndex: Z_INDEX.DEFAULT
         }}
       >
         <Styled {...other}>{kids}</Styled>

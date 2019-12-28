@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { pipe, propOr } from 'ramda'
+/* import { pipe, propOr } from 'ramda' */
 
-export const SubmitExample = props => {
-  const [frames, setFrames] = pipe(propOr([], 'frames'), useState)(props)
+export const SubmitExample = () => {
+  /* const [frames, setFrames] = pipe(propOr([], 'frames'), useState)(props) */
   const [currentFrame, setCurrentFrame] = useState('')
   return (
     <div>

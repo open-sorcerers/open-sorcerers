@@ -5,7 +5,6 @@ import { Box } from 'rebass'
 import { map } from 'ramda'
 
 import { Li } from '@styles/List'
-import { Heading } from '@styles/Heading'
 import { Container } from '@components/Container'
 import { getPosts } from '@queries/posts'
 
@@ -19,7 +18,7 @@ export const Learn = () => {
   const data = getPosts()
   return (
     <Container>
-      <Heading as="h1">Learn</Heading>
+      <h1 fontSize={['2rem', '3rem', '4rem']}>Learn</h1>
       <Box as="ul">
         <Li as="li">
           <Link to="/learn/by-reading">By reading</Link>

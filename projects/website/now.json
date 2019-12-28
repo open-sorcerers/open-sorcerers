@@ -4,7 +4,7 @@
   "rewrites": [
     { "source": "/settings/:setting", "destination": "/settings" },
     { "source": "/ask/:setting", "destination": "/ask" },
-    { "source": "/contribute/:setting", "destination": "/contribute" },
+    { "source": "/build/:setting", "destination": "/build" },
     { "source": "/learn/:setting", "destination": "/learn" }
   ]
 }

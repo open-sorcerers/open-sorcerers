@@ -1,5 +1,5 @@
 import React from 'react'
 
-import { Theme } from '../src/components/Theme'
+import { Theme } from '@domain/Theme'
 
 export const GlobalStyleDecorator = storyFn => <Theme>{storyFn()}</Theme>

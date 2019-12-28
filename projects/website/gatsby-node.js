@@ -29,7 +29,6 @@ exports.createPages = async ({ actions, graphql }) => {
       z => z.slice(0, z.indexOf('.'))
     )
   )
-  console.log('posts', posts.data)
   return posts.data.allMdx.nodes.forEach(
     post =>
       console.log(post, '<POST>') ||
@@ -44,14 +43,16 @@ exports.createPages = async ({ actions, graphql }) => {
 
 const clientOnlyMatches = {
   settings: /^\/settings/,
-  contribute: /^\/contribute/,
-  learn: /^\/learn/
+  // settings/login
+  // settings/logout
+  // settings/profile
+  build: /^\/build/
+  // build/example
 }
 
 const setClientOnlyRoute = curry((createPage, page, [key, match]) => {
   if (page.path.match(match)) {
     page.matchPath = `/${key}/*`
-    console.log('making client-only page', page)
     createPage(page)
   }
 })

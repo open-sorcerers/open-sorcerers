@@ -1,7 +1,27 @@
 import styled from '@emotion/styled'
-import {Box} from 'rebass'
+import { css } from '@emotion/core'
+import { minBreak } from '@styles/media'
+import { easeIn } from '@styles/animation'
+import { Box } from 'rebass'
 
 export const Main = styled(Box)`
   margin: 32px 0;
-  min-height: calc(100vh - 56px - 64px - 97px);
+  min-height: calc(100vh - 13rem);
+`
+const eased = easeIn('0.6s', ['position', 'top', 'left', 'padding'])
+
+export const StyledSite = styled(Box)`
+  width: 100%;
+  height: 100%;
+  display: block;
+  left: 0;
+  top: 0;
+  position: relative;
+  transition: ${eased};
+`
+
+export const menuActive = css`
+  background-color: transparent;
+  ${minBreak.S(`padding-right: 40vw;`)}
+  ${minBreak.M(`padding-right: 33vw;`)}
 `

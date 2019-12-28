@@ -25,7 +25,11 @@ export const ProfileImg = ({ variant }) => {
       <img src={picture} />
     </Img>
   ) : variant === 'DropMenu' ? (
-    <MenuFallback>🖤</MenuFallback>
+    <MenuFallback>
+      <span role="img" aria-label="No profile image set.">
+        🖤
+      </span>
+    </MenuFallback>
   ) : (
     <Fallback />
   )

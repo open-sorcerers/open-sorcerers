@@ -1,5 +1,4 @@
 import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
 import { Router } from '@reach/router'
 import { Site } from '@domain/Site'
 import { Ask } from '@routes/Ask'

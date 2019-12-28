@@ -22,9 +22,17 @@ export const BREAKPOINTS_AS_PIXELS = pipe(
 )(RAW_BREAKPOINTS)
 
 export const mq = curry(
-  (cond, q, def) =>
+  (cond, qq, def) =>
     `
-  @media (${cond}: ${q}) {
+  @media (${cond}: ${qq}) {
+    ${def}
+  }
+`
+)
+export const mqCalc = curry(
+  (cond, qq, cc, def) =>
+    `
+  @media (${cond}: calc(${qq} + ${cc})) {
     ${def}
   }
 `
@@ -35,3 +43,6 @@ export const mqMax = mq('max-width')
 
 export const minBreak = map(mqMin, BREAKPOINTS_AS_REM)
 export const maxBreak = map(mqMax, BREAKPOINTS_AS_REM)
+
+export const alteredMinBreak = map(mqCalc('min-width'), BREAKPOINTS_AS_REM)
+export const alteredMaxBreak = map(mqCalc('max-width'), BREAKPOINTS_AS_REM)

@@ -62,7 +62,7 @@ export const Auth = once(() => {
   }
 
   const logout = cb => {
-    if (!windowExists()) return
+    if (!windowExists()) return false
     localStorage.removeItem(ACCESS_TOKEN)
     localStorage.removeItem(ID_TOKEN)
     localStorage.removeItem(EXPIRES_AT)
@@ -87,6 +87,7 @@ export const Auth = once(() => {
   }
 
   const isAuthenticated = () => {
+    if (!windowExists()) return false
     const expiresAt = JSON.parse(localStorage.getItem(EXPIRES_AT))
     return new Date().getTime() < expiresAt
   }

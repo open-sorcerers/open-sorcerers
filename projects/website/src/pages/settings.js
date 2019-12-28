@@ -8,7 +8,6 @@ import { Logout } from '@routes/Logout'
 import { Site } from '@domain/Site'
 import { Auth } from '@services/auth'
 
-
 import { PROFILE, LOGIN, LOGOUT, SETTINGS } from '@constants/routes'
 
 const SettingsRoot = () => {
@@ -26,15 +25,13 @@ const SettingsRoot = () => {
   )
 }
 
-const Routes =(
-  () => (
-    <Router>
-      <PrivateRoute path={PROFILE} component={Profile} />
-      <Login path={LOGIN} />
-      <Logout path={LOGOUT} />
-      <SettingsRoot path={SETTINGS} />
-    </Router>
-  )
+const Routes = () => (
+  <Router>
+    <PrivateRoute path={PROFILE} component={Profile} />
+    <Login path={LOGIN} />
+    <Logout path={LOGOUT} />
+    <SettingsRoot path={SETTINGS} />
+  </Router>
 )
 
 const Settings = ({ ...rest }) =>

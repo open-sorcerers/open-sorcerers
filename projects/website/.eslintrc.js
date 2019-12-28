@@ -12,7 +12,7 @@ module.exports = {
   },
   parser: 'babel-eslint',
   extends: ['plugin:prettier/recommended', 'plugin:react/recommended'],
-  plugins: ['import', 'react', 'ramda', 'jsdoc', 'prefer-object-spread', 'compat'],
+  plugins: ['import', 'react', 'ramda', 'jsdoc', 'prefer-object-spread', 'compat', 'jsx-a11y'],
   globals: {
     graphql: false
   },
@@ -41,7 +41,7 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'off',
 
     // Turn off wrapping every emoji in <span> tags
-    'jsx-a11y/accessible-emoji': 'off',
+    'jsx-a11y/accessible-emoji': 2,
 
     'no-extra-semi': 2,
     'no-undef': 2,

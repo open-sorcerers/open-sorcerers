@@ -1,26 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { css } from '@emotion/core'
 import { useStaticQuery, graphql } from 'gatsby'
 import { uid } from 'react-uid'
-import { stateView } from '@domain/Site'
-import { checkWindowExists } from '@utils/url'
-import OpenSorcerersLogo from '@assets/open-sorcerers.svg'
-import { Container } from '@components/Container'
-import { DropMenu } from './DropMenu'
 
-import { StyledNavigation, Inner, Brand, Nav, Item, Social } from './styled'
+import { stateView } from '@domain/Site'
+import Logo from '@assets/open-sorcerers2.svg'
+import { Container } from '@components/Container'
+import { VIEW_STATES } from '@styles/constants'
+import { Menu } from '@components/Menu'
+
+import {
+  MenuWrapper,
+  StyledNavigation,
+  Inner,
+  Brand,
+  Nav,
+  Item,
+  activeNav,
+  inactiveNav
+} from './styled'
 
 const items = [
-  { label: 'Learn', to: '/learn/' },
-  { label: 'Contribute', to: '/contribute/' },
-  { label: 'Ask', to: '/ask/' }
+  { label: 'LEARN', to: '/learn/' },
+  { label: 'BUILD', to: '/build/' },
+  { label: 'ASK', to: '/ask/' }
 ]
 
 const Navigation = props => {
   const state = stateView(props)
-  let { path } = props
-  if (!path && checkWindowExists()) path = window.location + ''
+  const { path = '' } = props
   const {
     site: {
       siteMetadata: { name }
@@ -34,42 +42,33 @@ const Navigation = props => {
       }
     }
   `)
-  console.log('state', state)
-  const menuActive =
-    state.view === 'menu-active'
-      ? css`
-          background: red;
-          padding-left: 0;
-          padding-right: 0;
-        `
-      : css`
-          padding-left: 13vw;
-          padding-right: 16vw;
-        `
+  const menuState = state.view === VIEW_STATES.MENU_ACTIVE ? activeNav : inactiveNav
 
   return (
-    <StyledNavigation as="section" css={menuActive}>
+    <StyledNavigation as="nav" css={menuState}>
       <Container maxWidth={1200}>
         <Inner>
           <Brand to="/">
-            <OpenSorcerersLogo title={name} />
+            <Logo title={name} />
           </Brand>
-          <Nav as="nav">
-            {items.map(({ label, to, href }) =>
-              to ? (
-                <Item key={uid(label)} to={to} isActive={path.includes(to)}>
-                  {label}
-                </Item>
-              ) : (
-                <Item key={uid(label)} as="a" href={href}>
-                  {label}
-                </Item>
-              )
-            )}
+          <Nav as="aside">
+            <>
+              {items.map(({ label, to, href }) =>
+                to ? (
+                  <Item key={uid(label)} to={to} isActive={path.includes(to)}>
+                    {label}
+                  </Item>
+                ) : (
+                  <Item key={uid(label)} as="a" href={href}>
+                    {label}
+                  </Item>
+                )
+              )}
+              <MenuWrapper>
+                <Menu {...state} />
+              </MenuWrapper>
+            </>
           </Nav>
-          <Social>
-            <DropMenu {...state} />
-          </Social>
         </Inner>
       </Container>
     </StyledNavigation>

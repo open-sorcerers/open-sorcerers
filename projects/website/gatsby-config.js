@@ -36,11 +36,19 @@ module.exports = {
       }
     },
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'routes',
+        path: `${__dirname}/src/routes/`
+      }
+    },
+    {
       resolve: 'gatsby-plugin-mdx',
       options: {
         extensions: ['.mdx', '.md'],
         defaultLayouts: {
-          posts: require.resolve('./src/templates/Page/index.js')
+          routes: require.resolve('./src/templates/MDXPage/index.js'),
+          posts: require.resolve('./src/templates/MDXPage/index.js')
         }
       }
     },

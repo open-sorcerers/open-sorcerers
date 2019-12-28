@@ -12,7 +12,7 @@ So. Assuming decent knowledge of JS, you know that JS is a wild beast of dynamis
 
 We'll use some definitions as our starting point for these ideas.
 
-#### Arity
+# Arity
 
 `Arity` is the number of arguments a function expects. It is a simple thing, but with FP you start paying a lot of attention to the arity of a function, as each parameter can be thought of as a task / dependency:
 
@@ -24,13 +24,13 @@ const taskSolver = (taskOne) => {
 
 Until we deal with the `taskOne` parameter above, our function doesn't make any sense. (Either we shouldn't have defined the parameter or we are practicing willful obtuseness, and really, what is the point of doing anything? 👻 )
 
-#### Nullary functions
+# Nullary functions
 
 A `nullary` function has an arity of zero, meaning it has zero parameters and returns one value. These are functions which take nothing and return something. They get their kicks for free.
 
 _Examples_: `Math.random`; `Date.now`
 
-#### Pure functions
+# Pure functions
 
 One thing you're always striving for in FP are `pure` functions. These are really nice variations on your standard JS insanity-closures. Instead of everything that JS offers and can do, all tricky-like, pure functions have two great qualities:
 
@@ -49,7 +49,7 @@ Whatever it receives, it returns.
 
 Which brings us to:
 
-#### Unary functions
+# Unary functions
 
 `Unary` functions are functions with an arity of one. These are functions which take a thing and return a thing.
 
@@ -61,13 +61,13 @@ One thing you start to strive for in FP-land is understanding the common pattern
 
 This would be impossible without:
 
-#### Higher-order functions
+# Higher-order functions
 
 `Higher-order` functions take a function as an input and/or return a function as an output. These allow you to make simple functions far more powerful. By augmenting the input function and returning a wrapped function, we can both extricate the explicit task resolution (the function being passed in has privileged access and can be defined elsewhere) and we can automate common patterns and utilize them in the wrapped function.
 
 The most common example here would probably be `map`, which is one of the coolest. 😎
 
-#### Binary functions
+# Binary functions
 
 `Binary` functions are functions which take two inputs and return one output.
 
@@ -103,7 +103,7 @@ Maybe you already know about `map`, but know it as the native `Array.prototype.m
 
 When I say not as reusable, it's because I didn't show you the full coolness of the `Ramda.map` we're using above. `Ramda.map` is a curried function. 😏
 
-#### Curry
+# Curry
 
 When we `curry` a function, we make it so that until we provide all the parameters, we keep getting back a new function which expects the remaining parameters.
 
@@ -137,7 +137,7 @@ console.log(doubleList([1,3,5,7,9])) // [2,6,10,14,18]
 
 When `map` is curried this way, it's much more valuable, as it allows us to extricate the array from the function which manipulates the array.
 
-### Function Composition
+# Function Composition
 
 This is where everything becomes the most exciting.
 
@@ -302,7 +302,7 @@ const stringifyProp = curry((property, input) => pipe(
 "Wow Brekk, cool new function", you say. "Still seems like extra."
 And again, I say:
 
-*NUH UH!*
+*Nuh Uh!*
 
 ```
 const stringifyTypes = stringifyProp(`type`)
@@ -311,11 +311,11 @@ const stringifyNames = stringifyProp(`name`)
 
 Seems like we have two brand new functions, but we know 100% about how they work, because they're different morphisms of the same generic function. 💥
 
-##### xtrace
+# xtrace
 
 Ok. So. Finally, here's a really cool way you can take `trace` and push it to be more generic, and then provide a way to inspect our data more granularly.
 
-So, master-level excitement, we have the ability (using `Ramda.curry`, but arguably any equivalent function could do the same) to provide "placeholder" arguments to the function ([Read more about R.__ here.](http://ramdajs.com/docs/#__)), which takes the premise of currying and partial application to a whole new level.
+So, master-level excitement, we have the ability (using `Ramda.curry`, but arguably any equivalent function could do the same) to provide "placeholder" arguments to the function ([Read more](http://ramdajs.com/docs/#__)), which takes the premise of currying and partial application to a whole new level.
 
 ```
 // definition taken from Ramda (issues with destructuring `__` from `R` in the past)
@@ -343,9 +343,11 @@ pipe(
 
 Now we have an amazingly helpful function which has the particularly advantageous morph above, but could ostensibly be used to generate any kind of side-effects during a pipe-composition.
 
+  You may want to check out [xtrace](//npmjs.org/package/xtrace) if you want the above package in a standalone `import`-able solution.
+
 ✋🏾 It's over!
 
-##### Read more:
+# Read more:
 
 * [Mostly Adequate Guide To Functional Programming][mostly-adequate]
 * [Similar content in video form][egghead]
@@ -361,6 +363,6 @@ Now we have an amazingly helpful function which has the particularly advantageou
 [gitter]: https://gitter.im/ramda/ramda "The Ramda Gitter Channel"
 [jrsinclair]: http://jrsinclair.com/articles/2016/gentle-introduction-to-functional-javascript-intro/ "A Gentle Introduction to Functional JavaScript"
 
-#### Continued Reading!
+# Continued Reading!
 
-**EDIT**: Hey, it used to be over _but now there's more!_ Please read about how we might visualize these composed functions more easily and how we can add the Either Monad to our composed pipelines: [https://codepen.io/brekk/post/visual-function-composition](https://codepen.io/brekk/post/visual-function-composition)
+**EDIT**: Hey, it used to be over _but now there's more!_ Please read about how we might visualize these composed functions more easily and how we can add the Either Monad to our composed pipelines: [Visual Function Composition](https://codepen.io/brekk/post/visual-function-composition)

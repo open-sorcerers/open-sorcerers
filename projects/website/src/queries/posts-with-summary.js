@@ -3,16 +3,18 @@ import { useStaticQuery, graphql } from 'gatsby'
 export const getPostsWithSummary = () =>
   useStaticQuery(graphql`
     query getPostsWithSummary {
-      allMdx {
+      allMdx(filter: { fileAbsolutePath: { regex: "/posts/" } }) {
         nodes {
           frontmatter {
-            path
             author
+            path
+            title
           }
           id
           timeToRead
           fileAbsolutePath
-          excerpt(pruneLength: 120)
+          tableOfContents
+          excerpt(pruneLength: 420)
         }
       }
     }

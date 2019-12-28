@@ -54,8 +54,9 @@ export const Nav = styled(Box)`
   flex-flow: nowrap column;
   flex: 1 1 auto;
   align-items: center;
-  font-family: 'Obviously', sans-serif;
+  font-family: obviously, sans-serif;
   font-style: italic;
+  font-weight: 900;
 
   ${maxBreak.S(`
     margin: 0 -24px;
@@ -67,22 +68,28 @@ export const Nav = styled(Box)`
   `)}
 `
 
+export const activeItemHover = css`
+  opacity: 1;
+  color: #ff0;
+  text-decoration: none;
+`
+
 export const Item = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  font-family: 'Obviously', sans-serif;
-  font-style: italic;
-  padding: 16px 8px;
-  color: #fff;
+  font-family: obviously, sans-serif;
+  font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
+  letter-spacing: 0.1rem;
   font-weight: 900;
+  padding: 1rem 0.5rem;
+  color: #fff;
+  margin: 0.6rem auto;
   font-size: 2.6rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   opacity: ${p => (p.isActive ? '1' : '0.6')};
   text-decoration: none;
 
-  :hover {
-    opacity: 1;
-    color: #ff0;
-    text-decoration: none;
+  &:hover {
+    ${activeItemHover}
   }
   ${maxBreak.S(`
     padding: 8px;

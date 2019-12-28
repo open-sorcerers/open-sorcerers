@@ -1,0 +1,105 @@
+---
+title: Glossary of Common Terms
+path: /glossary/
+author: brekk
+---
+
+# Function
+
+A relationship or expression involving one or more variables.
+
+```js
+const a = () => `hip arrow function`
+const b = function () { return `assigned anonymous function` }
+function c() { return `named function` }
+```
+
+<!-- Properties of Functions: -->
+
+## Arity
+
+The number of parameters a function takes.
+
+### Nullary
+
+A function which takes zero parameters. 
+
+```js
+const nullary = () => `nothing`
+```
+
+### Unary
+
+A function which takes one parameter, or is said to have an [arity](/glossary/arity) of 1.
+
+```js
+const unary = thing => `one ${thing}`
+```
+
+### Binary 
+
+A function which takes two parameters, or is said to have an [arity](/glossary/arity) of 2.
+
+```js
+const binary = (thing1, thing2) => `${thing1} => ${thing2}`
+const binaryMC = thing1 => thing2 => `${thing1} => ${thing2}`
+const binaryC = curry((thing1, thing2) => `${thing1} => ${thing2}`)
+```
+
+### Ternary
+
+A function which takes three parameters, or is said to have an [arity](/glossary/arity) of 3.
+
+```js
+const ternary = (a, b, c) => a + b + c
+const ternaryMC = a => b => c => a + b + c 
+const ternaryC = curry((a, b, c) => a + b + c)
+```
+
+## Purity
+
+A function which is [deterministic](/glossary/deterministic) has no side-effects and is [referentially transparent](/glossary/refentially-transparent).
+
+## Deterministic
+
+A function which will always return the same output given the same input.
+
+```js
+const identity = x => x
+```
+
+## Referentially Transparent
+
+A function which (when invoked with all inputs) can be replaced in all instances without changing the program's behavior.
+
+```js
+const times = a => b => a * b
+const ten = times(2)(5) 
+const four = times(2)(2) 
+const forty = times(ten)(four)
+times(ten)(four) === times(times(2)(5))(times(2)(2))
+```
+
+<!-- Category: Functions -->
+
+## Composition
+
+An operation which takes two or more functions and returns a unary function.
+
+```js
+const f = x =>  x
+const g = x => y
+const h = x => f(g(x))
+import {pipe} from 'ramda'
+const h = pipe(f, g)
+```
+
+## Higher-Order Function
+
+A function which takes a function and possible additional parameters, and returns a function.
+
+```js
+const map = fn => xs => xs.map(fn)
+map(times(2))([1,2,3]) === [2,4,6]
+```
+

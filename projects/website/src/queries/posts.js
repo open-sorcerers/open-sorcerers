@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from 'gatsby'
 export const getPosts = () =>
   useStaticQuery(graphql`
     query getPosts {
-      allSitePage(filter: { path: { regex: "/writing/" } }) {
+      allSitePage(filter: { context: { fileAbsolutePath: { regex: "/posts/" } } }) {
         nodes {
           id
           path

@@ -33,7 +33,7 @@ exports.createPages = async ({ actions, graphql }) => {
     post =>
       console.log(post, '<POST>') ||
       actions.createPage({
-        path: '/writing/' + getName(post),
+        path: (post.frontmatter && post.frontmatter.path) || '/writing/' + getName(post),
         frontmatter: post.frontmatter,
         component: path.resolve('./src/templates/MDXPage/index.js'),
         context: post

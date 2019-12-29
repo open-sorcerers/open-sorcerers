@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
 import { offWhite } from '@styles/colors'
-import { maxBreak } from '@styles/media'
+import { above } from '@styles/media'
 
 export const StyledFooter = styled(Box)`
   padding: 1.5rem 0;
@@ -25,14 +25,14 @@ export const Inner = styled(Box)`
   display: flex;
   flex-flow: nowrap row;
 
-  ${maxBreak.S(`
+  ${above.TABLET_PORTRAIT(`
     flex-flow: nowrap column;`)}
 `
 
 export const Left = styled(Box)`
   margin-right: auto;
 
-  ${maxBreak.S(`
+  ${above.TABLET_PORTRAIT(`
     margin: 0;
     display: flex;
     flex-flow: nowrap row;
@@ -49,7 +49,7 @@ export const Right = styled(Box)`
   margin-left: auto;
   text-align: right;
 
-  ${maxBreak.S(`
+  ${above.TABLET_PORTRAIT(`
     margin: 0;
     display: flex;
     flex-flow: nowrap row;

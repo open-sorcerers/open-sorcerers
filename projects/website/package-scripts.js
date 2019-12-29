@@ -10,7 +10,13 @@ module.exports = {
       script: 'gatsby develop',
       storybook: 'cross-env NODE_ENV=production start-storybook -p 9000 -c .storybook'
     },
-    lint: 'eslint . --fix',
-    serve: 'gatsby serve'
+    lint: {
+      script: `nps lint.eslint lint.stylelint`,
+      eslint: 'eslint . --fix',
+      stylelint: `stylelint "./src/**/*.js"`
+    },
+
+    serve: 'gatsby serve',
+    friend: `lint-staged`
   }
 }

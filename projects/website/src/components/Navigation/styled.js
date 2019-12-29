@@ -2,7 +2,7 @@ import { Box } from 'rebass'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
-import { minBreak, maxBreak } from '@styles/media'
+import { above } from '@styles/media'
 import { primary } from '@styles/colors'
 
 import { easeIn, transitionEaseOut } from '@styles/animation'
@@ -10,9 +10,9 @@ import { easeIn, transitionEaseOut } from '@styles/animation'
 export const StyledNavigation = styled(Box)`
   display: flex;
   align-items: center;
+  justify-content: space-around;
   background-color: #409;
   color: #fff;
-  height: 22rem;
   min-height: 16rem;
   transition: ${easeIn('0.6s', ['background', 'padding', 'border'])};
 `
@@ -20,33 +20,45 @@ export const StyledNavigation = styled(Box)`
 export const Inner = styled(Box)`
   display: flex;
   flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
 `
 
-export const Brand = styled(Link)`
+export const Brand = styled(Box)`
   display: flex;
-  align-items: center;
+  width: 50%;
+  height: 100%;
   flex: 0 0 auto;
   color: #fff;
-  font-size: 20px;
-  line-height: 24px;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
-
-  svg {
-    fill: white;
-    height: 160px;
-    margin-top: 1rem;
-  }
-
-  ${maxBreak.S(`
-    margin: 8px 0;
-    justify-content: center;
-  `)}
-
-  :hover {
+  &:hover {
     text-decoration: none;
   }
+
+  svg {
+    display: flex;
+    fill: white;
+    height: 6rem;
+    margin: 1rem auto;
+    ${transitionEaseOut('0.3s', ['height', 'width', 'margin'])}
+  }
+  ${above.SMALL_PHONE(`
+    width: 60%;
+    margin: 0;
+    padding: 0;
+    svg {
+      height: 8rem;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  `)}
+  ${above.TABLET_PORTRAIT(`
+    margin: 0.5rem 0;
+    justify-content: center;
+  `)}
 `
 
 export const Nav = styled(Box)`
@@ -58,19 +70,20 @@ export const Nav = styled(Box)`
   font-style: italic;
   font-weight: 900;
 
-  ${maxBreak.S(`
-    margin: 0 -24px;
-    justify-content: center;
-    overflow: hidden;
-  `)}
-  ${minBreak.S(`
+  margin: 0 -24px;
+  justify-content: center;
+  overflow: hidden;
+  ${above.TABLET_LANDSCAPE(`
     flex-direction: row;
   `)}
 `
 
 export const activeItemHover = css`
   opacity: 1;
-  color: #ff0;
+  color: #fff;
+  a {
+    text-shadow: 0;
+  }
   text-decoration: none;
 `
 
@@ -78,23 +91,21 @@ export const Item = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
   font-family: obviously, sans-serif;
   font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.15em;
   font-weight: 900;
-  padding: 1rem 0.5rem;
+  padding: 0 0.5rem;
   color: #fff;
-  margin: 0.6rem auto;
-  font-size: 2.6rem;
-  line-height: 1.5rem;
+  margin: 1rem auto;
+  font-size: 2.5rem;
+  line-height: 0.75rem;
   opacity: ${p => (p.isActive ? '1' : '0.6')};
   text-decoration: none;
 
   &:hover {
     ${activeItemHover}
   }
-  ${maxBreak.S(`
+  ${above.TABLET_PORTRAIT(`
     padding: 8px;
-  `)}
-  ${minBreak.S(`
     font-size: 3.6rem;
   `)}
 `
@@ -105,7 +116,7 @@ export const activeNav = css`
 `
 export const inactiveNav = css`
   padding: 0;
-  ${minBreak.S(`
+  ${above.TABLET_PORTRAIT(`
   border-left: 12vw solid ${primary};
   margin-left: -12vw;
   `)}

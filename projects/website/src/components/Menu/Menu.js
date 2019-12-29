@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
-import { map, identity } from 'ramda'
+import { pipe, filter, identity as I, map } from 'ramda'
 
+import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
-import { Li } from '@styles/List'
-import { SETTINGS } from '@constants/routes'
+import { BOOKMARKS, SETTINGS, PROFILE, REPL, LOGOUT, LOGIN } from '@constants/routes'
 import { VIEW_STATES } from '@styles/constants'
 /* import { ProfileImg } from '@routes/Profile/ProfileImg' */
 
 import {
-  /* menuWrapper, */
-  floatingMenu,
+  MenuItem,
+  menuCog,
+  MenuLink,
+  FloatingMenuContent,
+  FloatingMenu,
   SettingsButton,
   StyledMenu,
   activeButtonState,
@@ -20,7 +22,18 @@ import {
   inactiveMenu
 } from './styled'
 
-const MENU_LINKS = [[SETTINGS, 'Settings']]
+const getLinksRelativeToAuth = pipe(
+  Auth,
+  ({ isAuthenticated }) => isAuthenticated(),
+  loggedIn => [
+    [SETTINGS, 'Settings'],
+    loggedIn && [BOOKMARKS, 'Bookmarks'],
+    loggedIn && [PROFILE, 'Profile'],
+    [REPL, 'REPL'],
+    loggedIn ? [LOGOUT, 'Logout'] : [LOGIN, 'Login']
+  ],
+  filter(I)
+)
 
 export const Menu = ({ setView, view }) => {
   const [active, setActive] = useState(view === VIEW_STATES.MENU_ACTIVE)
@@ -32,6 +45,7 @@ export const Menu = ({ setView, view }) => {
   console.log('view', view)
 
   const floating = active ? activeMenu : inactiveMenu
+  const MENU_LINKS = getLinksRelativeToAuth()
   return (
     <StyledMenu className="styled-menu" onClick={toggle}>
       <SettingsButton
@@ -40,18 +54,38 @@ export const Menu = ({ setView, view }) => {
       >
         <Cog />
       </SettingsButton>
-      <div className="floating-menu" css={[floatingMenu, floating]}>
-        <ul>
-          {map(
-            ([to, what]) => (
-              <Li as="li" key={to}>
-                <Link to={to}>{what}</Link>
-              </Li>
-            ),
-            MENU_LINKS
-          )}
-        </ul>
-      </div>
+      <FloatingMenu className="floating-menu" css={floating}>
+        <FloatingMenuContent>
+          <>
+            {map(
+              ([to, what]) => (
+                <MenuItem key={to}>
+                  <MenuLink
+                    to={to}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  >
+                    {what}
+                  </MenuLink>
+                </MenuItem>
+              ),
+              MENU_LINKS
+            )}
+            <MenuItem key="quiz">
+              <MenuLink
+                onClick={e => {
+                  e.preventDefault()
+                  console.log('butts')
+                }}
+              >
+                QUIZ
+              </MenuLink>
+            </MenuItem>
+          </>
+        </FloatingMenuContent>
+        <Cog css={menuCog} onClick={() => setActive(false)} />
+      </FloatingMenu>
     </StyledMenu>
   )
 }
@@ -61,7 +95,7 @@ Menu.propTypes = {
 }
 
 Menu.defaultProps = {
-  setView: identity,
+  setView: I,
   view: VIEW_STATES.DEFAULT
 }
 

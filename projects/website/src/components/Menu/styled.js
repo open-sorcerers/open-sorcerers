@@ -1,13 +1,15 @@
 import styled from '@emotion/styled'
 import { css, keyframes } from '@emotion/core'
+import { Link } from 'gatsby'
 import { Box } from 'rebass'
+import { join, map, pipe } from 'ramda'
 
-import { secondary } from '@styles/colors'
-import { minBreak } from '@styles/media'
+import { tertiary, secondary } from '@styles/colors'
+import { above } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
-import { transitionEaseOut, easeOut } from '@styles/animation'
+import { transition, transitionEaseOut, easeOut } from '@styles/animation'
 
-const { MENU, INTERACTIVE } = Z_INDEX
+const { MENU, MENU_UNDER, INTERACTIVE } = Z_INDEX
 
 export const rotate = keyframes`
   98% {
@@ -21,20 +23,51 @@ export const rotate = keyframes`
   }
 `
 
-export const floatingMenu = css`
+const sixth = x => `${Math.round(Math.round(x * (100 / 6) * 100) / 100)}%`
+export const rotateSlowly = keyframes`
+  0% {
+
+    transform: rotate(0deg);
+  }
+  ${pipe(
+    map(
+      xx => `${sixth(xx)} {
+    transform: rotate(${xx * 60}deg);
+  }`
+    ),
+    join('\n'),
+    aa => `${aa}
+  100% {
+    transform: rotate(360deg);
+  }
+    `
+  )([1, 2, 3, 4, 5])}
+`
+
+export const FloatingMenuContent = styled.ul`
+  z-index: ${MENU};
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
+
+export const FloatingMenu = styled(Box)`
   z-index: ${Z_INDEX.MENU};
-  ${transitionEaseOut('0.4s', ['transform', 'background', 'color'])};
+  ${transition('ease-in-out', '0.6s', ['transform', 'background', 'color', 'top', 'opacity'])};
   position: fixed;
   pointer-events: none;
   margin: 0;
   margin-left: 0;
-  width: 100vw;
-  min-width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  display: block;
-  padding: 1rem;
-  top: translate(0, 100vh) ${minBreak.S(`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 28rem;
+  max-height: 32rem;
+  height: 55vh;
+  padding: 0;
+  top: 0;
+  opacity: 0;
+  ${above.TABLET_PORTRAIT(`
   position: absolute;
   top: 0;
   width: 50vw;
@@ -45,28 +78,26 @@ export const floatingMenu = css`
 `
 
 export const inactiveMenu = css`
-  transform: translate(0, 100vh);
+  transform: translate(0, -100vh);
   width: 100vw;
   left: 0;
-  ${minBreak.M(`
+  ${above.TABLET_PORTRAIT(`
   transform: translate(24vw);
   `)}
 `
 
 export const activeMenu = css`
-  opacity: 0.6;
-  transform: translate(0, 3rem);
-  background-color: yellow;
+  transform: translate(0, 0);
+  background-color: #222;
+  box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
-  ${minBreak.S(`
-  transform: translate(7rem);
-  box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.5);
+  top: 0;
+  opacity: 1;
+  ${above.TABLET_PORTRAIT(`
+    transform: translate(7rem);
   `)}
 `
 
-export const FloatingMenu = styled(Box)`
-  ${floatingMenu}
-`
 export const inactiveButtonState = css`
   transform: rotate(0deg);
   svg {
@@ -128,4 +159,51 @@ export const menuWrapper = styled`
   display: flex;
   flex-flow: nowrap row;
   align-items: center;
+`
+
+export const MenuLink = styled(Link)`
+  display: flex;
+  pointer-events: auto;
+  flex-direction: column;
+  width: 100%;
+  height: 4rem;
+  display: block;
+  color: white;
+  line-height: 4rem;
+  font-size: 10vw;
+  padding: 0.55rem 0;
+  letter-spacing: 0.2rem;
+  &:hover {
+    color: white;
+  }
+`
+export const MenuItem = styled.li`
+  list-style: none;
+  width: 100%;
+  height: 4rem;
+  margin: 0 auto;
+  padding: 0;
+`
+
+export const menuCog = css`
+  animation-direction: normal;
+  animation: ${rotateSlowly} 18s ease-in-out infinite;
+  bottom: -6.75rem;
+  cursor: pointer;
+  display: inline-block;
+  fill: #222;
+  margin: 0 10%;
+  position: absolute;
+  pointer-events: auto;
+  stroke-width: 0;
+  stroke: #222;
+  text-align: center;
+  transition: fill 0.3s ease-out, stroke 0.3s ease-out, stroke-width 0.6s ease-out;
+  width: 80vw;
+  z-index: ${MENU_UNDER};
+  &:hover {
+    fill: #222;
+    stroke: #222;
+    stroke-width: 1.6rem;
+  }
 `

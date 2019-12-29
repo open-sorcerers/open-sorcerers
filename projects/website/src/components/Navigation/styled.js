@@ -58,6 +58,14 @@ export const Brand = styled(Box)`
   ${above.TABLET_PORTRAIT(`
     margin: 0.5rem 0;
     justify-content: center;
+    svg {
+      height: 10rem;
+    }
+  `)}
+  ${above.TABLET_LANDSCAPE(`
+    svg {
+      height: 12rem;
+    }
   `)}
 `
 
@@ -73,9 +81,6 @@ export const Nav = styled(Box)`
   margin: 0 -24px;
   justify-content: center;
   overflow: hidden;
-  ${above.TABLET_LANDSCAPE(`
-    flex-direction: row;
-  `)}
 `
 
 export const activeItemHover = css`
@@ -96,7 +101,7 @@ export const Item = styled(Link)`
   padding: 0 0.5rem;
   color: #fff;
   margin: 1rem auto;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   line-height: 0.75rem;
   opacity: ${p => (p.isActive ? '1' : '0.6')};
   text-decoration: none;
@@ -104,9 +109,14 @@ export const Item = styled(Link)`
   &:hover {
     ${activeItemHover}
   }
+  ${above.SMALL_PHONE(
+    `
+  font-size: 3rem;
+  `
+  )}
   ${above.TABLET_PORTRAIT(`
-    padding: 8px;
-    font-size: 3.6rem;
+    padding: 0 0.5rem;
+    font-size: 3rem;
   `)}
 `
 

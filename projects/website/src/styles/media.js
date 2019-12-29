@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { __, replace, toPairs, propOr, pipe, map, curry } from 'ramda'
+import { ifElse, propEq, __, replace, toPairs, propOr, pipe, map, curry } from 'ramda'
 import { Z_INDEX } from '@styles/constants'
 
 export const REM = 16
@@ -51,6 +51,7 @@ export const SIZES_ABOVE = Object.freeze({
   SMALL_PHONE: BREAKPOINTS_AS_REM.XXS,
   PHONE: BREAKPOINTS_AS_REM.XS,
   TABLET_PORTRAIT: BREAKPOINTS_AS_REM.XS,
+
   TABLET_LANDSCAPE: BREAKPOINTS_AS_REM.S,
   DESKTOP: BREAKPOINTS_AS_REM.M,
   BIG_DESKTOP: BREAKPOINTS_AS_REM.L,
@@ -93,12 +94,20 @@ export const Breakpoint = styled(Box)`
     position: absolute;
     background-color: lime;
     color: black;
-    content: "${pipe(propOr(false, 'label'), replace(/_/g, ' '))}";
+    content: "${p =>
+      [
+        propEq('direction', 'yes', p) ? '<=' : '>',
+        pipe(propOr(false, 'label'), replace(/_/g, ' '))(p)
+      ].join(' ')}";
     transform: rotate(-90deg);
     padding: 0 3rem 0 1rem;
     right: ${propOr(0, 'size')}px;
     width: 10rem;
-    margin-left: -6.25rem;
+    margin-left: ${ifElse(
+      propEq('direction', 'no'),
+      () => '-6.25rem',
+      () => '-7.75rem'
+    )};
     margin-top: 2rem;
   }
 `
@@ -110,7 +119,11 @@ export const Breakpoints = pipe(
     <>
       {map(
         bb => (
-          <Breakpoint key={bb.label} {...bb} />
+          <Breakpoint
+            key={bb.label}
+            {...bb}
+            direction={!!(SIZES_UP_TO && SIZES_UP_TO[bb.label]) ? 'yes' : 'no'}
+          />
         ),
         kids
       )}

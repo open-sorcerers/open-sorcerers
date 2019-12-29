@@ -67,23 +67,12 @@ export const FloatingMenu = styled(Box)`
   padding: 0;
   top: 0;
   opacity: 0;
-  ${above.TABLET_PORTRAIT(`
-  position: absolute;
-  top: 0;
-  width: 50vw;
-  height: 100%;
-  min-height: calc(100vh + 4rem);
-  padding: 0.75rem 1.6rem;
-  `)};
 `
 
 export const inactiveMenu = css`
   transform: translate(0, -100vh);
   width: 100vw;
   left: 0;
-  ${above.TABLET_PORTRAIT(`
-  transform: translate(24vw);
-  `)}
 `
 
 export const activeMenu = css`
@@ -93,9 +82,6 @@ export const activeMenu = css`
   left: 0;
   top: 0;
   opacity: 1;
-  ${above.TABLET_PORTRAIT(`
-    transform: translate(7rem);
-  `)}
 `
 
 export const inactiveButtonState = css`

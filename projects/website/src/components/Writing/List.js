@@ -7,12 +7,11 @@ import { map } from 'ramda'
 import styled from '@emotion/styled'
 import { secondary } from '@styles/colors'
 
-import { Container } from '@components/Container'
 const Glossary = styled(Box)`
   background-color: ${secondary};
 `
 
-const Post = ({ frontmatter, timeToRead, excerpt, wordCount, tableOfContents }) =>
+const Post = ({ frontmatter, timeToRead, excerpt, tableOfContents }) =>
   console.log('tableCofContents', tableOfContents) || (
     <Box>
       <Box as="header">
@@ -26,7 +25,10 @@ const Post = ({ frontmatter, timeToRead, excerpt, wordCount, tableOfContents }) 
           {map(
             item => (
               <>
-                <Link key={item.url} to={`/glossary/${item.url.replace('#', '')}`}>
+                <Link
+                  key={item.url}
+                  to={`/glossary/${item.url.replace('#', '').replace('-functions', '')}`}
+                >
                   {item.title}
                 </Link>
               </>
@@ -51,7 +53,7 @@ Post.propTypes = {
 export const List = () => {
   const data = getPostsWithSummary()
   return (
-    <Container>
+    <Box>
       <h1>Learn</h1>
       <h2>By Reading</h2>
       <>
@@ -62,7 +64,7 @@ export const List = () => {
           data.allMdx.nodes
         )}
       </>
-    </Container>
+    </Box>
   )
 }
 

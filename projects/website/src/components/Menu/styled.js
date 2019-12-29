@@ -23,7 +23,7 @@ export const rotate = keyframes`
 
 export const floatingMenu = css`
   z-index: ${Z_INDEX.MENU};
-  ${transitionEaseOut('0.4s', ['all'])};
+  ${transitionEaseOut('0.4s', ['transform', 'background', 'color'])};
   position: fixed;
   pointer-events: none;
   margin: 0;
@@ -55,9 +55,9 @@ export const inactiveMenu = css`
 
 export const activeMenu = css`
   opacity: 0.6;
-  margin-left: -44vw;
-  transform: translate(0, 14vh);
+  transform: translate(0, 3rem);
   background-color: yellow;
+  left: 0;
   ${minBreak.S(`
   transform: translate(7rem);
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.5);

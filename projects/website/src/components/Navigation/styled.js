@@ -61,7 +61,7 @@ export const Nav = styled(Box)`
   ${maxBreak.S(`
     margin: 0 -24px;
     justify-content: center;
-    overflow-x: auto;
+    overflow: hidden;
   `)}
   ${minBreak.S(`
     flex-direction: row;

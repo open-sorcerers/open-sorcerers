@@ -1,7 +1,6 @@
 import React from 'react'
 import { css, Global } from '@emotion/core'
-import { MDXProvider as Mdx } from '@mdx-js/react'
-import { primary, secondary, tertiary } from '@styles/colors'
+import { primary, secondary } from '@styles/colors'
 
 const styles = css`
   * {

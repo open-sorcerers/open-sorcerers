@@ -16,7 +16,6 @@ import {
   Brand,
   Nav,
   Item,
-  activeItem,
   activeNav,
   inactiveNav
 } from './styled'

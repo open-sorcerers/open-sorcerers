@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
 import { map, identity } from 'ramda'
-import { Box } from 'rebass'
 
 import Cog from '@assets/cog.svg'
 import { Li } from '@styles/List'
@@ -12,7 +11,7 @@ import { VIEW_STATES } from '@styles/constants'
 
 import {
   /* menuWrapper, */
-  FloatingMenu,
+  floatingMenu,
   SettingsButton,
   StyledMenu,
   activeButtonState,
@@ -34,12 +33,15 @@ export const Menu = ({ setView, view }) => {
 
   const floating = active ? activeMenu : inactiveMenu
   return (
-    <StyledMenu onClick={toggle}>
-      <SettingsButton css={active ? activeButtonState : inactiveButtonState}>
+    <StyledMenu className="styled-menu" onClick={toggle}>
+      <SettingsButton
+        className="settings-button"
+        css={active ? activeButtonState : inactiveButtonState}
+      >
         <Cog />
       </SettingsButton>
-      <FloatingMenu as="nav" css={floating}>
-        <Box as="ul">
+      <div className="floating-menu" css={[floatingMenu, floating]}>
+        <ul>
           {map(
             ([to, what]) => (
               <Li as="li" key={to}>
@@ -48,8 +50,8 @@ export const Menu = ({ setView, view }) => {
             ),
             MENU_LINKS
           )}
-        </Box>
-      </FloatingMenu>
+        </ul>
+      </div>
     </StyledMenu>
   )
 }

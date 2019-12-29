@@ -8,7 +8,7 @@ import { injectChildren } from '@utils/react'
 import { Z_INDEX, VIEW_STATES } from '@styles/constants'
 
 import { SEO } from './SEO'
-import { Main, StyledSite, menuActive } from './styled'
+import { Main, site, menuActive } from './styled'
 
 export const stateView = ({ setView, view }) => ({ setView, view })
 
@@ -18,12 +18,12 @@ const Styled = ({ children, ...other }) => {
   const props = isActive ? { css: menuActive } : {}
 
   return (
-    <StyledSite {...props}>
+    <section {...props} css={site} className="website">
       <SEO seo={seo} {...other} />
       <Navigation {...other} />
       <Main {...other}>{children}</Main>
       <Footer {...other} />
-    </StyledSite>
+    </section>
   )
 }
 Styled.propTypes = {

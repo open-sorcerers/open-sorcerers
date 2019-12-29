@@ -10,7 +10,7 @@ export const Main = styled(Box)`
 `
 const eased = easeIn('0.6s', ['position', 'top', 'left', 'padding'])
 
-export const StyledSite = styled(Box)`
+export const site = css`
   width: 100%;
   height: 100%;
   display: block;

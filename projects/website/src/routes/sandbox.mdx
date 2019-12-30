@@ -6,18 +6,21 @@ author: your mom dot com
 
 import {Diff} from '@components/Diff'
 
+
 <Diff content={[
   `
-  // COMMENT
+const wiggle = "~~~~"
+// COMMENT
 const render = input => Array(input)
 .fill('x')
 .map(
   (x, i) => Array(i).fill(x).join('')
 ).join(' -> ')
-.replace(/> x -/g, '~~~~')
+.replace(/> x -/g, wiggle)
 // WHATEVER
 `,
 `
+const wiggle = "~~~~"
 // COMMENT
 import {always as K, pipe, range, map, addIndex, join, replace} from 'ramda'
 const addX = map(K('x'))
@@ -30,7 +33,7 @@ const render = pipe(
   addX,
   addIndex(map)(innerFill),
   join(' -> '),
-  replace(/> x -/g, '~~~~')
+  replace(/> x -/g, wiggle)
 )
 `
 ]} />

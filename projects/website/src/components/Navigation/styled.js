@@ -14,7 +14,10 @@ export const StyledNavigation = styled(Box)`
   background-color: #409;
   color: #fff;
   min-height: 16rem;
-  transition: ${easeIn('0.6s', ['background', 'padding', 'border'])};
+  transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
+  ${above.SMALL_PHONE(`
+    min-height: 19rem;
+  `)}
 `
 
 export const Inner = styled(Box)`
@@ -49,7 +52,7 @@ export const Brand = styled(Box)`
     margin: 0;
     padding: 0;
     svg {
-      height: 8rem;
+      height: 10rem;
       width: 100%;
       margin: 0;
       padding: 0;
@@ -58,29 +61,29 @@ export const Brand = styled(Box)`
   ${above.TABLET_PORTRAIT(`
     margin: 0.5rem 0;
     justify-content: center;
-    svg {
-      height: 10rem;
-    }
   `)}
-  ${above.TABLET_LANDSCAPE(`
-    svg {
-      height: 12rem;
-    }
+  ${above.MID_TABLET(`
+    margin: 0.5rem 2rem;
+    width: 28%;
   `)}
 `
 
 export const Nav = styled(Box)`
+  align-items: center;
   display: flex;
   flex-flow: nowrap column;
   flex: 1 1 auto;
-  align-items: center;
   font-family: obviously, sans-serif;
   font-style: italic;
   font-weight: 900;
-
-  margin: 0 -24px;
   justify-content: center;
+  margin: 0 -24px;
   overflow: hidden;
+  ${above.MID_TABLET(`
+    margin: 0;
+    flex-direction: row;
+    height: 3rem;
+  `)}
 `
 
 export const activeItemHover = css`
@@ -109,14 +112,18 @@ export const Item = styled(Link)`
   &:hover {
     ${activeItemHover}
   }
-  ${above.SMALL_PHONE(
-    `
-  font-size: 3rem;
-  `
-  )}
+  ${above.SMALL_PHONE(`
+   font-size: 3rem;
+    margin: 0.5rem auto; 
+    line-height: 2.2rem;
+  `)}
   ${above.TABLET_PORTRAIT(`
     padding: 0 0.5rem;
-    font-size: 3rem;
+  `)}
+  ${above.MID_TABLET(`
+    font-size: 2.6rem;
+    padding: 0;
+    margin: 0 0.5rem;
   `)}
 `
 
@@ -129,6 +136,7 @@ export const inactiveNav = css`
   ${above.TABLET_PORTRAIT(`
   border-left: 12vw solid ${primary};
   margin-left: -12vw;
+  min-height: 13rem;
   `)}
 `
 
@@ -138,4 +146,7 @@ export const MenuWrapper = styled.div`
   display: flex;
   flex-flow: nowrap row;
   align-items: center;
+  ${above.MID_TABLET(`
+    position: absolute;
+  `)}
 `

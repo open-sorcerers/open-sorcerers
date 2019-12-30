@@ -130,6 +130,13 @@ export const SettingsButton = styled(Box)`
     z-index: ${INTERACTIVE};
     margin: 0;
   }
+  ${above.MID_TABLET(`
+    /* right: -15.5rem; */
+    right: 1.25rem;
+    position: fixed;
+    top: 10rem;
+    z-index: ${MENU_UNDER};
+  `)}
 `
 
 export const StyledMenu = styled(Box)`

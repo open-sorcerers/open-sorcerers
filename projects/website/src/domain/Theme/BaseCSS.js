@@ -47,6 +47,7 @@ const styles = css`
     font-family: 'Fira Code', mono;
     font-weight: 400;
     margin: 0 0.25rem;
+    overflow: auto;
   }
   pre {
     background-color: ${primary};

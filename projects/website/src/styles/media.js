@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { ifElse, propEq, __, replace, toPairs, propOr, pipe, map, curry } from 'ramda'
+import { __, replace, toPairs, propOr, pipe, map, curry } from 'ramda'
 import { Z_INDEX } from '@styles/constants'
 
 export const REM = 16
@@ -10,6 +10,7 @@ export const RAW_POINTS = Object.freeze({
   XXXS: 320,
   XXS: 480,
   XS: 600,
+  X5S: 800,
   S: 900,
   M: 1200,
   L: 1800,
@@ -49,9 +50,8 @@ export const SIZES_UP_TO = Object.freeze({
 export const SIZES_ABOVE = Object.freeze({
   TINY_PHONE: BREAKPOINTS_AS_REM.XXXS,
   SMALL_PHONE: BREAKPOINTS_AS_REM.XXS,
-  PHONE: BREAKPOINTS_AS_REM.XS,
   TABLET_PORTRAIT: BREAKPOINTS_AS_REM.XS,
-
+  MID_TABLET: BREAKPOINTS_AS_REM.X5S,
   TABLET_LANDSCAPE: BREAKPOINTS_AS_REM.S,
   DESKTOP: BREAKPOINTS_AS_REM.M,
   BIG_DESKTOP: BREAKPOINTS_AS_REM.L,
@@ -83,7 +83,12 @@ export const Breakpoint = styled(Box)`
   width: 1rem;
   z-index: ${Z_INDEX.GUIDE};
   top: 0;
-  left: ${propOr(0, 'size')};
+  left: ${pipe(
+    propOr(0, 'size'),
+    parseFloat,
+    x => x * 16,
+    x => x + 'px'
+  )};
   border-left: 1px dashed lime;
   opacity: 0.1;
   cursor: crosshair;
@@ -94,20 +99,11 @@ export const Breakpoint = styled(Box)`
     position: absolute;
     background-color: lime;
     color: black;
-    content: "${p =>
-      [
-        propEq('direction', 'yes', p) ? '<=' : '>',
-        pipe(propOr(false, 'label'), replace(/_/g, ' '))(p)
-      ].join(' ')}";
+    content: "${pipe(propOr(false, 'label'), replace(/_/g, ' '))}";
     transform: rotate(-90deg);
     padding: 0 3rem 0 1rem;
-    right: ${propOr(0, 'size')}px;
     width: 10rem;
-    margin-left: ${ifElse(
-      propEq('direction', 'no'),
-      () => '-6.25rem',
-      () => '-7.75rem'
-    )};
+    margin-left: -6.25rem;
     margin-top: 2rem;
   }
 `
@@ -119,14 +115,10 @@ export const Breakpoints = pipe(
     <>
       {map(
         bb => (
-          <Breakpoint
-            key={bb.label}
-            {...bb}
-            direction={!!(SIZES_UP_TO && SIZES_UP_TO[bb.label]) ? 'yes' : 'no'}
-          />
+          <Breakpoint key={bb.label} {...bb} />
         ),
         kids
       )}
     </>
   )
-)({ ...SIZES_UP_TO, ...SIZES_ABOVE })
+)({ ...SIZES_ABOVE })

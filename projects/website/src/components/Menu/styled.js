@@ -137,14 +137,15 @@ export const SettingsButton = styled(Box)`
   border: 2px solid rgba(0, 0, 0, 0.3);
   /* the long transition on the transform makes the cog turn */
   transition: ${easeOut('0.3s', [
-      'background',
-      'border',
-      'left',
-      'top',
-      'right',
-      'width',
-      'height'
-    ])},
+    'background',
+    'border',
+    'left',
+    'top',
+    'right',
+    'width',
+    'height',
+    'margin'
+  ])},
     transform 6s ease-in-out;
   &:hover {
     svg {
@@ -170,7 +171,7 @@ export const SettingsButton = styled(Box)`
   ${above.MID_TABLET(`
     right: -15rem;
     position: absolute;
-    top: 0.5rem;
+    top: 3.25rem;
     width: 9rem;
     height: 9rem;
     z-index: ${MENU_UNDER};
@@ -191,6 +192,12 @@ export const SettingsButton = styled(Box)`
       stroke: ${primary};
       stroke-width: 0.6rem;
     }
+  `)}
+  ${above.TABLET_LANDSCAPE(`
+     margin-right: -3rem;
+  `)}
+  ${above.LARGE_TABLET(`
+     margin-right: -6rem;
   `)}
 `
 

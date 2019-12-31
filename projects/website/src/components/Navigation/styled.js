@@ -2,7 +2,7 @@ import { Box } from 'rebass'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
-import { above } from '@styles/media'
+import { above, aboveCalc } from '@styles/media'
 import { primary } from '@styles/colors'
 
 import { easeIn, transitionEaseOut } from '@styles/animation'
@@ -86,7 +86,8 @@ export const Nav = styled(Box)`
   ${above.MID_TABLET(`
     margin: 0;
     flex-direction: row;
-    height: 3rem;
+    height: 5rem;
+    align-items: flex-start;
   `)}
 `
 
@@ -117,17 +118,21 @@ export const Item = styled(Link)`
     ${activeItemHover}
   }
   ${above.SMALL_PHONE(`
-   font-size: 3rem;
+    font-size: 3rem;
     margin: 0.5rem auto; 
     line-height: 2.2rem;
   `)}
   ${above.TABLET_PORTRAIT(`
     padding: 0 0.5rem;
+    vertical-align: top;
   `)}
   ${above.MID_TABLET(`
     font-size: 2.6rem;
     padding: 0;
     margin: 0 0.5rem;
+  `)}
+  ${aboveCalc.TABLET_LANDSCAPE('6rem')(`
+    font-size: 3.3rem;
   `)}
 `
 

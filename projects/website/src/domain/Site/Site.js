@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Theme } from '@domain/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
+/* import { Breakpoints } from '@styles/media' */
 import { injectChildren } from '@utils/react'
 import { Z_INDEX, VIEW_STATES } from '@styles/constants'
 

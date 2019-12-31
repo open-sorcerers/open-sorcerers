@@ -10,7 +10,7 @@ import { VIEW_STATES } from '@styles/constants'
 
 import {
   MenuItem,
-  menuCog,
+  MenuCog,
   MenuLink,
   FloatingMenuContent,
   FloatingMenu,
@@ -46,26 +46,32 @@ export const Menu = ({ setView, view }) => {
 
   const floating = active ? activeMenu : inactiveMenu
   const MENU_LINKS = getLinksRelativeToAuth()
+  const eatClicks = e => {
+    e.preventDefault()
+    return false
+  }
+  const eatClicksFor = what => e => {
+    console.log('what', what)
+    console.log('eeee', e)
+    e.preventDefault()
+    return false
+  }
   return (
-    <StyledMenu className="styled-menu" onClick={toggle}>
+    <StyledMenu className="styled-menu">
       <SettingsButton
         className="settings-button"
         css={active ? activeButtonState : inactiveButtonState}
+        onClick={toggle}
       >
         <Cog />
       </SettingsButton>
-      <FloatingMenu className="floating-menu" css={floating}>
-        <FloatingMenuContent>
+      <FloatingMenu className="floating-menu" css={floating} onClick={eatClicksFor('floatingMenu')}>
+        <FloatingMenuContent onClick={eatClicksFor('floatingContent')}>
           <>
             {map(
               ([to, what]) => (
                 <MenuItem key={to}>
-                  <MenuLink
-                    to={to}
-                    onClick={e => {
-                      e.preventDefault()
-                    }}
-                  >
+                  <MenuLink to={to} onClick={eatClicks}>
                     {what}
                   </MenuLink>
                 </MenuItem>
@@ -73,18 +79,13 @@ export const Menu = ({ setView, view }) => {
               MENU_LINKS
             )}
             <MenuItem key="quiz">
-              <MenuLink
-                onClick={e => {
-                  e.preventDefault()
-                  console.log('butts')
-                }}
-              >
-                QUIZ
-              </MenuLink>
+              <MenuLink onClick={eatClicks}>QUIZ</MenuLink>
             </MenuItem>
           </>
         </FloatingMenuContent>
-        <Cog css={menuCog} onClick={() => setActive(false)} />
+        <MenuCog active={active} onClick={toggle}>
+          <Cog />
+        </MenuCog>
       </FloatingMenu>
     </StyledMenu>
   )

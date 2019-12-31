@@ -1,5 +1,6 @@
 export const Z_INDEX = Object.freeze({
   GUIDE: 25,
+  MENU_OVER: 22,
   MENU: 20,
   MENU_UNDER: 18,
   INTERACTIVE: 5,

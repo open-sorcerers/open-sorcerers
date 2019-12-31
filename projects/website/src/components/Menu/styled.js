@@ -4,12 +4,12 @@ import { Link } from 'gatsby'
 import { Box } from 'rebass'
 import { join, map, pipe } from 'ramda'
 
-import { tertiary, secondary } from '@styles/colors'
+import { primary, secondary } from '@styles/colors'
 import { above } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
 import { transition, transitionEaseOut, easeOut } from '@styles/animation'
 
-const { MENU, MENU_UNDER, INTERACTIVE } = Z_INDEX
+const { MENU, MENU_OVER, MENU_UNDER, INTERACTIVE } = Z_INDEX
 
 export const rotate = keyframes`
   98% {
@@ -53,7 +53,14 @@ export const FloatingMenuContent = styled.ul`
 
 export const FloatingMenu = styled(Box)`
   z-index: ${Z_INDEX.MENU};
-  ${transition('ease-in-out', '0.6s', ['transform', 'background', 'color', 'top', 'opacity'])};
+  ${transition('ease-in-out', '0.6s', [
+    'transform',
+    'background',
+    'color',
+    'top',
+    'opacity',
+    'height'
+  ])};
   position: fixed;
   pointer-events: none;
   margin: 0;
@@ -67,28 +74,43 @@ export const FloatingMenu = styled(Box)`
   padding: 0;
   top: 0;
   opacity: 0;
+  ${above.MID_TABLET(`
+    width: 66vw;
+    height: 100vh;
+    min-height: 100vh;
+  `)}
 `
 
 export const inactiveMenu = css`
   transform: translate(0, -100vh);
   width: 100vw;
   left: 0;
+  pointer-events: none;
+  visibility: hidden;
+  ${above.MID_TABLET(`
+    transform: translate(76vw, 0);
+  `)}
 `
 
 export const activeMenu = css`
+  visibility: visible;
+  pointer-events: auto;
   transform: translate(0, 0);
   background-color: #222;
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
   opacity: 1;
+  ${above.MID_TABLET(`
+     width: 66vw;
+     height: 100vh;
+     min-height: 100vh;
+     left: 34vw;
+  `)}
 `
 
 export const inactiveButtonState = css`
   transform: rotate(0deg);
-  svg {
-    fill: ${secondary};
-  }
 `
 export const activeButtonState = css`
   background-color: rgba(0, 0, 0, 0.1);
@@ -114,7 +136,21 @@ export const SettingsButton = styled(Box)`
   background-color: #308;
   border: 2px solid rgba(0, 0, 0, 0.3);
   /* the long transition on the transform makes the cog turn */
-  transition: ${easeOut('0.3s', ['background', 'border'])}, transform 6s ease-in-out;
+  transition: ${easeOut('0.3s', [
+      'background',
+      'border',
+      'left',
+      'top',
+      'right',
+      'width',
+      'height'
+    ])},
+    transform 6s ease-in-out;
+  &:hover {
+    svg {
+      fill: yellow;
+    }
+  }
   svg {
     animation: ${rotate} 15s linear infinite;
     ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
@@ -129,13 +165,32 @@ export const SettingsButton = styled(Box)`
     left: -1.25rem;
     z-index: ${INTERACTIVE};
     margin: 0;
+    ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
   }
   ${above.MID_TABLET(`
-    /* right: -15.5rem; */
-    right: 1.25rem;
-    position: fixed;
-    top: 10rem;
+    right: -15rem;
+    position: absolute;
+    top: 0.5rem;
+    width: 9rem;
+    height: 9rem;
     z-index: ${MENU_UNDER};
+    background-color: transparent;
+    border-color: transparent;
+    /* background-color: lime; */
+    &:hover {
+      svg { fill: yellow; stroke-width: 1.2rem; stroke: yellow; }
+    }
+    svg {
+      fill: ${primary};
+      top: -1.6rem;
+      left: -1.6rem;
+      width: 9rem;
+      min-width: 9rem;
+      height: 9rem;
+      min-height: 9rem;
+      stroke: ${primary};
+      stroke-width: 0.6rem;
+    }
   `)}
 `
 
@@ -169,6 +224,12 @@ export const MenuLink = styled(Link)`
   &:hover {
     color: white;
   }
+  ${above.TABLET_PORTRAIT(`
+    font-size: 9vw;
+  `)}
+  ${above.MID_TABLET(`
+    font-size: 4vw;
+  `)}
 `
 export const MenuItem = styled.li`
   list-style: none;
@@ -178,25 +239,55 @@ export const MenuItem = styled.li`
   padding: 0;
 `
 
-export const menuCog = css`
-  animation-direction: normal;
-  animation: ${rotateSlowly} 18s ease-in-out infinite;
+export const MenuCog = styled(Box)`
   bottom: -6.75rem;
   cursor: pointer;
   display: inline-block;
-  fill: #222;
   margin: 0 10%;
   position: absolute;
   pointer-events: auto;
-  stroke-width: 0;
-  stroke: #222;
   text-align: center;
-  transition: fill 0.3s ease-out, stroke 0.3s ease-out, stroke-width 0.6s ease-out;
+  ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
   width: 80vw;
   z-index: ${MENU_UNDER};
-  &:hover {
+  svg {
     fill: #222;
+    stroke-width: 0;
     stroke: #222;
-    stroke-width: 1.6rem;
+    transition: fill 0.3s ease-out, stroke 0.3s ease-out, stroke-width 0.6s ease-out;
+
+    animation-direction: normal;
+    animation: ${rotateSlowly} 18s ease-in-out infinite;
+    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
   }
+  &:hover {
+    svg {
+      fill: #222;
+      stroke: #222;
+      stroke-width: 1.6rem;
+    }
+  }
+  ${above.MID_TABLET(`
+     width: 10vw;
+     position: fixed;
+     bottom: calc(4rem + -5vh);
+     right: -2.5rem;
+     z-index: ${MENU_OVER};
+     svg {
+       fill: ${secondary};
+     }
+     &:hover {
+       svg {
+         fill: yellow;
+         stroke: yellow;
+         stroke-width: 10px;
+       }
+     }
+  `)}
+  ${above.LARGE_TABLET(`
+     bottom: calc(4rem + -8vh);
+  `)}
+  ${above.DESKTOP(`
+     bottom: calc(4rem + -10vh);
+  `)}
 `

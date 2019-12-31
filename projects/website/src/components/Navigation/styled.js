@@ -16,7 +16,10 @@ export const StyledNavigation = styled(Box)`
   min-height: 16rem;
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
   ${above.SMALL_PHONE(`
-    min-height: 19rem;
+    min-height: 18rem;
+  `)}
+  ${above.MID_TABLET(`
+    min-height: 13rem;
   `)}
 `
 
@@ -27,7 +30,7 @@ export const Inner = styled(Box)`
   justify-content: space-between;
 `
 
-export const Brand = styled(Box)`
+export const Brand = styled(Link)`
   display: flex;
   width: 50%;
   height: 100%;
@@ -52,13 +55,14 @@ export const Brand = styled(Box)`
     margin: 0;
     padding: 0;
     svg {
-      height: 10rem;
+      height: 9rem;
       width: 100%;
       margin: 0;
       padding: 0;
     }
   `)}
   ${above.TABLET_PORTRAIT(`
+    width: 55%;
     margin: 0.5rem 0;
     justify-content: center;
   `)}
@@ -136,7 +140,6 @@ export const inactiveNav = css`
   ${above.TABLET_PORTRAIT(`
   border-left: 12vw solid ${primary};
   margin-left: -12vw;
-  min-height: 13rem;
   `)}
 `
 

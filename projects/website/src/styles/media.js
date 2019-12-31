@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { Box } from 'rebass'
 import { __, replace, toPairs, propOr, pipe, map, curry } from 'ramda'
 import { Z_INDEX } from '@styles/constants'
+import * as ℂ from '@styles/colors'
 
 export const REM = 16
 
@@ -100,7 +101,7 @@ export const Breakpoint = styled(Box)`
     x => x * 16,
     x => x + 'px'
   )};
-  border-left: 1px dashed lime;
+  border-left: 1px dashed ${ℂ.debug};
   opacity: 0.1;
   cursor: crosshair;
   &:hover {
@@ -108,7 +109,7 @@ export const Breakpoint = styled(Box)`
   }
   &:before {
     position: absolute;
-    background-color: lime;
+    background-color: ${ℂ.debug};
     color: black;
     content: "${pipe(propOr(false, 'label'), replace(/_/g, ' '))}";
     transform: rotate(-90deg);

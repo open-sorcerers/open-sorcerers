@@ -2,10 +2,11 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Box } from 'rebass'
 import { Z_INDEX } from '@styles/constants'
+import { transitionEaseOut } from '@styles/animation'
 
-import { tertiary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
 
-const PLACEHOLDER_SIZE = 100
+const HEX = 100
 
 export const ProfilePage = styled(Box)`
   text-align: center;
@@ -13,9 +14,9 @@ export const ProfilePage = styled(Box)`
   margin-top: 10vh;
 `
 
-export const pseudo = css`
-  border-left: ${PLACEHOLDER_SIZE / 2}px solid transparent;
-  border-right: ${PLACEHOLDER_SIZE / 2}px solid transparent;
+const pseudo = css`
+  border-left: ${HEX / 2}px solid ${ℂ.transparent};
+  border-right: ${HEX / 2}px solid ${ℂ.transparent};
   content: '';
   height: 0;
   left: 0;
@@ -23,10 +24,8 @@ export const pseudo = css`
   width: 0;
 `
 
-export const pseudoHeight = 28
-export const red = '#c00'
-export const placeholderColor = 'white'
-export const rainbowShadows = css`
+const hexHeight = 28
+const rainbowShadows = css`
   box-shadow: 0 0 6rem rgba(255, 0, 0, 0.75), -3rem -3rem 6rem rgba(0, 255, 0, 0.75),
     3rem 3rem 6rem rgba(0, 0, 255, 0.75);
 `
@@ -39,25 +38,25 @@ export const menuPlaceholder = css`
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 9999rem;
-  background-color: ${tertiary};
+  background-color: ${ℂ.tertiary};
 `
 export const placeholder = css`
   display: block;
   position: relative;
   margin: 4rem auto;
-  background-color: ${placeholderColor};
-  width: ${PLACEHOLDER_SIZE}px;
-  height: ${PLACEHOLDER_SIZE * 0.55}px;
+  background-color: ${ℂ.placeholder};
+  width: ${HEX}px;
+  height: ${HEX * 0.55}px;
   ${rainbowShadows} 
   &:before {
     ${pseudo}
-    top: -${pseudoHeight}px;
-    border-bottom: ${pseudoHeight}px solid ${placeholderColor};
+    top: -${hexHeight}px;
+    border-bottom: ${hexHeight}px solid ${ℂ.placeholder};
   }
   &:after {
     ${pseudo}
-    bottom: -${pseudoHeight}px;
-    border-top: ${pseudoHeight}px solid ${placeholderColor};
+    bottom: -${hexHeight}px;
+    border-top: ${hexHeight}px solid ${ℂ.placeholder};
   }
 `
 
@@ -82,18 +81,18 @@ export const logoutButton = css`
   float: right;
   z-index: ${Z_INDEX.INTERACTIVE};
   height: 46px;
-  background-color: #c00;
-  border: 4px solid #c00;
-  transition: background 0.3s ease-out, border 0.3s ease-out;
+  background-color: ${ℂ.red};
+  border: 4px solid ${ℂ.red};
+  ${transitionEaseOut(`0.3s`, ['background', 'border'])}
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   margin-right: 1rem;
   text-decoration: none;
-  color: white;
+  color: ${ℂ.white};
 
   &:hover {
-    background-color: white;
-    border-color: #c00;
-    color: #c00;
+    background-color: ${ℂ.white};
+    border-color: ${ℂ.red};
+    color: ${ℂ.red};
   }
 `

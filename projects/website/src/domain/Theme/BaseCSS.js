@@ -1,6 +1,7 @@
 import React from 'react'
 import { css, Global } from '@emotion/core'
-import { primary, secondary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
+import { easeOut } from '@styles/animation'
 
 const styles = css`
   * {
@@ -27,14 +28,14 @@ const styles = css`
     font-size: 1.5rem;
     font-weight: 900;
     font-style: italic;
-    color: ${primary};
+    color: ${ℂ.primary};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
-    transition: color 0.1s ease-out, text-shadow 0.3s ease-out;
+    transition: ${easeOut('0.1', ['color'])}, ${easeOut('0.3s', ['text-shadow'])};
     &:hover {
-      color: #f06;
-      text-shadow: 0 0 10px yellow;
+      color: ${ℂ.state.active};
+      text-shadow: 0 0 10px ${ℂ.state.active};
     }
   }
   em {
@@ -50,8 +51,8 @@ const styles = css`
     overflow: auto;
   }
   pre {
-    background-color: ${primary};
-    color: ${secondary};
+    background-color: ${ℂ.EL.PRE_BG};
+    color: ${ℂ.EL.PRE};
     padding: 0.75rem 0.5rem;
     position: relative;
     code {
@@ -70,8 +71,8 @@ const styles = css`
           padding-left: 0.2rem;
           padding-right: 0.2rem;
           vertical-align: bottom;
-          background-color: #205;
-          color: ${secondary};
+          background-color: ${ℂ.EL.CODE_BG};
+          color: ${ℂ.EL.CODE};
         }
       }
     }
@@ -106,8 +107,8 @@ const styles = css`
   }
 
   body {
-    background-color: #eff1f3;
-    color: #292828;
+    background-color: ${ℂ.AREA.CONTENT_BG};
+    color: ${ℂ.AREA.CONTENT};
   }
 `
 export const BaseCSS = () => <Global styles={styles} />

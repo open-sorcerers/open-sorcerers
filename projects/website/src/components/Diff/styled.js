@@ -2,6 +2,8 @@ import { css } from '@emotion/core'
 import { Box } from 'rebass'
 import styled from '@emotion/styled'
 
+import * as ℂ from '@styles/colors'
+
 export const StyledDiff = styled(Box)`
   display: flex;
   flex-direction: column;

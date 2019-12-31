@@ -4,7 +4,8 @@ import { Link } from 'gatsby'
 import { Box } from 'rebass'
 import { join, map, pipe } from 'ramda'
 
-import { primary, secondary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
+
 import { above } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
 import { transition, transitionEaseOut, easeOut } from '@styles/animation'
@@ -96,7 +97,7 @@ export const activeMenu = css`
   visibility: visible;
   pointer-events: auto;
   transform: translate(0, 0);
-  background-color: #222;
+  background-color: ${ℂ.menuColor};
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
@@ -157,7 +158,7 @@ export const SettingsButton = styled(Box)`
     ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
     display: inline-block;
     position: relative;
-    fill: ${secondary};
+    fill: ${ℂ.secondary};
     width: 2.5rem;
     height: 2.5rem;
     max-width: 2.5rem;
@@ -182,14 +183,14 @@ export const SettingsButton = styled(Box)`
       svg { fill: yellow; stroke-width: 1.2rem; stroke: yellow; }
     }
     svg {
-      fill: ${primary};
+      fill: ${ℂ.primary};
       top: -1.6rem;
       left: -1.6rem;
       width: 9rem;
       min-width: 9rem;
       height: 9rem;
       min-height: 9rem;
-      stroke: ${primary};
+      stroke: ${ℂ.primary};
       stroke-width: 0.6rem;
     }
   `)}
@@ -281,7 +282,7 @@ export const MenuCog = styled(Box)`
      right: -2.5rem;
      z-index: ${MENU_OVER};
      svg {
-       fill: ${secondary};
+       fill: ${ℂ.secondary};
      }
      &:hover {
        svg {

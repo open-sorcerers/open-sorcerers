@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Button } from 'rebass'
+import * as ℂ from '@styles/colors'
 
 export const StyledButton = styled(Button)`
   padding: 4px 12px;
@@ -8,7 +9,7 @@ export const StyledButton = styled(Button)`
   border: none;
   border: 2px solid #663399;
   border-radius: 2px;
-  color: #663399;
+  color: ${ℂ.primary};
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.4px;
@@ -16,10 +17,9 @@ export const StyledButton = styled(Button)`
   text-transform: uppercase;
   transition: all ease-in-out 0.2s;
   transition-property: color, background-color;
-
   &:hover,
   &:focus {
-    color: #fff;
-    background-color: #663399;
+    color: ${ℂ.AREA.CONTENT};
+    background-color: ${ℂ.AREA.CONTENT_BG};
   }
 `

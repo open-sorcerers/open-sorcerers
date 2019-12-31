@@ -5,10 +5,11 @@ import PropTypes from 'prop-types'
 import { getPostsWithSummary } from '@queries/posts-with-summary'
 import { map } from 'ramda'
 import styled from '@emotion/styled'
-import { secondary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
+
 
 const Glossary = styled(Box)`
-  background-color: ${secondary};
+  background-color: ${ℂ.secondary};
 `
 
 const Post = ({ frontmatter, timeToRead, excerpt, tableOfContents }) =>

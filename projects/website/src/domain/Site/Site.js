@@ -6,7 +6,6 @@ import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
 import { injectChildren } from '@utils/react'
 import { Z_INDEX, VIEW_STATES } from '@styles/constants'
-import { Breakpoints } from '@styles/media'
 
 import { SEO } from './SEO'
 import { Main, site, menuActive } from './styled'
@@ -20,7 +19,6 @@ const Styled = ({ children, ...other }) => {
 
   return (
     <section {...props} css={site} className="website">
-      <Breakpoints />
       <SEO seo={seo} {...other} />
       <Navigation {...other} />
       <Main {...other}>{children}</Main>

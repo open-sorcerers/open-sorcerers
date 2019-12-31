@@ -5,21 +5,7 @@ import { trace } from 'xtrace'
 /* import { diffTrimmedLines } from 'diff' */
 /* import diff from 'deep-diff' */
 import grossdiff from 'prettydiff'
-import { css } from '@emotion/core'
-import {
-  filter,
-  memoizeWith,
-  identity as I,
-  replace,
-  addIndex,
-  prop,
-  once,
-  curry,
-  split,
-  pipe,
-  join,
-  map
-} from 'ramda'
+import { identity as I, addIndex, once, curry, pipe, map } from 'ramda'
 import prettier from 'prettier/standalone'
 import parsers from 'prettier/parser-babylon'
 import {
@@ -34,36 +20,6 @@ import {
   Frames
 } from './styled'
 
-const clean = memoizeWith(I)(z => {
-  let comment = false
-  return pipe(
-    split('\n'),
-    map(replace(/&gt;/g, '>')),
-    map(replace(/&lt;/g, '<')),
-    map(l => l.trim()),
-    /*
-    filter(l => {
-      const single = l.includes('//')
-      const double = l.includes('/*')
-      const close = l.includes('*        /')
-      if (!close && double) {
-        comment = true
-      }
-      if (close) {
-        comment = false
-      }
-      return !comment && !single && !double
-    }),
-    */
-    join('\n'),
-    replace(/&gt;/g, '>'),
-    replace(/&lt;/g, '<'),
-    replace(/\n/g, ''),
-    replace(/\r/g, ''),
-    replace(/\t/g, ''),
-    zz => zz.trim()
-  )(z && z.trim())
-})
 const diff = once(() => {
   const D = grossdiff
   D.options.diff_format = 'json'
@@ -120,6 +76,11 @@ const DiffLine = ({ kind, line, index }) => {
     </StyledDiffLine>
   )
 }
+DiffLine.propTypes = {
+  kind: PropTypes.string,
+  line: PropTypes.string,
+  index: PropTypes.number
+}
 
 const compare = handleError => (aa, bb) => {
   /* const splitter = splittify(handleError) */
@@ -146,7 +107,7 @@ const compare = handleError => (aa, bb) => {
   )(bb)
 }
 
-export const Error = ({ error, before, after, handleError, setBefore, setAfter }) =>
+export const DiffError = ({ error, before, after, handleError, setBefore, setAfter }) =>
   error && error.message ? (
     <Box>
       <pre>{error.message}</pre>
@@ -168,6 +129,16 @@ export const Error = ({ error, before, after, handleError, setBefore, setAfter }
     </Box>
   ) : null
 
+DiffError.propTypes = {
+  error: PropTypes.object,
+  before: PropTypes.string,
+  after: PropTypes.after,
+  handleError: PropTypes.func,
+  setBefore: PropTypes.func,
+  setAfter: PropTypes.func
+}
+DiffError.defaultProps = { handleError: I, setBefore: I, setAfter: I }
+
 export const Diff = ({ content }) => {
   const [$error, handleError] = useState(false)
   const [before, after] = map(prettify(handleError))(content)
@@ -175,7 +146,7 @@ export const Diff = ({ content }) => {
   const [$after, setAfter] = useState(after)
   return (
     <StyledDiff>
-      <Error
+      <DiffError
         {...{ error: $error, before: $before, after: $after, handleError, setBefore, setAfter }}
       />
       <Frames>
@@ -197,6 +168,8 @@ export const Diff = ({ content }) => {
     </StyledDiff>
   )
 }
-Diff.propTypes = {}
+Diff.propTypes = {
+  content: PropTypes.arrayOf(PropTypes.string)
+}
 
 export default Diff

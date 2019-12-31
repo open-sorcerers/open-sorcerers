@@ -20,5 +20,5 @@ prettier --save-dev
 ## install
 
 ```sh
-npm install eslint-config-sorcerers --save-dev
+npm install @open-sorcerers/eslint-config-sorcerers --save-dev
 ```

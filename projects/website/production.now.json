@@ -1,0 +1,11 @@
+{
+  "name": "open-sorcerers",
+  "alias": ["open.sorcerers.dev"],
+  "version": 2,
+  "rewrites": [
+    { "source": "/settings/:setting", "destination": "/settings" },
+    { "source": "/ask/:setting", "destination": "/ask" },
+    { "source": "/build/:setting", "destination": "/build" },
+    { "source": "/learn/:setting", "destination": "/learn" }
+  ]
+}

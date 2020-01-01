@@ -258,7 +258,7 @@ export const MenuItem = styled.li`
   padding: 0;
 `
 
-export const MenuCog = styled(Box)`
+export const cog = css`
   bottom: -6.75rem;
   cursor: pointer;
   display: inline-block;
@@ -268,7 +268,6 @@ export const MenuCog = styled(Box)`
   text-align: center;
   ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
   width: 80vw;
-  z-index: ${MENU_UNDER};
 
   /* stylelint-disable-next-line no-descending-specificity */
   svg {
@@ -298,7 +297,6 @@ export const MenuCog = styled(Box)`
     position: fixed;
     bottom: calc(4rem + -5vh);
     right: -2.5rem;
-    z-index: ${MENU_OVER};
     svg {
       fill: ${ℂ.secondary};
     }
@@ -315,5 +313,33 @@ export const MenuCog = styled(Box)`
   `)}
   ${above.DESKTOP(`
      bottom: calc(4rem + -10vh);
+  `)}
+`
+
+export const MenuCog = styled(Box)`
+  ${cog}
+  z-index: ${MENU_UNDER};
+  svg {
+    animation-delay: -0.4s;
+  }
+
+`
+export const MenuCogTop = styled(Box)`
+  ${cog}
+  z-index: ${MENU_OVER};
+  bottom: -8vh;
+  transform: scale(0.3);
+  svg {
+    fill: ${ℂ.tertiary};
+  }
+  &:hover {
+    fill: hotpink;
+    stroke: hotpink;
+  }
+  ${above.SMALL_PHONE(`
+    bottom: -20vh;
+  `)}
+  ${above.TABLET_PORTRAIT(`
+    bottom: -30vh;
   `)}
 `

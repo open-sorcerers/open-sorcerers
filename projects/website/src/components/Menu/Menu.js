@@ -11,6 +11,7 @@ import { VIEW_STATES } from '@styles/constants'
 import {
   MenuItem,
   MenuCog,
+  MenuCogTop,
   MenuLink,
   FloatingMenuContent,
   FloatingMenu,
@@ -27,7 +28,6 @@ const getLinksRelativeToAuth = pipe(
   ({ isAuthenticated }) => isAuthenticated(),
   loggedIn => [
     [SETTINGS, 'Settings'],
-    loggedIn && [BOOKMARKS, 'Bookmarks'],
     loggedIn && [PROFILE, 'Profile'],
     [REPL, 'REPL'],
     loggedIn ? [LOGOUT, 'Logout'] : [LOGIN, 'Login']
@@ -51,8 +51,6 @@ export const Menu = ({ setView, view }) => {
     return false
   }
   const eatClicksFor = what => e => {
-    console.log('what', what)
-    console.log('eeee', e)
     e.preventDefault()
     return false
   }
@@ -66,6 +64,9 @@ export const Menu = ({ setView, view }) => {
         <Cog />
       </SettingsButton>
       <FloatingMenu className="floating-menu" css={floating} onClick={eatClicksFor('floatingMenu')}>
+        <MenuCogTop active={active} onClick={toggle}>
+          <Cog />
+        </MenuCogTop>
         <FloatingMenuContent onClick={eatClicksFor('floatingContent')}>
           <>
             {map(
@@ -78,9 +79,6 @@ export const Menu = ({ setView, view }) => {
               ),
               MENU_LINKS
             )}
-            <MenuItem key="quiz">
-              <MenuLink onClick={eatClicks}>QUIZ</MenuLink>
-            </MenuItem>
           </>
         </FloatingMenuContent>
         <MenuCog active={active} onClick={toggle}>

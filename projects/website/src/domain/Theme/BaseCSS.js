@@ -38,6 +38,14 @@ const styles = css`
         font-size: 3rem;
         line-height: 3rem;
       }
+      a.strikethrough {
+        text-decoration: 16px line-through solid black;
+        cursor: not-allowed;
+        text-shadow: 0 0 0 transparent;
+        :hover {
+          color: ${ℂ.UI.link};
+        }
+      }
     }
   }
 

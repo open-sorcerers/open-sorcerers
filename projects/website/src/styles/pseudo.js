@@ -35,3 +35,23 @@ export const hexagon = ({ size, color }) => {
 `
   return hex
 }
+
+export const strikethrough = ({
+  pseudo = 'after',
+  scale = '110%',
+  height = '20px',
+  rotation = 'rotate(-5deg)',
+  translate = 'translate(-4.5%, -3.6rem)',
+  background = 'black'
+}) => `
+  ::${pseudo} {
+    content: '';
+    width: ${scale};
+    display: inline-block;
+    position: relative;
+    background: ${background};
+    height: ${height};
+    transform: ${rotation} ${translate};
+    cursor: not-allowed;
+  }
+`

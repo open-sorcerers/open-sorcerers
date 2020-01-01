@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
+import { withTheme } from 'emotion-theming'
 import { Box } from 'rebass'
 import * as ℂ from '@styles/colors'
 import { above } from '@styles/media'
 
-export const StyledFooter = styled(Box)`
+export const StyledFooter = withTheme(styled(Box)`
   padding: 1.5rem 0;
   background-color: ${ℂ.quaternary};
   border-top: 1px solid rgba(0, 0, 0, 0.38);
@@ -19,7 +20,7 @@ export const StyledFooter = styled(Box)`
       text-decoration: underline;
     }
   }
-`
+`)
 
 export const Inner = styled(Box)`
   display: flex;

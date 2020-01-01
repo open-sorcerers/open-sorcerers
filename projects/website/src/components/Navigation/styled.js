@@ -2,17 +2,25 @@ import { Box } from 'rebass'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
-import { above, aboveCalc } from '@styles/media'
-import * as ℂ from '@styles/colors'
 
+import { above, aboveCalc } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
+import { primary, secondary } from '@styles/colors'
+
+/*
+import { pathOr } from 'ramda'
+const colors = {
+  primary: pathOr(primary, ['theme', 'colors', 'core', 'primary']),
+  secondary: pathOr(secondary, ['theme', 'colors', 'core', 'secondary'])
+}
+*/
 
 export const StyledNavigation = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: ${ℂ.primary};
-  color: ${ℂ.secondary};
+  background-color: ${primary};
+  color: ${secondary};
   min-height: 16rem;
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
   ${above.SMALL_PHONE(`
@@ -35,7 +43,7 @@ export const Brand = styled(Link)`
   width: 50%;
   height: 100%;
   flex: 0 0 auto;
-  color: ${ℂ.secondary};
+  color: ${secondary};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
@@ -45,7 +53,7 @@ export const Brand = styled(Link)`
 
   svg {
     display: flex;
-    fill: ${ℂ.secondary};
+    fill: ${secondary};
     height: 6rem;
     margin: 1rem auto;
     ${transitionEaseOut('0.3s', ['height', 'width', 'margin'])}
@@ -102,9 +110,9 @@ export const activeItemHover = css`
   }
 `
 
-export const Item = styled(Link)`
+export const StyledItem = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  color: #fff;
+  color: ${secondary};
   font-family: obviously, sans-serif;
   font-size: 2.2rem;
   font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
@@ -116,6 +124,9 @@ export const Item = styled(Link)`
   padding: 0 0.5rem;
   text-decoration: none;
 
+  a {
+    color: ${secondary};
+  }
   &:hover {
     ${activeItemHover}
   }
@@ -147,7 +158,7 @@ export const activeNav = css`
 export const inactiveNav = css`
   padding: 0;
   ${above.TABLET_PORTRAIT(`
-  border-left: 12vw solid ${ℂ.primary};
+  border-left: 12vw solid ${primary};
   margin-left: -12vw;
   `)}
 `

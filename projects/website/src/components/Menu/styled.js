@@ -123,34 +123,6 @@ export const activeButtonState = css`
   }
 `
 
-const settingsSVG = `
-  animation: ${rotate} 15s linear infinite;
-  ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
-  display: inline-block;
-  position: relative;
-  fill: ${ℂ.secondary};
-  width: 2.5rem;
-  height: 2.5rem;
-  max-width: 2.5rem;
-  max-height: 2.5rem;
-  top: -1.25rem;
-  left: -1.25rem;
-  z-index: ${INTERACTIVE};
-  margin: 0;
-  ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
-`
-
-const settingsSVGLarge = `
-  fill: ${ℂ.primary};
-  top: -1.6rem;
-  left: -1.6rem;
-  width: 9rem;
-  min-width: 9rem;
-  height: 9rem;
-  min-height: 9rem;
-  stroke: ${ℂ.primary};
-  stroke-width: 0.6rem;
-`
 export const SettingsButton = styled(Box)`
   z-index: ${MENU};
   cursor: pointer;
@@ -180,7 +152,20 @@ export const SettingsButton = styled(Box)`
     transform 6s ease-in-out;
 
   svg {
-    ${settingsSVG}
+  animation: ${rotate} 15s linear infinite;
+  ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
+  display: inline-block;
+  position: relative;
+  fill: ${ℂ.secondary};
+  width: 2.5rem;
+  height: 2.5rem;
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  top: -1.25rem;
+  left: -1.25rem;
+  z-index: ${INTERACTIVE};
+  margin: 0;
+  ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
   }
 
   ${above.MID_TABLET(`
@@ -197,7 +182,16 @@ export const SettingsButton = styled(Box)`
       svg { fill: yellow; stroke-width: 1.2rem; stroke: yellow; }
     }
     svg {
-      ${settingsSVGLarge}
+
+  fill: ${ℂ.primary};
+  top: -1.6rem;
+  left: -1.6rem;
+  width: 9rem;
+  min-width: 9rem;
+  height: 9rem;
+  min-height: 9rem;
+  stroke: ${ℂ.primary};
+  stroke-width: 0.6rem;
     }
   `)}
   ${above.TABLET_LANDSCAPE(`
@@ -258,28 +252,6 @@ export const MenuItem = styled.li`
   padding: 0;
 `
 
-export const menuCogSVG = `
-  fill: #222;
-  stroke-width: 0;
-  stroke: #222;
-  transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
-  animation: ${rotateSlowly} 18s ease-in-out infinite;
-  animation-direction: normal;
-  animation-play-state: ${p => (p.active ? 'running' : 'paused')};
-`
-
-export const menuCogSVGHover = `
-  fill: #222;
-  stroke: #222;
-  stroke-width: 1.6rem;
-`
-
-export const menuCogTabletStyle = `
-  fill: yellow;
-  stroke: yellow;
-  stroke-width: 0.75rem;
-`
-
 export const MenuCog = styled(Box)`
   bottom: -6.75rem;
   cursor: pointer;
@@ -294,29 +266,43 @@ export const MenuCog = styled(Box)`
 
   /* stylelint-disable-next-line no-descending-specificity */
   svg {
-    ${menuCogSVG}
+    fill: ${ℂ.quaternary};
+    stroke-width: 0;
+    stroke: ${ℂ.quaternary};
+    transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
+    animation: ${rotateSlowly} 18s ease-in-out infinite;
+    animation-direction: normal;
+    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
+    ${above.TABLET_PORTRAIT(`
+      fill: ${ℂ.secondary};
+      stroke: ${ℂ.secondary};
+    `)}
   }
   
   &:hover {
     svg {
-      ${menuCogSVGHover}
+      fill: ${ℂ.quaternary};
+      stroke: ${ℂ.quaternary};
+      stroke-width: 1.6rem;
     }
   }
 
   ${above.MID_TABLET(`
-     width: 10vw;
-     position: fixed;
-     bottom: calc(4rem + -5vh);
-     right: -2.5rem;
-     z-index: ${MENU_OVER};
-     svg {
-       fill: ${ℂ.secondary};
-     }
-     &:hover {
-       svg {
-         ${menuCogTabletStyle}
-       }
-     }
+    width: 10vw;
+    position: fixed;
+    bottom: calc(4rem + -5vh);
+    right: -2.5rem;
+    z-index: ${MENU_OVER};
+    svg {
+      fill: ${ℂ.secondary};
+    }
+    &:hover {
+      svg {
+        fill: ${ℂ.tertiary};
+        stroke: ${ℂ.tertiary};
+        stroke-width: 0.75rem;
+      }
+    }
   `)}
   ${above.LARGE_TABLET(`
      bottom: calc(4rem + -8vh);

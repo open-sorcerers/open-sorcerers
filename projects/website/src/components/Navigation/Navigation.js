@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useStaticQuery, graphql } from 'gatsby'
+import { useStaticQuery, graphql, Link } from 'gatsby'
 import { uid } from 'react-uid'
+import { withTheme } from 'emotion-theming'
 
 import { stateView } from '@domain/Site'
 import Logo from '@assets/open-sorcerers2.svg'
@@ -15,7 +16,7 @@ import {
   Inner,
   Brand,
   Nav,
-  Item,
+  StyledItem,
   activeNav,
   inactiveNav
 } from './styled'
@@ -26,7 +27,8 @@ const items = [
   { label: 'ASK', to: '/ask/' }
 ]
 
-const Navigation = props => {
+const RawNavigation = props => {
+  console.log('PROPRPRPRPPRORPORNAV', props)
   const state = stateView(props)
   const { path = '' } = props
   const {
@@ -55,13 +57,13 @@ const Navigation = props => {
             <>
               {items.map(({ label, to, href }) =>
                 to ? (
-                  <Item key={uid(label)} to={to} isActive={path.includes(to)}>
+                  <StyledItem key={uid(label)} to={to} isActive={path.includes(to)}>
                     {label}
-                  </Item>
+                  </StyledItem>
                 ) : (
-                  <Item key={uid(label)} as="a" href={href}>
+                  <StyledItem key={uid(label)} as="a" href={href}>
                     {label}
-                  </Item>
+                  </StyledItem>
                 )
               )}
               <MenuWrapper>
@@ -75,10 +77,11 @@ const Navigation = props => {
   )
 }
 
-Navigation.propTypes = {
+RawNavigation.propTypes = {
   path: PropTypes.string.isRequired
 }
 
-Navigation.defaultProps = {}
+RawNavigation.defaultProps = {}
 
-export { Navigation }
+export const Navigation = withTheme(RawNavigation)
+export default Navigation

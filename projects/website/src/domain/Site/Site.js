@@ -33,6 +33,27 @@ Styled.propTypes = {
   children: PropTypes.node
 }
 
+const SiteInner = ({ children, ...other }) => (
+  <div
+    style={{
+      overflow: 'hidden',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+      padding: 0,
+      margin: 0,
+      left: 0,
+      top: 0,
+      zIndex: Z_INDEX.DEFAULT
+    }}
+  >
+    <Styled {...other}>{children}</Styled>
+  </div>
+)
+SiteInner.propTypes = {
+  children: PropTypes.node
+}
+
 const Site = ({ children, seo, ...rest }) => {
   const viewState = useState(VIEW_STATES.DEFAULT)
   const [view, setView] = viewState
@@ -41,21 +62,7 @@ const Site = ({ children, seo, ...rest }) => {
   const kids = injectChildren(viewable, children)
   return (
     <Theme>
-      <div
-        style={{
-          overflow: 'hidden',
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          padding: 0,
-          margin: 0,
-          left: 0,
-          top: 0,
-          zIndex: Z_INDEX.DEFAULT
-        }}
-      >
-        <Styled {...other}>{kids}</Styled>
-      </div>
+      <SiteInner {...other}>{kids}</SiteInner>
     </Theme>
   )
 }

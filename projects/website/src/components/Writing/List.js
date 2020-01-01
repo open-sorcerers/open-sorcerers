@@ -1,23 +1,37 @@
 import React from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
+import { pipe, ap, pathOr } from 'ramda'
 import PropTypes from 'prop-types'
 import { getPostsWithSummary } from '@queries/posts-with-summary'
 import { map } from 'ramda'
 import styled from '@emotion/styled'
 import * as ℂ from '@styles/colors'
 import { checkWindowExists } from '@utils/url'
+import { box } from '@utils/generic'
 
 const Glossary = styled(Box)`
   background-color: ${ℂ.secondary};
 `
 
-const Post = ({ frontmatter, timeToRead, excerpt, tableOfContents }) =>
-  console.log('tableCofContents', tableOfContents) || (
+const getLinkTitleAuthor = pipe(
+  box,
+  ap([
+    pathOr('/404', ['frontmatter', 'path']),
+    pathOr('???', ['frontmatter', 'title']),
+    pathOr('someone', ['frontmatter', 'author']),
+    pathOr([], ['tableOfContents', 'items'])
+  ])
+)
+
+const Post = props => {
+  const { timeToRead, excerpt } = props
+  const [postLink, title, author, TOC] = getLinkTitleAuthor(props)
+  return (
     <Box>
       <Box as="header">
-        <Link to={frontmatter.path}>{frontmatter.title}</Link>
-        <em>by @{frontmatter.author}</em>
+        <Link to={postLink}>{title}</Link>
+        <em>by @{author}</em>
       </Box>
       <Box as="blockquote">{excerpt}</Box>
       <Box as="footer">
@@ -34,12 +48,13 @@ const Post = ({ frontmatter, timeToRead, excerpt, tableOfContents }) =>
                 </Link>
               </>
             ),
-            tableOfContents.items
+            TOC
           )}
         </Glossary>
       </Box>
     </Box>
   )
+}
 Post.propTypes = {
   frontmatter: PropTypes.shape({
     author: PropTypes.string.isRequired,

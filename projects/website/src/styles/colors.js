@@ -18,7 +18,7 @@ export const quaternary = darkGray
 export const debug = lime
 export const placeholder = white
 
-export const THEME = Object.freeze({
+export const PALETTE = Object.freeze({
   primary,
   secondary,
   tertiary,

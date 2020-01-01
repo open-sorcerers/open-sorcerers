@@ -47,7 +47,6 @@ const styles = css`
   pre {
     font-family: 'Fira Code', Courier, monospace;
     font-weight: 400;
-    overflow: auto;
   }
   pre {
     font-size: 1.2rem;

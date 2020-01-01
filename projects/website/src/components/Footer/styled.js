@@ -9,7 +9,7 @@ export const StyledFooter = withTheme(styled(Box)`
   background-color: ${ℂ.quaternary};
   border-top: 1px solid rgba(0, 0, 0, 0.38);
   color: ${ℂ.secondary};
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   line-height: 1.5rem;
 
   a {

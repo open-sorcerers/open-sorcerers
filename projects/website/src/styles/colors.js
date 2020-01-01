@@ -4,13 +4,13 @@ export const white = `aliceblue`
 export const offBlack = `#292828`
 export const purple = `#409`
 export const darkGray = `#222`
-export const darkerGray = `#205`
 export const yellow = '#ff0'
 export const lime = 'lime'
+export const bondiBlue = `#0ff`
 
-export const primary = purple
+export const primary = `#204`
 export const secondary = white
-export const tertiary = yellow
+export const tertiary = '#f06'
 export const quaternary = darkGray
 
 // debug
@@ -25,10 +25,12 @@ export const PALETTE = Object.freeze({
   quaternary
 })
 
+const codeBackground = '#444'
+
 // elements
 export const EL = Object.freeze({
   CODE: secondary,
-  CODE_BG: darkerGray,
+  CODE_BG: '#409',
   PRE: secondary,
   PRE_BG: primary
 })

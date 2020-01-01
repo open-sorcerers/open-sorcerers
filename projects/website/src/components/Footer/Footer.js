@@ -23,7 +23,7 @@ export const Footer = () => (
           <div>
             Built with{' '}
             <span role="img" aria-label="love">
-              ❤️
+              💜
             </span>{' '}
             by{' '}
             <a href="https://open.sorcerers.dev" target="_blank" rel="noopener noreferrer">

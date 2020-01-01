@@ -119,7 +119,7 @@ export const activeButtonState = css`
   transform: rotate(10turn);
   animation-play-state: paused;
   svg {
-    fill: yellow;
+    fill: ${ℂ.tertiary};
   }
 `
 
@@ -135,8 +135,8 @@ export const SettingsButton = styled(Box)`
   position: relative;
   text-align: center;
   display: inline-block;
-  background-color: #308;
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+  border: 2px solid rgba(255,255,255, 0.3);
 
   /* the long transition on the transform makes the cog turn */
   transition: ${easeOut('0.3s', [
@@ -179,7 +179,11 @@ export const SettingsButton = styled(Box)`
     border-color: transparent;
     /* background-color: lime; */
     &:hover {
-      svg { fill: yellow; stroke-width: 1.2rem; stroke: yellow; }
+      svg {
+        fill: ${ℂ.tertiary};
+        stroke-width: 1.2rem;
+        stroke: ${ℂ.tertiary};
+      }
     }
     svg {
 
@@ -202,7 +206,7 @@ export const SettingsButton = styled(Box)`
   `)}
   &:hover {
     svg {
-      fill: yellow;
+      fill: ${ℂ.tertiary};
     }
   }
 `

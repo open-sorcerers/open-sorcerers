@@ -12,7 +12,7 @@ module.exports = {
       gatsby: 'gatsby build',
       modernizr: 'modernizr -c modernizr.config.json -d static',
       storybook: 'cross-env NODE_ENV=production build-storybook -c .storybook -o public/docs',
-      script: multiNPS('build.gatsby', 'build.modernizr', 'build.storybook')
+      script: 'nps build.modernizr && nps build.gatsby '
     },
     clean: `rimraf ${CLEANABLES.join(' ')}`,
     start: {

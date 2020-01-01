@@ -5,7 +5,7 @@ import { Link } from 'gatsby'
 
 import { above, aboveCalc } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
-import { primary, secondary } from '@styles/colors'
+import { primary, secondary, tertiary } from '@styles/colors'
 
 /*
 import { pathOr } from 'ramda'
@@ -123,12 +123,12 @@ export const StyledItem = styled(Link)`
   opacity: ${p => (p.isActive ? '1' : '0.6')};
   padding: 0 0.5rem;
   text-decoration: none;
+  text-shadow: 0;
 
-  a {
-    color: ${secondary};
-  }
   &:hover {
-    ${activeItemHover}
+    color: ${tertiary};
+    opacity: 1;
+    text-shadow: 0 0 1rem rgba(0,0,0,0.9);
   }
 
   ${above.SMALL_PHONE(`

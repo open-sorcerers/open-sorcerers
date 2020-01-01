@@ -340,6 +340,6 @@ export const MenuCogTop = styled(Box)`
     bottom: -20vh;
   `)}
   ${above.TABLET_PORTRAIT(`
-    bottom: -30vh;
+    bottom: -64vh;
   `)}
 `

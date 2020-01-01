@@ -48,12 +48,12 @@ export const placeholder = css`
   width: ${HEX}px;
   height: ${HEX * 0.55}px;
   ${rainbowShadows} 
-  &:before {
+  &::before {
     ${pseudo}
     top: -${hexHeight}px;
     border-bottom: ${hexHeight}px solid ${ℂ.placeholder};
   }
-  &:after {
+  &::after {
     ${pseudo}
     bottom: -${hexHeight}px;
     border-top: ${hexHeight}px solid ${ℂ.placeholder};
@@ -80,7 +80,7 @@ export const Img = styled(Box)`
 export const logoutButton = css`
   float: right;
   z-index: ${Z_INDEX.INTERACTIVE};
-  height: 46px;
+  height: 3.25rem;
   background-color: ${ℂ.red};
   border: 4px solid ${ℂ.red};
   ${transitionEaseOut(`0.3s`, ['background', 'border'])}

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 import { above, aboveCalc } from '@styles/media'
-import { primary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
 
 import { easeIn, transitionEaseOut } from '@styles/animation'
 
@@ -11,8 +11,8 @@ export const StyledNavigation = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: #409;
-  color: #fff;
+  background-color: ${ℂ.primary};
+  color: ${ℂ.secondary};
   min-height: 16rem;
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
   ${above.SMALL_PHONE(`
@@ -35,7 +35,7 @@ export const Brand = styled(Link)`
   width: 50%;
   height: 100%;
   flex: 0 0 auto;
-  color: #fff;
+  color: ${ℂ.secondary};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
@@ -45,11 +45,12 @@ export const Brand = styled(Link)`
 
   svg {
     display: flex;
-    fill: white;
+    fill: ${ℂ.secondary};
     height: 6rem;
     margin: 1rem auto;
     ${transitionEaseOut('0.3s', ['height', 'width', 'margin'])}
   }
+
   ${above.SMALL_PHONE(`
     width: 60%;
     margin: 0;
@@ -81,7 +82,7 @@ export const Nav = styled(Box)`
   font-style: italic;
   font-weight: 900;
   justify-content: center;
-  margin: 0 -24px;
+  margin: 0 -1.5rem;
   overflow: hidden;
   ${above.MID_TABLET(`
     margin: 0;
@@ -94,29 +95,31 @@ export const Nav = styled(Box)`
 export const activeItemHover = css`
   opacity: 1;
   color: #fff;
+  text-decoration: none;
+
   a {
     text-shadow: 0;
   }
-  text-decoration: none;
 `
 
 export const Item = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  font-family: obviously, sans-serif;
-  font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
-  letter-spacing: 0.15em;
-  font-weight: 900;
-  padding: 0 0.5rem;
   color: #fff;
-  margin: 1rem auto;
+  font-family: obviously, sans-serif;
   font-size: 2.2rem;
+  font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
+  font-weight: 900;
+  letter-spacing: 0.15em;
   line-height: 0.75rem;
+  margin: 1rem auto;
   opacity: ${p => (p.isActive ? '1' : '0.6')};
+  padding: 0 0.5rem;
   text-decoration: none;
 
   &:hover {
     ${activeItemHover}
   }
+
   ${above.SMALL_PHONE(`
     font-size: 3rem;
     margin: 0.5rem auto; 
@@ -133,6 +136,7 @@ export const Item = styled(Link)`
   `)}
   ${aboveCalc.TABLET_LANDSCAPE('6rem')(`
     font-size: 3.3rem;
+    margin: 0.5rem auto;
   `)}
 `
 
@@ -143,7 +147,7 @@ export const activeNav = css`
 export const inactiveNav = css`
   padding: 0;
   ${above.TABLET_PORTRAIT(`
-  border-left: 12vw solid ${primary};
+  border-left: 12vw solid ${ℂ.primary};
   margin-left: -12vw;
   `)}
 `

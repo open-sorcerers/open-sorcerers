@@ -1,5 +1,6 @@
 const path = require('path')
 const { curry, toPairs, map, pathOr, ifElse, prop, pipe } = require('ramda')
+
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
 // eslint-disable-next-line space-before-function-paren
@@ -29,6 +30,7 @@ exports.createPages = async ({ actions, graphql }) => {
       z => z.slice(0, z.indexOf('.'))
     )
   )
+
   return posts.data.allMdx.nodes.forEach(
     post =>
       console.log(post, '<POST>') ||
@@ -61,5 +63,6 @@ const setClientOnlyRoute = curry((createPage, page, [key, match]) => {
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions
   const clientize = setClientOnlyRoute(createPage, page)
+
   return pipe(toPairs, map(clientize))(clientOnlyMatches)
 }

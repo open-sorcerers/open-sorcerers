@@ -22,12 +22,12 @@ export const hexagon = ({ size, color }) => {
   background-color: ${color};
   width: ${size}px;
   height: ${size * 0.55}px;
-  &:before {
+  &::before {
     ${pseudo}
     top: -${psHeight}px;
     border-bottom: ${psHeight}px solid ${color};
   }
-  &:after {
+  &::after {
     ${pseudo}
     bottom: -${psHeight}px;
     border-top: ${psHeight}px solid ${color};

@@ -16,6 +16,14 @@ export const quaternary = darkGray
 // debug
 
 export const debug = lime
+export const placeholder = white
+
+export const THEME = Object.freeze({
+  primary,
+  secondary,
+  tertiary,
+  quaternary
+})
 
 // elements
 export const EL = Object.freeze({
@@ -26,9 +34,11 @@ export const EL = Object.freeze({
 })
 
 // state
-export const state = Object.freeze({
+export const UI = Object.freeze({
   active: tertiary
 })
+
+export const state = UI
 
 // page areas
 export const AREA = Object.freeze({
@@ -38,5 +48,3 @@ export const AREA = Object.freeze({
   CONTENT: offBlack,
   FOOTER: quaternary
 })
-
-export const placeholder = white

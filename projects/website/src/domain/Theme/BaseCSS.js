@@ -2,6 +2,8 @@ import React from 'react'
 import { css, Global } from '@emotion/core'
 import * as ℂ from '@styles/colors'
 import { easeOut } from '@styles/animation'
+import 'typeface-fira-sans'
+import 'typeface-fira-code'
 
 const styles = css`
   * {
@@ -11,12 +13,12 @@ const styles = css`
   }
 
   html {
-    font-family: obviously-narrow, sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     text-rendering: optimizeLegibility;
-    font-smooth: antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: antialiased;
-    font-weight: 500;
+    font-weight: 400;
+    /* stylelint-disable-next-line */
     font-size: 16px;
     line-height: 1.5rem;
   }
@@ -24,7 +26,7 @@ const styles = css`
   a {
     text-decoration: none;
     text-transform: uppercase;
-    font-family: obviously;
+    font-family: obviously, 'Helvetica Neue', Helvetica, sans-serif;
     font-size: 1.5rem;
     font-weight: 900;
     font-style: italic;
@@ -35,22 +37,20 @@ const styles = css`
     transition: ${easeOut('0.1', ['color'])}, ${easeOut('0.3s', ['text-shadow'])};
     &:hover {
       color: ${ℂ.state.active};
-      text-shadow: 0 0 10px ${ℂ.state.active};
+      text-shadow: 0 0 0.75rem ${ℂ.state.active};
     }
   }
   em {
     font-variant: italic;
-    font-size: 1.5rem;
   }
   code,
   pre {
-    font-size: 1.2rem;
-    font-family: 'Fira Code', mono;
+    font-family: 'Fira Code', Courier, monospace;
     font-weight: 400;
-    margin: 0 0.25rem;
     overflow: auto;
   }
   pre {
+    font-size: 1.2rem;
     background-color: ${ℂ.EL.PRE_BG};
     color: ${ℂ.EL.PRE};
     padding: 0.75rem 0.5rem;
@@ -58,7 +58,7 @@ const styles = css`
     code {
       position: relative;
       &.language-js {
-        &:before {
+        &::before {
           font-size: 0.8rem;
           width: 1.6rem;
           height: 1.6rem;
@@ -80,6 +80,7 @@ const styles = css`
 
   ul,
   ol {
+    padding-left: 1rem;
     li {
       display: list-item;
       margin: 1rem auto;

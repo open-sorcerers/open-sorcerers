@@ -23,26 +23,26 @@ export const rotate = keyframes`
     transform: rotate(1turn)
   }
 `
-
-const sixth = x => `${Math.round(Math.round(x * (100 / 6) * 100) / 100)}%`
-export const rotateSlowly = keyframes`
-  0% {
-
-    transform: rotate(0deg);
-  }
-  ${pipe(
-    map(
-      xx => `${sixth(xx)} {
+const sixthParts = pipe(
+  map(
+    xx => `${sixth(xx)} {
     transform: rotate(${xx * 60}deg);
   }`
-    ),
-    join('\n'),
-    aa => `${aa}
+  ),
+  join('\n'),
+  aa => `${aa}
   100% {
     transform: rotate(360deg);
   }
     `
-  )([1, 2, 3, 4, 5])}
+)
+const sixth = x => `${Math.round(Math.round(x * (100 / 6) * 100) / 100)}%`
+export const rotateSlowly = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+
+  ${sixthParts([1, 2, 3, 4, 5])}
 `
 
 export const FloatingMenuContent = styled.ul`
@@ -97,7 +97,7 @@ export const activeMenu = css`
   visibility: visible;
   pointer-events: auto;
   transform: translate(0, 0);
-  background-color: ${ℂ.menuColor};
+  background-color: ${ℂ.AREA.MENU};
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
@@ -122,6 +122,35 @@ export const activeButtonState = css`
     fill: yellow;
   }
 `
+
+const settingsSVG = `
+  animation: ${rotate} 15s linear infinite;
+  ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
+  display: inline-block;
+  position: relative;
+  fill: ${ℂ.secondary};
+  width: 2.5rem;
+  height: 2.5rem;
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  top: -1.25rem;
+  left: -1.25rem;
+  z-index: ${INTERACTIVE};
+  margin: 0;
+  ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
+`
+
+const settingsSVGLarge = `
+  fill: ${ℂ.primary};
+  top: -1.6rem;
+  left: -1.6rem;
+  width: 9rem;
+  min-width: 9rem;
+  height: 9rem;
+  min-height: 9rem;
+  stroke: ${ℂ.primary};
+  stroke-width: 0.6rem;
+`
 export const SettingsButton = styled(Box)`
   z-index: ${MENU};
   cursor: pointer;
@@ -136,6 +165,7 @@ export const SettingsButton = styled(Box)`
   display: inline-block;
   background-color: #308;
   border: 2px solid rgba(0, 0, 0, 0.3);
+
   /* the long transition on the transform makes the cog turn */
   transition: ${easeOut('0.3s', [
     'background',
@@ -148,27 +178,11 @@ export const SettingsButton = styled(Box)`
     'margin'
   ])},
     transform 6s ease-in-out;
-  &:hover {
-    svg {
-      fill: yellow;
-    }
-  }
+
   svg {
-    animation: ${rotate} 15s linear infinite;
-    ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
-    display: inline-block;
-    position: relative;
-    fill: ${ℂ.secondary};
-    width: 2.5rem;
-    height: 2.5rem;
-    max-width: 2.5rem;
-    max-height: 2.5rem;
-    top: -1.25rem;
-    left: -1.25rem;
-    z-index: ${INTERACTIVE};
-    margin: 0;
-    ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
+    ${settingsSVG}
   }
+
   ${above.MID_TABLET(`
     right: -15rem;
     position: absolute;
@@ -183,15 +197,7 @@ export const SettingsButton = styled(Box)`
       svg { fill: yellow; stroke-width: 1.2rem; stroke: yellow; }
     }
     svg {
-      fill: ${ℂ.primary};
-      top: -1.6rem;
-      left: -1.6rem;
-      width: 9rem;
-      min-width: 9rem;
-      height: 9rem;
-      min-height: 9rem;
-      stroke: ${ℂ.primary};
-      stroke-width: 0.6rem;
+      ${settingsSVGLarge}
     }
   `)}
   ${above.TABLET_LANDSCAPE(`
@@ -200,6 +206,11 @@ export const SettingsButton = styled(Box)`
   ${above.LARGE_TABLET(`
      margin-right: -6rem;
   `)}
+  &:hover {
+    svg {
+      fill: yellow;
+    }
+  }
 `
 
 export const StyledMenu = styled(Box)`
@@ -223,7 +234,6 @@ export const MenuLink = styled(Link)`
   flex-direction: column;
   width: 100%;
   height: 4rem;
-  display: block;
   color: white;
   line-height: 4rem;
   font-size: 10vw;
@@ -232,6 +242,7 @@ export const MenuLink = styled(Link)`
   &:hover {
     color: white;
   }
+
   ${above.TABLET_PORTRAIT(`
     font-size: 9vw;
   `)}
@@ -247,6 +258,28 @@ export const MenuItem = styled.li`
   padding: 0;
 `
 
+export const menuCogSVG = `
+  fill: #222;
+  stroke-width: 0;
+  stroke: #222;
+  transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
+  animation: ${rotateSlowly} 18s ease-in-out infinite;
+  animation-direction: normal;
+  animation-play-state: ${p => (p.active ? 'running' : 'paused')};
+`
+
+export const menuCogSVGHover = `
+  fill: #222;
+  stroke: #222;
+  stroke-width: 1.6rem;
+`
+
+export const menuCogTabletStyle = `
+  fill: yellow;
+  stroke: yellow;
+  stroke-width: 0.75rem;
+`
+
 export const MenuCog = styled(Box)`
   bottom: -6.75rem;
   cursor: pointer;
@@ -258,23 +291,18 @@ export const MenuCog = styled(Box)`
   ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
   width: 80vw;
   z-index: ${MENU_UNDER};
-  svg {
-    fill: #222;
-    stroke-width: 0;
-    stroke: #222;
-    transition: fill 0.3s ease-out, stroke 0.3s ease-out, stroke-width 0.6s ease-out;
 
-    animation-direction: normal;
-    animation: ${rotateSlowly} 18s ease-in-out infinite;
-    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
+  /* stylelint-disable-next-line no-descending-specificity */
+  svg {
+    ${menuCogSVG}
   }
+  
   &:hover {
     svg {
-      fill: #222;
-      stroke: #222;
-      stroke-width: 1.6rem;
+      ${menuCogSVGHover}
     }
   }
+
   ${above.MID_TABLET(`
      width: 10vw;
      position: fixed;
@@ -286,9 +314,7 @@ export const MenuCog = styled(Box)`
      }
      &:hover {
        svg {
-         fill: yellow;
-         stroke: yellow;
-         stroke-width: 10px;
+         ${menuCogTabletStyle}
        }
      }
   `)}

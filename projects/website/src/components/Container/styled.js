@@ -8,9 +8,9 @@ export const StyledContainer = styled(Box)`
   max-width: ${p => p.maxWidth || 800}px;
   width: 100%;
   ${above.TINY_PHONE(`
-    padding: 0 1rem;
+    padding: 0 1.5rem;
   `)}
   ${above.TABLET_PORTRAIT(`
-    padding: 0;
+    padding: 0 2rem;
   `)}
 `

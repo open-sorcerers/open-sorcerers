@@ -41,12 +41,8 @@ const SEO = props => {
       <title>{title}</title>
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords.join(', ')} />
-
+      <script type="text/javascript" src="modernizr.js" />
       <link rel="canonical" href={url} />
-      <link
-        href="https://fonts.googleapis.com/css?family=Fira+Code&display=swap"
-        rel="stylesheet"
-      />
       <link rel="stylesheet" href="https://use.typekit.net/mhh6emz.css" />
       <meta property="og:site_name" content={name} />
       <meta property="og:title" content={title} />

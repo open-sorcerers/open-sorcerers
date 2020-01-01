@@ -6,7 +6,7 @@ import * as ℂ from '@styles/colors'
 import { Box } from 'rebass'
 
 export const Main = styled(Box)`
-  margin: 32px 0;
+  margin: 2rem 0;
   min-height: calc(100vh - 13rem);
 `
 const eased = easeIn('0.6s', ['position', 'top', 'left', 'padding'])

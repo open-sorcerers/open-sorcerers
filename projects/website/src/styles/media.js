@@ -107,10 +107,10 @@ export const Breakpoint = styled(Box)`
   &:hover {
     opacity: 1;
   }
-  &:before {
+  &::before {
     position: absolute;
     background-color: ${ℂ.debug};
-    color: black;
+    color: ${ℂ.offBlack};
     content: "${pipe(propOr(false, 'label'), replace(/_/g, ' '))}";
     transform: rotate(-90deg);
     padding: 0 3rem 0 1rem;

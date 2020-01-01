@@ -18,7 +18,7 @@ module.exports = {
   },
   rules: {
     // Prettier warnings
-    'prettier/prettier': 'warn',
+    'prettier/prettier': 2,
 
     'no-unused-expressions': 2,
 

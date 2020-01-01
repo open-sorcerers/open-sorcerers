@@ -1,0 +1,35 @@
+{
+  "minify": true,
+  "options": [
+    "setClasses"
+  ],
+  "feature-detects": [
+    "test/applicationcache",
+    "test/battery",
+    "test/canvas",
+    "test/emoji",
+    "test/forcetouch",
+    "test/fullscreen-api",
+    "test/geolocation",
+    "test/input",
+    "test/intl",
+    "test/ligatures",
+    "test/pagevisibility-api",
+    "test/requestanimationframe",
+    "test/serviceworker",
+    "test/svg",
+    "test/touchevents",
+    "test/vibration",
+    "test/css/animations",
+    "test/css/backgroundblendmode",
+    "test/css/calc",
+    "test/css/flexbox",
+    "test/css/gradients",
+    "test/css/vhunit",
+    "test/css/vwunit",
+    "test/storage/localstorage",
+    "test/storage/sessionstorage",
+    "test/svg/clippaths",
+    "test/svg/filters"
+  ]
+}

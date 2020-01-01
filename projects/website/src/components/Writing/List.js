@@ -6,7 +6,7 @@ import { getPostsWithSummary } from '@queries/posts-with-summary'
 import { map } from 'ramda'
 import styled from '@emotion/styled'
 import * as ℂ from '@styles/colors'
-
+import { checkWindowExists } from '@utils/url'
 
 const Glossary = styled(Box)`
   background-color: ${ℂ.secondary};
@@ -52,6 +52,7 @@ Post.propTypes = {
 }
 
 export const List = () => {
+  if (!checkWindowExists()) return null
   const data = getPostsWithSummary()
   return (
     <Box>

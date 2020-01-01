@@ -16,8 +16,6 @@ D. MENU - The Menu (activated by clicking A3)
 
 # Named Routes
 
-// read !cat src/constants/routes.js |
-// snang -P "split(C.n) | filter(I) | map(split(' ')) | map(slice(2, Infinity)) | map(join(' ')) | join(C.n + '* ') | z => '* ' + z"
 
 * SETTINGS = '/settings'
 * PROFILE = '/settings/profile'
@@ -31,6 +29,9 @@ D. MENU - The Menu (activated by clicking A3)
 * REPL = '/repl'
 
 */
+// read !cat src/constants/routes.js |
+/* eslint-disable-next-line max-len */
+// snang -P "split(C.n) | filter(I) | map(split(' ')) | map(slice(2, Infinity)) | map(join(' ')) | join(C.n + '* ') | z => '* ' + z"
 
 export const Z_INDEX = Object.freeze({
   GUIDE: 25,

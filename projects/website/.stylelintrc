@@ -1,0 +1,26 @@
+{
+  "processors": ["stylelint-processor-styled-components"],
+  "extends": [
+    "stylelint-config-standard",
+    "@signal-noise/stylelint-scales",
+    "stylelint-8-point-grid",
+    "stylelint-high-performance-animation",
+    "stylelint-config-prettier",
+    "stylelint-use-logical"
+  ],
+  "rules": {
+    "no-empty-source": null,
+    "declaration-colon-newline-after": null,
+    "function-calc-no-invalid": true,
+    "function-calc-no-unspaced-operator": true,
+    "declaration-block-no-duplicate-properties": true,
+    "block-no-empty": true,
+    "no-invalid-double-slash-comments": true,
+    "unit-blacklist": ["px", {
+      "ignoreProperties": {"px": ["/^border/"]}
+    }],
+    "unit-whitelist": [["rem", "em", "vw", "vh", "deg", "turn", "%", "s"], {
+      "ignoreProperties": {"px": ["/^border/"]}
+    }]
+  }
+}

@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js'
 import { navigate } from 'gatsby'
 import { once } from 'ramda'
+import { checkWindowExists } from '@utils/url'
 
 const CONSTANTS = Object.freeze({
   ACCESS_TOKEN: 'access_token',
@@ -9,8 +10,6 @@ const CONSTANTS = Object.freeze({
   USER: 'user'
 })
 const { ACCESS_TOKEN, ID_TOKEN, EXPIRES_AT, USER } = CONSTANTS
-
-export const windowExists = () => typeof window !== 'undefined'
 
 const AUTH0_DOMAIN = 'open-sorcerers.eu.auth0.com'
 const AUTH0_CLIENT_ID = 'zkUBHhxYTV8IwnASqWDkQOiDx31CNuDI'
@@ -62,7 +61,7 @@ export const Auth = once(() => {
   }
 
   const logout = cb => {
-    if (!windowExists()) return false
+    if (!checkWindowExists()) return false
     localStorage.removeItem(ACCESS_TOKEN)
     localStorage.removeItem(ID_TOKEN)
     localStorage.removeItem(EXPIRES_AT)
@@ -71,7 +70,7 @@ export const Auth = once(() => {
   }
 
   const handleAuthentication = () => {
-    if (windowExists()) {
+    if (checkWindowExists()) {
       // this must've been the trick
       zero.parseHash((err, authResult) => {
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -87,12 +86,13 @@ export const Auth = once(() => {
   }
 
   const isAuthenticated = () => {
-    if (!windowExists()) return false
+    if (!checkWindowExists()) return false
     const expiresAt = JSON.parse(localStorage.getItem(EXPIRES_AT))
     return new Date().getTime() < expiresAt
   }
 
   const setSession = authResult => {
+    if (!checkWindowExists()) return false
     const expiresAt = JSON.stringify(authResult.expiresIn * 1000 + new Date().getTime())
     localStorage.setItem(ACCESS_TOKEN, authResult.accessToken)
     localStorage.setItem(ID_TOKEN, authResult.idToken)
@@ -104,6 +104,7 @@ export const Auth = once(() => {
   }
 
   const getUser = () => {
+    if (!checkWindowExists()) return false
     if (localStorage.getItem(USER)) {
       return JSON.parse(localStorage.getItem(USER))
     }

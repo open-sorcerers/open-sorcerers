@@ -1,38 +1,19 @@
-# foresight-gatsby-starter
+# Open Sorcerers
+## Functional Programming &times; JavaScript &times; Open-Source
 
-[![nps friendly](https://img.shields.io/badge/nps-friendly-blue.svg?style=flat-square)](https://github.com/sezna/nps)
+Our goal is to create a community dedicated to highlighting effective usage of the Functional Programming (FP) paradigm in JavaScript. We hope to provide tools, resources and training towards this goal.
 
-A starter for Gatsby jam-packed with goodies
+### Learn about the FP Paradigm
 
-## Features
+We believe that following the core tenets of FP leads to cleaner, simpler and easier-to-reason-about code. Check out our [Learning](/learn) page for the core tenets and additional resources.
 
-- 📝 [Gatsby MDX](https://www.gatsbyjs.org/packages/gatsby-plugin-mdx/) for creation of pages with Markdown + JSX
-- 📚 [Storybook](https://storybook.js.org/) for sandboxed component testing and documentation 
-- 🖌[emotion](https://emotion.sh/) for CSS-in-JS
-- 💌 [ESLint](https://eslint.org/) with opinions 😉 
-- 🍯 [Prettier](https://prettier.io/) integrated into ESLint
-- 🎆 [nps][nps] for running scripts with sanity
+#### Create or Contribute to Open-Source JavaScript modules
 
-## Getting started
+If you want to get started writing code, check us out on [Github](//github.com/open-sorcerers)
 
-Install this starter (make sure you install [`gatsby-cli`](https://www.npmjs.com/package/gatsby-cli) first) by running the following command:
+This site is built on [Gatsby](https://www.gatsbyjs.org/) using the [foresight -gatsby -starter](//github.com/open-sorcerers/foresight-gatsby-starter)
 
-```bash
-gatsby new YOURPROJECT https://github.com/open-sorcerers/foresight-gatsby-starter
-```
+##### Meet cool people, learn about software and have fun
 
-## Development
+Please reach out to us on [Slack](//open-sorcerers.slack.com) or [Twitter](//twitter.com/osorcerers) or meet us in person at a [Meetup](//meetup.com/open-sorcerers).
 
-This project uses [nps][nps] to run things. (Install it with `yarn global add nps` or `npm i -g nps`).
-
-Run `nps` in the project directory to see the runnable commands.
-
-## Issues and Bugs
-
-Report issues or bugs [here](https://github.com/open-sorcerers/foresight-gatsby-starter/issues) if you have issues running this project.
-
-## License
-
-[MIT](https://github.com/open-sorcerers/foresight-gatsby-starter/blob/master/LICENSE)
-
-[nps]: https://github.com/sezna/nps

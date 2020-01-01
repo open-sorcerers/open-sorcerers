@@ -71,7 +71,7 @@ export const Menu = ({ setView, view }) => {
             {map(
               ([to, what]) => (
                 <MenuItem key={to}>
-                  <MenuLink to={to} onClick={eatClicks}>
+                  <MenuLink to={to} onClick={toggle}>
                     {what}
                   </MenuLink>
                 </MenuItem>

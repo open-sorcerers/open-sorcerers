@@ -231,8 +231,10 @@ export const MenuLink = styled(Link)`
   color: white;
   line-height: 4rem;
   font-size: 10vw;
+  font-family: obviously, sans-serif;
+  font-weight: 900;
   padding: 0.55rem 0;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.1rem;
   &:hover {
     color: white;
   }
@@ -273,7 +275,7 @@ export const MenuCog = styled(Box)`
     animation: ${rotateSlowly} 18s ease-in-out infinite;
     animation-direction: normal;
     animation-play-state: ${p => (p.active ? 'running' : 'paused')};
-    ${above.TABLET_PORTRAIT(`
+    ${above.MID_TABLET(`
       fill: ${ℂ.secondary};
       stroke: ${ℂ.secondary};
     `)}

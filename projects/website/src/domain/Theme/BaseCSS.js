@@ -25,11 +25,9 @@ const styles = css`
 
   a {
     text-decoration: none;
+    font-family: 'Obviously Narrow', obviously-narrow, 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
-    font-family: obviously, 'Helvetica Neue', Helvetica, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    font-style: italic;
+    font-weight: 500;
     color: ${ℂ.primary};
     display: inline-block;
     padding: 0 0.1em;
@@ -100,10 +98,30 @@ const styles = css`
     margin: 0.5rem auto;
     line-height: 2rem;
     margin-top: 1rem;
-    font-family: obviously, sans-serif;
-    font-weight: 900;
+    font-family: 'Obviously Narrow', obviously-narrow, sans-serif;
+    font-weight: 500;
     text-transform: uppercase;
     font-style: italic;
+  }
+  h1 {
+    font-family: 'Obviously', obviously, sans-serif;
+    font-size: 6vh;
+    line-height: 5.5vh;
+  }
+  h2 {
+    font-size: 2em;
+  }
+  h3 {
+    font-size: 1.8em;
+  }
+  h4 {
+    font-size: 1.6em;
+  }
+  h5 {
+    font-size: 1.4em;
+  }
+  h6 {
+    font-size: 1.2em;
   }
 
   body {

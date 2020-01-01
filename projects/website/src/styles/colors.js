@@ -5,7 +5,7 @@ export const offBlack = `#292828`
 export const purple = `#409`
 export const darkGray = `#222`
 export const darkerGray = `#205`
-export const yellow = '#fc0'
+export const yellow = '#ff0'
 export const lime = 'lime'
 
 export const primary = purple

@@ -117,7 +117,7 @@ export const StyledItem = styled(Link)`
   font-size: 2.2rem;
   font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
   font-weight: 900;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.05em;
   line-height: 0.75rem;
   margin: 1rem auto;
   opacity: ${p => (p.isActive ? '1' : '0.6')};

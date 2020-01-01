@@ -22,20 +22,39 @@ const styles = css`
     font-size: 16px;
     line-height: 1.5rem;
   }
+  .listing-page {
+    font-size: 3em;
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      list-style: none;
+      padding: 0;
+      a {
+        font-family: obviously, sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 3rem;
+        line-height: 3rem;
+      }
+    }
+  }
 
   a {
     text-decoration: none;
     font-family: 'Obviously Narrow', obviously-narrow, 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
     font-weight: 500;
-    color: ${ℂ.primary};
+    font-size: 1.1rem;
+    color: ${ℂ.UI.link};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
-    transition: ${easeOut('0.1', ['color'])}, ${easeOut('0.3s', ['text-shadow'])};
+    transition: ${easeOut('0.3s', ['color', 'text-shadow'])};
     &:hover {
-      color: ${ℂ.state.active};
-      text-shadow: 0 0 0.75rem ${ℂ.state.active};
+      color: ${ℂ.UI.linkActive};
+      text-shadow: 0 0 0.75rem ${ℂ.UI.active};
     }
   }
   em {
@@ -105,8 +124,8 @@ const styles = css`
   }
   h1 {
     font-family: 'Obviously', obviously, sans-serif;
-    font-size: 6vh;
-    line-height: 5.5vh;
+    font-size: 3rem;
+    line-height: 3rem;
   }
   h2 {
     font-size: 2em;

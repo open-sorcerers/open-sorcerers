@@ -25,8 +25,6 @@ export const PALETTE = Object.freeze({
   quaternary
 })
 
-const codeBackground = '#444'
-
 // elements
 export const EL = Object.freeze({
   CODE: secondary,
@@ -37,6 +35,8 @@ export const EL = Object.freeze({
 
 // state
 export const UI = Object.freeze({
+  link: tertiary,
+  linkActive: primary,
   active: tertiary
 })
 

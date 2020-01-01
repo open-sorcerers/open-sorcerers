@@ -9,9 +9,9 @@ We believe that following the core tenets of FP leads to cleaner, simpler and ea
 
 #### Create or Contribute to Open-Source JavaScript modules
 
-If you want to get started writing code, check us out on [Github](//github.com/open-sorcerers)
+If you want to get started writing code, check us out on [Github](//github.com/open-sorcerers).
 
-This site is built on [Gatsby](https://www.gatsbyjs.org/) using the [foresight -gatsby -starter](//github.com/open-sorcerers/foresight-gatsby-starter)
+This site is built on [Gatsby](https://www.gatsbyjs.org/) using the [foresight-gatsby-starter](//github.com/open-sorcerers/foresight-gatsby-starter).
 
 ##### Meet cool people, learn about software and have fun
 

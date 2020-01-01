@@ -9,8 +9,7 @@ export const Footer = () => (
       <Inner>
         <Left>
           <div>
-            Contribute on{' '}
-            <a href="https://github.com/open-sorcerers/foresight-gatsby-starter">Github</a>
+            Contribute on <a href="https://github.com/open-sorcerers">Github</a>
           </div>
           <div>
             Created with{' '}

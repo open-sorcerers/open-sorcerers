@@ -46,11 +46,7 @@ export const Menu = ({ setView, view }) => {
 
   const floating = active ? activeMenu : inactiveMenu
   const MENU_LINKS = getLinksRelativeToAuth()
-  const eatClicks = e => {
-    e.preventDefault()
-    return false
-  }
-  const eatClicksFor = what => e => {
+  const eatClicksFor = () => e => {
     e.preventDefault()
     return false
   }

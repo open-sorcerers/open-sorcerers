@@ -34,8 +34,9 @@ D. MENU - The Menu (activated by clicking A3)
 // snang -P "split(C.n) | filter(I) | map(split(' ')) | map(slice(2, Infinity)) | map(join(' ')) | join(C.n + '* ') | z => '* ' + z"
 
 export const Z_INDEX = Object.freeze({
-  GUIDE: 25,
+  GUIDE: 30,
   MENU_OVER: 22,
+  MENU_CONTENT: 21,
   MENU: 20,
   MENU_UNDER: 18,
   INTERACTIVE: 5,

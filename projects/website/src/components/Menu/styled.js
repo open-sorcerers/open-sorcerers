@@ -10,7 +10,7 @@ import { above } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
 import { transition, transitionEaseOut, easeOut } from '@styles/animation'
 
-const { MENU, MENU_OVER, MENU_UNDER, INTERACTIVE } = Z_INDEX
+const { MENU, MENU_CONTENT, MENU_OVER, MENU_UNDER, INTERACTIVE } = Z_INDEX
 
 export const rotate = keyframes`
   98% {
@@ -46,14 +46,15 @@ export const rotateSlowly = keyframes`
 `
 
 export const FloatingMenuContent = styled.ul`
-  z-index: ${MENU};
+  z-index: ${MENU_CONTENT};
   position: relative;
   width: 100%;
   height: 100%;
+  background-color: ${ℂ.AREA.MENU};
 `
 
 export const FloatingMenu = styled(Box)`
-  z-index: ${Z_INDEX.MENU};
+  z-index: ${MENU};
   ${transition('ease-in-out', '0.6s', [
     'transform',
     'background',
@@ -319,27 +320,43 @@ export const cog = css`
 export const MenuCog = styled(Box)`
   ${cog}
   z-index: ${MENU_UNDER};
-  svg {
-    animation-delay: -0.4s;
-  }
+  ${above.MID_TABLET(`
+    z-index: ${MENU_OVER};
+  `)}
 
 `
 export const MenuCogTop = styled(Box)`
   ${cog}
   z-index: ${MENU_OVER};
-  bottom: -8vh;
+  top: 10rem;
   transform: scale(0.3);
   svg {
     fill: ${ℂ.tertiary};
+    stroke: ${ℂ.tertiary};
   }
   &:hover {
-    fill: hotpink;
-    stroke: hotpink;
+    svg {
+      fill: ${ℂ.secondary};
+      stroke: ${ℂ.primary};
+      stroke-width: 0.1rem;
+    }
   }
   ${above.SMALL_PHONE(`
-    bottom: -20vh;
+    bottom: 0;
+    top: 15rem;
   `)}
-  ${above.TABLET_PORTRAIT(`
-    bottom: -64vh;
+  ${above.SUB_TABLET(`
+    svg {
+      animation: ${rotateSlowly} 27s ease-in-out infinite;
+    }
+    `)}
+  ${above.MID_TABLET(`
+
+    z-index: ${MENU_UNDER};
+    width: 6.5rem;
+    transform: scale(1.4);
+    bottom: 0;
+    top: 17.25rem;
+    left: -7.5rem;
   `)}
 `

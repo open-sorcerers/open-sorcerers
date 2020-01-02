@@ -1,6 +1,6 @@
 {
   "name": "captain-planet",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "protect the environment!",
   "main": "captain-planet.js",
   "repository": "//github.com/open-sorcerers/captain-planet",

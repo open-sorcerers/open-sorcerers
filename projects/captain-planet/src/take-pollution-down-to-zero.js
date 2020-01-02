@@ -1,4 +1,43 @@
-import { pipe } from "ramda"
+import {
+  ap,
+  concat,
+  curry,
+  difference,
+  filter,
+  forEach,
+  identity as I,
+  ifElse,
+  join,
+  length,
+  lt,
+  map,
+  nth,
+  pipe,
+  prop,
+  reduce,
+  toPairs,
+  uniq,
+  unless,
+  values
+} from "ramda"
+import kleur from "kleur"
+import F from "fluture"
+import { safeJSONParse, merge, isArray, box, j2 } from "./utils"
+import { read, write } from "./fs"
+import { CAPTAIN_PLANET_RELATIVE_TO_YOUR_HEART } from "./config"
+
+// given per file pollution and all pollution, compare and generate a discrete list
+export const getPollutionMap = curry((pollutionByFiles, knownPolluters) =>
+  map(([file, pp]) => {
+    const newPollution = difference(pp, knownPolluters)
+    const pollution = difference(pp, newPollution)
+    return {
+      file,
+      newPollution,
+      pollution
+    }
+  }, pollutionByFiles)
+)
 
 // take pollution and you know, uh, trace it back to its source
 // and maybe slap a fine on them
@@ -14,6 +53,9 @@ const takePollutionDownToZero = getter => (acc, [envVar, file]) => {
   }, keys)
   return clone
 }
+
+const appendFile = file => x => [x, file]
+
 // we're doing work even while failures might exist
 const segmentByKnownPolluters = ({ file, newPollution, pollution }) => {
   const isKnown = newPollution.length > 0
@@ -71,12 +113,71 @@ const dealWithPollution = data => ([raw, knownPollution]) =>
   )(knownPollution)
 
 export const fightPollution = data =>
-  read(CAPTAIN_PLANET_RELATIVE_TO_YOUR_HEART)
-    .map(safeJSONParse)
-    .map(structureConfigData)
-    .map(dealWithPollution(data))
+  pipe(
+    read,
+    map(pipe(safeJSONParse, structureConfigData, dealWithPollution(data)))
+  )(CAPTAIN_PLANET_RELATIVE_TO_YOUR_HEART)
 const getProblems = nth(0)
 const getSolutions = nth(1)
+
+// flatten errors, combine them, and yell
+export const lootingAndPollutingIsNotTheWay = pipe(
+  reduce(
+    ({ mapping, pollution }, [poll, file]) => ({
+      mapping: merge(mapping, {
+        [file]: (mapping[file] || []).concat(poll)
+      }),
+      pollution: uniq(pollution.concat(poll))
+    }),
+    { mapping: {}, pollution: [] }
+  ),
+  ({ mapping, pollution }) => `
+Looters and polluters:
+
+${printErrors(mapping)}
+
+Looting and polluting is not the way.
+
+Consider updating \`captain-planet.config.js\`
+
+${kleur.green(`{
+  MY_ENV_NAME: {
+    description: 'describe something',
+    env: [${pollution.map(z => '"' + z + '"').join(", ")}]
+  }
+}`)}
+
+Remember to run \`nps lint.env.update\` afterwards.
+`
+)
+
+// coalesce all `env` values from captain-planet.config.json
+export const getAllKnownPolluters = pipe(values, reduce(concat, []), uniq)
+
+const printErrors = pipe(
+  toPairs,
+  map(
+    ([file, pollution]) =>
+      `* ${kleur.red(file)} - ${pollution.map(kleur.yellow).join(", ")}`
+  ),
+  join(kleur.white("\n"))
+)
+
+// a bit kludgy but allows us to lookup the mapping from HERE to XXX where
+// lookup looks like {XXX: {env: ['HERE']}
+export const getKeysFromEnvVar = curry((lookup, envVar) =>
+  pipe(
+    toPairs,
+    filter(([, v]) =>
+      v && v.env
+        ? isArray(v.env)
+          ? v.env.includes(envVar)
+          : v.env === envVar
+        : false
+    ),
+    reduce((keys, [k]) => keys.concat(k), [])
+  )(lookup)
+)
 
 export const useMagicRings = ifElse(
   // problems?

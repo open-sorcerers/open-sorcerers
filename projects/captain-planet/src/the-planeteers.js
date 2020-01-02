@@ -1,19 +1,26 @@
 import kleur from "kleur"
-import { pipe, map, readStdin, chain, fork } from "snang/script"
+import { fork as _fork, encaseP } from "fluture"
+import { curry, pipe, map, chain } from "ramda"
 
-import {
-  captainPlanet,
-  fightPollution,
-  useMagicRings,
-  CAPTAIN_PLANET_CONFIG
-} from "./captain-planet"
+import getStdin from "get-stdin"
+/* import { testTheEnvironment } from "./grep" */
+/* import { trace } from "xtrace" */
+
+import { fightPollution, useMagicRings } from "./take-pollution-down-to-zero"
+import { CAPTAIN_PLANET_CONFIG } from "./config"
+import { captainPlanet } from "./captain-planet"
+
+const fork = curry((bad, good, eff) => _fork(bad)(good)(eff))
 
 // USAGE:
 // $ rg "process.env" --type js | node scripts/the-planeteers.js
 
 // See also: cat README.md | grep 'Environment Variables' -a9
 
-module.exports = pipe(
+const readStdin = encaseP(getStdin)
+
+export default pipe(
+  /* testTheEnvironment, */
   readStdin,
   map(captainPlanet),
   chain(fightPollution),
@@ -21,7 +28,6 @@ module.exports = pipe(
   fork(
     e => {
       console.error(e)
-      // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1)
     },
     () =>
@@ -29,4 +35,4 @@ module.exports = pipe(
         `No new polluters! ${kleur.green("Updated " + CAPTAIN_PLANET_CONFIG)}`
       )
   )
-)(process.argv.slice(2)[0])
+)

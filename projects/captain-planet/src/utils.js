@@ -1,25 +1,18 @@
-const merge = curry((a, b) => Object.assign({}, a, b))
-const safeJSONParse = x => {
+import { identity as I, curry, filter } from "ramda"
+
+export const merge = curry((a, b) => Object.assign({}, a, b))
+export const j2 = x => JSON.stringify(x, null, 2)
+// remove null values
+export const smooth = filter(I)
+
+// an essential tool for using with `ap`
+export const box = x => [x]
+export const isArray = Array.isArray
+
+export const safeJSONParse = x => {
   try {
     return JSON.parse(x)
   } catch (e) {
     return {}
   }
 }
-const j2 = x => JSON.stringify(x, null, 2)
-// remove null values
-const smooth = filter(I)
-)
-// read a file in the Future
-const read = x => F.encaseN2(fs.readFile)(x, "utf8")
-// write a file in the Future
-const write = curry(
-  (fd, data) =>
-    new F((bad, good) => {
-      fs.writeFile(fd, data, "utf8", (e, f) => (e ? bad(e) : good(f)))
-    })
-)
-
-// an essential tool for using with `ap`
-const box = x => [x]
-const isArray = Array.isArray

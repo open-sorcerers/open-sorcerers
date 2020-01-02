@@ -1,0 +1,10 @@
+{
+  "gatsby": {
+    "description": "gatsby specific config",
+    "env": ["GATSBY_IS_COOL"]
+  },
+  "now": {
+    "description": "the time is now to use zeit now",
+    "env": ["NODE_ENV"]
+  }
+}

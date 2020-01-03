@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gripgrep - force object path 1`] = `
+Array [
+  Object {
+    "column": 18,
+    "file": "src/gripgrep.spec.js",
+    "line": 26,
+    "match": "  const FORCE = \\"force push objects\\"",
+  },
+  Object {
+    "column": 34,
+    "file": "src/__snapshots__/gripgrep.spec.js.snap",
+    "line": 9,
+    "match": "    \\"match\\"",
+  },
+]
+`;
+
+exports[`gripgrep 1`] = `
+Array [
+  Object {
+    "column": 18,
+    "file": "src/gripgrep.spec.js",
+    "line": 5,
+    "match": "  const MAGIC = \\"magic comment for a test\\"",
+  },
+  Object {
+    "column": 34,
+    "file": "src/__snapshots__/gripgrep.spec.js.snap",
+    "line": 26,
+    "match": "    \\"match\\"",
+  },
+]
+`;
+
+exports[`prepFlags - regex 1`] = `
+Array [
+  "rg",
+  Array [
+    "--column",
+    "--line-number",
+    "--color",
+    "never",
+    "-e",
+    "cool",
+  ],
+]
+`;

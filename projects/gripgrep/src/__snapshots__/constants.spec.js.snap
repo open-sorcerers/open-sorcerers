@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KEYS 1`] = `
+Object {
+  "CWD": "cwd",
+  "GLOBS": "globs",
+  "REGEX": "regex",
+  "STRING": "string",
+}
+`;
+
+exports[`NIL 1`] = `"nil"`;

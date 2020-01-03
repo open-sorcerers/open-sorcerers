@@ -1,28 +1,26 @@
 {
   "name": "eslint-config-sorcerers",
-  "version": "0.0.0",
+  "version": "0.0.2-beta.1",
   "description": "open-sorcerers x eslint",
   "main": "eslint.config.js",
   "repository": "//github.com/open-sorcerers/eslint-config-sorcerers",
-  "author": "brekk",
+  "author": "Open Sorcerers",
   "contributors": [
-    "Pedro Costa Neves <costa.neves@me.com> (https://github.com/persocon)"
+    "Pedro Costa Neves <costa.neves@me.com> (https://github.com/persocon)",
+    "Brekk Bockrath <brekk@brekkbockrath.com> (https://github.com/persocon)"
   ],
   "license": "ISC",
   "private": false,
-  "dependencies": {
-    "babel-eslint": ">= 10.0.3",
-    "eslint": ">= 6.8.0",
-    "eslint-config-prettier": ">= 6.9.0",
-    "eslint-config-standard": ">= 14.1.0",
-    "prettier": ">= 1.19.1",
-    "prettier-eslint": ">= 9.0.1",
-    "@babel/core": ">= 7.7.2"
-  },
   "peerDependencies": {
     "eslint": ">= 6.8.0",
-    "babel-eslint": ">= 10.0.3",
+    "prettier": ">= 1.19.1",
+    "prettier-eslint": ">= 9.0.1"
+  },
+  "dependencies": {
     "@babel/core": ">= 7.7.2",
+    "babel-eslint": ">= 10.0.3",
+    "eslint-config-prettier": ">= 6.9.0",
+    "eslint-config-standard": ">= 14.1.0",
     "eslint-plugin-babel": ">= 5.3.0",
     "eslint-plugin-fp": ">= 2.3.0",
     "eslint-plugin-import": ">= 2.19.1",

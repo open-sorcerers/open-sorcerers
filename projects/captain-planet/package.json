@@ -29,6 +29,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-ramda": "^2.5.1",
     "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1",
     "rollup": "^1.27.14",
     "rollup-plugin-cli": "^0.1.5",
     "rollup-plugin-progress": "^1.1.1"

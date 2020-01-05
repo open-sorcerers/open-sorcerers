@@ -4,7 +4,7 @@ import { pipe, filter, identity as I, map } from 'ramda'
 
 import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
-import { BOOKMARKS, SETTINGS, PROFILE, REPL, LOGOUT, LOGIN } from '@constants/routes'
+import { SETTINGS, PROFILE, REPL, LOGOUT, LOGIN } from '@constants/routes'
 import { VIEW_STATES } from '@styles/constants'
 /* import { ProfileImg } from '@routes/Profile/ProfileImg' */
 

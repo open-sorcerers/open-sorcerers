@@ -99,6 +99,7 @@ export const Auth = once(() => {
     localStorage.setItem(EXPIRES_AT, expiresAt)
 
     zero.client.userInfo(authResult.accessToken, (err, user) => {
+      console.warn(err)
       localStorage.setItem(USER, JSON.stringify(user))
     })
   }

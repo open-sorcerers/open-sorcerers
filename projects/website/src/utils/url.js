@@ -2,7 +2,7 @@ import url from 'url'
 
 export const checkWindowExists = () => typeof window !== 'undefined'
 
-export const parseURL = x => (checkWindowExists() ? new URL(x) : url.parse(x))
+export const parseURL = x => (checkWindowExists() ? new URL(x) : new url.URL(x))
 
 export const validDomain = x => {
   try {

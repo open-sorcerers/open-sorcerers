@@ -39,7 +39,7 @@ const styles = css`
         line-height: 3rem;
       }
       a.strikethrough {
-        text-decoration: 16px line-through solid black;
+        text-decoration: 3rem line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
         text-shadow: 0 0 0 transparent;
         :hover {

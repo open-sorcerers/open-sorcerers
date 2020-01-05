@@ -19,6 +19,13 @@ module.exports = {
     image: 'https://open.sorcerers.dev/logo-open-sorcerers.png'
   },
   plugins: [
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [{ resolve: 'gatsby-remark-embed-gist' }]
+      }
+    },
+    'gatsby-remark-embed-gist',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-emotion',
     {
@@ -96,6 +103,7 @@ module.exports = {
           '@constants': 'src/constants',
           '@domain': 'src/domain',
           '@pages': 'src/pages',
+          '@posts': 'src/posts',
           '@queries': 'src/queries',
           '@routes': 'src/routes',
           '@services': 'src/services',

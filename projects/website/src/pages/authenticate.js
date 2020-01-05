@@ -9,7 +9,6 @@ const useComponentDidMount = fn => {
       fn()
     }
   })
-  return
 }
 
 const Authenticate = () => {

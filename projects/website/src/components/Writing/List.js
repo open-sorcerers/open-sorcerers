@@ -1,10 +1,10 @@
 import React from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
-import { pipe, ap, pathOr } from 'ramda'
+import { pipe, ap, pathOr, map } from 'ramda'
 import PropTypes from 'prop-types'
 import { getPostsWithSummary } from '@queries/posts-with-summary'
-import { map } from 'ramda'
+
 import styled from '@emotion/styled'
 import * as ℂ from '@styles/colors'
 import { checkWindowExists } from '@utils/url'

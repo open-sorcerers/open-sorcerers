@@ -94,6 +94,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-ramda": "^2.5.1",
     "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-unicorn": "^15.0.1",
     "gatsby-plugin-alias-imports": "^1.0.5",
     "gatsby-plugin-emotion": "^4.1.18",
     "gatsby-source-github": "^0.0.2",

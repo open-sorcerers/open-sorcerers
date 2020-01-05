@@ -56,15 +56,7 @@ module.exports = {
     "jsdoc/require-returns-check": 1,
     "jsdoc/require-returns-description": 1,
     "jsdoc/require-returns-type": 1,
-    "jsdoc/valid-types": 1,
-    "unicorn/no-unused-properties": 2,
-    "unicorn/expiring-todo-comments": [
-      "error",
-      {
-        ignoreDatesOnPullRequests: true,
-        terms: ["TODO", "FIXME", "XXX"]
-      }
-    ]
+    "jsdoc/valid-types": 1
   },
   extends: ["standard", "prettier"],
   plugins: ["babel", "fp", "import", "prettier", "jsdoc", "ramda"]

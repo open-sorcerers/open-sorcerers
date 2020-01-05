@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { css } from '@emotion/core'
 import PropTypes from 'prop-types'
+import { pipe, pathOr, map } from 'ramda'
 import { Heading, Button, Box, Flex } from 'rebass'
 import { Textarea, Label, Select, Input, Radio, Checkbox } from '@rebass/forms'
 
@@ -22,11 +23,22 @@ const TYPES = Object.freeze({
   LINK: 'Link'
 })
 const { NEWS, MODULE, LINK } = TYPES
+const handleSubmit = e => {
+  e.preventDefault()
+  const out = map(
+    pipe(
+      field => pathOr(undefined, ['target', field, 'value'], e),
+      v => (v === 'on' ? true : v === 'off' ? false : v)
+    ),
+    FIELDS
+  )
+  console.log('OUT', out)
+}
 
 export const SubmitNews = () => {
   const [type, setType] = useState(NEWS)
   return (
-    <Box as="form" onSubmit={e => e.preventDefault()} py={3}>
+    <Box as="form" onSubmit={handleSubmit} py={3}>
       <Flex mx={-2} mb={3}>
         <Box width={1}>
           <Heading s={2} mb={1}>
@@ -49,16 +61,32 @@ export const SubmitNews = () => {
           <strong>Type</strong>
         </Box>
         <Label width={[1 / 1, 1 / 3]} p={2}>
-          <Radio id="news" name="type" value="news" defaultChecked onChange={() => setType(NEWS)} />
-          news
+          <Radio
+            id={FIELDS.news}
+            name={FIELDS.contentType}
+            value={FIELDS.news}
+            defaultChecked
+            onChange={() => setType(NEWS)}
+          />
+          {FIELDS.news}
         </Label>
         <Label width={[1 / 1, 1 / 3]} p={2}>
-          <Radio id="module" name="type" value="module" onChange={() => setType(MODULE)} />
-          module
+          <Radio
+            id={FIELDS.module}
+            name={FIELDS.contentType}
+            value={FIELDS.module}
+            onChange={() => setType(MODULE)}
+          />
+          {FIELDS.module}
         </Label>
         <Label width={[1 / 1, 1 / 3]} p={2}>
-          <Radio id="link" name="type" value="link" onChange={() => setType(LINK)} />
-          link
+          <Radio
+            id={FIELDS.link}
+            name={FIELDS.contentType}
+            value={FIELDS.link}
+            onChange={() => setType(LINK)}
+          />
+          {FIELDS.link}
         </Label>
       </Flex>
       <Flex mx={-2} my={1} flexWrap="wrap">

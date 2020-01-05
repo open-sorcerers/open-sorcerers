@@ -151,6 +151,25 @@ const styles = css`
     font-size: 1.2em;
   }
 
+  blockquote {
+    padding: 0.5rem;
+    background-color: ${ℂ.quaternary};
+    color: ${ℂ.secondary};
+    &::before {
+      vertical-align: text-top;
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: 0.6rem solid transparent;
+      border-left-color: ${ℂ.tertiary};
+    }
+    p {
+      margin: 0;
+      display: inline-block;
+    }
+  }
+
   body {
     background-color: ${ℂ.AREA.CONTENT_BG};
     color: ${ℂ.AREA.CONTENT};

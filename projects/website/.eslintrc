@@ -1,0 +1,21 @@
+root: true
+env:
+  browser: true,
+  node: true,
+  jest: true
+settings:
+  react:
+    version: detect
+parser: babel-eslint
+extends:
+- plugin:prettier/recommended
+- plugin:react/recommended
+- eslint-config-sorcerers
+rules:
+  import/extensions:
+    - 2
+    - json: always
+      js: never
+      validation: always
+      task: always
+      svg: always

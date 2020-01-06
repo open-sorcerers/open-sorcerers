@@ -20,11 +20,11 @@ export const ProfileImg = ({ variant }) => {
   const { picture } = user
   const isValidImage = validDomain(picture)
   /* const isValidImage = false */
-  return isValidImage && variant !== 'DropMenu' ? (
-    <Img>
+  return isValidImage ? (
+    <Img variant={variant}>
       <img src={picture} />
     </Img>
-  ) : variant === 'DropMenu' ? (
+  ) : variant === 'menu' ? (
     <MenuFallback>
       <span role="img" aria-label="No profile image set.">
         🖤

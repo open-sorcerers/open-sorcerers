@@ -1,0 +1,10 @@
+{
+  "offline": {
+    "description": "sometimes you wanna use local servers, like, only locally",
+    "env": ["OFFLINE"]
+  },
+  "now": {
+    "description": "the time is now to use zeit now",
+    "env": ["NODE_ENV"]
+  }
+}

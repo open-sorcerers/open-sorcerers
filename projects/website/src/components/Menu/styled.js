@@ -51,6 +51,10 @@ export const FloatingMenuContent = styled.ul`
   width: 100%;
   height: 100%;
   background-color: ${ℂ.AREA.MENU};
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 `
 
 export const FloatingMenu = styled(Box)`
@@ -71,15 +75,17 @@ export const FloatingMenu = styled(Box)`
   flex-direction: column;
   width: 100%;
   min-height: 28rem;
-  max-height: 32rem;
-  height: 55vh;
+  height: ${p => (p.authenticated ? '80vh' : '50vh')};
   padding: 0;
   top: 0;
   opacity: 0;
   ${above.MID_TABLET(`
-    width: 66vw;
+    width: 40vw;
     height: 100vh;
     min-height: 100vh;
+  `)}
+  ${above.DESKTOP(`
+    width: 33vw;
   `)}
 `
 
@@ -104,10 +110,10 @@ export const activeMenu = css`
   top: 0;
   opacity: 1;
   ${above.MID_TABLET(`
-     width: 66vw;
-     height: 100vh;
-     min-height: 100vh;
-     left: 34vw;
+     left: 60vw;
+  `)}
+  ${above.DESKTOP(`
+     left: 68vw;
   `)}
 `
 
@@ -232,7 +238,6 @@ export const MenuLink = styled(Link)`
   pointer-events: auto;
   flex-direction: column;
   width: 100%;
-  height: 4rem;
   color: white;
   line-height: 4rem;
   font-size: 10vw;
@@ -254,9 +259,11 @@ export const MenuLink = styled(Link)`
 export const MenuItem = styled.li`
   list-style: none;
   width: 100%;
-  height: 4rem;
-  margin: 0 auto;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 4rem;
 `
 
 export const cog = css`
@@ -328,8 +335,11 @@ export const MenuCog = styled(Box)`
 export const MenuCogTop = styled(Box)`
   ${cog}
   z-index: ${MENU_OVER};
-  top: 10rem;
   transform: scale(0.3);
+  position: fixed;
+  top: -24rem;
+  left: -50%;
+  margin: 0 14%;
   svg {
     fill: ${ℂ.tertiary};
     stroke: ${ℂ.tertiary};
@@ -342,21 +352,11 @@ export const MenuCogTop = styled(Box)`
     }
   }
   ${above.SMALL_PHONE(`
-    bottom: 0;
-    top: 15rem;
+    bottom: ${p => (p.authenticated ? '-18rem' : '0')};
   `)}
-  ${above.SUB_TABLET(`
-    svg {
-      animation: ${rotateSlowly} 27s ease-in-out infinite;
-    }
-    `)}
-  ${above.MID_TABLET(`
 
-    z-index: ${MENU_UNDER};
-    width: 6.5rem;
-    transform: scale(1.4);
-    bottom: 0;
-    top: 17.25rem;
-    left: -7.5rem;
+  ${above.MID_TABLET(`
+    transform: scale(0.6);
+    left: -69vw;
   `)}
 `

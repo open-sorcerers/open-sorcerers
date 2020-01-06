@@ -18,7 +18,7 @@ const formatUsername = pipe(
   z => '@' + z
 )
 
-export const Profile = ({}) => {
+export const Profile = () => {
   const { getUser } = Auth()
   const user = getUser()
   const { name } = user

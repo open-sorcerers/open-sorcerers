@@ -1,0 +1,76 @@
+---
+path: /series/fp/function-arity
+title: Why explicit function arity is important
+author: brekk
+---
+
+import {Reveal} from '@components/Reveal'
+
+# Why explicit function arity is important
+
+`gist:brekk/12a634b38ccc49faa8ad469033ae690c#imperative.js`
+
+`gist:brekk/12a634b38ccc49faa8ad469033ae690c#functional.js`
+
+As you can see, `parseInt` doesn't behave as we expect.
+
+For your own edification:
+
+1. Why does the imperative example behave this way?
+2. Why does the functional example work as expected?
+3. If we wanted to have the functional example work exactly as the imperative example, what would that look like?
+
+<Reveal>
+   <>
+    <p>The first two answers hinge on the same issue: the arity (or number of expected parameters) of the function doesn't map correctly. </p>
+    <ol>
+      <li>
+        The imperative example is passing the array index as a secondary parameter to <code>parseInt</code>.
+        <pre>
+          <code>
+            parseInt('5', 0) === 5
+            <br />
+            parseInt('4', 1) // NaN
+            <br />
+            parseInt('3', 2) // NaN
+            <br />
+            parseInt('2', 3) // NaN
+            <br />
+            parseInt('1', 4) === 1
+          </code>
+        </pre>
+      </li>
+      <li>
+        However, the functional example uses a unary iteration for `map`, so the secondary parameter is not passed and defaults to base 10.
+        <pre>
+          <code>
+            parseInt('5') === 5
+            <br />
+            parseInt('4') === 4
+            <br />
+            parseInt('3') === 3
+            <br />
+            parseInt('2') === 2
+            <br />
+            parseInt('1') === 1
+          </code>
+        </pre>
+      </li>
+      <li>
+        If we need to make it so that the <code>R.map</code> takes an index and functions like the standard <code>Array.prototype.map</code>, we can import "addIndex":
+        <pre>
+        <code>
+          <>
+            {"import {addIndex, map} from 'ramda'"}
+            <br />
+            const imap = addIndex(map)
+            <br />
+            const out = imap('54321'.split(''))
+          </>
+        </code>
+        </pre>
+      </li>
+    </ol>
+  </>
+</Reveal>
+

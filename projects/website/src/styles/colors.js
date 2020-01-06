@@ -66,6 +66,16 @@ export const EL = Object.freeze({
   PRE_BG: primary
 })
 
+export const GIST = Object.freeze({
+  constant: '#fc0',
+  comment: '#328e93',
+  operator: 'crimson',
+  property: 'cyan',
+  string: '#01ec7e',
+  entity: 'mediumorchid',
+  lineNumber: '#a699b4'
+})
+
 // state
 export const UI = Object.freeze({
   link: tertiary,

@@ -9,7 +9,7 @@ export const Reveal = ({ children }) => {
         setVisible(true)
       }}
     >
-      Click to reveal!
+      <strong>Click to reveal!</strong>
     </div>
   ) : (
     children

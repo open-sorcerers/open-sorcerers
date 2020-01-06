@@ -39,7 +39,7 @@ const styles = css`
         line-height: 3rem;
       }
       a.strikethrough {
-        text-decoration: 3rem line-through solid rgba(0, 0, 0, 0.6);
+        text-decoration: line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
         text-shadow: 0 0 0 transparent;
         :hover {
@@ -107,13 +107,49 @@ const styles = css`
     width: 100%;
     min-height: 5rem;
     margin-bottom: 1rem;
-
+    .gist-meta {
+      a:first-of-type {
+        padding: 0.2rem 0.5rem 0.5rem;
+        background-color: ${ℂ.GIST.constant};
+        color: black;
+        text-shadow: 0 0 0.3rem transparent;
+        transform: background 0.7s ease-out, color 0.7s ease-out;
+        &:hover {
+          text-shadow: 0 0 0.3rem ${ℂ.GIST.constant};
+          color: white;
+          background-color: black;
+        }
+      }
+    }
     .js-gist-file-update-container {
       display: flex;
       flex-direction: column;
-      background-color: ${ℂ.EL.CODE_BG};
-      color: ${ℂ.EL.CODE};
+      background-color: ${ℂ.EL.PRE_BG};
+      color: ${ℂ.EL.PRE};
       padding: 0.5rem;
+    }
+    td.js-line-number::before {
+      content: attr(data-line-number);
+      padding: 0 0.5rem;
+      color: ${ℂ.GIST.lineNumber};
+    }
+    .pl-smi {
+      color: ${ℂ.GIST.property};
+    }
+    .pl-en {
+      color: ${ℂ.GIST.entity};
+    }
+    .pl-s {
+      color: ${ℂ.GIST.string};
+    }
+    .pl-c {
+      color: ${ℂ.GIST.comment};
+    }
+    .pl-k {
+      color: ${ℂ.GIST.operator};
+    }
+    .pl-c1 {
+      color: ${ℂ.GIST.constant};
     }
   }
 

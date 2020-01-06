@@ -12,7 +12,7 @@ import { transition, transitionEaseOut, easeOut } from '@styles/animation'
 
 const { MENU, MENU_CONTENT, MENU_OVER, MENU_UNDER, INTERACTIVE } = Z_INDEX
 
-export const rotate = css(keyframes`
+export const rotate = keyframes`
   98% {
     transform: rotate(0);
   }
@@ -22,7 +22,7 @@ export const rotate = css(keyframes`
   100% {
     transform: rotate(1turn)
   }
-`)
+`
 const sixthParts = pipe(
   map(
     xx => `${sixth(xx)} {
@@ -37,13 +37,13 @@ const sixthParts = pipe(
     `
 )
 const sixth = x => `${Math.round(Math.round(x * (100 / 6) * 100) / 100)}%`
-export const rotateSlowly = css(keyframes`
+export const rotateSlowly = keyframes`
   0% {
     transform: rotate(0deg);
   }
 
   ${sixthParts([1, 2, 3, 4, 5])}
-`)
+`
 
 export const FloatingMenuContent = styled.ul`
   z-index: ${MENU_CONTENT};
@@ -351,12 +351,14 @@ export const MenuCogTop = styled(Box)`
     }
     `)}
   ${above.MID_TABLET(`
-
     z-index: ${MENU_UNDER};
     width: 6.5rem;
     transform: scale(1.4);
     bottom: 0;
     top: 17.25rem;
     left: -7.5rem;
+  `)}
+  ${above.TABLET_LANDSCAPE(`
+    top: 20rem;
   `)}
 `

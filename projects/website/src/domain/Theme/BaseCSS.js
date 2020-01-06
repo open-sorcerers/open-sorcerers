@@ -101,6 +101,21 @@ const styles = css`
       }
     }
   }
+  .gist-file {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 5rem;
+    margin-bottom: 1rem;
+
+    .js-gist-file-update-container {
+      display: flex;
+      flex-direction: column;
+      background-color: ${ℂ.EL.CODE_BG};
+      color: ${ℂ.EL.CODE};
+      padding: 0.5rem;
+    }
+  }
 
   ul,
   ol {

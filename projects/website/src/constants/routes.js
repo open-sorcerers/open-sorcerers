@@ -12,3 +12,7 @@ export const BUILD_EXAMPLE = '/build/an-example'
 export const ASK = '/ask'
 
 export const REPL = `/repl`
+
+export const SERIES_FP = `/series/fp`
+export const SERIES_JS = `/series/js`
+export const SERIES_OSS = `/series/oss`

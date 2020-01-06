@@ -4,9 +4,17 @@ import { pipe, filter, identity as I, map } from 'ramda'
 
 import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
-import { SETTINGS, PROFILE, REPL, LOGOUT, LOGIN } from '@constants/routes'
+import {
+  SETTINGS,
+  PROFILE,
+  SERIES_FP,
+  SERIES_JS,
+  SERIES_OSS,
+  LOGOUT,
+  LOGIN
+} from '@constants/routes'
 import { VIEW_STATES } from '@styles/constants'
-/* import { ProfileImg } from '@routes/Profile/ProfileImg' */
+import { ProfileImg } from '@routes/Profile/ProfileImg'
 
 import {
   MenuItem,
@@ -27,10 +35,17 @@ const getLinksRelativeToAuth = pipe(
   Auth,
   ({ isAuthenticated }) => isAuthenticated(),
   loggedIn => [
-    [SETTINGS, 'Settings'],
-    loggedIn && [PROFILE, 'Profile'],
-    [REPL, 'REPL'],
-    loggedIn ? [LOGOUT, 'Logout'] : [LOGIN, 'Login']
+    loggedIn && [
+      PROFILE,
+      <div key="profile-image">
+        <ProfileImg variant="menu" />
+        Profile
+      </div>
+    ],
+    loggedIn ? [LOGOUT, 'Logout'] : [LOGIN, 'Login'],
+    [SERIES_FP, 'FP'],
+    [SERIES_JS, 'JS'],
+    [SERIES_OSS, 'OSS']
   ],
   filter(I)
 )
@@ -50,6 +65,7 @@ export const Menu = ({ setView, view }) => {
     e.preventDefault()
     return false
   }
+  const authenticated = Auth().isAuthenticated()
   return (
     <StyledMenu className="styled-menu">
       <SettingsButton
@@ -59,8 +75,13 @@ export const Menu = ({ setView, view }) => {
       >
         <Cog />
       </SettingsButton>
-      <FloatingMenu className="floating-menu" css={floating} onClick={eatClicksFor('floatingMenu')}>
-        <MenuCogTop active={active} onClick={toggle}>
+      <FloatingMenu
+        authenticated={authenticated}
+        className="floating-menu"
+        css={floating}
+        onClick={eatClicksFor('floatingMenu')}
+      >
+        <MenuCogTop active={active} onClick={toggle} authenticated={authenticated}>
           <Cog />
         </MenuCogTop>
         <FloatingMenuContent onClick={eatClicksFor('floatingContent')}>

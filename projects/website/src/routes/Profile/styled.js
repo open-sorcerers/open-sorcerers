@@ -60,6 +60,8 @@ export const placeholder = css`
   }
 `
 
+const variantSizing = p => (p.variant === 'menu' ? '6rem' : '8rem')
+
 export const Img = styled(Box)`
   display: block;
   margin: 0 auto;
@@ -68,8 +70,11 @@ export const Img = styled(Box)`
   position: relative;
   text-align: center;
   img {
-    max-width: 8rem;
-    max-height: 8rem;
+    max-width: ${variantSizing};
+    max-height: ${variantSizing};
+    min-width: ${variantSizing};
+    min-height: ${variantSizing};
+    background: ${ℂ.secondary};
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     display: inline;
     margin: 0 auto;

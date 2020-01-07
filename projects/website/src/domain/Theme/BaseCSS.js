@@ -201,8 +201,11 @@ const styles = css`
   h6 {
     font-size: 1.2em;
   }
-
   blockquote {
+    padding-left: 1rem;
+    border-left: 0.25rem solid ${ℂ.primary};
+  }
+  blockquote.one-liner {
     padding: 0.5rem;
     background-color: ${ℂ.quaternary};
     color: ${ℂ.secondary};

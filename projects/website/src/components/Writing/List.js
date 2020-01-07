@@ -1,9 +1,10 @@
 import React from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
-import { pipe, ap, pathOr, map } from 'ramda'
+import { split, pipe, ap, pathOr, map } from 'ramda'
 import PropTypes from 'prop-types'
 import { getPostsWithSummary } from '@queries/posts-with-summary'
+import { trace } from 'xtrace'
 
 import styled from '@emotion/styled'
 import * as ℂ from '@styles/colors'
@@ -20,13 +21,19 @@ const getLinkTitleAuthor = pipe(
     pathOr('/404', ['frontmatter', 'path']),
     pathOr('???', ['frontmatter', 'title']),
     pathOr('someone', ['frontmatter', 'author']),
-    pathOr([], ['tableOfContents', 'items'])
+    pipe(
+      trace('hey buddy'),
+      pathOr('', ['frontmatter', 'glossary']),
+      trace('important thing is that you are really loud'),
+      split(',')
+    )
   ])
 )
 
 const Post = props => {
   const { timeToRead, excerpt } = props
-  const [postLink, title, author, TOC] = getLinkTitleAuthor(props)
+  const [postLink, title, author, glossary] = getLinkTitleAuthor(props)
+  console.log('TOC TOC', glossary)
   return (
     <Box>
       <Box as="header">
@@ -40,15 +47,12 @@ const Post = props => {
           {map(
             item => (
               <>
-                <Link
-                  key={item.url}
-                  to={`/glossary/${item.url.replace('#', '').replace('-functions', '')}`}
-                >
-                  {item.title}
+                <Link key={item} to={`/glossary/${item}`}>
+                  {item}
                 </Link>
               </>
             ),
-            TOC
+            glossary
           )}
         </Glossary>
       </Box>
@@ -67,7 +71,6 @@ Post.propTypes = {
 }
 
 export const List = () => {
-  if (!checkWindowExists()) return null
   const data = getPostsWithSummary()
   return (
     <Box>

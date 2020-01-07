@@ -1,0 +1,17 @@
+---
+title: Function | Composition
+path: /glossary/composition
+author: brekk
+---
+
+## Composition
+
+An operation which takes two or more functions and returns a unary function.
+
+```js
+const f = x =>  x
+const g = x => y
+const h = x => f(g(x))
+import {pipe} from 'ramda'
+const h = pipe(f, g)
+```

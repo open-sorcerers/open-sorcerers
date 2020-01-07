@@ -1,0 +1,14 @@
+---
+title: Function | Higher-Order
+path: /glossary/higher-order-function
+author: brekk
+---
+
+## Higher-Order Function
+
+A function which takes a function and possible additional parameters, and returns a function.
+
+```js
+const map = fn => xs => xs.map(fn)
+map(times(2))([1,2,3]) === [2,4,6]
+```

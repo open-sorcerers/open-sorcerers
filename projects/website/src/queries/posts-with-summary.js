@@ -9,6 +9,7 @@ export const getPostsWithSummary = () =>
             author
             path
             title
+            glossary
           }
           id
           timeToRead

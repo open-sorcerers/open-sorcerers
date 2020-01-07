@@ -1,0 +1,18 @@
+---
+title: Function | Referentially Transparent
+path: /glossary/referentially-transparent-function
+author: brekk
+---
+
+## Referentially Transparent
+
+A function which (when invoked with all inputs) can be replaced in all instances without changing the program's behavior.
+
+```js
+const times = a => b => a * b
+const double = times(2)
+const ten = double(5) 
+const four = double(2) 
+const forty = times(ten)(four)
+times(ten)(four) === times(times(2)(5))(times(2)(2))
+```

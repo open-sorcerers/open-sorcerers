@@ -1,0 +1,15 @@
+---
+title: Arity | Binary
+path: /glossary/binary
+author: brekk
+---
+
+## Binary 
+
+A function which takes two parameters, or is said to have an [arity](/glossary/arity) of 2.
+
+```js
+const binary = (thing1, thing2) => `${thing1} => ${thing2}`
+const binaryMC = thing1 => thing2 => `${thing1} => ${thing2}`
+const binaryC = curry((thing1, thing2) => `${thing1} => ${thing2}`)
+```

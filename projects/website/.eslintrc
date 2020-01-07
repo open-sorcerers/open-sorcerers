@@ -19,3 +19,4 @@ rules:
       validation: always
       task: always
       svg: always
+      mdx: always

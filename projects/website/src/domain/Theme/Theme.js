@@ -10,7 +10,6 @@ import { BaseCSS } from './BaseCSS'
 const colors = { core, elements, ui, area }
 
 const system = { ...preset, colors }
-console.log('DESIGN SYSTEM', system)
 
 const Theme = ({ children }) => (
   <>

@@ -19,6 +19,23 @@ module.exports = {
     image: 'https://open.sorcerers.dev/logo-open-sorcerers.png'
   },
   plugins: [
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          /* {
+            resolve: `gatsby-remark-embed-snippet`,
+            options: {}
+          }, */
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              showLineNumbers: true
+            }
+          }
+        ]
+      }
+    },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-emotion',
     {
@@ -50,14 +67,25 @@ module.exports = {
           routes: require.resolve('./src/templates/MDXPage/index.js'),
           posts: require.resolve('./src/templates/MDXPage/index.js')
         },
-        gatsbyRemarkPlugins: process.env.OFFLINE
-          ? []
-          : [
-              { resolve: 'gatsby-remark-copy-linked-files' },
-              {
-                resolve: 'gatsby-remark-embed-gist'
-              }
-            ]
+        remarkPlugins: [{ resolve: 'remark-slug' }, { resolve: 'remark-autolink-headings' }],
+        gatsbyRemarkPlugins: [
+          /* { resolve: 'gatsby-remark-embed-snippet' }, */
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              showLineNumbers: true
+            }
+          }
+        ].concat(
+          process.env.OFFLINE
+            ? []
+            : [
+                { resolve: 'gatsby-remark-copy-linked-files' },
+                {
+                  resolve: 'gatsby-remark-embed-gist'
+                }
+              ]
+        )
       }
     },
 

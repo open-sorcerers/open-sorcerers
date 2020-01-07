@@ -28,7 +28,6 @@ const items = [
 ]
 
 const RawNavigation = props => {
-  console.log('PROPRPRPRPPRORPORNAV', props)
   const state = stateView(props)
   const { path = '' } = props
   const {

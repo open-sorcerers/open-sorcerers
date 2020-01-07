@@ -73,7 +73,8 @@ export const GIST = Object.freeze({
   property: 'cyan',
   string: '#01ec7e',
   entity: 'mediumorchid',
-  lineNumber: '#a699b4'
+  lineNumber: '#a699b4',
+  parameter: lemonchiffon
 })
 
 // state

@@ -25,14 +25,16 @@ const SEO = props => {
       }
     }
   `)
-
-  const { name, basepath, title, description, keywords = [], type, image } = {
+  const merged = {
     ...siteMetadata,
     ...seo,
     ...frontmatter
   }
 
+  const { name, basepath, title, description, keywords = [], type, image } = merged
   const url = `${basepath}${pathname}`
+
+  const kwords = (keywords || ['Open Sorcerers']).join(', ')
 
   return (
     <Helmet titleTemplate={`%s • ${name}`} defaultTitle={name}>
@@ -40,7 +42,7 @@ const SEO = props => {
 
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content={keywords.join(', ')} />
+      <meta name="keywords" content={kwords} />
       <script type="text/javascript" src="modernizr.js" />
       <link rel="canonical" href={url} />
       <link rel="stylesheet" href="https://use.typekit.net/mhh6emz.css" />

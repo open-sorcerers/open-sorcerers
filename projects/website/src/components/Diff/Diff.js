@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from 'rebass'
-import { trace } from 'xtrace'
 /* import { diffTrimmedLines } from 'diff' */
 /* import diff from 'deep-diff' */
 import grossdiff from 'prettydiff'
@@ -49,7 +48,6 @@ const prettify = curry((handleError, xx) => {
   try {
     return typeof xx === 'string' ? prettier.format(xx, prettierConfig) : xx
   } catch (e) {
-    console.log('handle this', e)
     handleError(e)
     return xx
   }
@@ -88,18 +86,17 @@ const compare = handleError => (aa, bb) => {
   return pipe(
     splitter,
     x => diff(splitter(aa), x),
-    trace('DIFF'),
     diffies =>
       diffies && (
         <>
           {addIndex(map)(
             ([kind, line], index) =>
-              console.log('WHAT', kind, line, index) ||
-              (line !== '' && kind !== '=' && (
+              line !== '' &&
+              kind !== '=' && (
                 <DiffLine
                   {...{ kind, line: line.replace(/&gt;/g, '>').replace(/&lt;/g, '<'), index }}
                 />
-              )),
+              ),
             diffies
           )}
         </>

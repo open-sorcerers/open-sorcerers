@@ -4,16 +4,10 @@ import { Link } from 'gatsby'
 import { split, pipe, ap, pathOr, map } from 'ramda'
 import PropTypes from 'prop-types'
 import { getPostsWithSummary } from '@queries/posts-with-summary'
-import { trace } from 'xtrace'
 
-import styled from '@emotion/styled'
-import * as ℂ from '@styles/colors'
-import { checkWindowExists } from '@utils/url'
 import { box } from '@utils/generic'
 
-const Glossary = styled(Box)`
-  background-color: ${ℂ.secondary};
-`
+import { EntityLink, Keywords } from './styled'
 
 const getLinkTitleAuthor = pipe(
   box,
@@ -21,29 +15,23 @@ const getLinkTitleAuthor = pipe(
     pathOr('/404', ['frontmatter', 'path']),
     pathOr('???', ['frontmatter', 'title']),
     pathOr('someone', ['frontmatter', 'author']),
-    pipe(
-      trace('hey buddy'),
-      pathOr('', ['frontmatter', 'glossary']),
-      trace('important thing is that you are really loud'),
-      split(',')
-    )
+    pipe(pathOr('', ['frontmatter', 'keywords']), split(','))
   ])
 )
 
 const Post = props => {
   const { timeToRead, excerpt } = props
-  const [postLink, title, author, glossary] = getLinkTitleAuthor(props)
-  console.log('TOC TOC', glossary)
+  const [postLink, title, author, keywords] = getLinkTitleAuthor(props)
   return (
     <Box>
       <Box as="header">
-        <Link to={postLink}>{title}</Link>
+        <EntityLink to={postLink}>{title}</EntityLink>
         <em>by @{author}</em>
       </Box>
       <Box as="blockquote">{excerpt}</Box>
       <Box as="footer">
         <span>{timeToRead + 5} minutes reading</span>
-        <Glossary>
+        <Keywords>
           {map(
             item => (
               <>
@@ -52,9 +40,9 @@ const Post = props => {
                 </Link>
               </>
             ),
-            glossary
+            keywords
           )}
-        </Glossary>
+        </Keywords>
       </Box>
     </Box>
   )
@@ -74,8 +62,9 @@ export const List = () => {
   const data = getPostsWithSummary()
   return (
     <Box>
-      <h1>Learn</h1>
-      <h2>By Reading</h2>
+      <h2>
+        <Link to="/build">By Reading</Link>
+      </h2>
       <>
         {map(
           post => (

@@ -4,11 +4,11 @@ path: /glossary/higher-order-function
 author: brekk
 ---
 
-## Higher-Order Function
+## [Higher-Order Function](/glossary/higher-order-function)
 
 A function which takes a function and possible additional parameters, and returns a function.
 
 ```js
-const map = fn => xs => xs.map(fn)
+const map = fn => xs => xs.map(x => fn(x)) // seeming identity closure to enforce unary
 map(times(2))([1,2,3]) === [2,4,6]
 ```

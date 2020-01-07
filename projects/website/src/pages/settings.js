@@ -34,11 +34,10 @@ const Routes = () => (
   </Router>
 )
 
-const Settings = ({ ...rest }) =>
-  console.log('>>@@>@>@', rest) || (
-    <Site {...rest}>
-      <Routes />
-    </Site>
-  )
+const Settings = ({ ...rest }) => (
+  <Site {...rest}>
+    <Routes />
+  </Site>
+)
 
 export default Settings

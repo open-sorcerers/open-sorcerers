@@ -23,7 +23,11 @@ const styles = css`
     line-height: 1.5rem;
   }
   .listing-page {
-    font-size: 3em;
+    a {
+      font-family: obviously, 'Obviously', sans-serif;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
     ul {
       list-style: none;
       padding: 0;
@@ -31,38 +35,34 @@ const styles = css`
     li {
       list-style: none;
       padding: 0;
-      a {
-        font-family: obviously, sans-serif;
-        font-weight: 900;
-        text-transform: uppercase;
-        font-size: 3rem;
-        line-height: 3rem;
-      }
+
       a.strikethrough {
         text-decoration: line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
-        text-shadow: 0 0 0 transparent;
         :hover {
           color: ${ℂ.UI.link};
         }
       }
     }
   }
+  #glossary {
+    h2 {
+      margin-top: 2rem;
+    }
+  }
 
   a {
     text-decoration: none;
-    font-family: 'Obviously Narrow', obviously-narrow, 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
     font-weight: 500;
-    font-size: 1.1rem;
     color: ${ℂ.UI.link};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
-    transition: ${easeOut('0.3s', ['color', 'text-shadow'])};
+    transition: ${easeOut('0.3s', ['color'])};
     &:hover {
       color: ${ℂ.UI.linkActive};
-      text-shadow: 0 0 0.75rem ${ℂ.UI.active};
     }
   }
   em {
@@ -79,25 +79,62 @@ const styles = css`
     color: ${ℂ.EL.PRE};
     padding: 0.75rem 0.5rem;
     position: relative;
+    overflow: hidden;
+    overflow-x: auto;
     code {
       position: relative;
-      &.language-js {
-        &::before {
-          font-size: 0.8rem;
-          width: 1.6rem;
-          height: 1.6rem;
-          text-align: right;
-          content: 'JS';
-          position: absolute;
-          left: -2.75rem;
-          top: -0.65rem;
-          padding-top: 0.3rem;
-          padding-left: 0.2rem;
-          padding-right: 0.2rem;
-          vertical-align: bottom;
-          background-color: ${ℂ.EL.CODE_BG};
-          color: ${ℂ.EL.CODE};
-        }
+    }
+  }
+  .gatsby-highlight {
+    position: relative;
+    &::before {
+      font-size: 0.8rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      text-align: right;
+      content: attr(data-language);
+      text-transform: uppercase;
+      position: absolute;
+      left: -2rem;
+      padding-top: 0.3rem;
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+      vertical-align: bottom;
+      background-color: ${ℂ.EL.CODE_BG};
+      color: ${ℂ.EL.CODE};
+    }
+  }
+  pre[class*='language-'].line-numbers {
+    position: relative;
+    padding-left: 3rem;
+  }
+  .language-js {
+    .line-numbers-rows {
+      top: 0.75rem;
+      width: 1.5rem !important;
+      left: 1rem !important;
+    }
+    .token {
+      &.keyword {
+        color: ${ℂ.GIST.property};
+      }
+      &.function {
+        color: ${ℂ.GIST.entity};
+      }
+      &.string {
+        color: ${ℂ.GIST.string};
+      }
+      &.comment {
+        color: ${ℂ.GIST.comment};
+      }
+      &.operator {
+        color: ${ℂ.GIST.operator};
+      }
+      &.punctuation {
+        color: ${ℂ.GIST.constant};
+      }
+      &.parameter {
+        color: white;
       }
     }
   }
@@ -112,10 +149,8 @@ const styles = css`
         padding: 0.2rem 0.5rem 0.5rem;
         background-color: ${ℂ.GIST.constant};
         color: black;
-        text-shadow: 0 0 0.3rem transparent;
         transform: background 0.7s ease-out, color 0.7s ease-out;
         &:hover {
-          text-shadow: 0 0 0.3rem ${ℂ.GIST.constant};
           color: white;
           background-color: black;
         }
@@ -176,13 +211,13 @@ const styles = css`
     margin: 0.5rem auto;
     line-height: 2rem;
     margin-top: 1rem;
-    font-family: 'Obviously Narrow', obviously-narrow, sans-serif;
+    font-family: obviously-narrow, 'Obviously', sans-serif;
     font-weight: 500;
     text-transform: uppercase;
     font-style: italic;
   }
   h1 {
-    font-family: 'Obviously', obviously, sans-serif;
+    font-family: obviously, 'Obviously', sans-serif;
     font-size: 3rem;
     line-height: 3rem;
   }
@@ -201,8 +236,11 @@ const styles = css`
   h6 {
     font-size: 1.2em;
   }
-
   blockquote {
+    padding-left: 1rem;
+    border-left: 0.25rem solid ${ℂ.primary};
+  }
+  blockquote.one-liner {
     padding: 0.5rem;
     background-color: ${ℂ.quaternary};
     color: ${ℂ.secondary};

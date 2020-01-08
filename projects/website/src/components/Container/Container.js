@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { StyledContainer } from './styled'
+import { StyledContainer, StyledContentContainer } from './styled'
 
-const Container = ({ children, setView, view, ...props }) => (
+export const Container = ({ children, setView, view, ...props }) => (
   <StyledContainer {...{ ...props, setView, view }}>{children}</StyledContainer>
 )
 
@@ -21,4 +21,15 @@ Container.defaultProps = {
   view: ''
 }
 
-export { Container }
+export const ContentContainer = ({ children, setView, view, ...props }) => (
+  <StyledContentContainer {...{ ...props, setView, view }}>{children}</StyledContentContainer>
+)
+
+ContentContainer.propTypes = Container.propTypes
+ContentContainer.defaultProps = {
+  children: null,
+  setView: () => {},
+  view: ''
+}
+
+export default Container

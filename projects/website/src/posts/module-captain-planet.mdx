@@ -1,0 +1,23 @@
+---
+title: captain-planet 
+author: brekk
+path: /modules/captain-planet
+keywords: [module]
+---
+
+# captain-planet 
+
+*Protect the environment*! Document your environment vars.
+
+```sh
+yarn add captain-planet
+captain-planet init
+captain-planet
+```
+
+Add an environment variable without documenting it, it's pollution!
+
+```sh
+echo "process.env.POLLUTION = 'I love pollution'" > some-file.js
+captain-planet
+```

@@ -1,5 +1,7 @@
 const path = require('path')
-const { curry, toPairs, map, pathOr, ifElse, prop, pipe } = require('ramda')
+const { ap, curry, toPairs, map, pathOr, ifElse, prop, pipe, propOr } = require('ramda')
+
+const box = x => [x]
 
 // Implement the Gatsby API “onCreatePage”. This is
 // called after every page is created.
@@ -11,9 +13,13 @@ exports.createPages = async ({ actions, graphql }) => {
         nodes {
           id
           frontmatter {
+            title
             author
             path
-            title
+            keywords
+            private
+            draft
+            publishAfter
           }
           fileAbsolutePath
         }
@@ -30,17 +36,54 @@ exports.createPages = async ({ actions, graphql }) => {
       z => z.slice(0, z.indexOf('.'))
     )
   )
+  return posts.data.allMdx.nodes.forEach(post => {
+    const isProd = process.env.NODE_ENV === 'production'
+    const fm = propOr({}, 'frontmatter', post)
+    const [title, priv, draft, after, postPath] = pipe(
+      box,
+      ap([
+        propOr('???', 'title'),
+        propOr(false, 'private'),
+        propOr(false, 'draft'),
+        propOr(new Date(Date.now() - 1e5), 'publishAfter'),
+        propOr('/writing/' + getName(post), 'path')
+      ])
+    )(fm)
+    if (isProd) {
+      // hide private
+      if (priv) {
+        console.warn(`Found private. Skipping "${title}"...`)
+        return
+      }
+      // hide if draft
+      if (draft) {
+        console.warn(`Found draft. Skipping "${title}"...`)
+        return
+      }
+      if (after) {
+        const parsed = Date.parse(after)
+        if (isNaN(parsed)) {
+          console.error(
+            `Unable to parse frontmatter.publishAfter (got: ${after}), skipping "${title}"...`
+          )
 
-  return posts.data.allMdx.nodes.forEach(
-    post =>
-      console.log(post, '<POST>') ||
-      actions.createPage({
-        path: (post.frontmatter && post.frontmatter.path) || '/writing/' + getName(post),
-        frontmatter: post.frontmatter,
-        component: path.resolve('./src/templates/MDXPage/index.js'),
-        context: post
-      })
-  )
+          throw new Error(`Unable to parse frontmatter.publishAfter for ${title}`)
+        }
+        const THRESHOLD = 1000 * 60 * 20
+        if (Date.now() + THRESHOLD < parsed) {
+          console.warn(`Not yet ready to publish: Skipping "${title}"...`)
+          return
+        }
+      }
+    }
+
+    actions.createPage({
+      path: postPath,
+      frontmatter: fm,
+      component: path.resolve('./src/templates/MDXPage/index.js'),
+      context: post
+    })
+  })
 }
 
 const clientOnlyMatches = {
@@ -65,4 +108,25 @@ exports.onCreatePage = async ({ page, actions }) => {
   const clientize = setClientOnlyRoute(createPage, page)
 
   return pipe(toPairs, map(clientize))(clientOnlyMatches)
+}
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type MarkdownRemark implements Node {
+      frontmatter: MdxFrontmatter
+    }
+    type MdxFrontmatter {
+      title: String
+      author: String
+      path: String
+      keywords: [String]
+      glossary: [String]
+      tags: [String]
+      private: Boolean
+      draft: Boolean
+      publishAfter: Date @dateformat(formatString: "DD-MM-YYYY")
+    }
+  `
+  createTypes(typeDefs)
 }

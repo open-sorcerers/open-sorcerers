@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { css } from '@emotion/core'
-import PropTypes from 'prop-types'
 import { pipe, pathOr, map } from 'ramda'
 import { Heading, Button, Box, Flex } from 'rebass'
-import { Textarea, Label, Select, Input, Radio, Checkbox } from '@rebass/forms'
+import { Textarea, Label, Input, Radio, Checkbox } from '@rebass/forms'
 
 const FIELDS = Object.freeze({
   title: 'title',
@@ -32,7 +31,7 @@ const handleSubmit = e => {
     ),
     FIELDS
   )
-  console.log('OUT', out)
+  console.log(out, "<<<")
 }
 
 export const SubmitNews = () => {

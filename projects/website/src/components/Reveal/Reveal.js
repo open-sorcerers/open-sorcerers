@@ -1,21 +1,28 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-export const Reveal = ({ children }) => {
+import { StyledReveal } from './styled'
+
+export const Reveal = ({ label, children }) => {
   const [visible, setVisible] = useState(false)
   return !visible ? (
-    <div
+    <StyledReveal
       onClick={() => {
         setVisible(true)
       }}
     >
-      <strong>Click to reveal!</strong>
-    </div>
+      {label}
+    </StyledReveal>
   ) : (
     children
   )
 }
 
-Reveal.propTypes = { children: PropTypes.arrayOf(PropTypes.any) }
+Reveal.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.any),
+  label: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
+}
+
+Reveal.defaultProps = { label: 'Click to reveal!' }
 
 export default Reveal

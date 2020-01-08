@@ -4,15 +4,7 @@ import { pipe, filter, identity as I, map } from 'ramda'
 
 import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
-import {
-  SETTINGS,
-  PROFILE,
-  SERIES_FP,
-  SERIES_JS,
-  SERIES_OSS,
-  LOGOUT,
-  LOGIN
-} from '@constants/routes'
+import { PROFILE, SERIES_FP, SERIES_JS, SERIES_OSS, LOGOUT, LOGIN } from '@constants/routes'
 import { VIEW_STATES } from '@styles/constants'
 import { ProfileImg } from '@routes/Profile/ProfileImg'
 
@@ -57,7 +49,6 @@ export const Menu = ({ setView, view }) => {
     setView(bb ? VIEW_STATES.MENU_ACTIVE : VIEW_STATES.DEFAULT)
     setActive(bb)
   }
-  console.log('view', view)
 
   const floating = active ? activeMenu : inactiveMenu
   const MENU_LINKS = getLinksRelativeToAuth()

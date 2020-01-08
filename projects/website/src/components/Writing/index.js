@@ -5,7 +5,7 @@ import { Box } from 'rebass'
 import { map } from 'ramda'
 
 import { Li } from '@styles/List'
-import { Container } from '@components/Container'
+import { ContentContainer } from '@components/Container'
 import { getPosts } from '@queries/posts'
 
 const waysOfLearning = [
@@ -17,7 +17,7 @@ const waysOfLearning = [
 export const Learn = () => {
   const data = getPosts()
   return (
-    <Container>
+    <ContentContainer>
       <h1 fontSize={['2rem', '3rem', '4rem']}>Learn</h1>
       <Box as="ul">
         <Li as="li">
@@ -45,7 +45,7 @@ export const Learn = () => {
           waysOfLearning
         )}
       </Box>
-    </Container>
+    </ContentContainer>
   )
 }
 

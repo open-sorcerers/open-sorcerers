@@ -3,8 +3,8 @@
     "description": "sometimes you wanna use local servers, like, only locally",
     "env": ["OFFLINE"]
   },
-  "now": {
-    "description": "the time is now to use zeit now",
+  "environment": {
+    "description": "the environment! sometimes it's production -- watch out",
     "env": ["NODE_ENV"]
   }
 }

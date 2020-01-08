@@ -33,7 +33,8 @@ const getLinkTitleAuthor = pipe(
     pathOr('/404', ['frontmatter', 'path']),
     pathOr('???', ['frontmatter', 'title']),
     pathOr('someone', ['frontmatter', 'author']),
-    pathOr([], ['frontmatter', 'glossary'])
+    pathOr([], ['frontmatter', 'glossary']),
+    pathOr(false, ['frontmatter', 'link'])
   ])
 )
 
@@ -55,19 +56,17 @@ ReadingTime.propTypes = {
 
 const Post = props => {
   const { timeToRead, excerpt } = props
-  const [postLink, title, author, glossary] = getLinkTitleAuthor(props)
+  const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   return (
     <StyledPost>
       <PostHeader>
-        <EntityLink to={postLink}>
-          {isModule(props) ? <ModuleToken>📦</ModuleToken> : null}
-          {title}
-        </EntityLink>
+        <EntityLink to={postLink}>{title}</EntityLink>
+        {isModule(props) ? <ModuleToken>📦</ModuleToken> : null}
       </PostHeader>
       <PostContent>{excerpt}</PostContent>
       <PostFooter>
         <FooterFirst>
-          <em>@{author}</em>
+          <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>
         </FooterFirst>
         <FooterLast>
           <ReadingTime icon="◉" timeToRead={timeToRead} excerpt={excerpt} />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
-import { Container } from '@components/Container'
+import { ContentContainer } from '@components/Container'
 import { Site } from '@domain/Site'
 
 export const MDXPage = ({ data, ...other }) =>
@@ -11,9 +11,9 @@ export const MDXPage = ({ data, ...other }) =>
     <>{other.children}</>
   ) : (
     <Site {...other}>
-      <Container>
+      <ContentContainer>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      </Container>
+      </ContentContainer>
     </Site>
   )
 

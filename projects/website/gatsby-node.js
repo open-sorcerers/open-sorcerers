@@ -121,6 +121,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       author: String
       path: String
       keywords: [String]
+      glossary: [String]
       tags: [String]
       private: Boolean
       draft: Boolean

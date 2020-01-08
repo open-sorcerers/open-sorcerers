@@ -1,3 +1,18 @@
+const gatsbyRemarkPlugins = (process.env.OFFLINE
+  ? []
+  : [
+      { resolve: 'gatsby-remark-copy-linked-files' },
+      {
+        resolve: 'gatsby-remark-embed-gist'
+      }
+    ]
+).concat({
+  resolve: 'gatsby-remark-prismjs',
+  options: {
+    showLineNumbers: true
+  }
+})
+
 module.exports = {
   siteMetadata: {
     name: 'Open Sorcerers',
@@ -68,24 +83,7 @@ module.exports = {
           posts: require.resolve('./src/templates/MDXPage/index.js')
         },
         remarkPlugins: [{ resolve: 'remark-slug' }, { resolve: 'remark-autolink-headings' }],
-        gatsbyRemarkPlugins: [
-          /* { resolve: 'gatsby-remark-embed-snippet' }, */
-          {
-            resolve: 'gatsby-remark-prismjs',
-            options: {
-              showLineNumbers: true
-            }
-          }
-        ].concat(
-          process.env.OFFLINE
-            ? []
-            : [
-                { resolve: 'gatsby-remark-copy-linked-files' },
-                {
-                  resolve: 'gatsby-remark-embed-gist'
-                }
-              ]
-        )
+        gatsbyRemarkPlugins
       }
     },
 

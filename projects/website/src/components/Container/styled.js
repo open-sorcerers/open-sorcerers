@@ -14,3 +14,15 @@ export const StyledContainer = styled(Box)`
     padding: 0 2rem;
   `)}
 `
+
+export const StyledContentContainer = styled(Box)`
+  margin: 0 auto;
+  padding: 0 0.5rem;
+  width: 100%;
+  ${above.TINY_PHONE(`
+    padding: 0 1.5rem;
+  `)}
+  ${above.TABLET_PORTRAIT(`
+    padding: 0 2rem;
+  `)}
+`

@@ -1,12 +1,11 @@
 import { useStaticQuery, graphql } from 'gatsby'
-
-export const getPostsWithSummary = () =>
+export const getReviewsWithSummary = () =>
   useStaticQuery(graphql`
-    query getPostsWithSummary {
+    query getReviewsWithSummary {
       allMdx(
         filter: {
-          frontmatter: { keywords: { nin: ["module", "review"] } }
           fileAbsolutePath: { regex: "/posts/" }
+          frontmatter: { keywords: { in: "review" } }
         }
       ) {
         nodes {

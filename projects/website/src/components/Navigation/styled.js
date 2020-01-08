@@ -105,9 +105,6 @@ export const activeItemHover = css`
   color: #fff;
   text-decoration: none;
 
-  a {
-    text-shadow: 0;
-  }
 `
 
 export const StyledItem = styled(Link)`
@@ -123,12 +120,10 @@ export const StyledItem = styled(Link)`
   opacity: ${p => (p.isActive ? '1' : '0.6')};
   padding: 0 0.5rem;
   text-decoration: none;
-  text-shadow: 0;
 
   &:hover {
     color: ${tertiary};
     opacity: 1;
-    text-shadow: 0 0 1rem rgba(0,0,0,0.9);
   }
 
   ${above.SMALL_PHONE(`

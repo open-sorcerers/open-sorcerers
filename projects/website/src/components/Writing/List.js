@@ -2,9 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { includes, curry, sort, pipe, ap, pathOr, map } from 'ramda'
 import PropTypes from 'prop-types'
-import { getModulesWithSummary } from '@queries/modules-with-summary'
-import { getReviewsWithSummary } from '@queries/reviews-with-summary'
-import { getPostsWithSummary } from '@queries/posts-with-summary'
+import { getMDXWithSummary } from '@queries/posts-with-summary'
 
 import { box } from '@utils/generic'
 
@@ -26,6 +24,7 @@ import {
 const isPrivate = pathOr(false, ['frontmatter', 'private'])
 const isDraft = pathOr(false, ['frontmatter', 'draft'])
 const isModule = pipe(pathOr([], ['frontmatter', 'keywords']), includes('module'))
+const isGlossaryItem = pipe(pathOr('', ['frontmatter', 'path']), includes('glossary'))
 
 const getLinkTitleAuthor = pipe(
   box,
@@ -55,8 +54,10 @@ ReadingTime.propTypes = {
 }
 
 const Post = props => {
+  console.log('RPOPORPRO', props)
   const { timeToRead, excerpt } = props
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
+  const isGlossary = isGlossaryItem(props)
   return (
     <StyledPost>
       <PostHeader>
@@ -66,7 +67,7 @@ const Post = props => {
       <PostContent>{excerpt}</PostContent>
       <PostFooter>
         <FooterFirst>
-          <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>
+          {!isGlossary && <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>}
         </FooterFirst>
         <FooterLast>
           <ReadingTime icon="◉" timeToRead={timeToRead} excerpt={excerpt} />
@@ -103,22 +104,22 @@ const sortPosts = sort((aa, bb) => {
   const bPri = isPrivate(bb)
   const aDra = isDraft(aa)
   const bDra = isDraft(bb)
+  const aGlo = isGlossaryItem(aa)
+  const bGlo = isGlossaryItem(bb)
 
   if (aPri && !bPri) return 1
   if (aDra && !bDra) return 1
   if (bPri && !aPri) return -1
   if (bDra && !aDra) return -1
+  if (aGlo && bGlo) {
+    return aa.frontmatter.title > bb.frontmatter.title ? 1 : -1
+  }
 
   return 0
 })
 
 export const List = ({ title, filter: ff }) => {
-  const data =
-    ff === 'modules'
-      ? getModulesWithSummary()
-      : ff === 'reviews'
-      ? getReviewsWithSummary()
-      : getPostsWithSummary()
+  const data = getMDXWithSummary()
   return (
     <StyledList>
       <h2>{title}</h2>
@@ -126,13 +127,13 @@ export const List = ({ title, filter: ff }) => {
         {pipe(
           sortPosts,
           map(post => <Post key={post.id} {...post} />)
-        )(data.allMdx.nodes)}
+        )(data[ff || 'posts'].nodes)}
       </StyledListWrapper>
     </StyledList>
   )
 }
 
-List.propTypes = { title: PropTypes.string }
+List.propTypes = { title: PropTypes.string, filter: PropTypes.string }
 
 List.defaultProps = { title: 'Reading' }
 

@@ -39,7 +39,6 @@ const styles = css`
       a.strikethrough {
         text-decoration: line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
-        text-shadow: 0 0 0 transparent;
         :hover {
           color: ${ℂ.UI.link};
         }
@@ -61,10 +60,9 @@ const styles = css`
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
-    transition: ${easeOut('0.3s', ['color', 'text-shadow'])};
+    transition: ${easeOut('0.3s', ['color'])};
     &:hover {
       color: ${ℂ.UI.linkActive};
-      text-shadow: 0 0 0.75rem ${ℂ.UI.active};
     }
   }
   em {
@@ -137,7 +135,6 @@ const styles = css`
       }
       &.parameter {
         color: white;
-        text-shadow: 0 0 0.3rem ${ℂ.GIST.parameter};
       }
     }
   }
@@ -152,10 +149,8 @@ const styles = css`
         padding: 0.2rem 0.5rem 0.5rem;
         background-color: ${ℂ.GIST.constant};
         color: black;
-        text-shadow: 0 0 0.3rem transparent;
         transform: background 0.7s ease-out, color 0.7s ease-out;
         &:hover {
-          text-shadow: 0 0 0.3rem ${ℂ.GIST.constant};
           color: white;
           background-color: black;
         }

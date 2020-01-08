@@ -14,7 +14,6 @@ export const GlossaryLinks = styled(Box)`
     margin-left: 0.5rem;
     &:hover {
       color: white;
-      text-shadow: none;
     }
   }
 `
@@ -35,9 +34,6 @@ export const StyledPost = styled(Box)`
   display: flex;
   border: 1px solid ${ℂ.primary};
   flex-direction: column;
-  h1 {
-    text-align: center;
-  }
   ${above.TABLET_PORTRAIT(`
      min-width: calc(50% - 0.5rem);
      max-width: calc(50% - 0.5rem);
@@ -96,7 +92,6 @@ export const PostHeader = styled.header`
     color: ${ℂ.quaternary};
     &:hover {
       color: ${ℂ.tertiary};
-      text-shadow: none;
     }
   }
 `
@@ -143,5 +138,4 @@ export const StyledReadingTime = styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  text-shadow: 0 0 0.25rem yellow, 0 0 1rem white;
 `

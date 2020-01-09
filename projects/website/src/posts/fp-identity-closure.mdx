@@ -1,0 +1,22 @@
+---
+title: FP | Identity Closure
+path: /series/fp/identity-closure
+author: brekk
+---
+
+## [Identity Closure](/series/fp/identity-closure)
+
+An [identity](/glossary/identity) closure refers to a function which calls another function and returns the result, usually doing no intermediary translation.
+
+```js
+const shout = x => x.toUpperCase()
+const identityClosure = x => shout(x)
+const inputs = [
+ '(usually)', 'no', 'need',
+ 'for', 'identity', 'closures'
+]
+inputs.map(identityClosure) === inputs.map(shout)
+inputs.map(x => shout(x)) === inputs.map(shout)
+```
+
+**NB** <span id="nota-bene">The only valid case for an identity closure is when there is a scope / binding which breaks in the tacit (un-closured) form.</span>

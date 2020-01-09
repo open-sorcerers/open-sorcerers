@@ -1,0 +1,34 @@
+---
+title: FP | trace
+path: /series/fp/trace
+author: brekk
+keywords: [series]
+glossary: [composition, binary, side-effect]
+---
+
+# [trace](/series/fp/trace)
+
+Trace is a simple pattern which allows for invoking a [binary](/glossary/binary) [side-effect](/glossary/side-effect) in composition.
+
+```js
+import {__, pipe, curry} from 'ramda'
+const traceSideEffect = curry((fn, a, b) => {
+  fn(a, b)
+  return b
+})
+const trace = traceSideEffect(console.log)
+// OR (shameless plug)
+// import {trace} from 'xtrace'
+const addAndDivide = curry(
+  (a, b, c) => pipe(
+    add(a),
+    trace('a + b'),
+    divide(__, c),
+    trace('output')
+  )(b)
+)
+```
+
+### Modules
+
+- [xtrace](//npmjs.org/package/xtrace)

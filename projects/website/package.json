@@ -11,6 +11,7 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@dschau/gatsby-source-github": "^0.0.1",
     "@emotion/babel-preset-css-prop": "^10.0.23",
     "@emotion/core": "^10.0.22",
     "@mdx-js/mdx": "^1.5.1",
@@ -29,6 +30,7 @@
     "gatsby": "^2.18.11",
     "gatsby-image": "^2.2.31",
     "gatsby-plugin-alias-imports": "^1.0.5",
+    "gatsby-plugin-build-date": "^1.0.0",
     "gatsby-plugin-google-analytics": "^2.1.31",
     "gatsby-plugin-google-tagmanager": "^2.1.20",
     "gatsby-plugin-manifest": "^2.2.27",
@@ -44,6 +46,11 @@
     "gatsby-remark-embed-snippet": "^4.1.18",
     "gatsby-remark-prismjs": "^3.3.29",
     "gatsby-source-filesystem": "^2.1.36",
+    "gatsby-source-github-contributors": "^0.1.9",
+    "gatsby-source-meetup-events": "^1.0.2",
+    "gatsby-source-npm": "^1.0.3",
+    "gatsby-source-rss": "https://github.com/rheajt/gatsby-source-rss",
+    "gatsby-source-rss-feed": "^1.1.1",
     "gatsby-transformer-remark": "^2.6.45",
     "gatsby-transformer-sharp": "^2.3.3",
     "modernizr": "^3.8.0",

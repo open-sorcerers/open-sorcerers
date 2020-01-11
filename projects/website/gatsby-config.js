@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-const { map, curry, pipe, reduce, merge } = R
+const { nth, map, curry, pipe, reduce, merge } = R
 
 const gatsbyRemarkPlugins = (process.env.OFFLINE
   ? []
@@ -51,6 +51,33 @@ const layout = curry((pt, kk) =>
 const allLayoutsAreTheSame = layout('./src/templates/MDXPage/index.js')
 const defaultLayouts = pipe(map(allLayoutsAreTheSame), reduce(merge, {}))(KEYED_PATHS)
 
+/*
+const rss = ([url, name]) => ({
+  resolve: `gatsby-source-rss-feed`,
+  options: {
+    url,
+    name
+  }
+})
+*/
+const rss = ([rssURL, name]) => ({
+  resolve: `gatsby-source-rss`,
+  options: {
+    rssURL,
+    customFields: {
+      item: [name]
+    }
+  }
+})
+const RSS_SOURCES = [
+  ['http://www.echojs.com/rss', 'Echo JS'],
+  ['https://javascriptweekly.com/rss', 'Javascript Weekly'],
+  ['https://api.npmaddict.com/v1/feeds/real-time', 'npm addict']
+]
+
+const rssSources = map(rss, RSS_SOURCES)
+console.log('RSSSOURCES', rssSources)
+
 const plugins = (process.env.OFFLINE
   ? []
   : [
@@ -65,7 +92,14 @@ const plugins = (process.env.OFFLINE
         options: {
           repo: 'open-sorcerers/open-sorcerers'
         }
+      },
+      ...rssSources
+      /*
+      {
+        resolve: `gatsby-source-rss-cat`,
+        options: { category: `javascript`, feeds: map(nth(0), RSS_SOURCES) }
       }
+      */
     ]
 ).concat([
   {
@@ -167,6 +201,8 @@ const plugins = (process.env.OFFLINE
     }
   }
 ])
+
+console.log('plugins', plugins && plugins.map(p => p.resolve))
 
 module.exports = {
   siteMetadata: {

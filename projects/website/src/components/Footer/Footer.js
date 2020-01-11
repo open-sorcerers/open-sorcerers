@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'gatsby'
 
 import { Container } from '@components/Container'
 import { StyledFooter, Inner, Left, Right } from './styled'
@@ -24,10 +25,7 @@ export const Footer = () => (
             <span role="img" aria-label="love">
               💜
             </span>{' '}
-            by{' '}
-            <a href="https://open.sorcerers.dev" target="_blank" rel="noopener noreferrer">
-              Open Sorcerers
-            </a>
+            by <Link to="/contributors">Open Sorcerers</Link>
           </div>
         </Right>
       </Inner>

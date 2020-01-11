@@ -75,7 +75,7 @@ export const Img = styled(Box)`
     min-width: ${variantSizing};
     min-height: ${variantSizing};
     background: ${ℂ.secondary};
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: inline;
     margin: 0 auto;
     position: relative;

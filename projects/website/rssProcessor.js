@@ -1,43 +1,87 @@
+const fs = require('fs')
+const nodePath = require('path')
 const R = require('ramda')
+const F = require('fluture')
+const ff = require('follow-redirect-url')
+const { trace } = require('xtrace')
+
 const x = require('./rss.json')
 
+const {
+  curry,
+  anyPass,
+  includes,
+  ifElse,
+  identity,
+  prop,
+  propOr,
+  replace,
+  pipe,
+  split,
+  chain,
+  map,
+  filter,
+  pathOr,
+  last,
+  ap
+} = R
+
+const writeTo = curry(
+  (pp, what) =>
+    new F((bad, good) => {
+      fs.writeFile(pp, what, 'utf8', (e, xxx) => (e ? bad(e) : good(xxx)))
+      return () => {}
+    })
+)
+
+const follow = url =>
+  new F((bad, good) => {
+    ff.startFollowing('https://' + url)
+      .catch(bad)
+      .then(good)
+    return () => {}
+  })
 const rLink = new RegExp('"https?://(.*)"', 'gm')
 
-const logType = tag => whatever => {
-  console.log(tag, typeof whatever, whatever)
-  return whatever
-}
-const logOnce = R.once(console.log)
-
-const findLinks = R.pipe(
-  R.split('\n'),
-  R.chain(R.split('><')),
-  R.map(zz => {
+const findLinks = pipe(
+  split('\n'),
+  chain(split('><')),
+  map(zz => {
     const aa = rLink.exec(zz)
     return aa && aa.index ? aa[1].slice(0, aa[1].indexOf('"')) : false
   }),
-  R.filter(R.identity)
+  filter(identity)
 )
 
-const processRSS = R.pipe(
-  R.pathOr([], ['data', 'allRssFeedItem', 'nodes']),
-  R.map(
-    R.pipe(
+const WHITELIST = ['javascriptweekly.com']
+
+const followLink = ifElse(anyPass(map(includes, WHITELIST)), follow, F.of)
+
+const stripNewlines = replace(/\n/g, '')
+const j2 = jj => JSON.stringify(jj, null, 2)
+
+const processRSS = pipe(
+  pathOr([], ['data', 'allRssFeedItem', 'nodes']),
+  map(
+    pipe(
       zz => [zz],
-      R.ap([
-        R.pipe(R.prop('id'), R.replace(/\n/, '')),
-        R.propOr('', 'title'),
-        R.pipe(R.propOr('', 'content'))
+      ap([
+        pipe(prop('id'), stripNewlines),
+        pipe(propOr('', 'title'), stripNewlines),
+        propOr('', 'content')
       ])
     )
   ),
-  R.map(
-    R.ifElse(
-      R.pipe(R.nth(2), R.length, R.lt(200)),
-      ([ii, tt, cc]) => [ii, tt, findLinks(cc)],
-      ([ii, tt, cc]) => [ii, tt, cc]
-    )
-  )
+  map(([ii, tt, cc]) => {
+    const foundLinks = findLinks(cc)
+    const pathing = F.parallel(10)(foundLinks.map(followLink))
+    const linksOrRaw = foundLinks.length > 0 ? pathing : F.of(cc)
+    return map(zz => [ii, tt, zz])(linksOrRaw)
+  }),
+  F.parallel(10),
+  map(j2),
+  chain(writeTo(nodePath.resolve(process.cwd(), 'processed.rss.json'))),
+  F.fork(trace('bad'))(trace('good'))
 )
 
-console.log('>>>>', processRSS(x))
+processRSS(x)

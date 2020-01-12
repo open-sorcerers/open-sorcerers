@@ -14,5 +14,8 @@ export const getContributors = () =>
         }
         distinct(field: id)
       }
+      currentBuildDate {
+        currentDate
+      }
     }
   `)

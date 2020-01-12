@@ -34,32 +34,24 @@ const srcFs = xx =>
         }
       }
 
+const mdxPage = './src/templates/MDXPage/index.js'
+const verbPage = './src/templates/VerbPage/index.js'
+
 const KEYED_PATHS = [
-  ['glossary', 'content/glossary'],
-  ['modules', 'content/modules'],
-  'pages',
-  'posts',
-  'routes',
-  ['reviews', 'content/reviews']
+  ['glossary', 'content/glossary', mdxPage],
+  ['modules', 'content/modules', mdxPage],
+  ['pages', 'pages', mdxPage],
+  ['posts', 'posts', mdxPage],
+  ['routes', 'routes', verbPage],
+  ['reviews', 'content/reviews', mdxPage]
 ]
 
 const namedFilePaths = map(srcFs, KEYED_PATHS)
 
-const layout = curry((pt, kk) =>
-  Array.isArray(kk) ? { [kk[0]]: require.resolve(pt) } : { [kk]: require.resolve(pt) }
-)
-const allLayoutsAreTheSame = layout('./src/templates/MDXPage/index.js')
-const defaultLayouts = pipe(map(allLayoutsAreTheSame), reduce(merge, {}))(KEYED_PATHS)
+const layout = kk => ({ [kk[0]]: require.resolve(kk[2]) })
+/* const allLayoutsAreTheSame = layout(mdxPage) */
+const defaultLayouts = pipe(map(layout), reduce(merge, {}))(KEYED_PATHS)
 
-/*
-const rss = ([url, name]) => ({
-  resolve: `gatsby-source-rss-feed`,
-  options: {
-    url,
-    name
-  }
-})
-*/
 const rss = ([rssURL, name]) => ({
   resolve: `gatsby-source-rss`,
   options: {
@@ -76,8 +68,6 @@ const RSS_SOURCES = [
 ]
 
 const rssSources = map(rss, RSS_SOURCES)
-console.log('RSSSOURCES', rssSources)
-
 const plugins = (process.env.OFFLINE
   ? []
   : [
@@ -94,19 +84,13 @@ const plugins = (process.env.OFFLINE
         }
       },
       ...rssSources
-      /*
-      {
-        resolve: `gatsby-source-rss-cat`,
-        options: { category: `javascript`, feeds: map(nth(0), RSS_SOURCES) }
-      }
-      */
     ]
 ).concat([
   {
     resolve: `gatsby-plugin-build-date`,
     options: {
       formatting: {
-        format: 'DD-MM-YYYY',
+        format: 'YYYY-MM-DDTHH:mm:ss.sssZ',
         utc: true
       }
     }

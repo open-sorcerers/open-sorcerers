@@ -49,6 +49,9 @@ export const getMDXWithSummary = () => {
       ) {
         ...LookupMDX
       }
+      currentBuildDate {
+        currentDate
+      }
     }
   `)
 }

@@ -2,10 +2,12 @@ import { graphql } from 'gatsby'
 
 import { prefill } from '@components/pages/MDXPage'
 
-export const MDXPage = prefill({})
+const VerbPage = prefill({
+  className: 'verb-page'
+})
 
 export const pageQuery = graphql`
-  query MDXQuery($id: String!) {
+  query VerbPage($id: String!) {
     mdx(id: { eq: $id }) {
       id
       body
@@ -16,4 +18,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default MDXPage
+export default VerbPage

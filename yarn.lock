@@ -9717,14 +9717,6 @@ fluture@^12.0.2:
     sanctuary-show "^1.0.0"
     sanctuary-type-identifiers "^2.0.0"
 
-fluture@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/fluture/-/fluture-12.1.0.tgz#1fda88b2544e126bdc32fded79e8feb37bb4b50d"
-  integrity sha512-z3m4PXh8aRm00mRE/M+sRhZeQrYmpZnmeq89TEm3dtEp2CGt+XNbv7jagsGAZzfscRBaz/yAR5dIVD8KPoNhtQ==
-  dependencies:
-    sanctuary-show "^1.0.0"
-    sanctuary-type-identifiers "^2.0.0"
-
 fn-name@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/fn-name/-/fn-name-1.0.1.tgz#de8d8a15388b33cbf2145782171f73770c6030f0"

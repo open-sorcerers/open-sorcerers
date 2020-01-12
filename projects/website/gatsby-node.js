@@ -76,11 +76,16 @@ exports.createPages = async ({ actions, graphql }) => {
         }
       }
     }
-
+    /* console.log('post', post) */
+    // fileAbsolutePath: '/Users/brekkbockrath/work/open-sorcerers/projects/website/src/content/reviews/review-snowpack.mdx'
+    const component = post.fileAbsolutePath.includes('routes')
+      ? path.resolve('./src/templates/VerbPage/index.js')
+      : path.resolve('./src/templates/MDXPage/index.js')
     actions.createPage({
       path: postPath,
       frontmatter: fm,
-      component: path.resolve('./src/templates/MDXPage/index.js'),
+
+      component,
       context: post
     })
   })

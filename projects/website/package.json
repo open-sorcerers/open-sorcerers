@@ -63,6 +63,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
+    "react-quiz-component": "^0.3.2",
     "react-uid": "^2.2.0",
     "rebass": "^4.0.7",
     "remark-autolink-headings": "^5.2.1",

@@ -76,12 +76,18 @@ const processRSS = pipe(
     const foundLinks = findLinks(cc)
     const pathing = F.parallel(10)(foundLinks.map(followLink))
     const linksOrRaw = foundLinks.length > 0 ? pathing : F.of(cc)
-    return map(zz => [ii, tt, zz])(linksOrRaw)
+    return map(zz => [
+      ii,
+      tt,
+      Array.isArray(zz)
+        ? zz.map(zzz => (Array.isArray(zzz) ? zzz.filter(zzzz => zzzz.status === 200) : zzz))
+        : zz
+    ])(linksOrRaw)
   }),
   F.parallel(10),
   map(j2),
   chain(writeTo(nodePath.resolve(process.cwd(), 'processed.rss.json'))),
-  F.fork(trace('bad'))(trace('good'))
+  F.fork(trace('bad'))(trace('written to processed.rss.json'))
 )
 
 processRSS(x)

@@ -185,12 +185,6 @@
     [
       [
         {
-          "url": "https://javascriptweekly.com/link/82235/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascriptweekly.com/issues/470"
-        },
-        {
           "url": "https://javascriptweekly.com/issues/470",
           "redirect": false,
           "status": 200
@@ -198,12 +192,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82244/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.snowpack.dev/"
-        },
-        {
           "url": "https://www.snowpack.dev/",
           "redirect": false,
           "status": 200
@@ -211,24 +199,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82244/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.snowpack.dev/"
-        },
-        {
           "url": "https://www.snowpack.dev/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82246/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://risingstars.js.org/2019/en/"
-        },
         {
           "url": "https://risingstars.js.org/2019/en/",
           "redirect": false,
@@ -237,12 +213,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82236/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.bugsnag.com/platforms/javascript?utm_source=cooperpress&utm_medium=cpc&utm_content=trial-signup&utm_campaign=javascript&utm_term=20200110"
-        },
-        {
           "url": "https://www.bugsnag.com/platforms/javascript?utm_source=cooperpress&utm_medium=cpc&utm_content=trial-signup&utm_campaign=javascript&utm_term=20200110",
           "redirect": false,
           "status": 200
@@ -250,24 +220,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82236/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.bugsnag.com/platforms/javascript?utm_source=cooperpress&utm_medium=cpc&utm_content=trial-signup&utm_campaign=javascript&utm_term=20200110"
-        },
-        {
           "url": "https://www.bugsnag.com/platforms/javascript?utm_source=cooperpress&utm_medium=cpc&utm_content=trial-signup&utm_campaign=javascript&utm_term=20200110",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82247/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://overreacted.io/what-is-javascript-made-of/"
-        },
         {
           "url": "https://overreacted.io/what-is-javascript-made-of/",
           "redirect": false,
@@ -276,24 +234,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82248/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.twilio.com/blog/move-to-typescript"
-        },
-        {
           "url": "https://www.twilio.com/blog/move-to-typescript",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82265/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://medium.com/storybookjs/state-of-storybook-2019-b6a91ac79b74"
-        },
         {
           "url": "https://medium.com/storybookjs/state-of-storybook-2019-b6a91ac79b74",
           "redirect": false,
@@ -302,24 +248,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82237/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.emberjs.com/2019/12/20/ember-3-15-released.html"
-        },
-        {
           "url": "https://blog.emberjs.com/2019/12/20/ember-3-15-released.html",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82267/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/date-fns/date-fns/releases/tag/v2.9.0"
-        },
         {
           "url": "https://github.com/date-fns/date-fns/releases/tag/v2.9.0",
           "redirect": false,
@@ -328,24 +262,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82268/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/rwaldron/johnny-five"
-        },
-        {
           "url": "https://github.com/rwaldron/johnny-five",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82269/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/wycats/handlebars.js"
-        },
         {
           "url": "https://github.com/wycats/handlebars.js",
           "redirect": false,
@@ -354,24 +276,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82270/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/Simonwep/pickr"
-        },
-        {
           "url": "https://github.com/Simonwep/pickr",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82238/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://jobs.lever.co/tempest/1847eb07-740b-4da4-916d-92c08686ec53?lever-origin=applied&lever-source%5B%5D=Cooper%20Press%20JavaScript%20Weekly"
-        },
         {
           "url": "https://jobs.lever.co/tempest/1847eb07-740b-4da4-916d-92c08686ec53?lever-origin=applied&lever-source%5B%5D=Cooper%20Press%20JavaScript%20Weekly",
           "redirect": false,
@@ -380,30 +290,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82239/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584"
-        },
-        {
           "url": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82249/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://t.co/mh2qnGWEbM?amp=1"
-        },
-        {
-          "url": "https://t.co/mh2qnGWEbM?amp=1",
-          "redirect": true,
-          "status": "200 + META REFRESH",
-          "redirectUrl": "https://medium.com/javascript-in-plain-english/an-abbreviated-history-of-javascript-package-managers-f9797be7cf0e"
-        },
         {
           "url": "https://medium.com/javascript-in-plain-english/an-abbreviated-history-of-javascript-package-managers-f9797be7cf0e",
           "redirect": false,
@@ -412,24 +304,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82250/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://css-tricks.com/understanding-async-await/"
-        },
-        {
           "url": "https://css-tricks.com/understanding-async-await/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82240/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://forwardjs.com/"
-        },
         {
           "url": "https://forwardjs.com/",
           "redirect": false,
@@ -438,24 +318,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82262/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://logaretm.com/blog/2019-12-21-vuex-off-mainthread/"
-        },
-        {
           "url": "https://logaretm.com/blog/2019-12-21-vuex-off-mainthread/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82251/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.smashingmagazine.com/2020/01/angular-8-material-application-netlify/"
-        },
         {
           "url": "https://www.smashingmagazine.com/2020/01/angular-8-material-application-netlify/",
           "redirect": false,
@@ -464,30 +332,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82252/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://dutzi.party/optimizing-our-build-time/"
-        },
-        {
           "url": "https://dutzi.party/optimizing-our-build-time/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82253/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://kentcdodds.com/blog/why-i-avoid-nesting-closures"
-        },
-        {
-          "url": "https://kentcdodds.com/blog/why-i-avoid-nesting-closures",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://kentcdodds.com/blog/why-i-avoid-nesting-closures/"
-        },
         {
           "url": "https://kentcdodds.com/blog/why-i-avoid-nesting-closures/",
           "redirect": false,
@@ -496,24 +346,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82254/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://dillionmegida.com/p/web-share-api/"
-        },
-        {
           "url": "https://dillionmegida.com/p/web-share-api/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82255/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.wix.engineering/post/breaking-chains-with-pipelines-in-modern-javascript"
-        },
         {
           "url": "https://www.wix.engineering/post/breaking-chains-with-pipelines-in-modern-javascript",
           "redirect": false,
@@ -522,24 +360,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82256/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://css-tricks.com/comparing-the-different-types-of-native-javascript-popups/"
-        },
-        {
           "url": "https://css-tricks.com/comparing-the-different-types-of-native-javascript-popups/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82241/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://try.datree.io/github-best-practices-guide?utm_source=cooperpress&utm_medium=jsweekly"
-        },
         {
           "url": "https://try.datree.io/github-best-practices-guide?utm_source=cooperpress&utm_medium=jsweekly",
           "redirect": false,
@@ -548,12 +374,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82257/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=J4EhgEskSZA"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=J4EhgEskSZA",
           "redirect": false,
           "status": 200
@@ -561,12 +381,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82271/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://craft.js.org/"
-        },
-        {
           "url": "https://craft.js.org/",
           "redirect": false,
           "status": 200
@@ -574,24 +388,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82271/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://craft.js.org/"
-        },
-        {
           "url": "https://craft.js.org/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82264/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://crubier.github.io/code-to-graph/"
-        },
         {
           "url": "https://crubier.github.io/code-to-graph/",
           "redirect": false,
@@ -600,24 +402,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82242/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://buildkite.com/?pk_campaign=jsweekly-100120&pk_source=cp-jsweekly&pk_medium=newsletter"
-        },
-        {
           "url": "https://buildkite.com/?pk_campaign=jsweekly-100120&pk_source=cp-jsweekly&pk_medium=newsletter",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82258/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/mochajs/mocha"
-        },
         {
           "url": "https://github.com/mochajs/mocha",
           "redirect": false,
@@ -626,24 +416,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82260/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/porsager/postgres"
-        },
-        {
           "url": "https://github.com/porsager/postgres",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82272/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/japgolly/scalajs-react"
-        },
         {
           "url": "https://github.com/japgolly/scalajs-react",
           "redirect": false,
@@ -652,24 +430,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/82243/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://size-of-npm.netlify.com/"
-        },
-        {
           "url": "https://size-of-npm.netlify.com/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/82243/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://size-of-npm.netlify.com/"
-        },
         {
           "url": "https://size-of-npm.netlify.com/",
           "redirect": false,
@@ -691,12 +457,6 @@
     [
       [
         {
-          "url": "https://javascriptweekly.com/link/81861/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascriptweekly.com/issues/469"
-        },
-        {
           "url": "https://javascriptweekly.com/issues/469",
           "redirect": false,
           "status": 200
@@ -706,24 +466,12 @@
       "res.cloudinary.com/cpress/image/upload/w_280,r_140/vjyd9qtpe0t0eyl4ladt.png",
       [
         {
-          "url": "https://javascriptweekly.com/link/81862/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://medium.com/javascript-scene/the-typescript-tax-132ff4cb175b"
-        },
-        {
           "url": "https://medium.com/javascript-scene/the-typescript-tax-132ff4cb175b",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81863/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://css-tricks.com/new-es2018-features-every-javascript-developer-should-know/"
-        },
         {
           "url": "https://css-tricks.com/new-es2018-features-every-javascript-developer-should-know/",
           "redirect": false,
@@ -732,12 +480,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81864/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://frontendmasters.com/learn/react/"
-        },
-        {
           "url": "https://frontendmasters.com/learn/react/",
           "redirect": false,
           "status": 200
@@ -745,24 +487,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81864/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://frontendmasters.com/learn/react/"
-        },
-        {
           "url": "https://frontendmasters.com/learn/react/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81865/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/lydiahallie/javascript-questions"
-        },
         {
           "url": "https://github.com/lydiahallie/javascript-questions",
           "redirect": false,
@@ -771,24 +501,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81866/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://davidwalsh.name/i-dont-hate-arrow-functions"
-        },
-        {
           "url": "https://davidwalsh.name/i-dont-hate-arrow-functions",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81867/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/getify/eslint-plugin-proper-arrows"
-        },
         {
           "url": "https://github.com/getify/eslint-plugin-proper-arrows",
           "redirect": false,
@@ -797,24 +515,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81868/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://alistapart.com/article/responsible-javascript-part-1/"
-        },
-        {
           "url": "https://alistapart.com/article/responsible-javascript-part-1/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81869/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://alistapart.com/article/responsible-javascript-part-2/"
-        },
         {
           "url": "https://alistapart.com/article/responsible-javascript-part-2/",
           "redirect": false,
@@ -823,24 +529,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81871/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=c0oy0vQKEZE"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=c0oy0vQKEZE",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81872/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://x-team.com/remote-javascript-developer-jobs/?utm_source=cooperpress&utm_medium=email-ad&utm_campaign=js"
-        },
         {
           "url": "https://x-team.com/remote-javascript-developer-jobs/?utm_source=cooperpress&utm_medium=email-ad&utm_campaign=js",
           "redirect": false,
@@ -849,24 +543,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81873/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://boards.greenhouse.io/fictiv/jobs/4488495002"
-        },
-        {
           "url": "https://boards.greenhouse.io/fictiv/jobs/4488495002",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81874/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584"
-        },
         {
           "url": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584",
           "redirect": false,
@@ -875,12 +557,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81875/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://v8.dev/blog/cost-of-javascript-2019"
-        },
-        {
           "url": "https://v8.dev/blog/cost-of-javascript-2019",
           "redirect": false,
           "status": 200
@@ -888,24 +564,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81875/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://v8.dev/blog/cost-of-javascript-2019"
-        },
-        {
           "url": "https://v8.dev/blog/cost-of-javascript-2019",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81877/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://kieranpotts.com/rebranding-javascript/"
-        },
         {
           "url": "https://kieranpotts.com/rebranding-javascript/",
           "redirect": false,
@@ -914,24 +578,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81878/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.springboard.com/workshops/software-engineering-career-track/?utm_source=cooperpress&utm_medium=email&utm_campaign=cooperpresssec1"
-        },
-        {
           "url": "https://www.springboard.com/workshops/software-engineering-career-track/?utm_source=cooperpress&utm_medium=email&utm_campaign=cooperpresssec1",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81879/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://dassur.ma/things/when-workers/"
-        },
         {
           "url": "https://dassur.ma/things/when-workers/",
           "redirect": false,
@@ -940,24 +592,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81880/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://dev.to/taillogs/practical-ways-to-write-better-javascript-26d4"
-        },
-        {
           "url": "https://dev.to/taillogs/practical-ways-to-write-better-javascript-26d4",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81881/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://medium.com/intrinsic/javascript-symbols-but-why-6b02768f4a5c"
-        },
         {
           "url": "https://medium.com/intrinsic/javascript-symbols-but-why-6b02768f4a5c",
           "redirect": false,
@@ -966,24 +606,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81882/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://studio3t.com/download/?utm_source=cooper&utm_medium=newsletter&utm_campaign=jsweeklyjan3"
-        },
-        {
           "url": "https://studio3t.com/download/?utm_source=cooper&utm_medium=newsletter&utm_campaign=jsweeklyjan3",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81883/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/"
-        },
         {
           "url": "https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/",
           "redirect": false,
@@ -992,36 +620,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81884/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83"
-        },
-        {
-          "url": "https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83"
-        },
-        {
-          "url": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83?gi=5fa58787f7c9"
-        },
-        {
-          "url": "https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83?gi=5fa58787f7c9",
+          "url": "https://blog.bitsrc.io/6-tricks-with-resting-and-spreading-javascript-objects-68d585bdc83?gi=c9fe1467cd4e",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81885/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=AQOEZVG2WY0"
-        },
         {
           "url": "https://www.youtube.com/watch?v=AQOEZVG2WY0",
           "redirect": false,
@@ -1030,24 +634,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81886/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=wPBjd-vb9eI"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=wPBjd-vb9eI",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81909/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://go.bitmovin.com/video-developer-report-2019?utm_source=cooper-java-brief-link2&utm_medium=paid-newsletter&utm_campaign=dev-report-2019"
-        },
         {
           "url": "https://go.bitmovin.com/video-developer-report-2019?utm_source=cooper-java-brief-link2&utm_medium=paid-newsletter&utm_campaign=dev-report-2019",
           "redirect": false,
@@ -1056,12 +648,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81887/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=ZrKjgSfpppM"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=ZrKjgSfpppM",
           "redirect": false,
           "status": 200
@@ -1069,12 +655,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81888/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=z6JRlx5NC9E"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=z6JRlx5NC9E",
           "redirect": false,
           "status": 200
@@ -1082,24 +662,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81888/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=z6JRlx5NC9E"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=z6JRlx5NC9E",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81890/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://svelte.dev/blog/svelte-3-rethinking-reactivity"
-        },
         {
           "url": "https://svelte.dev/blog/svelte-3-rethinking-reactivity",
           "redirect": false,
@@ -1108,24 +676,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81891/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://svelte.dev/blog/write-less-code"
-        },
-        {
           "url": "https://svelte.dev/blog/write-less-code",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81892/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://mithril.js.org/"
-        },
         {
           "url": "https://mithril.js.org/",
           "redirect": false,
@@ -1134,24 +690,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81893/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://runjs.dev/"
-        },
-        {
           "url": "https://runjs.dev/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81894/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/pixijs/pixi.js"
-        },
         {
           "url": "https://github.com/pixijs/pixi.js",
           "redirect": false,
@@ -1160,36 +704,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81895/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://pixijs.io/examples/#/demos-basic/container.js"
-        },
-        {
           "url": "https://pixijs.io/examples/#/demos-basic/container.js",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81897/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blogs.windows.com/buildingapps/2019/04/30/babylon-js-4-0-is-here/"
-        },
-        {
-          "url": "https://blogs.windows.com/buildingapps/2019/04/30/babylon-js-4-0-is-here/",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "http://blogs.windows.com/windowsdeveloper/2019/04/30/babylon-js-4-0-is-here/"
-        },
-        {
-          "url": "http://blogs.windows.com/windowsdeveloper/2019/04/30/babylon-js-4-0-is-here/",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blogs.windows.com/windowsdeveloper/2019/04/30/babylon-js-4-0-is-here/"
-        },
         {
           "url": "https://blogs.windows.com/windowsdeveloper/2019/04/30/babylon-js-4-0-is-here/",
           "redirect": false,
@@ -1198,24 +718,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81899/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://playground.babylonjs.com/#3I55DK"
-        },
-        {
           "url": "https://playground.babylonjs.com/#3I55DK",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81900/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/liyasthomas/postwoman"
-        },
         {
           "url": "https://github.com/liyasthomas/postwoman",
           "redirect": false,
@@ -1224,24 +732,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81902/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://insomnia.rest/"
-        },
-        {
           "url": "https://insomnia.rest/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81903/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/nextapps-de/flexsearch"
-        },
         {
           "url": "https://github.com/nextapps-de/flexsearch",
           "redirect": false,
@@ -1250,12 +746,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81904/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://microsoft.github.io/just/"
-        },
-        {
           "url": "https://microsoft.github.io/just/",
           "redirect": false,
           "status": 200
@@ -1263,24 +753,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81905/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://microsoft.github.io/just/docs/logging"
-        },
-        {
           "url": "https://microsoft.github.io/just/docs/logging",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81907/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://nodered.org/blog/2019/09/30/version-1-0-released"
-        },
         {
           "url": "https://nodered.org/blog/2019/09/30/version-1-0-released",
           "redirect": false,
@@ -1302,12 +780,6 @@
     [
       [
         {
-          "url": "https://javascriptweekly.com/link/81787/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascriptweekly.com/issues/468"
-        },
-        {
           "url": "https://javascriptweekly.com/issues/468",
           "redirect": false,
           "status": 200
@@ -1315,12 +787,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81790/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://tesseract.projectnaptha.com/"
-        },
-        {
           "url": "https://tesseract.projectnaptha.com/",
           "redirect": false,
           "status": 200
@@ -1328,30 +794,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81790/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://tesseract.projectnaptha.com/"
-        },
-        {
           "url": "https://tesseract.projectnaptha.com/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81831/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://t.co/ArSyMg02kS?amp=1"
-        },
-        {
-          "url": "https://t.co/ArSyMg02kS?amp=1",
-          "redirect": true,
-          "status": "200 + META REFRESH",
-          "redirectUrl": "https://medium.com/@jeromewus/why-i-refactor-tesseract-js-v2-50f750a9cfe2"
-        },
         {
           "url": "https://medium.com/@jeromewus/why-i-refactor-tesseract-js-v2-50f750a9cfe2",
           "redirect": false,
@@ -1360,12 +808,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81793/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://v8.dev/blog/v8-release-80"
-        },
-        {
           "url": "https://v8.dev/blog/v8-release-80",
           "redirect": false,
           "status": 200
@@ -1373,12 +815,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81792/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://frontendmasters.com/courses/fullstack-v2/?utm_source=cooperpress&utm_medium=email&utm_campaign=fullstackv2"
-        },
-        {
           "url": "https://frontendmasters.com/courses/fullstack-v2/?utm_source=cooperpress&utm_medium=email&utm_campaign=fullstackv2",
           "redirect": false,
           "status": 200
@@ -1386,24 +822,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81792/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://frontendmasters.com/courses/fullstack-v2/?utm_source=cooperpress&utm_medium=email&utm_campaign=fullstackv2"
-        },
-        {
           "url": "https://frontendmasters.com/courses/fullstack-v2/?utm_source=cooperpress&utm_medium=email&utm_campaign=fullstackv2",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81788/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://2019.stateofjs.com/"
-        },
         {
           "url": "https://2019.stateofjs.com/",
           "redirect": false,
@@ -1412,24 +836,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81789/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://changelog.com/posts/7-insights-from-the-state-of-js-2019"
-        },
-        {
           "url": "https://changelog.com/posts/7-insights-from-the-state-of-js-2019",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81794/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.cloudflare.com/an-update-on-cdnjs/"
-        },
         {
           "url": "https://blog.cloudflare.com/an-update-on-cdnjs/",
           "redirect": false,
@@ -1438,24 +850,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81796/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/cdnjs/cdnjs/issues/13524"
-        },
-        {
           "url": "https://github.com/cdnjs/cdnjs/issues/13524",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81797/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://medium.com/javascript-in-plain-english/mastering-js-console-log-like-a-pro-1c634e6393f9"
-        },
         {
           "url": "https://medium.com/javascript-in-plain-english/mastering-js-console-log-like-a-pro-1c634e6393f9",
           "redirect": false,
@@ -1464,24 +864,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81798/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://nodejs.org/en/blog/release/v13.5.0/"
-        },
-        {
           "url": "https://nodejs.org/en/blog/release/v13.5.0/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81799/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/mui-org/material-ui/releases/tag/v4.8.0"
-        },
         {
           "url": "https://github.com/mui-org/material-ui/releases/tag/v4.8.0",
           "redirect": false,
@@ -1490,24 +878,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81800/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/facebook/relay"
-        },
-        {
           "url": "https://github.com/facebook/relay",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81801/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/kripken/sql.js"
-        },
         {
           "url": "https://github.com/kripken/sql.js",
           "redirect": false,
@@ -1516,24 +892,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81802/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/kenwheeler/cash/releases/tag/5.0.0"
-        },
-        {
           "url": "https://github.com/kenwheeler/cash/releases/tag/5.0.0",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81803/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://crystallize.com/careers/backend-developer"
-        },
         {
           "url": "https://crystallize.com/careers/backend-developer",
           "redirect": false,
@@ -1542,24 +906,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81804/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584"
-        },
-        {
           "url": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81805/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://jobs.ably.io/o/technical-content-producer-interim"
-        },
         {
           "url": "https://jobs.ably.io/o/technical-content-producer-interim",
           "redirect": false,
@@ -1568,12 +920,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81806/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://ionicframework.com/blog/angular-9-0-0-and-ivy-improvements/"
-        },
-        {
           "url": "https://ionicframework.com/blog/angular-9-0-0-and-ivy-improvements/",
           "redirect": false,
           "status": 200
@@ -1581,36 +927,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81808/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://itnext.io/an-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12"
-        },
-        {
-          "url": "https://itnext.io/an-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fitnext.io%2Fan-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12"
-        },
-        {
-          "url": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fitnext.io%2Fan-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://itnext.io/an-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12?gi=5f8f5f6091b2"
-        },
-        {
-          "url": "https://itnext.io/an-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12?gi=5f8f5f6091b2",
+          "url": "https://itnext.io/an-introduction-to-raspberry-pi-4-gpio-and-controlling-it-with-node-js-10f2ce41af12?gi=d1710b6da29e",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81809/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.ably.io/blog/typescript-is-making-programming-better?utm_medium=email&utm_source=javascript-weekly&utm_campaign=cooperpress"
-        },
         {
           "url": "https://www.ably.io/blog/typescript-is-making-programming-better?utm_medium=email&utm_source=javascript-weekly&utm_campaign=cooperpress",
           "redirect": false,
@@ -1619,24 +941,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81810/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.simplethread.com/understanding-js-decorators/"
-        },
-        {
           "url": "https://www.simplethread.com/understanding-js-decorators/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81811/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/tc39/proposal-decorators"
-        },
         {
           "url": "https://github.com/tc39/proposal-decorators",
           "redirect": false,
@@ -1645,30 +955,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81812/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://gist.github.com/slikts/dee3702357765dda3d484d8888d3029e"
-        },
-        {
           "url": "https://gist.github.com/slikts/dee3702357765dda3d484d8888d3029e",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81813/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascript.christmas/2019/17"
-        },
-        {
-          "url": "https://javascript.christmas/2019/17",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascript.christmas/2019/17/"
-        },
         {
           "url": "https://javascript.christmas/2019/17/",
           "redirect": false,
@@ -1677,24 +969,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81814/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://mariusschulz.com/blog/const-assertions-in-literal-expressions-in-typescript"
-        },
-        {
           "url": "https://mariusschulz.com/blog/const-assertions-in-literal-expressions-in-typescript",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81815/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.logrocket.com/whats-new-in-preact-x/"
-        },
         {
           "url": "https://blog.logrocket.com/whats-new-in-preact-x/",
           "redirect": false,
@@ -1703,24 +983,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81817/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.twilio.com/blog/how-positive-was-your-year-with-tensorflow-js-and-twilio"
-        },
-        {
           "url": "https://www.twilio.com/blog/how-positive-was-your-year-with-tensorflow-js-and-twilio",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81818/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://gauge.org/2018/11/12/bdd-vs-executable-specifications/?utm_source=JS_weekly&utm_medium=newsletter_ad&utm_campaign=js_weekly&utm_term=&utm_content="
-        },
         {
           "url": "https://gauge.org/2018/11/12/bdd-vs-executable-specifications/?utm_source=JS_weekly&utm_medium=newsletter_ad&utm_campaign=js_weekly&utm_term=&utm_content=",
           "redirect": false,
@@ -1729,12 +997,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81819/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=WLpLYhnGqPA"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=WLpLYhnGqPA",
           "redirect": false,
           "status": 200
@@ -1742,42 +1004,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81820/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.bitsrc.io/10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7"
-        },
-        {
-          "url": "https://blog.bitsrc.io/10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7"
-        },
-        {
-          "url": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://blog.bitsrc.io/10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7?gi=aa44c3f13f0c"
-        },
-        {
-          "url": "https://blog.bitsrc.io/10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7?gi=aa44c3f13f0c",
+          "url": "https://blog.bitsrc.io/10-useful-angular-features-youve-probably-never-used-e9e33f5c35a7?gi=ab80c6a36113",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81821/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://t.co/kFwdLQypT9?amp=1"
-        },
-        {
-          "url": "https://t.co/kFwdLQypT9?amp=1",
-          "redirect": true,
-          "status": "200 + META REFRESH",
-          "redirectUrl": "https://medium.com/javascript-in-plain-english/why-svelte-wont-kill-react-3cfdd940586a"
-        },
         {
           "url": "https://medium.com/javascript-in-plain-english/why-svelte-wont-kill-react-3cfdd940586a",
           "redirect": false,
@@ -1786,24 +1018,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81822/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://aframe.io/blog/aframe-v1.0.0/"
-        },
-        {
           "url": "https://aframe.io/blog/aframe-v1.0.0/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81823/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.netlify.com/blog/2019/12/16/introducing-scully-the-angular-static-site-generator/"
-        },
         {
           "url": "https://www.netlify.com/blog/2019/12/16/introducing-scully-the-angular-static-site-generator/",
           "redirect": false,
@@ -1812,24 +1032,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81824/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://netflix.github.io/pollyjs/"
-        },
-        {
           "url": "https://netflix.github.io/pollyjs/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81826/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.heroku.com/podcasts/codeish/48-from-nodeconf-eu-2019"
-        },
         {
           "url": "https://www.heroku.com/podcasts/codeish/48-from-nodeconf-eu-2019",
           "redirect": false,
@@ -1838,12 +1046,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81827/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://sarus.anephenix.com/"
-        },
-        {
           "url": "https://sarus.anephenix.com/",
           "redirect": false,
           "status": 200
@@ -1851,24 +1053,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81828/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/alpinejs/alpine"
-        },
-        {
           "url": "https://github.com/alpinejs/alpine",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81829/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/mengxiong10/vue2-datepicker"
-        },
         {
           "url": "https://github.com/mengxiong10/vue2-datepicker",
           "redirect": false,
@@ -1890,12 +1080,6 @@
     [
       [
         {
-          "url": "https://javascriptweekly.com/link/81373/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascriptweekly.com/issues/467"
-        },
-        {
           "url": "https://javascriptweekly.com/issues/467",
           "redirect": false,
           "status": 200
@@ -1903,12 +1087,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81374/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/antonmedv/fx"
-        },
-        {
           "url": "https://github.com/antonmedv/fx",
           "redirect": false,
           "status": 200
@@ -1916,24 +1094,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81374/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/antonmedv/fx"
-        },
-        {
           "url": "https://github.com/antonmedv/fx",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81375/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/preactjs/preact/releases"
-        },
         {
           "url": "https://github.com/preactjs/preact/releases",
           "redirect": false,
@@ -1942,12 +1108,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81376/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/preactjs/preact"
-        },
-        {
           "url": "https://github.com/preactjs/preact",
           "redirect": false,
           "status": 200
@@ -1955,12 +1115,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81377/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://circleci.com/blog/circleci-config-teardown-how-we-write-our-circleci-config-at-circleci/"
-        },
-        {
           "url": "https://circleci.com/blog/circleci-config-teardown-how-we-write-our-circleci-config-at-circleci/",
           "redirect": false,
           "status": 200
@@ -1968,30 +1122,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81377/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://circleci.com/blog/circleci-config-teardown-how-we-write-our-circleci-config-at-circleci/"
-        },
-        {
           "url": "https://circleci.com/blog/circleci-config-teardown-how-we-write-our-circleci-config-at-circleci/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81378/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://t.co/lkCEh4D24k"
-        },
-        {
-          "url": "https://t.co/lkCEh4D24k",
-          "redirect": true,
-          "status": "200 + META REFRESH",
-          "redirectUrl": "https://medium.com/@me_37286/20-ways-to-become-a-better-node-js-developer-in-2020-d6bd73fcf424"
-        },
         {
           "url": "https://medium.com/@me_37286/20-ways-to-become-a-better-node-js-developer-in-2020-d6bd73fcf424",
           "redirect": false,
@@ -2000,24 +1136,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81379/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://exploringjs.com/deep-js/"
-        },
-        {
           "url": "https://exploringjs.com/deep-js/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81381/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://exploringjs.com/deep-js/toc.html"
-        },
         {
           "url": "https://exploringjs.com/deep-js/toc.html",
           "redirect": false,
@@ -2026,24 +1150,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81383/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://lihautan.com/json-parser-with-javascript/"
-        },
-        {
           "url": "https://lihautan.com/json-parser-with-javascript/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81416/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://sicp.comp.nus.edu.sg/announcement.html"
-        },
         {
           "url": "https://sicp.comp.nus.edu.sg/announcement.html",
           "redirect": false,
@@ -2052,24 +1164,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81384/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://openjsf.org/blog/2019/12/11/electron-joins-the-openjs-foundation/"
-        },
-        {
           "url": "https://openjsf.org/blog/2019/12/11/electron-joins-the-openjs-foundation/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81385/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.emberjs.com/2019/12/01/countdown-to-the-new-year-ember-sortable.html"
-        },
         {
           "url": "https://blog.emberjs.com/2019/12/01/countdown-to-the-new-year-ember-sortable.html",
           "redirect": false,
@@ -2078,30 +1178,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81386/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://boards.greenhouse.io/fictiv/jobs/4488503002"
-        },
-        {
           "url": "https://boards.greenhouse.io/fictiv/jobs/4488503002",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81387/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://grnh.se/cf56e5291"
-        },
-        {
-          "url": "https://grnh.se/cf56e5291",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://workat.doximity.com/positions/?gh_jid=1965909&gh_src=cf56e5291"
-        },
         {
           "url": "https://workat.doximity.com/positions/?gh_jid=1965909&gh_src=cf56e5291",
           "redirect": false,
@@ -2110,12 +1192,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81388/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584"
-        },
-        {
           "url": "https://www.vettery.com/tech?utm_source=newsletter&utm_medium=cooper-javascriptweekly&utm_term=tech&utm_content=grouped&utm_campaign=ad-77584",
           "redirect": false,
           "status": 200
@@ -2123,12 +1199,6 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81389/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://alain.xyz/blog/raw-webgl"
-        },
-        {
           "url": "https://alain.xyz/blog/raw-webgl",
           "redirect": false,
           "status": 200
@@ -2136,24 +1206,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81389/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://alain.xyz/blog/raw-webgl"
-        },
-        {
           "url": "https://alain.xyz/blog/raw-webgl",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81391/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.bram.us/2019/12/09/esnext-relatively-format-time-with-intl-relativetimeformat/"
-        },
         {
           "url": "https://www.bram.us/2019/12/09/esnext-relatively-format-time-with-intl-relativetimeformat/",
           "redirect": false,
@@ -2162,24 +1220,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81390/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.grapecity.com/blogs/how-to-build-an-angular-data-grid-in-minutes?utm_source=JavaScriptWeekly&utm_medium=Wijmo-12-13-2019-blogplacement&utm_campaign=CooperPress-Fall-2019"
-        },
-        {
           "url": "https://www.grapecity.com/blogs/how-to-build-an-angular-data-grid-in-minutes?utm_source=JavaScriptWeekly&utm_medium=Wijmo-12-13-2019-blogplacement&utm_campaign=CooperPress-Fall-2019",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81392/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://calendar.perfplanet.com/2019/javascript-component-level-cpu-costs/"
-        },
         {
           "url": "https://calendar.perfplanet.com/2019/javascript-component-level-cpu-costs/",
           "redirect": false,
@@ -2188,24 +1234,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81393/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.youtube.com/watch?v=p5Pzyja8wSw"
-        },
-        {
           "url": "https://www.youtube.com/watch?v=p5Pzyja8wSw",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81394/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.logrocket.com/correctly-typed-react-components-with-typescript/"
-        },
         {
           "url": "https://blog.logrocket.com/correctly-typed-react-components-with-typescript/",
           "redirect": false,
@@ -2214,30 +1248,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81396/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://medium.com/javascript-in-plain-english/why-does-javascript-have-0-9b6e1965a075"
-        },
-        {
           "url": "https://medium.com/javascript-in-plain-english/why-does-javascript-have-0-9b6e1965a075",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81397/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://kentcdodds.com/blog/inversion-of-control"
-        },
-        {
-          "url": "https://kentcdodds.com/blog/inversion-of-control",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://kentcdodds.com/blog/inversion-of-control/"
-        },
         {
           "url": "https://kentcdodds.com/blog/inversion-of-control/",
           "redirect": false,
@@ -2246,24 +1262,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81395/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.ably.io/blog/google-polling-like-its-the-90s/?utm_medium=email&utm_source=javascript-weekly&utm_campaign=cooperpress"
-        },
-        {
           "url": "https://www.ably.io/blog/google-polling-like-its-the-90s/?utm_medium=email&utm_source=javascript-weekly&utm_campaign=cooperpress",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81398/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://ilikekillnerds.com/2019/12/reasons-to-use-aurelia-in-2020/"
-        },
         {
           "url": "https://ilikekillnerds.com/2019/12/reasons-to-use-aurelia-in-2020/",
           "redirect": false,
@@ -2272,30 +1276,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81400/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascript.christmas/2019/10"
-        },
-        {
-          "url": "https://javascript.christmas/2019/10",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://javascript.christmas/2019/10/"
-        },
-        {
           "url": "https://javascript.christmas/2019/10/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81417/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.stefanjudis.com/today-i-learned/optional-chaining-helps-to-avoid-undefined-is-not-a-function-exceptions/"
-        },
         {
           "url": "https://www.stefanjudis.com/today-i-learned/optional-chaining-helps-to-avoid-undefined-is-not-a-function-exceptions/",
           "redirect": false,
@@ -2304,24 +1290,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81401/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://openlayers.org/"
-        },
-        {
           "url": "https://openlayers.org/",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81418/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://openlayers.org/en/latest/examples/"
-        },
         {
           "url": "https://openlayers.org/en/latest/examples/",
           "redirect": false,
@@ -2330,24 +1304,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81402/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://code.visualstudio.com/updates/v1_41"
-        },
-        {
           "url": "https://code.visualstudio.com/updates/v1_41",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81419/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://www.vim.org/vim-8.2-released.php"
-        },
         {
           "url": "https://www.vim.org/vim-8.2-released.php",
           "redirect": false,
@@ -2356,24 +1318,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81403/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://wallabyjs.com/docs/intro/time-travel-debugger.html?utm_source=javascript&utm_medium=javascript&utm_campaign=javascript&utm_content=javascript"
-        },
-        {
           "url": "https://wallabyjs.com/docs/intro/time-travel-debugger.html?utm_source=javascript&utm_medium=javascript&utm_campaign=javascript&utm_content=javascript",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81404/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://simpleparallax.com/"
-        },
         {
           "url": "https://simpleparallax.com/",
           "redirect": false,
@@ -2382,36 +1332,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81406/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.bitsrc.io/5-top-cloud-ides-for-javascript-developers-62ee672c6e88"
-        },
-        {
-          "url": "https://blog.bitsrc.io/5-top-cloud-ides-for-javascript-developers-62ee672c6e88",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F5-top-cloud-ides-for-javascript-developers-62ee672c6e88"
-        },
-        {
-          "url": "https://medium.com/m/global-identity?redirectUrl=https%3A%2F%2Fblog.bitsrc.io%2F5-top-cloud-ides-for-javascript-developers-62ee672c6e88",
-          "redirect": true,
-          "status": 302,
-          "redirectUrl": "https://blog.bitsrc.io/5-top-cloud-ides-for-javascript-developers-62ee672c6e88?gi=2f2fa77f594e"
-        },
-        {
-          "url": "https://blog.bitsrc.io/5-top-cloud-ides-for-javascript-developers-62ee672c6e88?gi=2f2fa77f594e",
+          "url": "https://blog.bitsrc.io/5-top-cloud-ides-for-javascript-developers-62ee672c6e88?gi=c64f38ac3af1",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81409/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://glitch.com/"
-        },
         {
           "url": "https://glitch.com/",
           "redirect": false,
@@ -2420,24 +1346,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81410/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/voidcosmos/npkill"
-        },
-        {
           "url": "https://github.com/voidcosmos/npkill",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81411/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/reactjs/react-tabs"
-        },
         {
           "url": "https://github.com/reactjs/react-tabs",
           "redirect": false,
@@ -2446,24 +1360,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81412/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/highcharts/highcharts"
-        },
-        {
           "url": "https://github.com/highcharts/highcharts",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81413/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/manuelbieh/geolib"
-        },
         {
           "url": "https://github.com/manuelbieh/geolib",
           "redirect": false,
@@ -2472,24 +1374,12 @@
       ],
       [
         {
-          "url": "https://javascriptweekly.com/link/81414/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://blog.npmjs.org/post/189613288975/release-6134"
-        },
-        {
           "url": "https://blog.npmjs.org/post/189613288975/release-6134",
           "redirect": false,
           "status": 200
         }
       ],
       [
-        {
-          "url": "https://javascriptweekly.com/link/81415/rss",
-          "redirect": true,
-          "status": 301,
-          "redirectUrl": "https://github.com/atlassian/react-beautiful-dnd/releases/tag/v12.2.0"
-        },
         {
           "url": "https://github.com/atlassian/react-beautiful-dnd/releases/tag/v12.2.0",
           "redirect": false,

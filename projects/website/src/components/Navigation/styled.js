@@ -104,7 +104,6 @@ export const activeItemHover = css`
   opacity: 1;
   color: #fff;
   text-decoration: none;
-
 `
 
 export const StyledItem = styled(Link)`

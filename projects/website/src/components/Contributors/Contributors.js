@@ -34,6 +34,13 @@ const Contributor = pp => (
   </StyledContributor>
 )
 
+Contributor.propTypes = {
+  url: PropTypes.string,
+  avatarUrl: PropTypes.string,
+  login: PropTypes.string,
+  contributions: PropTypes.number
+}
+
 export const Contributors = () => {
   const data = getContributors()
   console.log('DATA', data)

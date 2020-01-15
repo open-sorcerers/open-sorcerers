@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { reject, equals, pipe, map, curry } from 'ramda'
+import { pipe } from 'ramda'
 import { trace } from 'xtrace'
 import PropTypes from 'prop-types'
-import { Button, Box } from 'rebass'
+import { Box } from 'rebass'
 
 import { UNSET } from './constants'
 import Question from './Question'
 import { makeQuiz, makeQuestionsFromObject } from './utils'
 
 export const QuizCo = ({ quiz }) => {
-  const [currentAnswer, answerQuestion] = useState(UNSET)
+  const [, answerQuestion] = useState(UNSET)
   const answerQ = pipe(trace('input'), answerQuestion)
   return (
     <Box as="section">

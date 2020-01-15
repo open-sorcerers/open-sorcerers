@@ -1,6 +1,6 @@
 import { GOOD, BAD, CHOICE } from './constants'
 
-export const checkIsValid = ({ isSingle, userResponse, correct }) => userResponse === correct
+export const checkIsValid = ({ userResponse, correct }) => userResponse === correct
 
 export const prefix = ({ didAnswer, correct, idx, isSingle, showAnswers, userResponse }) => {
   if (isSingle) {

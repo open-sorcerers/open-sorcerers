@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
 
-import { Img } from '@routes/Profile/styled'
 import * as ℂ from '@styles/colors'
 
 export const StyledContributors = styled(Box)`

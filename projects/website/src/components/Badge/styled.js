@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { curry, propEq, ifElse, pipe } from 'ramda'
+import { curry, propEq, ifElse } from 'ramda'
 
 import * as ℂ from '@styles/colors'
 

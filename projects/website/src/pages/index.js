@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Site } from '@domain/Site'
 import { Container } from '@components/Container'
 import { graphql } from 'gatsby'
@@ -10,7 +11,6 @@ const seo = {
 }
 
 const IndexPage = ({ data, ...other }) => {
-  console.log('DATA', data)
   return (
     <Site seo={seo} {...other} siteData={data}>
       <Container>
@@ -18,6 +18,9 @@ const IndexPage = ({ data, ...other }) => {
       </Container>
     </Site>
   )
+}
+IndexPage.propTypes = {
+  data: PropTypes.object
 }
 
 export const pageQuery = graphql`

@@ -1,11 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'gatsby'
-import { pipe, split, map, concat } from 'ramda'
+import { pipe, split, map, pathOr } from 'ramda'
 
 import { Container } from '@components/Container'
 import { StyledFooter, Inner, Left, Right } from './styled'
 
 const parseISODate = pipe(
+  pathOr('', ['currentBuildDate', 'currentDate']),
   split('T'),
   ([mdy, hms]) => split('-', mdy).concat(split(':', hms)),
   map(zz => {
@@ -17,8 +19,8 @@ const parseISODate = pipe(
 )
 
 export const Footer = ({ siteData }) => {
-  const date = parseISODate(siteData.currentBuildDate.currentDate)
-  console.log('date date', date, '>', siteData.currentBuildDate.currentDate)
+  const date = parseISODate(siteData)
+  console.log('date date', date, '>', siteData)
   return (
     <StyledFooter>
       <Container maxWidth={1200}>
@@ -52,5 +54,7 @@ export const Footer = ({ siteData }) => {
     </StyledFooter>
   )
 }
+
+Footer.propTypes = { siteData: PropTypes.object }
 
 export default Footer

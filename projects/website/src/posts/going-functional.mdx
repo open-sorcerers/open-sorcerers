@@ -1,0 +1,52 @@
+---
+title: FP | Going Functional
+author: brekk
+path: series/fp/going-functional
+---
+
+Today we're gonna talk through the process I use to rewrite / refactor idiomatic 3rd-party modules into functional javascript, and then work through a real-life example.
+
+## Search for the right source module
+
+When re-writing someone else's code, pick a problem domain that is well-defined and small, or if not small, then well-tested. Often in node-land there are several libraries which do mainly the same thing with a couple of nearly fungible trade-offs. Picking the right source library will give you a leg up, as then you don't have to redefine the problem domain yourself. And if you pick a library with good tests you can re-use, then you don't have to re-do that part of the problem.
+
+## Identify patterns
+
+The bulk of the rewriting is in the simplification of the underlying patterns at play in someone's code. Identify any of the following as candidates for clean-up and refactoring:
+
+ 1. **Constants** - these include strings which are used in any place more than once, as well as "magic numbers" -- the idea here is that by enforcing re-use of constants instead of using in-function strings / numbers / whatever, you can both decrease the likelihood you'll make a mistake by reference as well as making the domain of the code more explicit.
+ 2. **Free variables** - anything which makes use of globals is inherently unsafe. Use the free-variable-partial-application pattern (needs a better name) to closure any global variables and make the code safe.
+ 3. **Repeated code** - by identifying repetition and eschewing copy-pasta, we can more easily scan our code and find the most efficient places to make change in the future.
+ 4. **Unsafe code / assumptions** - Because of the coercive nature of JS comparison and the way in which most developers write only for the best-case scenario there are many different ways you can shoot yourself in the foot. Here are a few common ones:
+
+   - Nested property access. Anything nested more than one-level deep is unsafe in JS without chained `&&`s. Likely you should use something like [ramda](//npmjs.org/package/ramda)'s `pathOr` function to both safely access nested properties as well as provide a fallback in the case of missing properties.
+   - for loops, for...each loops - There are a few cases where for loops are wonderful and perfect solutions. However, in most cases it is preferable to use `map` instead, as dealing with discrete values is much nicer than dealing with magic.
+ 5. **Complex code** - to the extent that is possible, functions should be made as simple and unequivocal as possible. Where possible, use function composition to manage complexity.
+ 6. **Impure functions** - Any function which is making use of free variables or is calling a function but isn't keeping the result of that call around is impure.
+
+### Free Variable Partial-Application
+
+Let's say you have to deal with some code which does something like the following:
+
+```js
+const saveData = (key, value) => {
+  window.localStorage.setItem(key, value)
+}
+```
+
+If you're familiar with your basic JS environments, `window` is tied to the browser but doesn't exist on the server / in node without a shim -- so this function is unsafe.
+
+However, look at how we can make this function be identical in functionality but also perfectly safe:
+
+```js
+
+const saveDataWithStorage = storage => (key, value) => {
+  storage.setItem(key, value)
+}
+// ostensibly this could also be in the body of the function itself
+if (typeof window !== 'undefined') {
+  const saveData = saveDataWithStorage(window.localStorage)
+}
+```
+
+By closuring the global function we're making use of, we can safely use that function in more places, and we have more explicit definition around what our dependencies / requirements are. Another nice free benefit of this pattern is that you can easily inject shims for testing purposes, so maintaining 100% unit test coverage is pretty easy.

@@ -13,7 +13,6 @@ import { StyledContributors, StyledContributor } from './styled'
 
 const contribs = pipe(
   prop('contributions'),
-  /* zzz => zzz + Math.round(Math.random() * 10e3), */
   z => (z > 999 ? Math.floor(z / 100) / 10 + 'K' : z)
 )
 

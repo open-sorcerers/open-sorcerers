@@ -9,7 +9,7 @@ import { StyledFooter, Inner, Left, Right } from './styled'
 const parseISODate = pipe(
   pathOr('', ['currentBuildDate', 'currentDate']),
   split('T'),
-  ([mdy, hms]) => split('-', mdy).concat(split(':', hms)),
+  ([mdy = '', hms = '']) => split('-', mdy).concat(split(':', hms)),
   map(zz => {
     const d = zz.indexOf('.')
     return d > -1 ? zz.slice(0, d) : zz
@@ -20,7 +20,6 @@ const parseISODate = pipe(
 
 export const Footer = ({ siteData }) => {
   const date = parseISODate(siteData)
-  console.log('date date', date, '>', siteData)
   return (
     <StyledFooter>
       <Container maxWidth={1200}>
@@ -45,10 +44,8 @@ export const Footer = ({ siteData }) => {
               by <Link to="/contributors">Open Sorcerers</Link>
             </div>
             <br />
-          </Right>
-          <div>
             Last built on <span>{`${date}`}</span>
-          </div>
+          </Right>
         </Inner>
       </Container>
     </StyledFooter>

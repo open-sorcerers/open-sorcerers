@@ -27,6 +27,7 @@ const styles = css`
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
       text-transform: uppercase;
+      font-size: 2rem;
     }
     ul {
       list-style: none;

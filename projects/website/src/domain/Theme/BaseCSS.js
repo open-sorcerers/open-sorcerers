@@ -28,6 +28,7 @@ const styles = css`
       font-weight: 900;
       text-transform: uppercase;
       font-size: 2rem;
+      line-height: 2rem;
     }
     ul {
       list-style: none;

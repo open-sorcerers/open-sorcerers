@@ -1,0 +1,58 @@
+---
+date: 2020-01-16
+title: nps
+path: /review/nps
+author: kentcdodds
+link: //github.com/kentcdodds/nps
+reviewer: brekk
+keywords: [module, review]
+---
+
+import {PackageInstaller} from '@components/PackageInstaller'
+
+<PackageInstaller pkg="nps" dev>
+All the benefits of npm scripts without the cost of a bloated package.json and the limits of json
+</PackageInstaller>
+
+`nps` is one of the first packages I go to whenever creating a new module. It is a wonderful solution to the limits of `package.json` and the need to have build scripts. It offers a number of simple solutions out of the box, and even more if you use `nps-utils` as well.
+
+Once you've installed it, you can create a file called `package-scripts.js` (there is also a YAML flavor which is nice until your scripts get verbose) which looks kinda like the following:
+
+```js
+module.exports = {
+  // invariably I forget this inner property wrapping when doing it from scratch
+  scripts: {
+    lint: {
+      script: `eslint src/. --fix`,
+      description: `Run lint on stuff`
+    }
+  }
+}
+```
+
+As your application becomes more complex, you can avail yourself of `nps-utils`, which allows for some smart command-line concurrency and more.
+
+```js
+const npsUtils = require('nps-utils') // not required, but useful
+
+module.exports = {
+  scripts: {
+    lint: {
+      description: `Run lint on stuff`
+      script: npsUtils.concurrent.nps(`lint.eslint`, `lint.stylelint`)
+      eslint: {
+        script: `eslint src/. --fix`,
+      },
+      stylelint: {
+        script: `stylelint src/. --fix`
+      }
+    }
+  }
+}
+```
+
+Another nicety of `nps` is that it does fuzzy pattern matching, so you can run `nps lint` or `nps li` interchangeably, or more granular things like `nps lint.eslint` or `nps li.es`
+
+I highly recommend you add `nps` to any project which is non-trivial in size. I've been using it in my open-source work as well as at my job, and in most folders I can run `nps care` and it will run all of the integration tests and linting for a given project.
+
+I like to use it in concert with `lint-staged` and delegate more complicated scripts in lint-staged to ones already defined in `package-scripts.js`.

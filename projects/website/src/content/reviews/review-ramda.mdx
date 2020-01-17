@@ -1,0 +1,58 @@
+---
+date: 2020-01-16
+title: ramda
+path: /review/ramda
+author: ramdajs
+link: //github.com/ramdajs/ramda
+reviewer: brekk
+keywords: [module, review]
+---
+
+import {PackageInstaller} from '@components/PackageInstaller'
+
+<PackageInstaller pkg="ramda">
+A practical functional library for JavaScript programmers
+</PackageInstaller>
+
+`ramda` is essential. If I'm going to write any code of any real utility, I'm most likely to reach for `ramda` to create clean transformational pipelines.
+
+```js
+import {curry, split, pipe, map} from 'ramda'
+
+export const capitalize = pipe(
+  split(' '),
+  map(pipe(
+    z => [z],
+    ap([slice(0, 1), slice(1, Infinity)]),
+  )),
+  map(([a, lphabet]) => toUpper(a) + toLower(lphabet)),
+  join('\n')
+)
+```
+
+_Oooh tacit goodness_!
+
+When learning `ramda`, I highly recommend:
+
+1. Playing in the node REPL:
+  ```sh
+  node
+  > R = require('ramda')
+  > R.keys(R)
+  ```
+2. When sharing code with others, use the online [Ramda REPL](//ramdajs.org/repl) for simple sandboxing
+3. Install `eslint-plugin-ramda` for some automatic (though a few are unhelpful) refactoring suggestions via eslint.
+
+**NB**: `ramda` has 255 functions within it. I'd say I use a maximum of about ~30 of them. Don't get overwhelmed by the sheer size of `ramda` and instead focus on the essentials.
+
+## Essential `ramda`
+
+* `curry` &mdash; Defer parameters for when you have them! Partial application FTW.
+* `pipe` &mdash; Function composition!
+* `map` &mdash; Ooh what a functor!
+* `propOr` &mdash; Grab a property or a default value! Safety!
+* `pathOr` &mdash; Grab a nested property or a default value! Extra safety!
+* `nth` &mdash; Grab the value of array[index]
+* `ap` &mdash; Segment your data cleanly and divine lines through it.
+* `__` &mdash; It's a magic placeholder!
+

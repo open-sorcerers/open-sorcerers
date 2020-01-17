@@ -105,17 +105,17 @@ const styles = css`
       background-color: ${ℂ.EL.CODE_BG};
       color: ${ℂ.EL.CODE};
     }
+    .line-numbers-rows {
+      top: 0.75rem;
+      width: 1.5rem !important;
+      left: 1rem !important;
+    }
   }
   pre[class*='language-'].line-numbers {
     position: relative;
     padding-left: 3rem;
   }
   .language-js {
-    .line-numbers-rows {
-      top: 0.75rem;
-      width: 1.5rem !important;
-      left: 1rem !important;
-    }
     .token {
       &.keyword {
         color: ${ℂ.GIST.property};

@@ -31,7 +31,7 @@ const handleSubmit = e => {
     ),
     FIELDS
   )
-  console.log(out, "<<<")
+  console.log(out, '<<<')
 }
 
 export const SubmitNews = () => {

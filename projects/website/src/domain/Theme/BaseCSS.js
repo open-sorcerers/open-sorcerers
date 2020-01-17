@@ -27,6 +27,8 @@ const styles = css`
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
       text-transform: uppercase;
+      font-size: 2rem;
+      line-height: 2rem;
     }
     ul {
       list-style: none;
@@ -103,17 +105,17 @@ const styles = css`
       background-color: ${ℂ.EL.CODE_BG};
       color: ${ℂ.EL.CODE};
     }
+    .line-numbers-rows {
+      top: 0.75rem;
+      width: 1.5rem !important;
+      left: 1rem !important;
+    }
   }
   pre[class*='language-'].line-numbers {
     position: relative;
     padding-left: 3rem;
   }
   .language-js {
-    .line-numbers-rows {
-      top: 0.75rem;
-      width: 1.5rem !important;
-      left: 1rem !important;
-    }
     .token {
       &.keyword {
         color: ${ℂ.GIST.property};
@@ -215,6 +217,10 @@ const styles = css`
     font-weight: 500;
     text-transform: uppercase;
     font-style: italic;
+    code {
+      font-family: 'Fira Code', monospace;
+      text-transform: initial;
+    }
   }
   h1 {
     font-family: obviously, 'Obviously', sans-serif;

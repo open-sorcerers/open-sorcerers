@@ -1,29 +1,21 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
-import { ContentContainer } from '@components/Container'
-import { Site } from '@domain/Site'
+import { prefill } from '@components/pages/MDXPage'
 
-export const MDXPage = ({ data, ...other }) =>
-  !data && other.children ? (
-    <>{other.children}</>
-  ) : (
-    <Site {...other}>
-      <ContentContainer>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      </ContentContainer>
-    </Site>
-  )
-
-MDXPage.propTypes = { data: PropTypes.object.isRequired }
+export const MDXPage = prefill({
+  className: 'default-page',
+  maxWidth: '800px',
+  margin: '0 auto'
+})
 
 export const pageQuery = graphql`
   query MDXQuery($id: String!) {
     mdx(id: { eq: $id }) {
       id
       body
+    }
+    currentBuildDate {
+      currentDate
     }
   }
 `

@@ -1,0 +1,46 @@
+---
+title: FP | Core Tenets
+keywords: [core, fp]
+path: /series/fp/core-tenets
+author: brekk
+glossary:
+  - composition
+  - curry
+  - deterministic
+  - higher-order-function
+  - purity
+  - referential-transparency
+  - arity
+  - side-effect
+---
+
+# FP Tenets
+
+1. (Mostly) everything is functions all the way down. If it's more than a unary function i.e. `(a, b) => a + b`, they should be [curried].
+  
+  (For a lot more, you could read up on [category theory] which will frame things a lot more formally.)
+
+  Good functions are [pure functions] &mdash; pure functions are [deterministic], meaning that with the same inputs they return the same outputs, they have no [side-effects], meaning they do not make change external to the body of the function and they are [referentially transparent] so if you know the inputs you can compare them transparently with their outputs.
+
+  When choosing an order for parameters in a curried function, in general it makes most sense to order them by order-of-likely availability, with the last parameter as the one which is the primary subject of the function going into the pipe.
+
+2. Prefer [function composition] and transformation via [higher-order functions] over inline function complexity. (See more examples in [the glossary])
+3. Avoid mutating or destructing data. Instead, make a copy of the data, and do whatever you want to that. This prevents hard-to-track errors and adheres to creating no side-effects.
+4. Prefer `map` over other loops. Discrete iterable values are pure. For instance, a `for` loop which conditionally pushes into an array, especially an array (potentially accessible from a shared context which could also then mutate it).
+5. When choosing a curried function interface
+6. Functions should cleave towards being as generic as possible. This aids both readability and logical reasoning.
+7. There's a form of FP which is called tacit or point-free which attempts to eschew defining parameters where possible, instead relying upon explicit function [arity]. This is not mandatory to be writing functional code. However, as it is often less code to write and helps reinforce the idea that everything is a function (often a composed one). An example of a tacit function:
+  ```js
+  pipe(slice(0, 3), toUpper)
+  ```
+[category theory]: //en.wikipedia.org/wiki/Category_Theory
+[curried]: /glossary/curry
+[deterministic]: /glossary/deterministic
+[function composition]: /glossary/composition
+[higher-order functions]: /glossary/higher-order-function
+[pure functions]: /glossary/pure-function
+[referentially transparent]: /glossary/referential-transparency
+[the glossary]: /glossary
+[side-effects]: /glossary/side-effects
+[arity]: /glossary/arity
+

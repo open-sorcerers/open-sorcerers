@@ -54,7 +54,6 @@ ReadingTime.propTypes = {
 }
 
 const Post = props => {
-  console.log('RPOPORPRO', props)
   const { timeToRead, excerpt } = props
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   const isGlossary = isGlossaryItem(props)
@@ -120,16 +119,19 @@ const sortPosts = sort((aa, bb) => {
 
 export const List = ({ title, filter: ff }) => {
   const data = getMDXWithSummary()
+  const posts = data[ff || 'posts'].nodes
   return (
-    <StyledList>
-      <h2>{title}</h2>
-      <StyledListWrapper>
-        {pipe(
-          sortPosts,
-          map(post => <Post key={post.id} {...post} />)
-        )(data[ff || 'posts'].nodes)}
-      </StyledListWrapper>
-    </StyledList>
+    posts.length > 0 && (
+      <StyledList>
+        <h2>{title}</h2>
+        <StyledListWrapper>
+          {pipe(
+            sortPosts,
+            map(post => <Post key={post.id} {...post} />)
+          )(posts)}
+        </StyledListWrapper>
+      </StyledList>
+    )
   )
 }
 

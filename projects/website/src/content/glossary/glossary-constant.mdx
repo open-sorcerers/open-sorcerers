@@ -1,0 +1,18 @@
+---
+title: Combinator | Constant
+path: /glossary/constant
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Constant" parent="Combinator" />
+
+The `constant` function takes what it is given and returns a nullary function which returns the original value. Sometimes called `always` or the `K` combinator.
+
+```js
+const K = x => () => x
+// import { always as K } from 'ramda'
+const alwaysCool = K('cool')
+alwaysCool() === 'cool'
+```

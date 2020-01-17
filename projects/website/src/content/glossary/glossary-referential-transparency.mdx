@@ -1,10 +1,12 @@
 ---
-title: Function | Referentially Transparent
+title: Function | Referential Transparency
 path: /glossary/referential-transparency
 author: brekk
 ---
 
-## [Referentially Transparent](/glossary/referential-transparency)
+import Definition from '@content/glossary/Definition'
+
+<Definition of="Referential Transparency" parent="Function" />
 
 A function which (when invoked with all inputs) can be replaced in all instances without changing the program's behavior.
 
@@ -15,4 +17,6 @@ const ten = double(5)
 const four = double(2) 
 const forty = times(ten)(four)
 times(ten)(four) === times(times(2)(5))(times(2)(2))
+// === times(2 * 5)(2 * 2)
+// === 2 * 5 * 2 * 2
 ```

@@ -35,20 +35,10 @@ export const getMDXWithSummary = () => {
       ) {
         ...LookupMDX
       }
-      modules: allMdx(
-        filter: {
-          fileAbsolutePath: { regex: "/posts/" }
-          frontmatter: { keywords: { in: "module", nin: "review" } }
-        }
-      ) {
+      modules: allMdx(filter: { fileAbsolutePath: { regex: "/modules/" } }) {
         ...LookupMDX
       }
-      reviews: allMdx(
-        filter: {
-          fileAbsolutePath: { regex: "/posts/" }
-          frontmatter: { keywords: { in: "review" } }
-        }
-      ) {
+      reviews: allMdx(filter: { fileAbsolutePath: { regex: "/reviews/" } }) {
         ...LookupMDX
       }
       glossary: allMdx(
@@ -58,6 +48,9 @@ export const getMDXWithSummary = () => {
         }
       ) {
         ...LookupMDX
+      }
+      currentBuildDate {
+        currentDate
       }
     }
   `)

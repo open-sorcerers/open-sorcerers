@@ -20,5 +20,8 @@ export const getPosts = () =>
           }
         }
       }
+      currentBuildDate {
+        currentDate
+      }
     }
   `)

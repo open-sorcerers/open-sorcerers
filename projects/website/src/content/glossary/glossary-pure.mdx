@@ -1,0 +1,19 @@
+---
+title: Function | Purity
+path: /glossary/pure-function
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Purity" parent="Function"/>
+
+A pure function is [deterministic](/glossary/deterministic), has no [side-effects](/glossary/side-effect) and is [referentially transparent](/glossary/refentially-transparent).
+
+```js
+const add = curry((a, b) => a + b)
+const addTwo = add(2)
+addTwo(100) / add(200)(111)
+(2+100) / (200+111)
+102 / 311
+```

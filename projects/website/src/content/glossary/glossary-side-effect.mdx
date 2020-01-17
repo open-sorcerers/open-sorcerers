@@ -1,0 +1,19 @@
+---
+keywords: [glossary]
+title: Function | Side-Effect
+path: /glossary/side-effect
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Side-Effect" />
+
+A side-effect is something which is external to the body of the current function (often in the form of a function call whose value is not captured).
+
+```js
+const whatever = () => {
+  console.log('a log is a side-effect')
+  return Math.random() * 200
+}
+```

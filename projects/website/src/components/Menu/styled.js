@@ -195,7 +195,7 @@ export const SettingsButton = styled(Box)`
     svg {
 
   fill: ${ℂ.primary};
-  top: -1.6rem;
+  top: -1.68rem;
   left: -1.6rem;
   width: 9rem;
   min-width: 9rem;

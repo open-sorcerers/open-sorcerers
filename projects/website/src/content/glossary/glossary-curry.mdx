@@ -1,0 +1,30 @@
+---
+title: Function | Curry
+path: /glossary/curry
+author: brekk
+---
+import Def from '@content/glossary/Definition'
+
+<Def of="Curry" parent="Function"/>
+
+Currying is a way of modifying a given function which takes multiple arguments in
+to a sequence of unary functions.
+
+Specifically, in JS, it means that you can manipulate arguments, their order, and other facets of a passed in function.
+
+```js
+const manual = a => b => c => a + b / c
+import {curry} from 'ramda'
+const auto = curry((a, b, c) => a + b / c)
+manual(1)(9)(2) === auto(1)(9)(2)
+manual(1)(9)(2) === auto(1, 9)(2)
+manual(1)(9)(2) === auto(1, 9, 2)
+manual(1)(9)(2) === auto(1)(9, 2)
+```
+
+### Modules
+
+- [ramda](//npmjs.org/package/ramda)
+- [lodash](//npmjs.org/package/lodash)
+- [katsu-curry](//npmjs.org/package/katsu-curry)
+- [fpo](//npmjs.org/package/fpo)

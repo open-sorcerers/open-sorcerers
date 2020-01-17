@@ -1,40 +1,29 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { pipe, ifElse } from 'ramda'
-
-import { checkWindowExists } from '@utils/url'
+import * as R from 'ramda'
 
 import { Theme } from '@domain/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
-import { Breakpoints } from '@styles/media'
 import { injectChildren } from '@utils/react'
 import { Z_INDEX, VIEW_STATES } from '@styles/constants'
+import { checkWindowExists } from '@utils/url'
 
 import { SEO } from './SEO'
 import { Main, site, menuActive } from './styled'
 
 export const stateView = ({ setView, view }) => ({ setView, view })
 
-const hasBreakpointsInQueryString = ifElse(
-  checkWindowExists,
-  pipe(
-    () => new URLSearchParams(window && window.location && window.location.search),
-    z => z.get('breakpoints'),
-    z => !!z
-  ),
-  () => false
-)
-
 const Styled = ({ children, ...other }) => {
   const { view, seo } = other
   const isActive = view === VIEW_STATES.MENU_ACTIVE
   const props = isActive ? { css: menuActive } : {}
-  const points = hasBreakpointsInQueryString() ? <Breakpoints /> : null
-
+  if (checkWindowExists()) {
+    // we are injecting ramda into the window variable
+    window.R = R
+  }
   return (
     <section {...props} css={site} className="website">
-      {points}
       <SEO seo={seo} {...other} />
       <Navigation {...other} />
       <Main {...other}>{children}</Main>

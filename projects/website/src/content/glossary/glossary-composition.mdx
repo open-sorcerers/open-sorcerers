@@ -1,0 +1,29 @@
+---
+title: Function | Composition
+path: /glossary/composition
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Composition" parent="Function"/>
+
+An operation which takes two or more functions and returns a unary function.
+
+Function composition facilitates code re-use.
+
+```js
+const f = x =>  x
+const g = x => y
+const h = x => f(g(x))
+// or, es6 style:
+import { pipe } from 'ramda'
+const h = pipe(f, g)
+// if you need to roll your own
+const pipe = (...fns) => (
+  x => fns.reduce(
+    (prev, fn) => fn(prev),
+    x
+  )
+)
+```

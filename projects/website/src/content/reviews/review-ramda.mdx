@@ -8,26 +8,48 @@ reviewer: brekk
 keywords: [module, review]
 ---
 
-import {PackageInstaller} from '@components/PackageInstaller'
+import { PackageInstaller } from '@components/PackageInstaller'
 
 <PackageInstaller pkg="ramda">
-A practical functional library for JavaScript programmers
+  A practical functional library for JavaScript programmers
 </PackageInstaller>
 
-`ramda` is essential. If I'm going to write any code of any real utility, I'm most likely to reach for `ramda` to create clean transformational pipelines.
+`ramda` is essential. If I'm going to write any code of any real utility, I'm most likely to reach for `ramda` to create clean transformational pipelines. All of its functions are automatically curried and it never mutates data.
 
 ```js
-import {curry, split, pipe, map} from 'ramda'
+import {
+  ap,
+  curry,
+  join,
+  map,
+  pipe,
+  slice,
+  split,
+  toLower,
+  toUpper
+} from 'ramda'
 
-export const capitalize = pipe(
-  split(' '),
-  map(pipe(
-    z => [z],
-    ap([slice(0, 1), slice(1, Infinity)]),
-  )),
-  map(([a, lphabet]) => toUpper(a) + toLower(lphabet)),
-  join('\n')
+const capitalize = curry(
+  (joint, xxx) => pipe(
+    split(' '),
+    map(pipe(
+      z => [z],
+      ap([
+        slice(0, 1),
+        slice(1, Infinity)
+      ])
+    )),
+    map(
+      // note how we're consuming an array here!
+      ([a, lphabet]) => (
+        toUpper(a) + toLower(lphabet)
+      )
+    ),
+    join(joint)
+  )(xxx)
 )
+
+capitalize('!\n', 'ramda is very cool')
 ```
 
 _Oooh tacit goodness_!
@@ -35,11 +57,13 @@ _Oooh tacit goodness_!
 When learning `ramda`, I highly recommend:
 
 1. Playing in the node REPL:
-  ```sh
-  node
-  > R = require('ramda')
-  > R.keys(R)
-  ```
+
+```sh
+node
+> R = require('ramda')
+> R.keys(R)
+```
+
 2. When sharing code with others, use the online [Ramda REPL](//ramdajs.org/repl) for simple sandboxing
 3. Install `eslint-plugin-ramda` for some automatic (though a few are unhelpful) refactoring suggestions via eslint.
 
@@ -47,12 +71,132 @@ When learning `ramda`, I highly recommend:
 
 ## Essential `ramda`
 
-* `curry` &mdash; Defer parameters for when you have them! Partial application FTW.
-* `pipe` &mdash; Function composition!
-* `map` &mdash; Ooh what a functor!
-* `propOr` &mdash; Grab a property or a default value! Safety!
-* `pathOr` &mdash; Grab a nested property or a default value! Extra safety!
-* `nth` &mdash; Grab the value of array[index]
-* `ap` &mdash; Segment your data cleanly and divine lines through it.
-* `__` &mdash; It's a magic placeholder!
+- `__` &mdash; It's a magic placeholder!
+- `curry` &mdash; Defer parameters for when you have them! Partial application FTW.
+- `pipe` &mdash; Function composition!
+- `map` &mdash; Ooh what a functor!
+- `propOr` &mdash; Grab a property or a default value! Safety!
+- `pathOr` &mdash; Grab a nested property or a default value! Extra safety!
+- `ap` &mdash; Segment your data cleanly and divine lines through it.
+- `propEq` &mdash; Assert property equivalence to static values!
+- `propSatisfies` &mdash; Assert whatever you want with a predicate function!
+- `ifElse` &mdash; When your tacit pipelines need conditional branching!
+- `not` &mdash; Invert boolean values in your pipes!
+- `complement` &mdash; Invert the outcome from a given function 
 
+## Examples
+
+Let's go into some examples!
+
+##### Specify gaps with a magic placeholder `__`
+
+The magic placeholder allows you to define gaps in a curried function.
+
+```js
+import { curry, __ } from 'ramda'
+const ternary = curry((a, b, c) => a + b / c)
+const sumOver3 = ternary(__, __, 3)
+```
+
+You can also get the same functionality by playing with `flip`,but IMO this is slightly harder to read.
+
+```js
+import { __, curry } from 'ramda'
+const divide = curry((a, b) => a / b)
+// divide(3) === 3 / x (not super useful)
+const over3 = divide(__, 3) === x / 3
+// identical:
+// import {flip} from 'ramda'
+// flip(divide)(3) === divide(__)(3)
+```
+
+##### Safe property access with `pathOr` and `propOr` 
+
+Safely access properties!
+
+```js
+const eventTargetValue = pathOr(false, ['target', 'value'])
+const orFalse = propOr(false)
+orFalse('someProperty', {}) // false
+```
+
+##### Apply with `ap`
+
+`ap` applies a list of functions to a list of values.
+
+```js
+import { ap, pipe, pathOr } from 'ramda'
+// this is the easiest thing to forget --
+// if you don't box before you `ap` you will
+// likely not have the data you expect in your output
+const box = x => [x]
+const data = {
+  a: { aa: { aaa: 111 } },
+  b: { bb: { bbb: 222 } },
+  c: { cc: { ccc: 333 } }
+}
+
+const safeNestedAccessors = pipe(
+  // remember to box before you ap
+  box,
+  ap([
+    pathOr(-1, ['a', 'aa', 'aaa']),
+    pathOr(-2, ['b', 'bb', 'bbb']),
+    pathOr(-3, ['c', 'cc', 'ccc']),
+    pathOr(1, ['d', 'dd', 'ddd'])
+  ]),
+  ([a, b, c, d]) => `nested sum: ${a + b + c / d}`
+)
+
+safeNestedAccessors(data)
+```
+
+##### Assert stuff with `propEq` and `propSatisfies` and `ifElse`
+
+Use `propEq` to compare static values, and `propSatisfies` to compare via a function which receives the property as its input. Use `ifElse` to create conditional branches while still using tacit pipes.
+
+```js
+import {
+  identity,
+  ifElse,
+  not,
+  pipe,
+  propEq
+} from 'ramda'
+
+// ifElse takes three unary functions which all receive the same input
+const goodOrBad = ifElse(
+  // input => if the input.status !== 200
+  pipe(propEq('status', 200), not),
+  // input => return the input with an error value
+  input => ({ input, error: true }),
+  // return input
+  identity
+)
+```
+
+Here's the same thing again but using `propSatisfies` and `complement` instead of `propEq` and `not`, respectively. Note the order of parameters for `propSatisfies`, the predicate comes _before_ the property.
+
+```js
+import {
+  complement,
+  equals,
+  identity,
+  ifElse,
+  pipe,
+  propSatisfies
+} from 'ramda'
+
+// ifElse takes three unary functions which all receive the same input
+const goodOrBad = ifElse(
+  // input => if the input.status !== 200
+  // propSatisfies(x => x !== 200, 'status') // equivalent
+  propSatisfies(complement(equals)(200), 'status')),
+  // input => return the input with an error value
+  input => ({ input, error: true }),
+  // return input
+  identity
+)
+```
+
+✌️

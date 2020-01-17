@@ -17,6 +17,7 @@ export const StyledContainer = styled(Box)`
 
 export const StyledContentContainer = styled(Box)`
   margin: 0 auto;
+  margin-bottom: 4rem;
   padding: 0 0.5rem;
   width: 100%;
   ${above.TINY_PHONE(`

@@ -217,6 +217,10 @@ const styles = css`
     font-weight: 500;
     text-transform: uppercase;
     font-style: italic;
+    code {
+      font-family: 'Fira Code', monospace;
+      text-transform: initial;
+    }
   }
   h1 {
     font-family: obviously, 'Obviously', sans-serif;

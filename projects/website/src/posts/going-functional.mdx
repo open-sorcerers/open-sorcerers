@@ -4,13 +4,9 @@ author: brekk
 path: series/fp/going-functional
 ---
 
-# Going From Imperative to Functional JavaScript
+# From Imperative to Functional JS
 
-We've talked a bit about why you'd want to move to the functional programming (FP) paradigm in a [previous article](), but in short, with FP:
-
-1. Everything is functions all the way down. If they're more than a unary function i.e. `(a, b) => a + b`, they should be [curried](/glossary/curry). The reason that they should be functions has a lot to do with [category theory](//en.wikipedia.org/wiki/Category_Theory) which you should read about if you're interested but is beyond the scope of this article.
-2. Ideally those functions are [pure functions](/glossary/pure-function). Pure functions are deterministic, meaning that with the same inputs they return the same outputs, they have no side-effects, meaning they do not make change external to the body of the function and they are [referentially transparent](/glossary/referential-transparency) so if you know the inputs you can compare them transparently.
-
+Previously we've talked a bit about the utility of FP and some of its [core tenets].
 
 Today we're gonna talk through the process I use to rewrite / refactor imperative 3rd-party modules into functional javascript, and then work through a real-life example.
 
@@ -60,8 +56,20 @@ const saveDataWithStorage = storage => (key, value) => {
 // saveDataWithStorage = curry((storage, key, value) => {})
 // ostensibly this could also be in the body of the function itself
 if (typeof window !== 'undefined') {
-  const saveData = saveDataWithStorage(window.localStorage)
+  const saveData = saveDataWithStorage(window.localStorage.bind(window.localStorage)
 }
 ```
 
 By closuring the global function we're making use of, we can safely use that function in more places, and we have more explicit definition around what our dependencies / requirements are. Another nice free benefit of this pattern is that you can easily inject shims for testing purposes, so maintaining 100% unit test coverage is pretty easy.
+
+[category theory]: //en.wikipedia.org/wiki/Category_Theory
+[curried]: /glossary/curry
+[deterministic]: /glossary/deterministic
+[function composition]: /glossary/composition
+[higher-order functions]: /glossary/higher-order-function
+[pure functions]: /glossary/pure-function
+[referentially transparent]: /glossary/referential-transparency
+[the glossary]: /glossary
+[side-effects]: /glossary/side-effects
+[arity]: /glossary/arity
+[core tenets]: /series/fp/core-tenets

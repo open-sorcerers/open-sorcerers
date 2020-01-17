@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import * as R from 'ramda'
 
 import { Theme } from '@domain/Theme'
 import { Navigation } from '@components/Navigation'
 import { Footer } from '@components/Footer'
 import { injectChildren } from '@utils/react'
 import { Z_INDEX, VIEW_STATES } from '@styles/constants'
+import { checkWindowExists } from '@utils/url'
 
 import { SEO } from './SEO'
 import { Main, site, menuActive } from './styled'
@@ -16,7 +18,10 @@ const Styled = ({ children, ...other }) => {
   const { view, seo } = other
   const isActive = view === VIEW_STATES.MENU_ACTIVE
   const props = isActive ? { css: menuActive } : {}
-
+  if (checkWindowExists()) {
+    // we are injecting ramda into the window variable
+    window.R = R
+  }
   return (
     <section {...props} css={site} className="website">
       <SEO seo={seo} {...other} />

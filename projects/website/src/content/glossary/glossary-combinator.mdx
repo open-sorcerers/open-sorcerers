@@ -1,0 +1,59 @@
+---
+title: Combinator
+path: /glossary/combinator
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Combinator" />
+
+A combinator is a primitive [higher-order function] without [free-variables].
+
+```js
+// identity combinator
+const I = x => x
+// constant combinator
+const K = x => () => x
+// apply combinator
+const A = f => x => f(x)
+// thrush combinator
+const T = x => f => f(x) 
+// duplication combinator
+const W = f => x => f(x)(x)
+// flip combinator
+const C = f => y => x => f(x)(y) 
+// compose combinator
+const B = f => g => x => f(g(x))
+// amalgamation combinator
+const S = f => g => x => f(x)(g(x))
+// psi combinator
+const P = f => g => x => y => f(g(x))(g(y))
+// fixed-point Y combinator
+const Y = f => (g => g(g))(g => f(x => g(g)(x))) 
+
+// morphisms
+S(K)(K) === I
+C(A) === T
+W(T)(I) === I
+C(W(K)(T)) === A
+S(K)(A) === A
+```
+
+Often if you can identify combinators in your code, you can use them to simplify logical parts of the code because of a knowledge of certain [morphisms].
+
+Read much more on [wikipedia][combos].
+
+(A common reference is [To Mock A Mockingbird][mock] but your mileage may vary &mdash; I love functional programming and working through mathematical proofs but mainly I find that book exhausting.)
+
+
+There's a lot [more][ski] to read about but one of the reasons it's cool is that using just `S` and `K` above, you can define a [Turing complete][turing] language.
+
+
+[higher-order function]: /glossary/higher-order-function
+[morphisms]: /glossary/morphism
+[free-variables]: /glossary/free-variable
+[turing]: //en.wikipedia.org/wiki/Turing_completeness
+[mock]: //en.wikipedia.org/wiki/To_Mock_A_Mockingbird
+[combos]: //en.wikipedia.org/wiki/Combinatory_logic
+[ski]: //en.wikipedia.org/wiki/SKI_combinator_calculus

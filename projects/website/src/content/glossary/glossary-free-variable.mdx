@@ -1,0 +1,33 @@
+---
+title: Function | Free-Variable
+path: /glossary/free-variable
+author: brekk
+---
+
+import Def from '@content/glossary/Definition'
+
+<Def of="Free-Variable" parent="Function"/>
+
+A free-variable is a global variable or variable defined externally to the function.
+
+```js
+// window is a free variable with respect to `save`
+const save = data => window.localStorage.setItem('saved', data)
+```
+
+You can use the [free-variable partial-application pattern] to fix this problem and turn this function [pure](/glossary/pure):
+
+```js
+const checkWindowExists = () => typeof window !== 'undefined'
+
+const saveWithContext = fn => data => fn('saved', data)
+// [...]
+
+if (checkWindowExists()) {
+  const save = saveWithContext(window.localStorage.setItem.bind(window.localStorage))
+}
+```
+
+If the above seems overkill, or needless, just remember that a runtime error can crash everything in JS land and a free benefit of the pattern is that you get the ability to inject mocks into your tests (e.g. `const save = saveWithContext(jest.fn())` for instance). So pick your battles.
+
+[free-variable partial-application pattern]: series/fp/going-functional#free-variable-partial-application-pattern

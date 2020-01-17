@@ -4,31 +4,46 @@ path: /glossary
 author: brekk
 ---
 
-import GFunction from '@glossary/glossary-function.mdx'
-import GArity from '@glossary/glossary-arity.mdx'
-import GNullary from '@glossary/glossary-nullary.mdx'
-import GUnary from '@glossary/glossary-unary.mdx'
-import GBinary from '@glossary/glossary-binary.mdx'
-import GTernary from '@glossary/glossary-ternary.mdx'
-import GPurity from '@glossary/glossary-pure.mdx'
-import GDeterministic from '@glossary/glossary-deterministic.mdx'
-import GRTransparent from '@glossary/glossary-referential-transparency.mdx'
-import GComposition from '@glossary/glossary-composition.mdx'
-import GHoF from '@glossary/glossary-higher-order-function.mdx'
+<!-- read ! ls src/content/glossary -->
+<!-- 10,25s#glossary-\(.*\)\.mdx#import \U\1\L from '@content/glossary/glossary-\1.mdx'#g -->
+
+
+import ARITY from '@content/glossary/glossary-arity.mdx'
+import BINARY from '@content/glossary/glossary-binary.mdx'
+import COMBINATOR from '@content/glossary/glossary-combinator.mdx'
+import COMPOSITION from '@content/glossary/glossary-composition.mdx'
+import CONSTANT from '@content/glossary/glossary-constant.mdx'
+import CURRY from '@content/glossary/glossary-curry.mdx'
+import DETERMINISTIC from '@content/glossary/glossary-deterministic.mdx'
+import FUNCTION from '@content/glossary/glossary-function.mdx'
+import FREE from '@content/glossary/glossary-free-variable.mdx'
+import HIGHER from '@content/glossary/glossary-higher-order-function.mdx'
+import IDENTITY from '@content/glossary/glossary-identity.mdx'
+import NULLARY from '@content/glossary/glossary-nullary.mdx'
+import PURE from '@content/glossary/glossary-pure.mdx'
+import REFERENTIAL from '@content/glossary/glossary-referential-transparency.mdx'
+import SIDE from '@content/glossary/glossary-side-effect.mdx'
+import TERNARY from '@content/glossary/glossary-ternary.mdx'
+import UNARY from '@content/glossary/glossary-unary.mdx'
 
 # Glossary
 
 The FP paradigm has a lot of terms which get thrown about which might need clarification, so use this listing. Additionally, you can link to any valid defintion with `/glossary/<term>`, e.g. [`open.sorcerers.dev/glossary/function`](open.sorcerers.dev/glossary/function)
 
-<GFunction />
-<GArity />
-<GNullary />
-<GUnary />
-<GBinary />
-<GTernary />
-<GPurity />
-<GDeterministic />
-<GRTransparent />
-<GComposition />
-<GHoF />
-
+<FUNCTION />
+<ARITY />
+<NULLARY />
+<UNARY />
+<BINARY />
+<TERNARY />
+<PURE />
+<DETERMINISTIC />
+<REFERENTIAL />
+<SIDE />
+<FREE />
+<HIGHER />
+<CURRY />
+<COMPOSITION />
+<COMBINATOR />
+<CONSTANT />
+<IDENTITY />

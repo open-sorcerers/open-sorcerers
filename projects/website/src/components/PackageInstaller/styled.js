@@ -26,5 +26,5 @@ export const Pullquote = styled.blockquote`
 export const PackageName = styled.strong`
   color: #fc0;
   font-weight: 800;
-  text-shadow: 0 0 1rem rgba(255, 255, 0, 0.3), 0 0 2px white;
+  text-shadow: 0 0 1rem rgba(255, 255, 0, 0.3);
 `

@@ -16,6 +16,8 @@ import { PackageInstaller } from '@components/PackageInstaller'
 
 `ramda` is essential. If I'm going to write any code of any real utility, I'm most likely to reach for `ramda` to create clean transformational pipelines. All of its functions are automatically curried and it never mutates data.
 
+Part of what I really like about it is that you can use it to compose simple and pure functions to get great complexity. Look at how each function in the `capitalize` function below is pure and very easy to reason about.
+
 ```js
 import {
   ap,
@@ -33,7 +35,7 @@ const capitalize = curry(
   (joint, xxx) => pipe(
     split(' '),
     map(pipe(
-      z => [z],
+      z => [z], // "box"
       ap([
         slice(0, 1),
         slice(1, Infinity)
@@ -49,10 +51,12 @@ const capitalize = curry(
   )(xxx)
 )
 
-capitalize('!\n', 'ramda is very cool')
+capitalize('! ', 'ramda is very cool')
 ```
 
 _Oooh tacit goodness_!
+
+## Learning
 
 When learning `ramda`, I highly recommend:
 
@@ -98,7 +102,7 @@ const ternary = curry((a, b, c) => a + b / c)
 const sumOver3 = ternary(__, __, 3)
 ```
 
-You can also get the same functionality by playing with `flip`,but IMO this is slightly harder to read.
+You can also get the same functionality by playing with `flip`, but IMO this is slightly harder to read / reason about.
 
 ```js
 import { __, curry } from 'ramda'
@@ -110,9 +114,9 @@ const over3 = divide(__, 3) === x / 3
 // flip(divide)(3) === divide(__)(3)
 ```
 
-##### Safe property access with `pathOr` and `propOr` 
+##### Safe property access with `pathOr` / `propOr` 
 
-Safely access properties!
+Safely access properties! Remember the order here, it's default value, followed by property or path-to-property, followed by the object / whatever itself.
 
 ```js
 const eventTargetValue = pathOr(false, ['target', 'value'])
@@ -122,7 +126,7 @@ orFalse('someProperty', {}) // false
 
 ##### Apply with `ap`
 
-`ap` applies a list of functions to a list of values.
+`ap` applies a list of functions to a list of values. **NB** In most cases, remember to encase your values in an array beforehand! I always refer to this as `box` but you do you.
 
 ```js
 import { ap, pipe, pathOr } from 'ramda'
@@ -151,7 +155,7 @@ const safeNestedAccessors = pipe(
 safeNestedAccessors(data)
 ```
 
-##### Assert stuff with `propEq` and `propSatisfies` and `ifElse`
+##### Assert stuff with `propEq` / `propSatisfies` / `ifElse`
 
 Use `propEq` to compare static values, and `propSatisfies` to compare via a function which receives the property as its input. Use `ifElse` to create conditional branches while still using tacit pipes.
 
@@ -181,21 +185,19 @@ Here's the same thing again but using `propSatisfies` and `complement` instead o
 import {
   complement,
   equals,
-  identity,
+  identity as I,
+  mergeRight,
   ifElse,
   pipe,
   propSatisfies
 } from 'ramda'
 
-// ifElse takes three unary functions which all receive the same input
 const goodOrBad = ifElse(
   // input => if the input.status !== 200
   // propSatisfies(x => x !== 200, 'status') // equivalent
   propSatisfies(complement(equals)(200), 'status')),
-  // input => return the input with an error value
-  input => ({ input, error: true }),
-  // return input
-  identity
+  mergeRight({ error: true }),
+  I
 )
 ```
 

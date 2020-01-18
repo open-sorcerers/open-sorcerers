@@ -43,6 +43,7 @@
     "gatsby-plugin-sharp": "^2.2.37",
     "gatsby-plugin-sw": "^1.0.1",
     "gatsby-plugin-webpack-bundle-analyzer": "^1.0.5",
+    "gatsby-remark-autolink-headers": "^2.1.23",
     "gatsby-remark-embed-gist": "^1.1.9",
     "gatsby-remark-embed-snippet": "^4.1.18",
     "gatsby-remark-prismjs": "^3.3.29",

@@ -12,6 +12,13 @@ glossary:
   - referential-transparency
   - arity
   - side-effect
+excerpt: |
+  1. Mostly everything should be functions all the way down.
+  2. Choose function composition.
+  3. Avoid mutating data.
+  4. Prefer map and discrete data.
+  5. Choose generic functions where possible.
+  6. Tacit can be nice.
 ---
 
 # FP Tenets
@@ -27,9 +34,8 @@ glossary:
 2. Prefer [function composition] and transformation via [higher-order functions] over inline function complexity. (See more examples in [the glossary])
 3. Avoid mutating or destructing data. Instead, make a copy of the data, and do whatever you want to that. This prevents hard-to-track errors and adheres to creating no side-effects.
 4. Prefer `map` over other loops. Discrete iterable values are pure. For instance, a `for` loop which conditionally pushes into an array, especially an array (potentially accessible from a shared context which could also then mutate it).
-5. When choosing a curried function interface
-6. Functions should cleave towards being as generic as possible. This aids both readability and logical reasoning.
-7. There's a form of FP which is called tacit or point-free which attempts to eschew defining parameters where possible, instead relying upon explicit function [arity]. This is not mandatory to be writing functional code. However, as it is often less code to write and helps reinforce the idea that everything is a function (often a composed one). An example of a tacit function:
+5. Functions should cleave towards being as generic as possible. This aids both readability and logical reasoning.
+6. There's a form of FP which is called tacit or point-free which attempts to eschew defining parameters where possible, instead relying upon explicit function [arity]. This is not mandatory to be writing functional code. However, as it is often less code to write and helps reinforce the idea that everything is a function (often a composed one). An example of a tacit function:
   ```js
   pipe(slice(0, 3), toUpper)
   ```

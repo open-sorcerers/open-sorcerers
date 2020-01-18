@@ -1,6 +1,22 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { includes, curry, sort, pipe, ap, pathOr, map } from 'ramda'
+import { MDXRenderer as MDX } from 'gatsby-plugin-mdx'
+import {
+  join,
+  identity as I,
+  always as K,
+  ifElse,
+  max,
+  min,
+  range,
+  includes,
+  curry,
+  sort,
+  pipe,
+  ap,
+  pathOr,
+  map
+} from 'ramda'
 import PropTypes from 'prop-types'
 import { getMDXWithSummary } from '@queries/posts-with-summary'
 
@@ -37,14 +53,26 @@ const getLinkTitleAuthor = pipe(
   ])
 )
 
-const readingTime = curry((ch, tt, xx) =>
-  new Array(Math.round(tt * 1.4 * (xx.length / 420)) + 1)
-    .fill(ch)
-    .map((z, i) => <span key={i}>{z}</span>)
+/* const readingTime = curry((ch, tt, xx) => */
+/* new Array(Math.round(tt * 1.4 * (xx.length / 420)) + 1) */
+const readingTime = curry((ch, tt) =>
+  pipe(
+    max(1),
+    min(5),
+    range(0),
+    map(K(ch)),
+    join(''),
+    ifElse(
+      z => z.length === 5,
+      z => z + '+',
+      I
+    ),
+    xx => <>{xx}</>
+  )(tt)
 )
 
-const ReadingTime = ({ excerpt, timeToRead, icon }) => (
-  <StyledReadingTime>{readingTime(icon, timeToRead, excerpt)}</StyledReadingTime>
+const ReadingTime = ({ timeToRead, icon }) => (
+  <StyledReadingTime>{readingTime(icon, timeToRead)}</StyledReadingTime>
 )
 
 ReadingTime.propTypes = {
@@ -54,7 +82,11 @@ ReadingTime.propTypes = {
 }
 
 const Post = props => {
-  const { timeToRead, excerpt } = props
+  const { excerpt } = props
+  const zzerp = pathOr(excerpt, ['frontmatter', 'excerpt'], props)
+  const isMarkdownExcerpt = pathOr(false, ['frontmatter', 'markdownExcerpt'], props)
+  const paragraphs = pathOr(1, ['wordCount', 'paragraphs'], props)
+  console.log('PROPS', props, paragraphs)
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   const isGlossary = isGlossaryItem(props)
   return (
@@ -63,13 +95,13 @@ const Post = props => {
         <EntityLink to={postLink}>{title}</EntityLink>
         {isModule(props) ? <ModuleToken>📦</ModuleToken> : null}
       </PostHeader>
-      <PostContent>{excerpt}</PostContent>
+      <PostContent>{isMarkdownExcerpt ? <MDX>{zzerp}</MDX> : zzerp}</PostContent>
       <PostFooter>
         <FooterFirst>
           {!isGlossary && <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>}
         </FooterFirst>
         <FooterLast>
-          <ReadingTime icon="◉" timeToRead={timeToRead} excerpt={excerpt} />
+          <ReadingTime icon="¶" timeToRead={paragraphs} excerpt={excerpt} />
           <GlossaryLinks>
             {map(
               item => (

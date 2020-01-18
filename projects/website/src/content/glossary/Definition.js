@@ -5,21 +5,32 @@ import { Box } from 'rebass'
 import { pipe, replace, toLower } from 'ramda'
 import { trace } from 'xtrace'
 
+import { checkWindowExists } from '@utils/url'
+
 const slugLink = pipe(replace(/ /g, '-'), toLower, z => '/glossary/' + z, trace('output'))
 
 export const Definition = props => {
-  const { of: x, children, parent, pageContext } = props
-  console.log('HEY PATH', props)
+  const { of: x, children, parent } = props
+  let onGlossaryPage = false
+  if (checkWindowExists()) {
+    const loc = window.location.toString()
+    onGlossaryPage = loc.includes('glossary') && loc.endsWith('glossary')
+  }
   const breadcrumbs = (
     <>
-      <Link to="/glossary">Glossary</Link>
+      {!onGlossaryPage ? (
+        <>
+          <Link to="/glossary">Glossary</Link>
+          {' | '}
+        </>
+      ) : null}
       {parent ? (
         <>
-          {' | '}
           <Link to={slugLink(parent)}>{parent}</Link>
+          {' | '}
         </>
       ) : null}{' '}
-      | <Link to={slugLink(x)}>{x}</Link>
+      <Link to={slugLink(x)}>{x}</Link>
     </>
   )
   return (

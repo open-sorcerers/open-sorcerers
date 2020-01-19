@@ -29,29 +29,62 @@ export const StyledContributor = styled(Box)`
   display: inline-block;
   position: relative;
   text-align: center;
-  &:first-of-type {
-    margin-top: 4rem;
-  }
+  border: 2px solid cyan;
+  transition: border 0.1s ease-in, box-shadow 0.3s ease-out;
+  background-clip: content-box;
+  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
+  height: 14rem;
+  padding: 2rem 0;
+
   a {
-    color: ${ℂ.primary};
+    color: ${ℂ.secondary};
   }
   img {
-    background: ${ℂ.primary} !important;
     border-radius: 100rem;
-    border: 0 solid ${ℂ.primary};
-    transition: border 0.3s ease-out;
-  }
-  a:hover {
-    color: ${ℂ.tertiary};
-    img {
-      border-width: 0.75rem;
-      background: ${ℂ.tertiary} !important;
-    }
+    border: 0 solid #fc0;
+    transition: border 0.1s ease-out;
+    background-color: transparent !important;
   }
   strong {
     font-family: obviously-narrow, 'Obviously', sans-serif;
     font-style: italic;
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+  &:first-of-type {
+    margin-top: 4rem;
+  }
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: black;
+    background-repeat: repeat;
+    background-position: center;
+    top: -1rem;
+    bottom: -1rem;
+    left: -1rem;
+    right: -1rem;
+    z-index: -1;
+  }
+  &::after {
+    transition: background-size 0.1s ease-in;
+    background-color: transparent;
+    background-image: url(/nebula.png);
+    background-size: 70%;
+    /* opacity: 0.9; */
+  }
+  &:hover {
+    border: 2px solid transparent;
+    box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.9), 0 1rem 1.5rem rgba(0, 0, 0, 0.6);
+    strong {
+      color: #fc0;
+    }
+    img {
+      border-width: 0.75rem;
+    }
+    &::after {
+      background-size: 95%;
+    }
   }
 `

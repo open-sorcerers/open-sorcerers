@@ -11,14 +11,11 @@ import { Img } from '@routes/Profile/styled'
 
 import { StyledContributors, StyledContributor } from './styled'
 
-const contribs = pipe(
-  prop('contributions'),
-  z => (z > 999 ? Math.floor(z / 100) / 10 + 'K' : z)
-)
+const contribs = pipe(prop('contributions'), z => (z > 999 ? Math.floor(z / 100) / 10 + 'K' : z))
 
 /* <Badge content="" variant="left" /> */
 const Contributor = pp => (
-  <StyledContributor>
+  <StyledContributor dataurl={pp.avatarUrl}>
     <a href={pp.url}>
       <Badge content={contribs(pp)} />
       <Img
@@ -45,7 +42,8 @@ export const Contributors = () => {
   console.log('DATA', data)
   return (
     <StyledContributors>
-      <h1>Contributors</h1>
+      <h1>The Open Sorcerers</h1>
+      <h2>The people behind this site</h2>
       <ul>
         {pipe(
           pathOr([], ['allGitHubContributor', 'nodes']),

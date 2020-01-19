@@ -226,6 +226,15 @@ const styles = css`
     font-family: obviously, 'Obviously', sans-serif;
     font-size: 3rem;
     line-height: 3rem;
+    &:first-of-type {
+      text-align: center;
+      color: #acffff;
+      letter-spacing: 0.38rem;
+      text-shadow: 0 0 0 aliceblue, 1px 1px black, 2px 2px 0 black, 3px 3px 0 black, 4px 4px 0 black,
+        5px 5px 0 black, 6px 6px 0 black, 5px 7px 0 #998, 4px 8px 0 #999, 3px 9px 0 #999,
+        2px 10px 0 #999, 1px 11px 0 #999, 0 12px 0 #999;
+      line-height: 3.3rem;
+    }
   }
   h2 {
     font-size: 2em;

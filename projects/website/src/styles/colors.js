@@ -210,6 +210,10 @@ const area = Object.freeze({
   // everything else
   badge: colorable([secondary, evenMix(tertiary, secondary)]),
   post: {
+    variant: {
+      draft: `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, cyan)})`,
+      private: `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, lime)})`
+    },
     footer: colorable([primary, secondary])
   },
   writing: {

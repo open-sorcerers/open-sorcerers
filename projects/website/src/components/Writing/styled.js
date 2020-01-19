@@ -118,7 +118,12 @@ export const PostFooter = styled.footer`
   flex-wrap: wrap;
   align-self: flex-end;
   width: 100%;
-  background-color: ${ℂ.area.post.footer.b};
+  background: ${p =>
+    p.isDraft
+      ? ℂ.area.post.variant.draft
+      : p.isPrivate
+      ? ℂ.area.post.variant.private
+      : ℂ.area.post.footer.b};
   color: ${ℂ.area.post.footer.f};
   border: 1px solid ${ℂ.area.post.footer.f};
   border-top-width: 0;

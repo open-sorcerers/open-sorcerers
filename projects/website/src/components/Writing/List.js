@@ -86,17 +86,18 @@ const Post = props => {
   const zzerp = pathOr(excerpt, ['frontmatter', 'excerpt'], props)
   const isMarkdownExcerpt = pathOr(false, ['frontmatter', 'markdownExcerpt'], props)
   const paragraphs = pathOr(1, ['wordCount', 'paragraphs'], props)
-  console.log('PROPS', props, paragraphs)
+  const isDraft = pathOr(false, ['frontmatter', 'draft'], props)
+  const isPrivate = pathOr(false, ['frontmatter', 'private'], props)
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   const isGlossary = isGlossaryItem(props)
   return (
-    <StyledPost>
+    <StyledPost {...{ isDraft, isPrivate }}>
       <PostHeader>
         <EntityLink to={postLink}>{title}</EntityLink>
         {isModule(props) ? <ModuleToken>📦</ModuleToken> : null}
       </PostHeader>
       <PostContent>{isMarkdownExcerpt ? <MDX>{zzerp}</MDX> : zzerp}</PostContent>
-      <PostFooter>
+      <PostFooter {...{ isDraft, isPrivate }}>
         <FooterFirst>
           {!isGlossary && <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>}
         </FooterFirst>

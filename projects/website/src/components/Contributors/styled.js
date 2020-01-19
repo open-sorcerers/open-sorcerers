@@ -72,7 +72,7 @@ export const StyledContributor = styled(Box)`
     transition: background-size 0.1s ease-in;
     background-image: url(/nebula.png);
     background-blend-mode: color-dodge;
-    background-size: 70%;
+    background-size: 110%;
     background-color: ${ℂ.named.transparent};
     /* opacity: 0.9; */
   }

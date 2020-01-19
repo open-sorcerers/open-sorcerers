@@ -90,7 +90,7 @@ const Post = props => {
   const isPrivate = pathOr(false, ['frontmatter', 'private'], props)
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   const isGlossary = isGlossaryItem(props)
-  return (
+  return isPrivate || isDraft ? null : (
     <StyledPost {...{ isDraft, isPrivate }}>
       <PostHeader>
         <EntityLink to={postLink}>{title}</EntityLink>

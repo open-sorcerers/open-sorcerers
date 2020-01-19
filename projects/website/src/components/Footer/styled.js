@@ -6,16 +6,16 @@ import { above } from '@styles/media'
 
 export const StyledFooter = withTheme(styled(Box)`
   padding: 1.5rem 0;
-  background-color: ${ℂ.quaternary};
+  background-color: ${ℂ.area.footer.b};
   transform: background 0.3s ease-out, height 0.3s ease-out;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
-  color: ${ℂ.secondary};
+  color: ${ℂ.area.footer.f};
   font-size: 0.9rem;
   line-height: 1.5rem;
   padding-bottom: 2rem;
 
   a {
-    color: ${ℂ.secondary};
+    color: ${ℂ.area.footer.link.f};
     text-decoration: none;
 
     :hover {
@@ -34,15 +34,17 @@ export const HiddenContent = styled(Box)`
   font-size: 1rem;
   line-height: 2rem;
   #current-date {
-    color: cyan;
+    color: ${ℂ.area.footer.hidden.date.f};
   }
   #environment {
-    color: yellow;
+    color: ${ℂ.area.footer.hidden.environment.f};
   }
   .brain {
     font-size: 3rem;
     margin: 1rem;
-    text-shadow: 0 0 3rem magenta, 0 0 1.5rem yellow, 0 0 5px white, 0 0 1px white;
+    text-shadow: 0 0 3rem ${ℂ.area.footer.hidden.brain.textShadow[0]},
+      0 0 1.5rem ${ℂ.area.footer.hidden.brain.textShadow[1]}, 0 0 5px white,
+      0 0 1px ${ℂ.area.footer.hidden.brain.textShadow[2]};
   }
   .version {
     font-size: 1.5rem;

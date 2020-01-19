@@ -29,7 +29,7 @@ export const StyledContributor = styled(Box)`
   display: inline-block;
   position: relative;
   text-align: center;
-  border: 2px solid cyan;
+  border: 2px solid ${ℂ.area.contributor.f};
   transition: border 0.1s ease-in, box-shadow 0.3s ease-out;
   background-clip: content-box;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
@@ -37,13 +37,13 @@ export const StyledContributor = styled(Box)`
   padding: 2rem 0;
 
   a {
-    color: ${ℂ.secondary};
+    color: ${ℂ.area.contributor.link.f};
   }
   img {
     border-radius: 100rem;
-    border: 0 solid #fc0;
+    border: 0 solid ${ℂ.area.contributor.img.f};
     transition: border 0.1s ease-out;
-    background-color: transparent !important;
+    background-color: ${ℂ.area.contributor.img.b} !important;
   }
   strong {
     font-family: obviously-narrow, 'Obviously', sans-serif;
@@ -58,7 +58,7 @@ export const StyledContributor = styled(Box)`
   &::after {
     content: '';
     position: absolute;
-    background-color: black;
+    background-color: ${ℂ.area.contributor.b};
     background-repeat: repeat;
     background-position: center;
     top: -1rem;
@@ -78,7 +78,7 @@ export const StyledContributor = styled(Box)`
     border: 2px solid transparent;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.9), 0 1rem 1.5rem rgba(0, 0, 0, 0.6);
     strong {
-      color: #fc0;
+      color: ${ℂ.area.contributor.link.a.f};
     }
     img {
       border-width: 0.75rem;

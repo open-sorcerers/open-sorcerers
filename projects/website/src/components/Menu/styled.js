@@ -50,7 +50,7 @@ export const FloatingMenuContent = styled.ul`
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: ${ℂ.AREA.MENU};
+  background-color: ${ℂ.area.menu.b};
   padding: 0;
   margin: 0;
   display: flex;
@@ -104,7 +104,7 @@ export const activeMenu = css`
   visibility: visible;
   pointer-events: auto;
   transform: translate(0, 0);
-  background-color: ${ℂ.AREA.MENU};
+  background-color: ${ℂ.area.menu.b};
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
@@ -126,7 +126,7 @@ export const activeButtonState = css`
   transform: rotate(10turn);
   animation-play-state: paused;
   svg {
-    fill: ${ℂ.tertiary};
+    fill: ${ℂ.ui.menuButton.a.f};
   }
 `
 
@@ -163,7 +163,7 @@ export const SettingsButton = styled(Box)`
   ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
   display: inline-block;
   position: relative;
-  fill: ${ℂ.secondary};
+  fill: ${ℂ.ui.menuButton.f};
   width: 2.5rem;
   height: 2.5rem;
   max-width: 2.5rem;
@@ -187,21 +187,21 @@ export const SettingsButton = styled(Box)`
     /* background-color: lime; */
     &:hover {
       svg {
-        fill: ${ℂ.tertiary};
+        fill: ${ℂ.ui.menuButton.a.f};
         stroke-width: 1.2rem;
-        stroke: ${ℂ.tertiary};
+        stroke: ${ℂ.ui.menuButton.a.f};
       }
     }
     svg {
 
-  fill: ${ℂ.primary};
+  fill: ${ℂ.ui.menuButton.f};
   top: -1.68rem;
   left: -1.6rem;
   width: 9rem;
   min-width: 9rem;
   height: 9rem;
   min-height: 9rem;
-  stroke: ${ℂ.primary};
+  stroke: ${ℂ.ui.menuButton.f};
   stroke-width: 0.6rem;
     }
   `)}
@@ -213,7 +213,7 @@ export const SettingsButton = styled(Box)`
   `)}
   &:hover {
     svg {
-      fill: ${ℂ.tertiary};
+      fill: ${ℂ.ui.menuButton.a.f};
     }
   }
 `
@@ -279,23 +279,23 @@ export const cog = css`
 
   /* stylelint-disable-next-line no-descending-specificity */
   svg {
-    fill: ${ℂ.quaternary};
+    fill: ${ℂ.ui.cog.f};
     stroke-width: 0;
-    stroke: ${ℂ.quaternary};
+    stroke: ${ℂ.ui.cog.f};
     transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
     animation: ${rotateSlowly} 18s ease-in-out infinite;
     animation-direction: normal;
     animation-play-state: ${p => (p.active ? 'running' : 'paused')};
     ${above.MID_TABLET(`
-      fill: ${ℂ.secondary};
-      stroke: ${ℂ.secondary};
+      fill: ${ℂ.ui.cog.above.midTablet.f};
+      stroke: ${ℂ.ui.cog.above.midTablet.f};
     `)}
   }
   
   &:hover {
     svg {
-      fill: ${ℂ.quaternary};
-      stroke: ${ℂ.quaternary};
+      fill: ${ℂ.ui.cog.a.f};
+      stroke: ${ℂ.ui.cog.a.f};
       stroke-width: 1.6rem;
     }
   }
@@ -306,12 +306,12 @@ export const cog = css`
     bottom: calc(4rem + -5vh);
     right: -2.5rem;
     svg {
-      fill: ${ℂ.secondary};
+      fill: ${ℂ.ui.cog.above.midTablet.f};
     }
     &:hover {
       svg {
-        fill: ${ℂ.tertiary};
-        stroke: ${ℂ.tertiary};
+        fill: ${ℂ.ui.cog.above.midTablet.a.f};
+        stroke: ${ℂ.ui.cog.above.midTablet.a.f};
         stroke-width: 0.75rem;
       }
     }
@@ -341,13 +341,13 @@ export const MenuCogTop = styled(Box)`
   left: -50%;
   margin: 0 14%;
   svg {
-    fill: ${ℂ.tertiary};
-    stroke: ${ℂ.tertiary};
+    fill: ${ℂ.ui.cog2.f};
+    stroke: ${ℂ.ui.cog2.f};
   }
   &:hover {
     svg {
-      fill: ${ℂ.secondary};
-      stroke: ${ℂ.primary};
+      fill: ${ℂ.ui.cog2.a.f};
+      stroke: ${ℂ.ui.cog2.stroke.a.f};
       stroke-width: 0.1rem;
     }
   }

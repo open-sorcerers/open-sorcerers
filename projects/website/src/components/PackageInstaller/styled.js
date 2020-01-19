@@ -23,8 +23,9 @@ export const Pullquote = styled.blockquote`
   margin: 1rem;
 `
 
+// TODO: fix this text-shadow color ref
 export const PackageName = styled.strong`
-  color: #fc0;
+  color: ${ℂ.area.pkg.f};
   font-weight: 800;
   text-shadow: 0 0 1rem rgba(255, 255, 0, 0.3);
 `

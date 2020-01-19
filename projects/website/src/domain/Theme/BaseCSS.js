@@ -42,7 +42,7 @@ const styles = css`
         text-decoration: line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
         :hover {
-          color: ${ℂ.UI.link};
+          color: ${ℂ.ui.link.f};
         }
       }
     }
@@ -58,13 +58,13 @@ const styles = css`
     font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
     font-weight: 500;
-    color: ${ℂ.UI.link};
+    color: ${ℂ.ui.link.f};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
     transition: ${easeOut('0.3s', ['color'])};
     &:hover {
-      color: ${ℂ.UI.linkActive};
+      color: ${ℂ.ui.link.a.f};
     }
   }
   em {
@@ -77,8 +77,8 @@ const styles = css`
   }
   pre {
     font-size: 1.2rem;
-    background-color: ${ℂ.EL.PRE_BG};
-    color: ${ℂ.EL.PRE};
+    background-color: ${ℂ.el.pre.b};
+    color: ${ℂ.el.pre.f};
     padding: 0.75rem 0.5rem;
     position: relative;
     overflow: hidden;
@@ -102,8 +102,8 @@ const styles = css`
       padding-left: 0.2rem;
       padding-right: 0.2rem;
       vertical-align: bottom;
-      background-color: ${ℂ.EL.CODE_BG};
-      color: ${ℂ.EL.CODE};
+      background-color: ${ℂ.el.code.b};
+      color: ${ℂ.el.code.f};
     }
     .line-numbers-rows {
       top: 0.75rem;
@@ -118,25 +118,25 @@ const styles = css`
   .language-js {
     .token {
       &.keyword {
-        color: ${ℂ.GIST.property};
+        color: ${ℂ.el.code.js.property};
       }
       &.function {
-        color: ${ℂ.GIST.entity};
+        color: ${ℂ.el.code.js.entity};
       }
       &.string {
-        color: ${ℂ.GIST.string};
+        color: ${ℂ.el.code.js.string};
       }
       &.comment {
-        color: ${ℂ.GIST.comment};
+        color: ${ℂ.el.code.js.comment};
       }
       &.operator {
-        color: ${ℂ.GIST.operator};
+        color: ${ℂ.el.code.js.operator};
       }
       &.punctuation {
-        color: ${ℂ.GIST.constant};
+        color: ${ℂ.el.code.js.constant};
       }
       &.parameter {
-        color: white;
+        color: ${ℂ.el.code.js.parameter};
       }
     }
   }
@@ -149,7 +149,7 @@ const styles = css`
     .gist-meta {
       a:first-of-type {
         padding: 0.2rem 0.5rem 0.5rem;
-        background-color: ${ℂ.GIST.constant};
+        background-color: ${ℂ.el.code.js.constant};
         color: black;
         transform: background 0.7s ease-out, color 0.7s ease-out;
         &:hover {
@@ -161,32 +161,32 @@ const styles = css`
     .js-gist-file-update-container {
       display: flex;
       flex-direction: column;
-      background-color: ${ℂ.EL.PRE_BG};
-      color: ${ℂ.EL.PRE};
+      background-color: ${ℂ.el.code.b};
+      color: ${ℂ.el.code.f};
       padding: 0.5rem;
     }
     td.js-line-number::before {
       content: attr(data-line-number);
       padding: 0 0.5rem;
-      color: ${ℂ.GIST.lineNumber};
+      color: ${ℂ.el.code.lineNumber};
     }
     .pl-smi {
-      color: ${ℂ.GIST.property};
+      color: ${ℂ.el.code.property};
     }
     .pl-en {
-      color: ${ℂ.GIST.entity};
+      color: ${ℂ.el.code.entity};
     }
     .pl-s {
-      color: ${ℂ.GIST.string};
+      color: ${ℂ.el.code.string};
     }
     .pl-c {
-      color: ${ℂ.GIST.comment};
+      color: ${ℂ.el.code.comment};
     }
     .pl-k {
-      color: ${ℂ.GIST.operator};
+      color: ${ℂ.el.code.operator};
     }
     .pl-c1 {
-      color: ${ℂ.GIST.constant};
+      color: ${ℂ.el.code.constant};
     }
   }
 
@@ -253,12 +253,12 @@ const styles = css`
   }
   blockquote {
     padding-left: 1rem;
-    border-left: 0.25rem solid ${ℂ.primary};
+    border-left: 0.25rem solid ${ℂ.el.blockquote.f};
   }
   blockquote.one-liner {
     padding: 0.5rem;
-    background-color: ${ℂ.quaternary};
-    color: ${ℂ.secondary};
+    background-color: ${ℂ.el.code.b};
+    color: ${ℂ.el.code.f};
     &::before {
       vertical-align: text-top;
       content: '';
@@ -266,7 +266,7 @@ const styles = css`
       width: 0;
       height: 0;
       border: 0.6rem solid transparent;
-      border-left-color: ${ℂ.tertiary};
+      border-left-color: ${ℂ.el.blockquote.f};
     }
     p {
       margin: 0;
@@ -275,8 +275,8 @@ const styles = css`
   }
 
   body {
-    background-color: ${ℂ.AREA.CONTENT_BG};
-    color: ${ℂ.AREA.CONTENT};
+    background-color: ${ℂ.el.body.b};
+    color: ${ℂ.el.body.f};
   }
 `
 export const BaseCSS = () => <Global styles={styles} />

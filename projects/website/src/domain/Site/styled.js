@@ -23,7 +23,7 @@ export const site = css`
 `
 
 export const menuActive = css`
-  background-color: ${ℂ.transparent};
+  background-color: ${ℂ.named.transparent};
   ${above.TABLET_PORTRAIT(`padding-right: 40vw;`)}
   ${above.TABLET_LANDSCAPE(`padding-right: 33vw;`)}
 `

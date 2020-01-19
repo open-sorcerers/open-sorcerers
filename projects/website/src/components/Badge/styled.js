@@ -32,8 +32,8 @@ export const BadgeContent = styled(Box)`
   height: 2.5rem;
   position: relative;
   z-index: ${Z_INDEX.CONTENT};
-  color: ${ℂ.secondary};
-  background-color: ${ℂ.primary};
+  color: ${ℂ.area.badge.f};
+  background-color: ${ℂ.area.badge.b};
   transition: color 0.1s ease-out, background 0.1s ease-out;
   border-radius: 100rem;
   vertical-align: middle;

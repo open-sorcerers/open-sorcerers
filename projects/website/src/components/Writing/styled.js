@@ -32,7 +32,7 @@ export const StyledPost = styled(Box)`
   overflow: hidden;
   position: relative;
   display: flex;
-  border: 1px solid ${ℂ.primary};
+  border: 1px solid ${ℂ.area.writing.post.f};
   flex-direction: column;
   ${above.TABLET_PORTRAIT(`
      min-width: calc(50% - 0.5rem);
@@ -89,9 +89,9 @@ export const PostHeader = styled.header`
   justify-content: space-between;
   a {
     display: block;
-    color: ${ℂ.quaternary};
+    color: ${ℂ.area.post.header.link.f};
     &:hover {
-      color: ${ℂ.tertiary};
+      color: ${ℂ.area.post.header.link.a.f};
     }
   }
 `
@@ -102,8 +102,8 @@ export const PostFooter = styled.footer`
   flex-wrap: wrap;
   align-self: flex-end;
   width: 100%;
-  background-color: ${ℂ.primary};
-  color: ${ℂ.secondary};
+  background-color: ${ℂ.area.post.footer.b};
+  color: ${ℂ.area.post.footer.f};
   padding: 0.5rem;
   padding-bottom: 0.75rem;
 `

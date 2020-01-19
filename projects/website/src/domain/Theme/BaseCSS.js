@@ -28,6 +28,7 @@ const styles = css`
     }
   }
   .listing-page {
+    text-align: center;
     a {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
@@ -107,8 +108,8 @@ const styles = css`
       padding-left: 0.2rem;
       padding-right: 0.2rem;
       vertical-align: bottom;
-      background-color: ${ℂ.el.code.b};
-      color: ${ℂ.el.code.f};
+      background-color: ${ℂ.el.code.before.b};
+      color: ${ℂ.el.code.before.f};
     }
     .line-numbers-rows {
       top: 0.75rem;
@@ -243,6 +244,9 @@ const styles = css`
         0 12px 0 ${ℂ.area.h3d.s[1]};
       line-height: 3.3rem;
       font-weight: 900;
+      a {
+        color: ${ℂ.area.h3d.f};
+      }
     }
   }
   h2 {

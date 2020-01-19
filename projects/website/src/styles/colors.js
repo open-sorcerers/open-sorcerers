@@ -123,8 +123,8 @@ const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
 const el = Object.freeze({
   /* body: colorable([primary, secondary]), */
   body: colorable([primary, `linear-gradient(35deg, ${darken(0.05, secondary)}, ${secondary})`]),
-  blockquote: colorable([secondary]),
-  code: mergeRight(colorable([secondary, tertiary]), {
+  blockquote: colorable([tertiary]),
+  code: mergeRight(colorable([secondary, quaternary]), {
     /*
     js: {
       constant: '#fc0',
@@ -137,7 +137,8 @@ const el = Object.freeze({
       parameter: 'white'
     }
     */
-    js: map(evenMix(secondary))({
+    before: colorable([primary, tertiary]),
+    js: map(mix(3 / 5, mix(1 / 5, secondary, quaternary)))({
       // js: {
       constant: '#fc0',
       comment: '#328e93',
@@ -146,10 +147,10 @@ const el = Object.freeze({
       string: '#01ec7e',
       entity: '#ba55d3',
       lineNumber: '#a699b4',
-      parameter: c29x3
+      parameter: '#5987b7'
     })
   }),
-  pre: colorable([secondary, primary])
+  pre: colorable([primary, mix(1 / 5, secondary, quaternary)])
 })
 
 // interactive elements

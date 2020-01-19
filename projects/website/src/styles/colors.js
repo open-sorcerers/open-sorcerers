@@ -1,4 +1,5 @@
-import { mergeRight } from 'ramda'
+import { mergeRight, map } from 'ramda'
+import { mix } from 'polished'
 const transparent = 'transparent'
 const offBlack = `#292828`
 const darkGray = `#222`
@@ -89,72 +90,66 @@ const PALETTES = [
     secondary: lilac,
     tertiary: muscle,
     quaternary: bone
+  },
+  {
+    primary: '#eee',
+    secondary: '#111',
+    /*
+    primary: '#111',
+    secondary: '#eee',
+    */
+    tertiary: '#7425d4',
+    quaternary: c31x3
   }
 ]
 
 /* const PALETTE = Object.freeze(WORKING_PALETTE) */
-const ref = PALETTES[0]
+const ref = PALETTES[3]
 const PALETTE = Object.freeze(ref)
 const { primary, secondary, tertiary, quaternary } = PALETTE
 
 export const debug = lime
-const placeholder = white
-
-const WORKING_PALETTE = {
-  primary,
-  secondary,
-  tertiary,
-  quaternary
-}
-
-// elements
-
-const GIST = Object.freeze({
-  constant: '#fc0',
-  comment: '#328e93',
-  operator: 'crimson',
-  property: 'cyan',
-  string: '#01ec7e',
-  entity: 'mediumorchid',
-  lineNumber: '#a699b4',
-  parameter: lemonchiffon
-})
-
-// state
-
-// Let's make our colors follow patterns!
-// [fore, back, activeFore = fore, activeBack = back]
-
-const colorable = ([
-  foreground = `inherit`,
-  background = `inherit`,
-  activeForeground = foreground,
-  activeBackground = background
-]) => ({
-  f: foreground,
-  b: background,
-  a: { f: activeForeground, b: activeBackground }
-})
 
 const $ = `inherit`
 
+// Let's make our colors follow patterns!
+const colorable = ([f = $, b = $]) => ({ f, b })
+
+const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
+  f,
+  b,
+  a: { f: aF, b: aB }
+})
+
 // interactive elements
 const ui = Object.freeze({
-  link: colorable([tertiary, $, primary, $]),
+  link: activeColor([tertiary, $, primary, $]),
   active: tertiary,
-  menuButton: colorable([tertiary]),
-  cog: mergeRight(colorable([quaternary]), {
-    above: { midTablet: colorable([secondary, $, quaternary]) }
+  menuButton: activeColor([tertiary]),
+  cog: mergeRight(activeColor([quaternary]), {
+    above: { midTablet: activeColor([secondary, $, quaternary]) }
   }),
-  cog2: mergeRight(colorable([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
-  reveal: colorable([secondary, tertiary, tertiary, secondary])
+  cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
+  reveal: activeColor([secondary, tertiary, tertiary, secondary]),
+  navItem: activeColor([secondary, $, tertiary]),
+  post: {
+    header: {
+      link: activeColor([quaternary, $, tertiary])
+    }
+  },
+  contributor: {
+    link: activeColor([secondary, $, hotMustard])
+  }
 })
+
+const evenMix = mix(5 / 10)
 
 // elements
 const el = Object.freeze({
-  body: colorable([offBlack, secondary]),
+  body: colorable([primary, secondary]),
   blockquote: colorable([secondary]),
-  code: mergeRight(colorable([secondary, '#409']), {
+  code: mergeRight(colorable([secondary, tertiary]), {
+    /*
     js: {
       constant: '#fc0',
       comment: '#328e93',
@@ -164,6 +159,18 @@ const el = Object.freeze({
       entity: 'mediumorchid',
       lineNumber: '#a699b4',
       parameter: 'white'
+    }
+    */
+    // map(evenMix(primary))({
+    js: {
+      constant: '#fc0',
+      comment: '#328e93',
+      operator: '#c00',
+      property: '#0ff',
+      string: '#01ec7e',
+      entity: '#ba55d3',
+      lineNumber: '#a699b4',
+      parameter: '#fff'
     }
   }),
   pre: colorable([secondary, primary])
@@ -176,11 +183,16 @@ const area = Object.freeze({
   nav: mergeRight(colorable([secondary, primary]), {
     inactive: { above: { tabletPortrait: colorable([primary]) } }
   }),
-  navItem: colorable([secondary, $, tertiary]),
   menu: colorable([$, quaternary]),
 
+  h3d: {
+    f: tertiary,
+    b: $,
+    s: [evenMix(secondary, tertiary), mix(9 / 10, secondary, primary)]
+  },
+
   // middle content
-  content: colorable([offBlack, secondary]),
+  content: colorable([primary, secondary]),
 
   // footer
   footer: mergeRight(colorable([secondary, quaternary]), {
@@ -195,9 +207,6 @@ const area = Object.freeze({
   // everything else
   badge: colorable([secondary, primary]),
   post: {
-    header: {
-      link: colorable([quaternary, $, tertiary])
-    },
     footer: colorable([secondary, primary])
   },
   writing: {
@@ -205,7 +214,6 @@ const area = Object.freeze({
   },
   breakpoint: colorable([offBlack, debug]),
   contributor: mergeRight(colorable([`cyan`, offBlack]), {
-    link: colorable([secondary, $, hotMustard]),
     img: colorable([hotMustard, transparent])
   }),
   pkg: colorable([hotMustard, el.code.b])

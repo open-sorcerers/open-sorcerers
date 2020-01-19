@@ -89,9 +89,9 @@ export const PostHeader = styled.header`
   justify-content: space-between;
   a {
     display: block;
-    color: ${ℂ.area.post.header.link.f};
+    color: ${ℂ.ui.post.header.link.f};
     &:hover {
-      color: ${ℂ.area.post.header.link.a.f};
+      color: ${ℂ.ui.post.header.link.a.f};
     }
   }
 `

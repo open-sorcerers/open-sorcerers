@@ -108,7 +108,7 @@ export const activeItemHover = css`
 
 export const StyledItem = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  color: ${ℂ.area.navItem.f};
+  color: ${ℂ.ui.navItem.f};
   font-family: obviously, sans-serif;
   font-size: 2.2rem;
   font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
@@ -121,7 +121,7 @@ export const StyledItem = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    color: ${ℂ.area.navItem.a.f};
+    color: ${ℂ.ui.navItem.a.f};
     opacity: 1;
   }
 

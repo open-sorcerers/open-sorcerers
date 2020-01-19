@@ -37,7 +37,7 @@ export const StyledContributor = styled(Box)`
   padding: 2rem 0;
 
   a {
-    color: ${ℂ.area.contributor.link.f};
+    color: ${ℂ.ui.contributor.link.f};
   }
   img {
     border-radius: 100rem;
@@ -78,7 +78,7 @@ export const StyledContributor = styled(Box)`
     border: 2px solid transparent;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.9), 0 1rem 1.5rem rgba(0, 0, 0, 0.6);
     strong {
-      color: ${ℂ.area.contributor.link.a.f};
+      color: ${ℂ.ui.contributor.link.a.f};
     }
     img {
       border-width: 0.75rem;

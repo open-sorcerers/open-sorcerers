@@ -8,12 +8,26 @@ export const GlossaryLinks = styled(Box)`
   margin: 0;
   padding: 0;
   a {
+    /* font-size: 1.4rem; */
+    /* line-height: 1.4rem; */
+    vertical-align: middle;
     font-family: obviously-narrow, 'Obviously', sans-serif;
+    font-style: italic;
+    letter-spacing: 0.03rem;
     font-weight: 500;
     margin: 0;
-    margin-left: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.8rem 0.45rem;
+    border-radius: 2.4rem 0.2rem;
+    transition: color 0.3s ease-out, background 0.3s ease-out;
+    background-color: ${ℂ.ui.post.glossary.link.b};
+    color: ${ℂ.ui.post.glossary.link.f};
     &:hover {
-      color: white;
+      background-color: ${ℂ.ui.post.glossary.link.a.b};
+      color: ${ℂ.ui.post.glossary.link.a.f};
+    }
+    &:first-of-type: {
+      margin-top: 0.5rem;
     }
   }
 `
@@ -32,6 +46,8 @@ export const StyledPost = styled(Box)`
   overflow: hidden;
   position: relative;
   display: flex;
+  background: ${ℂ.area.writing.post.b};
+  color: ${ℂ.area.writing.post.f};
   border: 1px solid ${ℂ.area.writing.post.f};
   flex-direction: column;
   ${above.TABLET_PORTRAIT(`
@@ -104,6 +120,8 @@ export const PostFooter = styled.footer`
   width: 100%;
   background-color: ${ℂ.area.post.footer.b};
   color: ${ℂ.area.post.footer.f};
+  border: 1px solid ${ℂ.area.post.footer.f};
+  border-top-width: 0;
   padding: 0.5rem;
   padding-bottom: 0.75rem;
 `

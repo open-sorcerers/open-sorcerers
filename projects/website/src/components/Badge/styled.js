@@ -33,13 +33,14 @@ export const BadgeContent = styled(Box)`
   position: relative;
   z-index: ${Z_INDEX.CONTENT};
   color: ${ℂ.area.badge.f};
-  background-color: ${ℂ.area.badge.b};
-  transition: color 0.1s ease-out, background 0.1s ease-out;
+  border: 2px solid ${ℂ.area.badge.b};
+  transition: border 0.1s ease-out, color 0.1s ease-out, background 0.1s ease-out;
   border-radius: 100rem;
   vertical-align: middle;
   line-height: 2.25rem;
   a:hover & {
-    color: #fc0;
+    color: ${ℂ.ui.contributor.link.a.f};
+    border-color: transparent;
     background-color: transparent;
   }
 `

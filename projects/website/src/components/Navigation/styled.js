@@ -43,7 +43,7 @@ export const Brand = styled(Link)`
   width: 50%;
   height: 100%;
   flex: 0 0 auto;
-  color: ${ℂ.area.brand.f};
+  color: ${ℂ.ui.brand.f};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
@@ -53,10 +53,15 @@ export const Brand = styled(Link)`
 
   svg {
     display: flex;
-    fill: ${ℂ.area.brand.f};
+    fill: ${ℂ.ui.brand.f};
     height: 6rem;
     margin: 1rem auto;
-    ${transitionEaseOut('0.3s', ['height', 'width', 'margin'])}
+    ${transitionEaseOut('0.1s', ['fill', 'height', 'width', 'margin'])}
+  }
+  &:hover {
+    svg {
+      fill: ${ℂ.ui.brand.a.f};
+    }
   }
 
   ${above.SMALL_PHONE(`

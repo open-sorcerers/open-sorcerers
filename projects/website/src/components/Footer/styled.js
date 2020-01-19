@@ -7,7 +7,7 @@ import { above } from '@styles/media'
 export const StyledFooter = withTheme(styled(Box)`
   padding: 1.5rem 0;
   background-color: ${ℂ.area.footer.b};
-  transform: background 0.3s ease-out, height 0.3s ease-out;
+  transition: background 0.3s ease-out, height 0.3s ease-out;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
   color: ${ℂ.area.footer.f};
   font-size: 0.9rem;
@@ -15,10 +15,12 @@ export const StyledFooter = withTheme(styled(Box)`
   padding-bottom: 2rem;
 
   a {
-    color: ${ℂ.area.footer.link.f};
+    transition: color 0.3s ease-in;
+    color: ${ℂ.ui.footer.link.f};
     text-decoration: none;
 
-    :hover {
+    &:hover {
+      color: ${ℂ.ui.footer.link.a.f};
       text-decoration: underline;
     }
   }

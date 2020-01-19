@@ -30,6 +30,7 @@ export const StyledContributor = styled(Box)`
   position: relative;
   text-align: center;
   border: 2px solid ${ℂ.area.contributor.f};
+  color: ${ℂ.ui.contributor.link.f};
   transition: border 0.1s ease-in, box-shadow 0.3s ease-out;
   background-clip: content-box;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
@@ -58,9 +59,9 @@ export const StyledContributor = styled(Box)`
   &::after {
     content: '';
     position: absolute;
-    background-color: ${ℂ.area.contributor.b};
     background-repeat: repeat;
     background-position: center;
+    background-color: ${ℂ.area.contributor.b};
     top: -1rem;
     bottom: -1rem;
     left: -1rem;
@@ -69,9 +70,10 @@ export const StyledContributor = styled(Box)`
   }
   &::after {
     transition: background-size 0.1s ease-in;
-    background-color: transparent;
     background-image: url(/nebula.png);
+    background-blend-mode: color-dodge;
     background-size: 70%;
+    background-color: ${ℂ.named.transparent};
     /* opacity: 0.9; */
   }
   &:hover {

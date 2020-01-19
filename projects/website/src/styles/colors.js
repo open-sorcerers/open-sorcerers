@@ -1,5 +1,7 @@
 import { mergeRight, map } from 'ramda'
-import { mix } from 'polished'
+import { darken, lighten, mix } from 'polished'
+
+const evenMix = mix(5 / 10)
 const transparent = 'transparent'
 const offBlack = `#292828`
 const darkGray = `#222`
@@ -86,20 +88,16 @@ const PALETTES = [
     quaternary: c29x3
   },
   {
-    primary: burntUmber,
-    secondary: lilac,
-    tertiary: muscle,
-    quaternary: bone
+    primary: bone,
+    secondary: muscle,
+    tertiary: resilientGray,
+    quaternary: chemicalSpill
   },
   {
-    primary: '#eee',
-    secondary: '#111',
-    /*
-    primary: '#111',
-    secondary: '#eee',
-    */
-    tertiary: '#7425d4',
-    quaternary: c31x3
+    primary: berlinWinter,
+    secondary: darken(3 / 10, laserPink), // composedBlue, // armyGreen,
+    tertiary: evenMix(hotMustard, armyGreen),
+    quaternary: '#1b202b' // winterMud
   }
 ]
 
@@ -121,32 +119,10 @@ const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
   a: { f: aF, b: aB }
 })
 
-// interactive elements
-const ui = Object.freeze({
-  link: activeColor([tertiary, $, primary, $]),
-  active: tertiary,
-  menuButton: activeColor([tertiary]),
-  cog: mergeRight(activeColor([quaternary]), {
-    above: { midTablet: activeColor([secondary, $, quaternary]) }
-  }),
-  cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
-  reveal: activeColor([secondary, tertiary, tertiary, secondary]),
-  navItem: activeColor([secondary, $, tertiary]),
-  post: {
-    header: {
-      link: activeColor([quaternary, $, tertiary])
-    }
-  },
-  contributor: {
-    link: activeColor([secondary, $, hotMustard])
-  }
-})
-
-const evenMix = mix(5 / 10)
-
 // elements
 const el = Object.freeze({
-  body: colorable([primary, secondary]),
+  /* body: colorable([primary, secondary]), */
+  body: colorable([primary, `linear-gradient(35deg, ${darken(0.05, secondary)}, ${secondary})`]),
   blockquote: colorable([secondary]),
   code: mergeRight(colorable([secondary, tertiary]), {
     /*
@@ -161,8 +137,8 @@ const el = Object.freeze({
       parameter: 'white'
     }
     */
-    // map(evenMix(primary))({
-    js: {
+    js: map(evenMix(secondary))({
+      // js: {
       constant: '#fc0',
       comment: '#328e93',
       operator: '#c00',
@@ -170,33 +146,59 @@ const el = Object.freeze({
       string: '#01ec7e',
       entity: '#ba55d3',
       lineNumber: '#a699b4',
-      parameter: '#fff'
-    }
+      parameter: c29x3
+    })
   }),
   pre: colorable([secondary, primary])
+})
+
+// interactive elements
+const ui = Object.freeze({
+  link: activeColor([tertiary, $, primary, $]),
+  menuButton: activeColor([tertiary]),
+  cog: mergeRight(activeColor([quaternary]), {
+    above: { midTablet: activeColor([secondary, $, quaternary]) }
+  }),
+  cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
+  reveal: activeColor([secondary, tertiary, tertiary, secondary]),
+  navItem: activeColor([secondary, $, tertiary]),
+  post: {
+    header: {
+      link: activeColor([quaternary, $, tertiary])
+    },
+    glossary: {
+      link: activeColor([secondary, mix(7 / 10, tertiary, secondary), tertiary, transparent])
+    }
+  },
+  contributor: {
+    link: activeColor([evenMix(tertiary, secondary), $, lighten(1 / 10, tertiary)])
+  },
+  footer: {
+    link: activeColor([tertiary, $, lighten(1 / 10, tertiary)])
+  },
+  brand: activeColor([secondary, $, tertiary, $]),
+  anchor: activeColor([transparent, $, tertiary, $])
 })
 
 // custom elements
 const area = Object.freeze({
   // top nav
-  brand: colorable([secondary]),
   nav: mergeRight(colorable([secondary, primary]), {
     inactive: { above: { tabletPortrait: colorable([primary]) } }
   }),
   menu: colorable([$, quaternary]),
 
   h3d: {
-    f: tertiary,
+    f: lighten(1 / 12, primary),
     b: $,
-    s: [evenMix(secondary, tertiary), mix(9 / 10, secondary, primary)]
+    s: [tertiary, mix(6 / 10, secondary, '#000')]
   },
 
   // middle content
-  content: colorable([primary, secondary]),
+  /* content: colorable([primary, `linear-gradient(35deg, ${secondary}, ${darken(0.1, secondary)}`]), */
 
   // footer
-  footer: mergeRight(colorable([secondary, quaternary]), {
-    link: colorable([secondary]),
+  footer: mergeRight(colorable([primary, quaternary]), {
     hidden: {
       date: colorable([hotMustard]),
       environment: colorable([cyan]),
@@ -205,18 +207,18 @@ const area = Object.freeze({
   }),
 
   // everything else
-  badge: colorable([secondary, primary]),
+  badge: colorable([secondary, evenMix(tertiary, secondary)]),
   post: {
-    footer: colorable([secondary, primary])
+    footer: colorable([primary, secondary])
   },
   writing: {
-    post: colorable([primary])
+    post: colorable([secondary, primary])
   },
   breakpoint: colorable([offBlack, debug]),
-  contributor: mergeRight(colorable([`cyan`, offBlack]), {
-    img: colorable([hotMustard, transparent])
+  contributor: mergeRight(colorable([evenMix(tertiary, secondary), '#3c053a']), {
+    img: colorable([tertiary, transparent])
   }),
-  pkg: colorable([hotMustard, el.code.b])
+  pkg: colorable([evenMix(hotMustard, secondary), el.code.b])
 })
 
 const named = Object.freeze({

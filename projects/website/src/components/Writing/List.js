@@ -102,19 +102,19 @@ const Post = props => {
         </FooterFirst>
         <FooterLast>
           <ReadingTime icon="¶" timeToRead={paragraphs} excerpt={excerpt} />
-          <GlossaryLinks>
-            {map(
-              item => (
-                <>
-                  <Link key={item} to={`/glossary/${item}`}>
-                    {item}
-                  </Link>
-                </>
-              ),
-              glossary
-            )}
-          </GlossaryLinks>
         </FooterLast>
+        <GlossaryLinks>
+          {map(
+            item => (
+              <>
+                <Link key={item} to={`/glossary/${item}`}>
+                  {item}
+                </Link>
+              </>
+            ),
+            glossary
+          )}
+        </GlossaryLinks>
       </PostFooter>
     </StyledPost>
   )

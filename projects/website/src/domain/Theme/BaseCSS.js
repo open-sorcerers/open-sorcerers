@@ -22,6 +22,11 @@ const styles = css`
     font-size: 16px;
     line-height: 1.5rem;
   }
+  a.anchor.before {
+    svg {
+      fill: ${ℂ.ui.anchor.a.f};
+    }
+  }
   .listing-page {
     a {
       font-family: obviously, 'Obviously', sans-serif;
@@ -226,6 +231,7 @@ const styles = css`
     font-family: obviously, 'Obviously', sans-serif;
     font-size: 3rem;
     line-height: 3rem;
+    font-weight: 900;
     &:first-of-type {
       text-align: center;
       color: ${ℂ.area.h3d.f};
@@ -236,6 +242,7 @@ const styles = css`
         3px 9px 0 ${ℂ.area.h3d.s[1]}, 2px 10px 0 ${ℂ.area.h3d.s[1]}, 1px 11px 0 ${ℂ.area.h3d.s[1]},
         0 12px 0 ${ℂ.area.h3d.s[1]};
       line-height: 3.3rem;
+      font-weight: 900;
     }
   }
   h2 {
@@ -277,7 +284,7 @@ const styles = css`
   }
 
   body {
-    background-color: ${ℂ.el.body.b};
+    background: ${ℂ.el.body.b};
     color: ${ℂ.el.body.f};
   }
 `

@@ -52,7 +52,8 @@ exports.createPages = async ({ actions, graphql }) => {
     )
   )
   return posts.data.allMdx.nodes.forEach(post => {
-    const isProd = process.env.NODE_ENV === 'production'
+    const isProd = process.env.PRODUCTION
+    console.log('isProd', isProd, process.env.NODE_ENV)
     const fm = propOr({}, 'frontmatter', post)
     const [title, priv, draft, after, postPath] = pipe(
       box,

@@ -117,12 +117,12 @@ export const StyledItem = styled(Link)`
   color: ${ℂ.ui.navItem.f};
   font-family: obviously, sans-serif;
   font-size: 2.2rem;
-  font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
+  font-style: ${p => (!p['data-active'] ? 'italic' : 'normal')};
   font-weight: 900;
   letter-spacing: 0.05em;
   line-height: 0.75rem;
   margin: 1rem auto;
-  opacity: ${p => (p.isActive ? '1' : '0.6')};
+  opacity: ${p => (p['data-active'] ? '1' : '0.6')};
   padding: 0 0.5rem;
   text-decoration: none;
 

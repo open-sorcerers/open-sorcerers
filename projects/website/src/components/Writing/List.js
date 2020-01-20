@@ -156,7 +156,7 @@ export const List = ({ title, filter: ff, more = false }) => {
   return (
     posts.length > 0 && (
       <StyledList>
-        <h2 className="three-d">{more ? <Link to={more}>{title}</Link> : title}</h2>
+        <h2>{more ? <Link to={more}>{title}</Link> : title}</h2>
         <StyledListWrapper>
           {pipe(
             sortPosts,

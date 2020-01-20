@@ -79,6 +79,7 @@ export const Brand = styled(Link)`
     width: 55%;
     margin: 0.5rem 0;
     justify-content: center;
+    svg { height: 12rem; }
   `)}
   ${above.MID_TABLET(`
     margin: 0.5rem 2rem;

@@ -236,6 +236,7 @@ const styles = css`
     font-weight: 900;
     &:first-of-type {
       text-align: center;
+      transition: letter-spacing 0.1s ease-out, text-shadow 0.3s ease-out, font-size 0.3s ease-out;
       color: ${ℂ.area.h3d.f};
       font-weight: 900;
       a {
@@ -254,9 +255,9 @@ const styles = css`
   }
   h1 {
     ${above.TABLET_PORTRAIT(`
-        font-size: 3rem;
-        line-height: 3.3rem;
-      `)}
+      font-size: 3rem;
+      line-height: 3.3rem;
+    `)}
   }
   h2 {
     font-size: 2em;

@@ -9,6 +9,7 @@ import Logo from '@assets/open-sorcerers2.svg'
 import { Container } from '@components/Container'
 import { VIEW_STATES } from '@styles/constants'
 import { Menu } from '@components/Menu'
+import { LEARN, BUILD, TALK } from '@constants/routes'
 
 import {
   MenuWrapper,
@@ -22,9 +23,9 @@ import {
 } from './styled'
 
 const items = [
-  { label: 'LEARN', to: '/learn/' },
-  { label: 'BUILD', to: '/build/' },
-  { label: 'ASK', to: '/ask/' }
+  { label: 'LEARN', to: LEARN },
+  { label: 'BUILD', to: BUILD },
+  { label: 'TALK', to: TALK }
 ]
 
 const RawNavigation = props => {
@@ -56,7 +57,7 @@ const RawNavigation = props => {
             <>
               {items.map(({ label, to, href }) =>
                 to ? (
-                  <StyledItem key={uid(label)} to={to} isActive={path.includes(to)}>
+                  <StyledItem key={uid(label)} to={to} data-active={path.includes(to)}>
                     {label}
                   </StyledItem>
                 ) : (

@@ -23,7 +23,6 @@ export const Answer = ({
   return (
     <Button
       onClick={e => {
-        console.log('clicked', children, idx)
         e.preventDefault()
         if (!resettable && didAnswer) return
         setMessage(UNSET)

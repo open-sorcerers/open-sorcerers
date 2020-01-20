@@ -104,7 +104,7 @@ export const Breakpoint = styled(Box)`
     x => x * 16,
     x => x + 'px'
   )};
-  border-left: 1px dashed ${ℂ.debug};
+  border-left: 1px dashed ${ℂ.area.breakpoint.f};
   opacity: 0.1;
   cursor: crosshair;
   &:hover {
@@ -112,8 +112,8 @@ export const Breakpoint = styled(Box)`
   }
   &::before {
     position: absolute;
-    background-color: ${ℂ.debug};
-    color: ${ℂ.offBlack};
+    background-color: ${ℂ.area.breakpoint.b};
+    color: ${ℂ.area.breakpoint.f};
     content: "${pipe(propOr(false, 'label'), replace(/_/g, ' '))}";
     transform: rotate(-90deg);
     padding: 0 3rem 0 1rem;

@@ -1,9 +1,47 @@
 import React from 'react'
+import { curry, pipe, range, map } from 'ramda'
 import { css, Global } from '@emotion/core'
 import * as ℂ from '@styles/colors'
 import { easeOut } from '@styles/animation'
+import { above, aboveCalc } from '@styles/media'
 import 'typeface-fira-sans'
 import 'typeface-fira-code'
+
+const sh = curry((cl, xx, yy) => `${xx}px ${yy}px 0 ${cl}`)
+
+const surface = curry((edge, start, end) => pipe(range(start), map(edge))(end))
+
+const h3D = ({
+  color = ℂ.area.h3d.f,
+  edge = ℂ.area.h3d.s[0],
+  shadow: dropShade = ℂ.area.h3d.s[1],
+  shadowY: y = -2,
+  size = 7,
+  and = ''
+}) => `
+  text-align: center;
+  transition: letter-spacing 0.1s ease-out, text-shadow 0.3s ease-out, font-size 0.3s ease-out;
+  color: ${color};
+  font-weight: 900;
+  a {
+    color: ${color};
+  }
+  ${aboveCalc.TINY_PHONE('2rem')(
+    `
+    letter-spacing: 0.38rem;
+
+    text-shadow: ${[
+      `0 0 0 ${color}`,
+      ...surface(z => sh(edge, z, z), 0, size),
+      ...surface(z => sh(dropShade, -z + (size + y), z + size), 0, size + y)
+    ].join(', ')};
+    line-height: 3.3rem;
+    ${and}
+  `
+  )}
+`
+
+const h3DBig = () => h3D({ size: 15, and: `letter-spacing: 0.7rem` })
 
 const styles = css`
   * {
@@ -22,7 +60,21 @@ const styles = css`
     font-size: 16px;
     line-height: 1.5rem;
   }
+  #cta-learn,
+  #cta-build,
+  #cta-talk {
+    ${h3DBig()}
+    font-size: 4em;
+    line-height: 4.35rem;
+    margin-bottom: 3rem;
+  }
+  a.anchor.before {
+    svg {
+      fill: ${ℂ.ui.anchor.a.f};
+    }
+  }
   .listing-page {
+    text-align: center;
     a {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
@@ -42,7 +94,7 @@ const styles = css`
         text-decoration: line-through solid rgba(0, 0, 0, 0.6);
         cursor: not-allowed;
         :hover {
-          color: ${ℂ.UI.link};
+          color: ${ℂ.ui.link.f};
         }
       }
     }
@@ -58,13 +110,13 @@ const styles = css`
     font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
     font-weight: 500;
-    color: ${ℂ.UI.link};
+    color: ${ℂ.ui.link.f};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
     transition: ${easeOut('0.3s', ['color'])};
     &:hover {
-      color: ${ℂ.UI.linkActive};
+      color: ${ℂ.ui.link.a.f};
     }
   }
   em {
@@ -77,8 +129,8 @@ const styles = css`
   }
   pre {
     font-size: 1.2rem;
-    background-color: ${ℂ.EL.PRE_BG};
-    color: ${ℂ.EL.PRE};
+    background-color: ${ℂ.el.pre.b};
+    color: ${ℂ.el.pre.f};
     padding: 0.75rem 0.5rem;
     position: relative;
     overflow: hidden;
@@ -102,8 +154,8 @@ const styles = css`
       padding-left: 0.2rem;
       padding-right: 0.2rem;
       vertical-align: bottom;
-      background-color: ${ℂ.EL.CODE_BG};
-      color: ${ℂ.EL.CODE};
+      background-color: ${ℂ.el.code.before.b};
+      color: ${ℂ.el.code.before.f};
     }
     .line-numbers-rows {
       top: 0.75rem;
@@ -118,25 +170,25 @@ const styles = css`
   .language-js {
     .token {
       &.keyword {
-        color: ${ℂ.GIST.property};
+        color: ${ℂ.el.code.js.property};
       }
       &.function {
-        color: ${ℂ.GIST.entity};
+        color: ${ℂ.el.code.js.entity};
       }
       &.string {
-        color: ${ℂ.GIST.string};
+        color: ${ℂ.el.code.js.string};
       }
       &.comment {
-        color: ${ℂ.GIST.comment};
+        color: ${ℂ.el.code.js.comment};
       }
       &.operator {
-        color: ${ℂ.GIST.operator};
+        color: ${ℂ.el.code.js.operator};
       }
       &.punctuation {
-        color: ${ℂ.GIST.constant};
+        color: ${ℂ.el.code.js.constant};
       }
       &.parameter {
-        color: white;
+        color: ${ℂ.el.code.js.parameter};
       }
     }
   }
@@ -149,7 +201,7 @@ const styles = css`
     .gist-meta {
       a:first-of-type {
         padding: 0.2rem 0.5rem 0.5rem;
-        background-color: ${ℂ.GIST.constant};
+        background-color: ${ℂ.el.code.js.constant};
         color: black;
         transform: background 0.7s ease-out, color 0.7s ease-out;
         &:hover {
@@ -161,33 +213,33 @@ const styles = css`
     .js-gist-file-update-container {
       display: flex;
       flex-direction: column;
-      background-color: ${ℂ.EL.PRE_BG};
-      color: ${ℂ.EL.PRE};
+      background-color: ${ℂ.el.code.b};
+      color: ${ℂ.el.code.f};
       padding: 0.5rem;
     }
     td.js-line-number::before {
       content: attr(data-line-number);
       padding: 0 0.5rem;
-      color: ${ℂ.GIST.lineNumber};
+      color: ${ℂ.el.code.js.lineNumber};
     }
-    .pl-smi {
-      color: ${ℂ.GIST.property};
-    }
-    .pl-en {
-      color: ${ℂ.GIST.entity};
-    }
-    .pl-s {
-      color: ${ℂ.GIST.string};
-    }
-    .pl-c {
-      color: ${ℂ.GIST.comment};
-    }
-    .pl-k {
-      color: ${ℂ.GIST.operator};
-    }
-    .pl-c1 {
-      color: ${ℂ.GIST.constant};
-    }
+  }
+  .pl-smi {
+    color: ${ℂ.el.code.js.property};
+  }
+  .pl-en {
+    color: ${ℂ.el.code.js.entity};
+  }
+  .pl-s {
+    color: ${ℂ.el.code.js.string};
+  }
+  .pl-c {
+    color: ${ℂ.el.code.js.comment};
+  }
+  .pl-k {
+    color: ${ℂ.el.code.js.operator};
+  }
+  .pl-c1 {
+    color: ${ℂ.el.code.js.constant};
   }
 
   ul,
@@ -221,11 +273,30 @@ const styles = css`
       font-family: 'Fira Code', monospace;
       text-transform: initial;
     }
+    &.three-d {
+      font-family: obviously, 'Obviously', sans-serif;
+      font-weight: 900;
+      ${h3D({})}
+      a {
+        font-family: obviously, 'Obviously', sans-serif;
+        font-weight: 900;
+      }
+    }
   }
   h1 {
     font-family: obviously, 'Obviously', sans-serif;
-    font-size: 3rem;
-    line-height: 3rem;
+    font-size: 2.3rem;
+    line-height: 2.3rem;
+    font-weight: 900;
+    &:first-of-type {
+      ${h3D({})}
+    }
+  }
+  h1 {
+    ${above.TABLET_PORTRAIT(`
+      font-size: 3rem;
+      line-height: 3.3rem;
+    `)}
   }
   h2 {
     font-size: 2em;
@@ -244,12 +315,12 @@ const styles = css`
   }
   blockquote {
     padding-left: 1rem;
-    border-left: 0.25rem solid ${ℂ.primary};
+    border-left: 0.25rem solid ${ℂ.el.blockquote.f};
   }
   blockquote.one-liner {
     padding: 0.5rem;
-    background-color: ${ℂ.quaternary};
-    color: ${ℂ.secondary};
+    background-color: ${ℂ.el.code.b};
+    color: ${ℂ.el.code.f};
     &::before {
       vertical-align: text-top;
       content: '';
@@ -257,7 +328,7 @@ const styles = css`
       width: 0;
       height: 0;
       border: 0.6rem solid transparent;
-      border-left-color: ${ℂ.tertiary};
+      border-left-color: ${ℂ.el.blockquote.f};
     }
     p {
       margin: 0;
@@ -266,8 +337,8 @@ const styles = css`
   }
 
   body {
-    background-color: ${ℂ.AREA.CONTENT_BG};
-    color: ${ℂ.AREA.CONTENT};
+    background: ${ℂ.el.body.b};
+    color: ${ℂ.el.body.f};
   }
 `
 export const BaseCSS = () => <Global styles={styles} />

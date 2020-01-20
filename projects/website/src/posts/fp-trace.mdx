@@ -2,13 +2,14 @@
 title: FP | trace
 path: /series/fp/trace
 author: brekk
-keywords: [series]
+keywords: [functional programming, fp, trace, xtrace, binary side-effect, side-effect]
 glossary: [composition, binary, side-effect]
+excerpt: How can we take a look at data in a composed pipeline?
 ---
 
-# [trace](/series/fp/trace)
+# Trace
 
-Trace is a simple pattern which allows for invoking a [binary](/glossary/binary) [side-effect](/glossary/side-effect) in composition.
+Trace is a simple pattern which allows for invoking a [binary](/glossary/binary) [side-effect](/glossary/side-effect) in composition - normally we want to stay away from side-effects, but here we're exploiting side-effects to very simply augment our composed pipeline:
 
 ```js
 import {__, pipe, curry} from 'ramda'

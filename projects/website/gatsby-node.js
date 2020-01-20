@@ -1,5 +1,20 @@
 const path = require('path')
-const { ap, curry, toPairs, map, pathOr, ifElse, prop, pipe, propOr } = require('ramda')
+const {
+  T,
+  once,
+  always: K,
+  ap,
+  curry,
+  ifElse,
+  includes,
+  map,
+  pathOr,
+  pipe,
+  prop,
+  propOr,
+  toPairs,
+  cond
+} = require('ramda')
 
 const box = x => [x]
 
@@ -19,9 +34,11 @@ exports.createPages = async ({ actions, graphql }) => {
             keywords
             private
             draft
+            excerpt
             publishAfter
           }
           fileAbsolutePath
+          excerpt(pruneLength: 420)
         }
       }
     }
@@ -37,7 +54,7 @@ exports.createPages = async ({ actions, graphql }) => {
     )
   )
   return posts.data.allMdx.nodes.forEach(post => {
-    const isProd = process.env.NODE_ENV === 'production'
+    const isProd = process.env.NODE_ENV !== 'development'
     const fm = propOr({}, 'frontmatter', post)
     const [title, priv, draft, after, postPath] = pipe(
       box,
@@ -78,9 +95,15 @@ exports.createPages = async ({ actions, graphql }) => {
     }
     /* console.log('post', post) */
     // fileAbsolutePath: '/Users/brekkbockrath/work/open-sorcerers/projects/website/src/content/reviews/review-snowpack.mdx'
-    const component = post.fileAbsolutePath.includes('routes')
-      ? path.resolve('./src/templates/VerbPage/index.js')
-      : path.resolve('./src/templates/MDXPage/index.js')
+    const PAGES = map(K, {
+      verb: path.resolve('./src/templates/VerbPage/index.js'),
+      default: path.resolve('./src/templates/MDXPage/index.js')
+    })
+    const component = cond([
+      [includes('routes/glossary'), PAGES.default],
+      [includes('routes'), PAGES.verb],
+      [T, PAGES.default]
+    ])(post.fileAbsolutePath)
     actions.createPage({
       path: postPath,
       frontmatter: fm,
@@ -127,6 +150,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       path: String
       keywords: [String]
       glossary: [String]
+      excerpt: String
       tags: [String]
       private: Boolean
       draft: Boolean
@@ -134,4 +158,11 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `
   createTypes(typeDefs)
+}
+const logOnce = once(console.log)
+exports.onCreateNode = ({ node, getNode, actions }) => {
+  const { createNodeField } = actions
+  if (node.internal.type === 'Mdx') {
+    logOnce('hey node', node)
+  }
 }

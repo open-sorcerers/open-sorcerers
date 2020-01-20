@@ -10,12 +10,15 @@ const gatsbyRemarkPlugins = (process.env.OFFLINE
         resolve: 'gatsby-remark-embed-gist'
       }
     ]
-).concat({
-  resolve: 'gatsby-remark-prismjs',
-  options: {
-    showLineNumbers: true
+).concat([
+  'gatsby-remark-autolink-headers',
+  {
+    resolve: 'gatsby-remark-prismjs',
+    options: {
+      showLineNumbers: true
+    }
   }
-})
+])
 
 const srcFs = xx =>
   Array.isArray(xx) && xx[1]
@@ -78,7 +81,7 @@ const plugins = (process.env.OFFLINE
         }
       },
       {
-        resolve: `contributors`,
+        resolve: `gatsby-source-github-contributors`,
         options: {
           repo: 'open-sorcerers/open-sorcerers'
         }
@@ -103,6 +106,8 @@ const plugins = (process.env.OFFLINE
             resolve: `gatsby-remark-embed-snippet`,
             options: {}
           }, */
+
+        'gatsby-remark-autolink-headers',
         {
           resolve: `gatsby-remark-prismjs`,
           options: {
@@ -185,8 +190,6 @@ const plugins = (process.env.OFFLINE
     }
   }
 ])
-
-console.log('plugins', plugins && plugins.map(p => p.resolve))
 
 module.exports = {
   siteMetadata: {

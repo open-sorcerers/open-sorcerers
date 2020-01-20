@@ -10,7 +10,7 @@ export const Badge = ({ content, variant }) => (
 )
 
 Badge.propTypes = {
-  content: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   variant: PropTypes.string
 }
 

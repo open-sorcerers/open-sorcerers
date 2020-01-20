@@ -8,8 +8,8 @@ export const StyledReveal = styled(Button)`
   padding: 0;
   padding-bottom: 0.5rem;
   display: inline-block;
-  background-color: ${ℂ.tertiary};
-  color: ${ℂ.secondary};
+  background-color: ${ℂ.ui.reveal.b};
+  color: ${ℂ.ui.reveal.f};
   text-transform: uppercase;
   font-family: obviously-narrow, sans-serif;
   font-weight: 900;
@@ -22,8 +22,8 @@ export const StyledReveal = styled(Button)`
   transition: background 0.3s ease-out, color 0.3s ease-out, border 0.3 ease-out;
   border: 3px dashed transparent;
   &:hover {
-    color: ${ℂ.tertiary};
-    background-color: ${ℂ.secondary};
-    border-color: ${ℂ.tertiary};
+    color: ${ℂ.ui.reveal.a.f};
+    background-color: ${ℂ.ui.reveal.a.b};
+    border-color: ${ℂ.ui.reveal.a.f};
   }
 `

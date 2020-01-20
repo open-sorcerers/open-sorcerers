@@ -5,7 +5,7 @@ import { Link } from 'gatsby'
 
 import { above, aboveCalc } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
-import { primary, secondary, tertiary } from '@styles/colors'
+import * as ℂ from '@styles/colors'
 
 /*
 import { pathOr } from 'ramda'
@@ -19,8 +19,8 @@ export const StyledNavigation = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: ${primary};
-  color: ${secondary};
+  background-color: ${ℂ.area.nav.b};
+  color: ${ℂ.area.nav.f};
   min-height: 16rem;
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
   ${above.SMALL_PHONE(`
@@ -43,7 +43,7 @@ export const Brand = styled(Link)`
   width: 50%;
   height: 100%;
   flex: 0 0 auto;
-  color: ${secondary};
+  color: ${ℂ.ui.brand.f};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
@@ -53,10 +53,15 @@ export const Brand = styled(Link)`
 
   svg {
     display: flex;
-    fill: ${secondary};
+    fill: ${ℂ.ui.brand.f};
     height: 6rem;
     margin: 1rem auto;
-    ${transitionEaseOut('0.3s', ['height', 'width', 'margin'])}
+    ${transitionEaseOut('0.1s', ['fill', 'height', 'width', 'margin'])}
+  }
+  &:hover {
+    svg {
+      fill: ${ℂ.ui.brand.a.f};
+    }
   }
 
   ${above.SMALL_PHONE(`
@@ -74,6 +79,7 @@ export const Brand = styled(Link)`
     width: 55%;
     margin: 0.5rem 0;
     justify-content: center;
+    svg { height: 12rem; }
   `)}
   ${above.MID_TABLET(`
     margin: 0.5rem 2rem;
@@ -108,20 +114,20 @@ export const activeItemHover = css`
 
 export const StyledItem = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  color: ${secondary};
+  color: ${ℂ.ui.navItem.f};
   font-family: obviously, sans-serif;
   font-size: 2.2rem;
-  font-style: ${p => (!p.isActive ? 'italic' : 'normal')};
+  font-style: ${p => (!p['data-active'] ? 'italic' : 'normal')};
   font-weight: 900;
   letter-spacing: 0.05em;
   line-height: 0.75rem;
   margin: 1rem auto;
-  opacity: ${p => (p.isActive ? '1' : '0.6')};
+  opacity: ${p => (p['data-active'] ? '1' : '0.6')};
   padding: 0 0.5rem;
   text-decoration: none;
 
   &:hover {
-    color: ${tertiary};
+    color: ${ℂ.ui.navItem.a.f};
     opacity: 1;
   }
 
@@ -152,7 +158,7 @@ export const activeNav = css`
 export const inactiveNav = css`
   padding: 0;
   ${above.TABLET_PORTRAIT(`
-  border-left: 12vw solid ${primary};
+  border-left: 12vw solid ${ℂ.area.nav.inactive.above.tabletPortrait.f};
   margin-left: -12vw;
   `)}
 `

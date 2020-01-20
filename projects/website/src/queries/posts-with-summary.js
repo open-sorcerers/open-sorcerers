@@ -5,6 +5,7 @@ export const getMDXWithSummary = () => {
   const nodes = graphql`
     fragment LookupMDX on MdxConnection {
       nodes {
+        body
         frontmatter {
           author
           path
@@ -15,10 +16,13 @@ export const getMDXWithSummary = () => {
           draft
           reviewer
           link
+          excerpt
           date
         }
         id
-        timeToRead
+        wordCount {
+          paragraphs
+        }
         fileAbsolutePath
         tableOfContents
         excerpt(pruneLength: 420)

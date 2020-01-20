@@ -18,6 +18,7 @@ module.exports = {
     start: {
       description: 'Run gatsby locally',
       script: 'gatsby develop',
+      offline: `cross-env OFFLINE=true gatsby develop`,
       storybook: 'cross-env NODE_ENV=production start-storybook -p 9000 -c .storybook'
     },
     care: {

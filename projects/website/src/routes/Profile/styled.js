@@ -15,8 +15,8 @@ export const ProfilePage = styled(Box)`
 `
 
 const pseudo = css`
-  border-left: ${HEX / 2}px solid ${ℂ.transparent};
-  border-right: ${HEX / 2}px solid ${ℂ.transparent};
+  border-left: ${HEX / 2}px solid ${ℂ.named.transparent};
+  border-right: ${HEX / 2}px solid ${ℂ.named.transparent};
   content: '';
   height: 0;
   left: 0;
@@ -38,25 +38,25 @@ export const menuPlaceholder = css`
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 9999rem;
-  background-color: ${ℂ.tertiary};
+  background-color: ${ℂ.area.menu.profile.b};
 `
 export const placeholder = css`
   display: block;
   position: relative;
   margin: 4rem auto;
-  background-color: ${ℂ.placeholder};
+  background-color: ${ℂ.area.profile.b};
   width: ${HEX}px;
   height: ${HEX * 0.55}px;
   ${rainbowShadows} 
   &::before {
     ${pseudo}
     top: -${hexHeight}px;
-    border-bottom: ${hexHeight}px solid ${ℂ.placeholder};
+    border-bottom: ${hexHeight}px solid ${ℂ.area.profile.b};
   }
   &::after {
     ${pseudo}
     bottom: -${hexHeight}px;
-    border-top: ${hexHeight}px solid ${ℂ.placeholder};
+    border-top: ${hexHeight}px solid ${ℂ.area.profile.b};
   }
 `
 

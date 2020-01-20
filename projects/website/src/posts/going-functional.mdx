@@ -1,75 +1,17 @@
 ---
 title: FP | Going Functional
 author: brekk
-path: series/fp/going-functional
+path: /series/fp/going-functional
+keywords: [imperative, functional, fp, javascript, fs, oss, going functional, idiomatic fp, process]
+excerpt: Let's go through the process of rewriting an existing node module and rewrite it from the imperative to functional paradigm!
+draft: true
 ---
 
-# From Imperative to Functional JS
+# Going From Imperative to Functional JS
 
-Previously we've talked a bit about the utility of FP and some of its [core tenets].
 
 Today we're gonna talk through the process I use to rewrite / refactor imperative 3rd-party modules into functional javascript, and then work through a real-life example.
 
 ## Search for the right source module
 
 When re-writing someone else's code, pick a problem domain that is well-defined and small, or if not small, then well-tested. Often in node-land there are several libraries which do mainly the same thing with a couple of nearly fungible trade-offs. Picking the right source library will give you a leg up, as then you don't have to redefine the problem domain yourself. And if you pick a library with good tests you can re-use, then you don't have to re-do that part of the problem.
-
-## Identify patterns
-
-The bulk of the rewriting is in the simplification of the underlying patterns at play in someone's code. Identify any of the following as candidates for clean-up and refactoring:
-
- 1. **Constants** &mdash; these include strings which are used in any place more than once, as well as "magic numbers" &mdash; the idea here is that by enforcing re-use of constants instead of using in-function strings / numbers / whatever, you can both decrease the likelihood you'll make a mistake by reference as well as making the domain of the code more explicit.
- 2. **Free variables** &mdash; anything which makes use of globals is inherently unsafe. Use the [free-variable-partial-application pattern](#free-variable-partial-application-pattern) below to closure any global variables and make the code safe.
- 3. **Repeated code** &mdash; by identifying repetition and eschewing copy-pasta, we can more easily scan our code and find the most efficient places to make change in the future.
- 4. **Unsafe code / assumptions** &mdash; Because of the coercive nature of JS comparison and the way in which most developers write only for the best-case scenario there are many different ways your code can fail. Here are a few common ones:
-
-   - Nested property access. Anything nested more than one-level deep is unsafe in JS without chained `&&`s. Likely you should use something like [ramda](//npmjs.org/package/ramda)'s `pathOr` function to both safely access nested properties as well as provide a fallback in the case of missing properties.
-   - for loops, for...each loops &mdash; There are a few cases where for loops are wonderful and perfect solutions. However, in most cases it is preferable to use `map` instead, as dealing with discrete values is much nicer than being in the dark.
-   - Uncaught errors &mdash; Often you will see a developer has taken a `try ... catch` pattern and used it to to swallow errors silently. This is almost always a mistake.
-   - Misused asynchrony &mdash; If properly managed, `Promises` and `async / await` are okay solutions for managing asynchrony. All too often they are misused or only written for the ideal case. I am a huge proponent of using [fluture](//npmjs.org/package/fluture) to model asynchrony, as it is lazy, monadic, cancellable and explicit about how things should work, especially error handling.
- 5. **Complex code** &mdash; functions should be made as simple and unequivocal as possible. Ideally, use function composition to weave together simple functions to manage greater complexity.
- 6. **Impure functions** &mdash; Any function which is making use of free variables or is calling a function but isn't keeping the result of that call around is impure. Sometimes this is unavoidable. Often it is a code-smell which indicates bigger problems underneath the interface.
- 7. **Data destruction** &mdash; Often the imperative JS approach involves deleting or mutating data in place. The FP approach is to make a copy of the data and treat all inputs as immutable.
- 8. **Classes** &mdash; JS classes _can_ be very clean and nice. In practice they are often used in places where they do not need to be used &mdash; either where needing to remember to instantiate them first is a footgun / additional headache or where usage of `this` makes a function impure.
-
-## Free Variable Partial-Application Pattern
-## aka Closured Global Pattern 
-
-Let's say you have to deal with some code which does something like the following:
-
-```js
-const saveData = (key, value) => {
-  window.localStorage.setItem(key, value)
-}
-```
-
-If you're familiar with your basic JS environments, `window` is tied to the browser but doesn't exist on the server / in node without a shim &mdash; so this function is unsafe.
-
-However, look at how we can make this function be identical in functionality but also perfectly safe:
-
-```js
-const saveDataWithStorage = storage => (key, value) => {
-  storage.setItem(key, value)
-}
-// or with ramda, you can have automatic currying, which is probably what you want
-// import {curry} from 'ramda'
-// saveDataWithStorage = curry((storage, key, value) => {})
-// ostensibly this could also be in the body of the function itself
-if (typeof window !== 'undefined') {
-  const saveData = saveDataWithStorage(window.localStorage.bind(window.localStorage)
-}
-```
-
-By closuring the global function we're making use of, we can safely use that function in more places, and we have more explicit definition around what our dependencies / requirements are. Another nice free benefit of this pattern is that you can easily inject shims for testing purposes, so maintaining 100% unit test coverage is pretty easy.
-
-[category theory]: //en.wikipedia.org/wiki/Category_Theory
-[curried]: /glossary/curry
-[deterministic]: /glossary/deterministic
-[function composition]: /glossary/composition
-[higher-order functions]: /glossary/higher-order-function
-[pure functions]: /glossary/pure-function
-[referentially transparent]: /glossary/referential-transparency
-[the glossary]: /glossary
-[side-effects]: /glossary/side-effects
-[arity]: /glossary/arity
-[core tenets]: /series/fp/core-tenets

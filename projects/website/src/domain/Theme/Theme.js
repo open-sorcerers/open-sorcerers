@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
-import { PALETTE as core, EL as elements, UI as ui, AREA as area } from '@styles/colors'
+/* import { PALETTE as core, EL as elements, UI as ui, AREA as area } from '@styles/colors' */
+
+/* import { ui, area, el, */
 
 import { BaseCSS } from './BaseCSS'
 
-const colors = { core, elements, ui, area }
+/* const colors = { core, elements, ui, area } */
 
-const system = { ...preset, colors }
+const system = { ...preset }
 
 const Theme = ({ children }) => (
   <>

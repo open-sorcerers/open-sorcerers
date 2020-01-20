@@ -7,6 +7,12 @@ import Helmet from 'react-helmet'
 const SEO = props => {
   const pathname = pathOr('', ['location', 'pathname'], props)
   const frontmatter = pathOr({}, ['pageContext', 'frontmatter'], props)
+  const excerpt = pathOr(false, ['pageContext', 'excerpt'], props)
+  if (frontmatter.excerpt) {
+    frontmatter.description = frontmatter.excerpt.replace(/\n/g, ' ')
+  } else if (excerpt) {
+    frontmatter.description = excerpt
+  }
   const seo = propOr({}, 'seo', props)
 
   const {
@@ -71,7 +77,8 @@ SEO.propTypes = {
     keywords: PropTypes.arrayOf(PropTypes.string),
     type: PropTypes.string,
     image: PropTypes.string
-  })
+  }),
+  excerpt: PropTypes.string
 }
 
 SEO.defaultProps = {

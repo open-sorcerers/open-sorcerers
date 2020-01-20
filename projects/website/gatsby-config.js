@@ -191,8 +191,6 @@ const plugins = (process.env.OFFLINE
   }
 ])
 
-console.log('plugins', plugins && plugins.map(p => p.resolve))
-
 module.exports = {
   siteMetadata: {
     name: 'Open Sorcerers',

@@ -28,7 +28,6 @@ export const Question = props => {
   const [didAnswer, setAnswered] = useState(false)
   const [message, setMessage] = useState(UNSET)
   const isValid = checkIsValid({ isSingle, userResponse, correct })
-  console.log('question', question, 'resettable', resettable, 'these are questions')
   const submit = (
     <Button
       onClick={e => {
@@ -39,7 +38,6 @@ export const Question = props => {
         }
         answerQuestion({ question, userResponse, isValid, points })
         setAnswered(true)
-        console.log('OH YEAH', isValid, userResponse, '<<<')
       }}
     >
       Submit Answer

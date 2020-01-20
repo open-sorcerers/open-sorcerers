@@ -40,10 +40,10 @@ export const Li = styled(Box)`
   ${above.TABLET_PORTRAIT(`
     margin: 2rem 0 1rem;
     width: calc(50% - 1.5rem);
-    &:nth-child(even) {
+    &:nth-of-type(even) {
       margin-left: 1.5rem;
     }
-    &:nth-child(odd) {
+    &:nth-of-type(odd) {
       margin-right: 1.5rem;
     }
     &:first-of-type {
@@ -53,13 +53,13 @@ export const Li = styled(Box)`
   ${above.DESKTOP(`
     margin: 2rem 0 1rem;
     width: calc(33.333333333333333% - 2rem);
-    &:nth-child(even) {
+    &:nth-of-type(even) {
       margin-left: initial;
     }
-    &:nth-child(odd) {
+    &:nth-of-type(odd) {
       margin-right: initial;
     }
-    &:nth-child(3n + 2) {
+    &:nth-of-type(3n + 2) {
       color: lime !important;
       margin: 2rem 3rem 1rem;
     }

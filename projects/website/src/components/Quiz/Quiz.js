@@ -20,7 +20,7 @@ export const QuizCo = ({ quiz }) => {
         <>
           {quiz.questions.map(
             (qq, i) =>
-              console.log('>>>@>@>@', qq) || <Question {...qq} index={i} answerQuestion={answerQ} />
+             <Question {...qq} index={i} answerQuestion={answerQ} />
           )}
         </>
       </Box>
@@ -44,7 +44,6 @@ export const Quiz = ({ title, synopsis, questions }) => {
     showInstantFeedback: false
     // */
   })
-  console.log('QUIZZICAL', quiz)
   return <QuizCo quiz={quiz} />
 }
 

@@ -34,9 +34,11 @@ exports.createPages = async ({ actions, graphql }) => {
             keywords
             private
             draft
+            excerpt
             publishAfter
           }
           fileAbsolutePath
+          excerpt(pruneLength: 420)
         }
       }
     }
@@ -52,8 +54,7 @@ exports.createPages = async ({ actions, graphql }) => {
     )
   )
   return posts.data.allMdx.nodes.forEach(post => {
-    const isProd = process.env.PRODUCTION
-    console.log('isProd', isProd, process.env.NODE_ENV)
+    const isProd = process.env.NODE_ENV !== 'development'
     const fm = propOr({}, 'frontmatter', post)
     const [title, priv, draft, after, postPath] = pipe(
       box,

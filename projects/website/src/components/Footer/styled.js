@@ -69,7 +69,7 @@ export const Left = styled(Box)`
     justify-content: center;
     text-align: center;
 
-    > *:first-child {
+    > *:first-of-type {
       margin-right: 8px;
     }
   `)}
@@ -85,7 +85,7 @@ export const Right = styled(Box)`
     justify-content: center;
     text-align: center;
 
-    > *:first-child {
+    > *:first-of-type {
       margin-right: 8px;
     }
 `)}

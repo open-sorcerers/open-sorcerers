@@ -8,65 +8,40 @@ import 'typeface-fira-sans'
 import 'typeface-fira-code'
 
 const sh = curry((cl, xx, yy) => `${xx}px ${yy}px 0 ${cl}`)
-const dropColor = sh(ℂ.area.h3d.s[0])
-const shadow = sh(ℂ.area.h3d.s[1])
-
-const dropEdge = z => dropColor(z, z)
 
 const surface = curry((edge, start, end) => pipe(range(start), map(edge))(end))
-const dropSurface = surface(dropEdge, 0)
 
-const h3D = `
+const h3D = ({
+  color = ℂ.area.h3d.f,
+  edge = ℂ.area.h3d.s[0],
+  shadow: dropShade = ℂ.area.h3d.s[1],
+  shadowY: y = -2,
+  size = 7,
+  and = ''
+}) => `
   text-align: center;
   transition: letter-spacing 0.1s ease-out, text-shadow 0.3s ease-out, font-size 0.3s ease-out;
-  color: ${ℂ.area.h3d.f};
+  color: ${color};
   font-weight: 900;
   a {
-    color: ${ℂ.area.h3d.f};
+    color: ${color};
   }
   ${aboveCalc.TINY_PHONE('2rem')(
-    /* eslint-disable max-len */
     `
     letter-spacing: 0.38rem;
 
     text-shadow: ${[
-      `0 0 0 ${ℂ.area.h3d.f}`,
-      ...dropSurface(7),
-      ...surface(z => shadow(-z + 5, z + 7), 0, 5)
+      `0 0 0 ${color}`,
+      ...surface(z => sh(edge, z, z), 0, size),
+      ...surface(z => sh(dropShade, -z + (size + y), z + size), 0, size + y)
     ].join(', ')};
     line-height: 3.3rem;
+    ${and}
   `
-    /* eslint-enable max-len */
   )}
 `
 
-const h3DBig = `
-  text-align: center;
-  transition: letter-spacing 0.1s ease-out, text-shadow 0.3s ease-out, font-size 0.3s ease-out;
-  color: ${ℂ.area.h3d.f};
-  font-weight: 900;
-  a {
-    color: ${ℂ.area.h3d.f};
-  }
-  ${aboveCalc.TINY_PHONE('2rem')(
-    /* eslint-disable max-len */
-    `
-    letter-spacing: 0.8rem;
-    text-shadow: ${[
-      `0 0 0 ${ℂ.area.h3d.f}`,
-      ...dropSurface(15),
-      ...surface(z => shadow(-z + 13, z + 15), 0, 13)
-      /* `5px 7px 0 ${ℂ.area.h3d.s[1]},`, */
-      /* `4px 8px 0 ${ℂ.area.h3d.s[1]},`, */
-      /* `3px 9px 0 ${ℂ.area.h3d.s[1]},`, */
-      /* `2px 10px 0 ${ℂ.area.h3d.s[1]}`, */
-      /* `1px 11px 0 ${ℂ.area.h3d.s[1]}`, */
-      /* `0 12px 0 ${ℂ.area.h3d.s[1]}` */
-    ].join(', ')};
-  `
-    /* eslint-enable max-len */
-  )}
-`
+const h3DBig = () => h3D({ size: 15, and: `letter-spacing: 0.7rem` })
 
 const styles = css`
   * {
@@ -88,7 +63,7 @@ const styles = css`
   #cta-learn,
   #cta-build,
   #cta-talk {
-    ${h3DBig}
+    ${h3DBig()}
     font-size: 4em;
     line-height: 4.35rem;
     margin-bottom: 3rem;
@@ -301,7 +276,7 @@ const styles = css`
     &.three-d {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
-      ${h3D}
+      ${h3D({})}
       a {
         font-family: obviously, 'Obviously', sans-serif;
         font-weight: 900;
@@ -314,7 +289,7 @@ const styles = css`
     line-height: 2.3rem;
     font-weight: 900;
     &:first-of-type {
-      ${h3D}
+      ${h3D({})}
     }
   }
   h1 {

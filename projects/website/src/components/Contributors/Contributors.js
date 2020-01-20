@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { css } from '@emotion/core'
-import { concat, prop, pipe, pathOr, map } from 'ramda'
+import { prop, pipe, pathOr, map } from 'ramda'
 import { Badge } from '@components/Badge'
 
 import { getContributors } from '@queries/contributors'
@@ -45,7 +45,7 @@ export const Contributors = () => {
       <ul>
         {pipe(
           pathOr([], ['allGitHubContributor', 'nodes']),
-          //*
+          /*
           concat([
             {
               id: 'fake',

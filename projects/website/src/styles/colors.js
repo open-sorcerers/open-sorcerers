@@ -172,7 +172,7 @@ const ui = Object.freeze({
     }
   },
   contributor: {
-    link: activeColor([evenMix(tertiary, secondary), $, lighten(1 / 10, tertiary)])
+    link: activeColor([tertiary, $, lighten(1 / 10, tertiary)])
   },
   footer: {
     link: activeColor([tertiary, $, lighten(1 / 10, tertiary)])
@@ -208,7 +208,7 @@ const area = Object.freeze({
   }),
 
   // everything else
-  badge: colorable([secondary, evenMix(tertiary, secondary)]),
+  badge: colorable([tertiary, evenMix(tertiary, secondary)]),
   post: {
     variant: {
       draft: `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, cyan)})`,
@@ -221,7 +221,7 @@ const area = Object.freeze({
   },
   breakpoint: colorable([offBlack, debug]),
   contributor: mergeRight(colorable([evenMix(tertiary, secondary), '#3c053a']), {
-    img: colorable([tertiary, transparent])
+    img: colorable([tertiary, secondary])
   }),
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b])
 })

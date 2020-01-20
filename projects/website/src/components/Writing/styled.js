@@ -95,7 +95,7 @@ export const StyledListWrapper = styled(Box)`
   width: 100%;
   min-width: 100%;
   min-height: 10vh;
-  justify-content: space-evenly;
+  justify-content: center;
 `
 
 export const PostHeader = styled.header`

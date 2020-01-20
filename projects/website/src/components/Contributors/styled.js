@@ -1,11 +1,10 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
+import { above } from '@styles/media'
 
 import * as ℂ from '@styles/colors'
 
 export const StyledContributors = styled(Box)`
-  padding: 1rem;
-  margin: 1rem;
   display: flex;
   flex-direction: column;
   flex-wrap: column;
@@ -16,16 +15,61 @@ export const StyledContributors = styled(Box)`
   }
   ul {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 0;
     width: 100%;
     li {
       list-style: none;
     }
+    justify-content: center;
+    ${above.TABLET_PORTRAIT(`
+    flex-direction: row;
+      flex-wrap: wrap;
+    `)}
   }
 `
-
+export const Li = styled(Box)`
+  display: flex;
+  min-width: 10rem;
+  flex-direction: column;
+  margin: 0 0 3rem;
+  width: 100%;
+  &:first-of-type {
+    margin-top: 4rem;
+  }
+  ${above.TABLET_PORTRAIT(`
+    margin: 2rem 0 1rem;
+    width: calc(50% - 1.5rem);
+    &:nth-child(even) {
+      margin-left: 1.5rem;
+    }
+    &:nth-child(odd) {
+      margin-right: 1.5rem;
+    }
+    &:first-of-type {
+      margin-top: 2rem;
+    }
+  `)}
+  ${above.DESKTOP(`
+    margin: 2rem 0 1rem;
+    width: calc(33.333333333333333% - 2rem);
+    &:nth-child(even) {
+      margin-left: initial;
+    }
+    &:nth-child(odd) {
+      margin-right: initial;
+    }
+    &:nth-child(3n + 2) {
+      color: lime !important;
+      margin: 2rem 3rem 1rem;
+    }
+    &:first-of-type {
+      margin-top: 2rem;
+    }
+  `)}
+`
 export const StyledContributor = styled(Box)`
+  min-width: 10rem;
   display: inline-block;
   position: relative;
   text-align: center;
@@ -34,7 +78,7 @@ export const StyledContributor = styled(Box)`
   transition: border 0.1s ease-in, box-shadow 0.3s ease-out;
   background-clip: content-box;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
-  height: 14rem;
+  width: 100%;
   padding: 2rem 0;
 
   a {
@@ -51,9 +95,6 @@ export const StyledContributor = styled(Box)`
     font-style: italic;
     font-weight: 500;
     font-size: 1.6rem;
-  }
-  &:first-of-type {
-    margin-top: 4rem;
   }
   &::before,
   &::after {

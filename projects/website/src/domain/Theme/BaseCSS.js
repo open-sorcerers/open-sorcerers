@@ -2,6 +2,7 @@ import React from 'react'
 import { css, Global } from '@emotion/core'
 import * as ℂ from '@styles/colors'
 import { easeOut } from '@styles/animation'
+import { above, aboveCalc } from '@styles/media'
 import 'typeface-fira-sans'
 import 'typeface-fira-code'
 
@@ -174,26 +175,26 @@ const styles = css`
     td.js-line-number::before {
       content: attr(data-line-number);
       padding: 0 0.5rem;
-      color: ${ℂ.el.code.lineNumber};
+      color: ${ℂ.el.code.js.lineNumber};
     }
-    .pl-smi {
-      color: ${ℂ.el.code.property};
-    }
-    .pl-en {
-      color: ${ℂ.el.code.entity};
-    }
-    .pl-s {
-      color: ${ℂ.el.code.string};
-    }
-    .pl-c {
-      color: ${ℂ.el.code.comment};
-    }
-    .pl-k {
-      color: ${ℂ.el.code.operator};
-    }
-    .pl-c1 {
-      color: ${ℂ.el.code.constant};
-    }
+  }
+  .pl-smi {
+    color: ${ℂ.el.code.js.property};
+  }
+  .pl-en {
+    color: ${ℂ.el.code.js.entity};
+  }
+  .pl-s {
+    color: ${ℂ.el.code.js.string};
+  }
+  .pl-c {
+    color: ${ℂ.el.code.js.comment};
+  }
+  .pl-k {
+    color: ${ℂ.el.code.js.operator};
+  }
+  .pl-c1 {
+    color: ${ℂ.el.code.js.constant};
   }
 
   ul,
@@ -230,24 +231,32 @@ const styles = css`
   }
   h1 {
     font-family: obviously, 'Obviously', sans-serif;
-    font-size: 3rem;
-    line-height: 3rem;
+    font-size: 2.3rem;
+    line-height: 2.3rem;
     font-weight: 900;
     &:first-of-type {
       text-align: center;
       color: ${ℂ.area.h3d.f};
-      letter-spacing: 0.38rem;
-      text-shadow: 0 0 0 ${ℂ.area.h3d.f}, 1px 1px ${ℂ.area.h3d.s[0]}, 2px 2px 0 ${ℂ.area.h3d.s[0]},
-        3px 3px 0 ${ℂ.area.h3d.s[0]}, 4px 4px 0 ${ℂ.area.h3d.s[0]}, 5px 5px 0 ${ℂ.area.h3d.s[0]},
-        6px 6px 0 ${ℂ.area.h3d.s[0]}, 5px 7px 0 ${ℂ.area.h3d.s[1]}, 4px 8px 0 ${ℂ.area.h3d.s[1]},
-        3px 9px 0 ${ℂ.area.h3d.s[1]}, 2px 10px 0 ${ℂ.area.h3d.s[1]}, 1px 11px 0 ${ℂ.area.h3d.s[1]},
-        0 12px 0 ${ℂ.area.h3d.s[1]};
-      line-height: 3.3rem;
       font-weight: 900;
       a {
         color: ${ℂ.area.h3d.f};
       }
+      ${aboveCalc.TINY_PHONE('2rem')(`
+        letter-spacing: 0.38rem;
+        text-shadow: 0 0 0 ${ℂ.area.h3d.f}, 1px 1px ${ℂ.area.h3d.s[0]}, 2px 2px 0 ${ℂ.area.h3d.s[0]},
+          3px 3px 0 ${ℂ.area.h3d.s[0]}, 4px 4px 0 ${ℂ.area.h3d.s[0]}, 5px 5px 0 ${ℂ.area.h3d.s[0]},
+          6px 6px 0 ${ℂ.area.h3d.s[0]}, 5px 7px 0 ${ℂ.area.h3d.s[1]}, 4px 8px 0 ${ℂ.area.h3d.s[1]},
+          3px 9px 0 ${ℂ.area.h3d.s[1]}, 2px 10px 0 ${ℂ.area.h3d.s[1]}, 1px 11px 0 ${ℂ.area.h3d.s[1]},
+          0 12px 0 ${ℂ.area.h3d.s[1]};
+        line-height: 3.3rem;
+      `)}
     }
+  }
+  h1 {
+    ${above.TABLET_PORTRAIT(`
+        font-size: 3rem;
+        line-height: 3.3rem;
+      `)}
   }
   h2 {
     font-size: 2em;

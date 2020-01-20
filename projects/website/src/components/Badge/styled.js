@@ -28,8 +28,8 @@ export const StyledBadge = styled(Box)`
 `
 
 export const BadgeContent = styled(Box)`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.25rem;
+  height: 3.25rem;
   position: relative;
   z-index: ${Z_INDEX.CONTENT};
   color: ${ℂ.area.badge.f};
@@ -37,7 +37,7 @@ export const BadgeContent = styled(Box)`
   transition: border 0.1s ease-out, color 0.1s ease-out, background 0.1s ease-out;
   border-radius: 100rem;
   vertical-align: middle;
-  line-height: 2.25rem;
+  line-height: 2.75rem;
   a:hover & {
     color: ${ℂ.ui.contributor.link.a.f};
     border-color: transparent;

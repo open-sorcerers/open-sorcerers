@@ -1,6 +1,8 @@
 import { mergeRight, map } from 'ramda'
 import { darken, lighten, mix } from 'polished'
 
+/* eslint-disable no-unused-vars */
+
 const evenMix = mix(5 / 10)
 const transparent = 'transparent'
 const offBlack = `#292828`
@@ -187,16 +189,13 @@ const area = Object.freeze({
   nav: mergeRight(colorable([secondary, primary]), {
     inactive: { above: { tabletPortrait: colorable([primary]) } }
   }),
-  menu: colorable([$, quaternary]),
+  menu: mergeRight(colorable([$, quaternary]), { profile: colorable([$, tertiary]) }),
 
   h3d: {
     f: lighten(1 / 12, primary),
     b: $,
     s: [tertiary, mix(6 / 10, secondary, '#000')]
   },
-
-  // middle content
-  /* content: colorable([primary, `linear-gradient(35deg, ${secondary}, ${darken(0.1, secondary)}`]), */
 
   // footer
   footer: mergeRight(colorable([primary, quaternary]), {
@@ -223,7 +222,8 @@ const area = Object.freeze({
   contributor: mergeRight(colorable([evenMix(tertiary, secondary), '#3c053a']), {
     img: colorable([tertiary, secondary])
   }),
-  pkg: colorable([evenMix(hotMustard, secondary), el.code.b])
+  pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
+  profile: colorable([$, primary])
 })
 
 const named = Object.freeze({
@@ -232,3 +232,5 @@ const named = Object.freeze({
 })
 
 export { ui, el, area, named }
+
+/* eslint-enable no-unused-vars */

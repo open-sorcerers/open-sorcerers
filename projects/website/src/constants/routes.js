@@ -9,7 +9,8 @@ export const LEARN = '/learn'
 export const BUILD = '/build'
 export const BUILD_EXAMPLE = '/build/an-example'
 
-export const ASK = '/ask'
+export const TALK = '/talk'
+export const ASK = TALK
 
 export const REPL = `/repl`
 

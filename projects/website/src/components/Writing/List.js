@@ -37,8 +37,8 @@ import {
   GlossaryLinks
 } from './styled'
 
-const isPrivate = pathOr(false, ['frontmatter', 'private'])
-const isDraft = pathOr(false, ['frontmatter', 'draft'])
+const checkIsPrivate = pathOr(false, ['frontmatter', 'private'])
+const checkIsDraft = pathOr(false, ['frontmatter', 'draft'])
 const isModule = pipe(pathOr([], ['frontmatter', 'keywords']), includes('module'))
 const isGlossaryItem = pipe(pathOr('', ['frontmatter', 'path']), includes('glossary'))
 
@@ -86,8 +86,8 @@ const Post = props => {
   const zzerp = pathOr(excerpt, ['frontmatter', 'excerpt'], props)
   const isMarkdownExcerpt = pathOr(false, ['frontmatter', 'markdownExcerpt'], props)
   const paragraphs = pathOr(1, ['wordCount', 'paragraphs'], props)
-  const isDraft = pathOr(false, ['frontmatter', 'draft'], props)
-  const isPrivate = pathOr(false, ['frontmatter', 'private'], props)
+  const isDraft = checkIsDraft(props)
+  const isPrivate = checkIsPrivate(props)
   const [postLink, title, author, glossary, link] = getLinkTitleAuthor(props)
   const isGlossary = isGlossaryItem(props)
   return isPrivate || isDraft ? null : (
@@ -132,10 +132,10 @@ Post.propTypes = {
 }
 
 const sortPosts = sort((aa, bb) => {
-  const aPri = isPrivate(aa)
-  const bPri = isPrivate(bb)
-  const aDra = isDraft(aa)
-  const bDra = isDraft(bb)
+  const aPri = checkIsPrivate(aa)
+  const bPri = checkIsPrivate(bb)
+  const aDra = checkIsDraft(aa)
+  const bDra = checkIsDraft(bb)
   const aGlo = isGlossaryItem(aa)
   const bGlo = isGlossaryItem(bb)
 
@@ -150,13 +150,13 @@ const sortPosts = sort((aa, bb) => {
   return 0
 })
 
-export const List = ({ title, filter: ff }) => {
+export const List = ({ title, filter: ff, more = false }) => {
   const data = getMDXWithSummary()
   const posts = data[ff || 'posts'].nodes
   return (
     posts.length > 0 && (
       <StyledList>
-        <h2>{title}</h2>
+        <h2 className="three-d">{more ? <Link to={more}>{title}</Link> : title}</h2>
         <StyledListWrapper>
           {pipe(
             sortPosts,
@@ -168,7 +168,7 @@ export const List = ({ title, filter: ff }) => {
   )
 }
 
-List.propTypes = { title: PropTypes.string, filter: PropTypes.string }
+List.propTypes = { title: PropTypes.string, filter: PropTypes.string, more: PropTypes.string }
 
 List.defaultProps = { title: 'Reading' }
 

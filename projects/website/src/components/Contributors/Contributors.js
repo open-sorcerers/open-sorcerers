@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { css } from '@emotion/core'
-import { Box } from 'rebass'
-import { concat, prop, pipe, pathOr, map } from 'ramda'
+import { prop, pipe, pathOr, map } from 'ramda'
 import { Badge } from '@components/Badge'
 
 import { getContributors } from '@queries/contributors'

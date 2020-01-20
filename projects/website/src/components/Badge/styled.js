@@ -1,11 +1,12 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { curry, propEq, ifElse } from 'ramda'
+/* import { curry, propEq, ifElse } from 'ramda' */
 
 import * as ℂ from '@styles/colors'
 
 import { Z_INDEX } from '@styles/constants'
 
+/*
 const vary = curry(([aa, bb], props) =>
   ifElse(
     propEq('variant', 'left'),
@@ -13,6 +14,7 @@ const vary = curry(([aa, bb], props) =>
     () => aa
   )(props)
 )
+*/
 
 export const StyledBadge = styled(Box)`
   position: absolute;

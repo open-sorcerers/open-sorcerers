@@ -81,7 +81,7 @@ const plugins = (process.env.OFFLINE
         }
       },
       {
-        resolve: `contributors`,
+        resolve: `gatsby-source-github-contributors`,
         options: {
           repo: 'open-sorcerers/open-sorcerers'
         }

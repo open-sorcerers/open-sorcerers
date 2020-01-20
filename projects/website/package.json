@@ -48,7 +48,7 @@
     "gatsby-remark-embed-snippet": "^4.1.18",
     "gatsby-remark-prismjs": "^3.3.29",
     "gatsby-source-filesystem": "^2.1.36",
-    "gatsby-source-github-contributors": "^0.1.9",
+    "gatsby-source-github-contributors": "^0.1.10",
     "gatsby-source-meetup-events": "^1.0.2",
     "gatsby-source-npm": "^1.0.3",
     "gatsby-source-rss": "https://github.com/rheajt/gatsby-source-rss",

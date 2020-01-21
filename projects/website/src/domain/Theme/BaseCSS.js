@@ -16,7 +16,7 @@ const h3D = ({
   edge = ℂ.area.h3d.s[0],
   shadow: dropShade = ℂ.area.h3d.s[1],
   shadowY: y = -2,
-  size = 7,
+  size = 6,
   and = ''
 }) => `
   text-align: center;
@@ -41,7 +41,7 @@ const h3D = ({
   )}
 `
 
-const h3DBig = () => h3D({ size: 15, and: `letter-spacing: 0.7rem` })
+const h3DBig = () => h3D({ size: 5, and: `letter-spacing: 0.7rem` })
 
 const styles = css`
   * {
@@ -60,6 +60,7 @@ const styles = css`
     font-size: 16px;
     line-height: 1.5rem;
   }
+  /*
   #cta-learn,
   #cta-build,
   #cta-talk {
@@ -68,6 +69,7 @@ const styles = css`
     line-height: 4.35rem;
     margin-bottom: 3rem;
   }
+  */
   a.anchor.before {
     svg {
       fill: ${ℂ.ui.anchor.a.f};

@@ -82,6 +82,16 @@ ReadingTime.propTypes = {
   icon: PropTypes.string
 }
 
+const truncate = ifElse(
+  includes('github.com'),
+  z => {
+    const i = z.indexOf('github.com')
+    const main = z.slice(i + 11)
+    return main.slice(0, main.indexOf('/'))
+  },
+  I
+)
+
 const Post = props => {
   const { excerpt } = props
   const zzerp = pathOr(excerpt, ['frontmatter', 'excerpt'], props)
@@ -100,7 +110,9 @@ const Post = props => {
       <PostContent>{isMarkdownExcerpt ? <MDX>{zzerp}</MDX> : zzerp}</PostContent>
       <PostFooter {...{ isDraft, isPrivate }}>
         <FooterFirst>
-          {!isGlossary && <em>{link ? <a href={link}>{link}</a> : <span>@{author}</span>}</em>}
+          {!isGlossary && (
+            <em>{link ? <a href={link}>{truncate(link)}</a> : <span>@{author}</span>}</em>
+          )}
         </FooterFirst>
         <FooterLast>
           <ReadingTime icon="¶" timeToRead={paragraphs} excerpt={excerpt} />

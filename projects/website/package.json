@@ -111,6 +111,7 @@
     "follow-redirect-url": "^1.0.5",
     "gatsby-plugin-alias-imports": "^1.0.5",
     "gatsby-plugin-emotion": "^4.1.18",
+    "gatsby-plugin-webpack-bundle-analyzer": "^1.0.5",
     "gatsby-remark-copy-linked-files": "^2.1.33",
     "gatsby-source-github": "^0.0.2",
     "husky": ">=1",
@@ -132,7 +133,7 @@
     "stylelint-processor-styled-components": "^1.9.0",
     "stylelint-use-logical": "^1.1.0"
   },
-  "name": "open-sorcerers-dev",
+  "name": "website",
   "version": "0.0.1",
   "description": "javascript x open-source x functional-programming",
   "main": "index.js",

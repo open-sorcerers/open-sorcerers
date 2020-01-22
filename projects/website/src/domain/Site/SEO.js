@@ -47,6 +47,7 @@ const SEO = props => {
       <html lang="en" />
 
       <title>{title}</title>
+      <meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
       <meta name="description" content={description} />
       <meta name="keywords" content={kwords} />
       <script type="text/javascript" src="modernizr.js" />

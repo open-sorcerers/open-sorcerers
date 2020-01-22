@@ -23,8 +23,6 @@ export const site = css`
   top: 0;
   position: relative;
   transition: ${eased};
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-left);
 `
 
 export const menuActive = css`

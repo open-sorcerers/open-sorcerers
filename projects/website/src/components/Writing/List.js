@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { MDXRenderer as MDX } from 'gatsby-plugin-mdx'
 import {
+  filter,
   join,
   identity as I,
   always as K,
@@ -150,7 +151,7 @@ const sortPosts = sort((aa, bb) => {
   return 0
 })
 
-export const List = ({ title, filter: ff, more = false }) => {
+export const List = ({ title, filter: ff, more = false, customFilter = I }) => {
   const data = getMDXWithSummary()
   const posts = data[ff || 'posts'].nodes
   return (
@@ -160,6 +161,7 @@ export const List = ({ title, filter: ff, more = false }) => {
         <StyledListWrapper>
           {pipe(
             sortPosts,
+            filter(customFilter),
             map(post => <Post key={post.id} {...post} />)
           )(posts)}
         </StyledListWrapper>

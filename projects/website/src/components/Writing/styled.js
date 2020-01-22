@@ -46,6 +46,7 @@ export const StyledPost = styled(Box)`
   overflow: hidden;
   position: relative;
   display: flex;
+  justify-content: space-between;
   background: ${ℂ.area.writing.post.b};
   color: ${ℂ.area.writing.post.f};
   border: 1px solid ${ℂ.area.writing.post.f};
@@ -145,9 +146,7 @@ export const FooterLast = styled(Box)`
 `
 export const PostContent = styled(Box)`
   padding: 1rem;
-  height: 100%;
   width: 100%;
-  overflow: auto;
 `
 
 export const ModuleToken = styled(Box)`

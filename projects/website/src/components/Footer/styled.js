@@ -29,7 +29,6 @@ export const StyledFooter = withTheme(styled(Box)`
 export const HiddenContent = styled(Box)`
   padding: 1rem 0;
   width: 100%;
-  heigth: 2rem;
   text-align: center;
   margin: 0 auto;
   font-family: 'Fira Code', monospace;

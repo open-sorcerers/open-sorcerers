@@ -1,0 +1,15 @@
+---
+path: /series/fp
+title: Functional Programming in Javascript
+excerpt: What is functional programming and how can we use its tenets to make our code cleaner, easier to reason about and safer overall?
+author: brekk
+---
+
+import CoreTenets from '@posts/fp-core-tenets.mdx'
+import List from '@components/Writing/List'
+
+# The Functional Paradigm
+
+<CoreTenets />
+<List title="FP Reading" customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
+

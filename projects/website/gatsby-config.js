@@ -215,7 +215,8 @@ const plugins = (process.env.OFFLINE
       start_url: `/`,
       theme_color: `#a2aeb3`,
       background_color: `#3c053a`,
-      display: `standalone`
+      display: `standalone`,
+      icon: 'static/open-sorcerers-icon.png'
     }
   },
   'gatsby-plugin-offline'

@@ -4,7 +4,15 @@ import { pipe, filter, identity as I, map } from 'ramda'
 
 import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
-import { PROFILE, SERIES_FP, SERIES_JS, SERIES_OSS, LOGOUT, LOGIN } from '@constants/routes'
+import {
+  PROFILE,
+  GLOSSARY,
+  SERIES_FP,
+  SERIES_JS,
+  SERIES_OSS,
+  LOGOUT,
+  LOGIN
+} from '@constants/routes'
 import { VIEW_STATES } from '@styles/constants'
 import { ProfileImg } from '@routes/Profile/ProfileImg'
 
@@ -37,6 +45,7 @@ const getLinksRelativeToAuth = pipe(
     [SERIES_FP, 'FP'],
     [SERIES_JS, 'JS', 'coming-soon'],
     [SERIES_OSS, 'OSS', 'coming-soon'],
+    [GLOSSARY, 'GLOSSARY'],
     loggedIn ? [LOGOUT, 'Logout', 'log log-out'] : [LOGIN, 'Login', 'log log-in']
   ],
   filter(I)

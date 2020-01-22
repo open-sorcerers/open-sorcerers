@@ -62,29 +62,39 @@ const styles = css`
     line-height: 1.5rem;
     body: ${ℂ.el.body.b};
   }
-.coming-soon {
+  .coming-soon {
     cursor: not-allowed;
     position: relative;
     &::after {
       position: absolute;
       width: 2rem;
       top: 0.35rem;
-      right: -2.5rem;
-      content: "Coming Soon!";
+      right: -1rem;
+      content: 'Coming Soon!';
       display: inline-block;
       font-size: 0.5rem;
       line-height: 0.8rem;
       font-weight: 500;
-      font-family: obviously-narrow, "Obviously", sans-serif;
+      font-family: obviously-narrow, 'Obviously', sans-serif;
+      ${above.TABLET_PORTRAIT(`
+        font-size: 0.75rem;
+        gight: -2rem;
+        top: 0.75rem;
+      `)}
     }
   }
-  .series-page, .verb-page {
-    h1, h2, h3, h4, h5, h6 {
+  .series-page,
+  .verb-page {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       text-align: center;
     }
   }
 
-  
   #cta-series-fp,
   #cta-series-oss {
     width: calc(50% - 1rem);
@@ -99,37 +109,36 @@ const styles = css`
     border: 2px solid ${ℂ.ui.series.link.f};
     color: ${ℂ.ui.series.link.f};
     background: ${ℂ.ui.series.link.b};
-    text-align: center; 
+    text-align: center;
     &:hover {
       border: 2px solid ${ℂ.ui.series.link.a.f};
       color: ${ℂ.ui.series.link.a.f};
-      background-color: ${ℂ.ui.series.link.a.b}
+      background-color: ${ℂ.ui.series.link.a.b};
     }
     &.coming-soon {
       color: ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
       border: 2px solid ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
       &::after {
         display: none;
-        ${above.SMALL_PHONE(`
+        ${above.TABLET_PORTRAIT(`
           display: inline-block;
           top: 1rem;
           right: 2rem;
         `)}
+        ${above.SUB_TABLET(`
+          right: 3rem;
+        `)}
       }
     }
   }
-  /*
   #cta-learn,
   #cta-build,
   #cta-talk {
-    ${h3DBig()}
     font-size: 4em;
     line-height: 4.35rem;
     margin-bottom: 3rem;
   }
-  
-  
-  */
+
   a.anchor.before {
     svg {
       fill: ${ℂ.ui.anchor.a.f};
@@ -343,7 +352,6 @@ const styles = css`
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
       ${h3D({})}
-      
     }
   }
   h1 {

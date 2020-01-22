@@ -140,7 +140,7 @@ const el = Object.freeze({
     }
     */
     before: colorable([primary, tertiary]),
-    js: map(mix(3 / 5, mix(1 / 5, secondary, quaternary)))({
+    js: map(mix(2 / 5, mix(2 / 5, secondary, quaternary)))({
       // js: {
       constant: '#fc0',
       comment: '#328e93',
@@ -160,6 +160,7 @@ const ui = Object.freeze({
   link: activeColor([tertiary, $, primary, $]),
   menuButton: activeColor([tertiary]),
   menuLink: activeColor([primary, $, tertiary, $]),
+  button: activeColor([secondary, tertiary, primary, secondary]),
   series: {
     link: activeColor([primary, secondary, tertiary, primary])
   },

@@ -90,6 +90,13 @@ const plugins = (process.env.OFFLINE
     ]
 ).concat([
   {
+    resolve: `gatsby-plugin-webpack-bundle-analyzer`,
+    options: {
+      openAnalyzer: false
+    }
+  },
+
+  {
     resolve: `gatsby-plugin-build-date`,
     options: {
       formatting: {

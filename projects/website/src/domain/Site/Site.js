@@ -10,27 +10,68 @@ import { Z_INDEX, VIEW_STATES } from '@styles/constants'
 import { checkWindowExists } from '@utils/url'
 
 import { SEO } from './SEO'
-import { Main, site, menuActive } from './styled'
+import {
+  PasswordLabel,
+  PasswordField,
+  PasswordInput,
+  PasswordButton,
+  PasswordProtected,
+  Main,
+  site,
+  menuActive
+} from './styled'
 
 export const stateView = ({ setView, view }) => ({ setView, view })
 
 const Styled = ({ children, ...other }) => {
   const { view, seo } = other
+  const [hidden, setHidden] = useState(true)
+  const [currentPassword, setPass] = useState('')
+  const draft = R.pathOr(false, ['pageContext', 'frontmatter', 'draft'], other)
+  const priv = R.pathOr(false, ['pageContext', 'frontmatter', 'private'], other)
   const isActive = view === VIEW_STATES.MENU_ACTIVE
   const props = isActive ? { css: menuActive } : {}
+
+  let content = <Main {...other}>{children}</Main>
   if (checkWindowExists()) {
     // we are injecting ramda into the window variable
     window.R = R
+    if (hidden && (draft || priv)) {
+      const value = draft || priv
+      const pw = typeof value === 'string' ? value : 'I love open source'
+      const onClick = e => {
+        e.preventDefault()
+        setPass('')
+        if (pw === currentPassword) setHidden(false)
+      }
+      content = (
+        <Main {...other}>
+          <PasswordProtected onKeyPress={e => (e.charCode === 13 ? onClick(e) : null)}>
+            <h1>{draft ? 'Draft' : 'Private'}</h1>
+            <PasswordField>
+              <PasswordLabel htmlFor="password">Password:</PasswordLabel>
+              <PasswordInput
+                type="password"
+                onChange={e => setPass(e.target.value)}
+                defaultValue={currentPassword}
+              />
+              <PasswordButton onClick={onClick}>View</PasswordButton>
+            </PasswordField>
+          </PasswordProtected>
+        </Main>
+      )
+    }
   }
   return (
     <section {...props} css={site} className="website">
       <SEO seo={seo} {...other} />
       <Navigation {...other} />
-      <Main {...other}>{children}</Main>
+      {content}
       <Footer {...other} />
     </section>
   )
 }
+
 Styled.propTypes = {
   view: PropTypes.string,
   seo: PropTypes.object,

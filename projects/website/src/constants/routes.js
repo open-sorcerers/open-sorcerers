@@ -17,3 +17,5 @@ export const REPL = `/repl`
 export const SERIES_FP = `/series/fp`
 export const SERIES_JS = `/series/js`
 export const SERIES_OSS = `/series/oss`
+
+export const GLOSSARY = `/glossary`

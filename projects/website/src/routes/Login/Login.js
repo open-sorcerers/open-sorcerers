@@ -3,6 +3,8 @@ import { navigate } from 'gatsby'
 import { PROFILE } from '@constants/routes'
 import Auth from '@services/auth'
 
+import { StyledLogin, LoginButton } from './styled'
+
 const auth = Auth()
 
 export const Login = () => {
@@ -11,7 +13,12 @@ export const Login = () => {
     navigate(PROFILE)
     return
   }
-  return <button onClick={auth.login}>Login</button>
+  return (
+    <StyledLogin>
+      You can login with our OAuth sign-on here:
+      <LoginButton onClick={auth.login}>Login</LoginButton>
+    </StyledLogin>
+  )
 }
 
 export default Login

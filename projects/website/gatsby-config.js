@@ -90,6 +90,17 @@ const plugins = (process.env.OFFLINE
     ]
 ).concat([
   {
+    resolve: 'gatsby-plugin-web-font-loader',
+    options: {
+      typekit: {
+        id: 'mhh6emz'
+      },
+      google: {
+        families: ['Fira Sans', 'Fira Code']
+      }
+    }
+  },
+  {
     resolve: `gatsby-plugin-webpack-bundle-analyzer`,
     options: {
       openAnalyzer: false
@@ -195,7 +206,19 @@ const plugins = (process.env.OFFLINE
       },
       extensions: ['js', 'mdx']
     }
-  }
+  },
+  {
+    resolve: `gatsby-plugin-manifest`,
+    options: {
+      name: `Open Sorcerers`,
+      short_name: `Sorcerers`,
+      start_url: `/`,
+      theme_color: `#a2aeb3`,
+      background_color: `#3c053a`,
+      display: `standalone`
+    }
+  },
+  'gatsby-plugin-offline'
 ])
 
 module.exports = {
@@ -224,7 +247,6 @@ module.exports = {
 
   // This plugin enables Progressive Web App + Offline functionality
   // https://gatsby.app/offline
-  // 'gatsby-plugin-offline',
 
   // https://www.gatsbyjs.org/packages/gatsby-plugin-google-analytics/
   // {

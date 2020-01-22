@@ -52,7 +52,6 @@ const SEO = props => {
       <meta name="keywords" content={kwords} />
       <script type="text/javascript" src="modernizr.js" />
       <link rel="canonical" href={url} />
-      <link rel="stylesheet" href="https://use.typekit.net/mhh6emz.css" />
       <meta property="og:site_name" content={name} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />

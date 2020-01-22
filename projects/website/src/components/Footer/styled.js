@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 import { Box } from 'rebass'
+import { lighten } from 'polished'
+
 import * as ℂ from '@styles/colors'
 import { above } from '@styles/media'
 
@@ -16,11 +18,11 @@ export const StyledFooter = withTheme(styled(Box)`
 
   a {
     transition: color 0.3s ease-in;
-    color: ${ℂ.ui.footer.link.f};
+    color: ${lighten(1 / 10, ℂ.ui.footer.link.f)};
     text-decoration: none;
 
     &:hover {
-      color: ${ℂ.ui.footer.link.a.f};
+      color: ${lighten(1 / 10, ℂ.ui.footer.link.a.f)};
       text-decoration: underline;
     }
   }

@@ -62,13 +62,17 @@ const styles = css`
     body: ${ℂ.el.body.b};
   }
 .coming-soon {
-    cursor: disabled;
+    cursor: not-allowed;
     position: relative;
     &::after {
       position: absolute;
-      content: "Coming Soon";
+      width: 2rem;
+      top: 0.35rem;
+      right: -2.5rem;
+      content: "Coming Soon!";
       display: inline-block;
       font-size: 0.5rem;
+      line-height: 0.8rem;
       font-weight: 500;
       font-family: obviously-narrow, "Obviously", sans-serif;
     }

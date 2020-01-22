@@ -96,14 +96,18 @@ exports.createPages = async ({ actions, graphql }) => {
     /* console.log('post', post) */
     // fileAbsolutePath: '/Users/brekkbockrath/work/open-sorcerers/projects/website/src/content/reviews/review-snowpack.mdx'
     const PAGES = map(K, {
+      series: path.resolve('./src/templates/SeriesPage/index.js'),
       verb: path.resolve('./src/templates/VerbPage/index.js'),
       default: path.resolve('./src/templates/MDXPage/index.js')
     })
     const component = cond([
+      [includes('series-fp'), PAGES.series],
       [includes('routes/glossary'), PAGES.default],
       [includes('routes'), PAGES.verb],
       [T, PAGES.default]
     ])(post.fileAbsolutePath)
+    if (includes('series-fp', post.fileAbsolutePath))
+      console.log('compoennt', postPath, component, 'abs', post.fileAbsolutePath)
     actions.createPage({
       path: postPath,
       frontmatter: fm,

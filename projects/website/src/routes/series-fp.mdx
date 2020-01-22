@@ -11,5 +11,5 @@ import List from '@components/Writing/List'
 # Functional Programming
 
 <CoreTenets />
-<List customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
+<List title="FP Reading" customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
 

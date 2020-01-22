@@ -238,7 +238,7 @@ export const MenuLink = styled(Link)`
   pointer-events: auto;
   flex-direction: column;
   width: 100%;
-  color: white;
+  color: ${ℂ.ui.menuLink.f};
   line-height: 4rem;
   font-size: 10vw;
   font-family: obviously, sans-serif;
@@ -246,7 +246,7 @@ export const MenuLink = styled(Link)`
   padding: 0.55rem 0;
   letter-spacing: 0.1rem;
   &:hover {
-    color: white;
+    color: ${ℂ.ui.menuLink.a.f};
   }
 
   ${above.TABLET_PORTRAIT(`
@@ -255,6 +255,29 @@ export const MenuLink = styled(Link)`
   ${above.MID_TABLET(`
     font-size: 4vw;
   `)}
+  &.coming-soon {
+    &::after {
+      right: 4rem;
+      font-size: 0.8rem;
+      line-height: 1.2rem;
+      top: 1.35rem;
+      ${above.SMALL_PHONE(`
+        right: 7rem;
+      `)}
+      ${above.TABLET_PORTRAIT(`
+        right: 10rem;
+      `)}
+      ${above.MID_TABLET(`
+        right: 4rem;
+      `)}
+      ${above.LARGE_TABLET(`
+        right: 7rem;
+      `)}
+    }
+  }
+  &.log {
+    font-size: 0.8em;
+  }
 `
 export const MenuItem = styled.li`
   list-style: none;

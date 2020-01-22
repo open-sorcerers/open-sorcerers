@@ -4,6 +4,7 @@ import { css, Global } from '@emotion/core'
 import * as ℂ from '@styles/colors'
 import { easeOut } from '@styles/animation'
 import { above, aboveCalc } from '@styles/media'
+import { mix } from 'polished'
 import 'typeface-fira-sans'
 import 'typeface-fira-code'
 
@@ -77,6 +78,46 @@ const styles = css`
       font-family: obviously-narrow, "Obviously", sans-serif;
     }
   }
+  .series-page, .verb-page {
+    h1, h2, h3, h4, h5, h6 {
+      text-align: center;
+    }
+  }
+
+  
+  #cta-series-fp,
+  #cta-series-oss {
+    width: calc(50% - 1rem);
+    height: 4rem;
+    font-size: 3rem;
+    font-family: obviously, 'Obviously', sans-serif;
+    font-weight: 900;
+    line-height: 3rem;
+    margin: 0.5rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+    border: 2px solid ${ℂ.ui.series.link.f};
+    color: ${ℂ.ui.series.link.f};
+    background: ${ℂ.ui.series.link.b};
+    text-align: center; 
+    &:hover {
+      border: 2px solid ${ℂ.ui.series.link.a.f};
+      color: ${ℂ.ui.series.link.a.f};
+      background-color: ${ℂ.ui.series.link.a.b}
+    }
+    &.coming-soon {
+      color: ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
+      border: 2px solid ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
+      &::after {
+        display: none;
+        ${above.SMALL_PHONE(`
+          display: inline-block;
+          top: 1rem;
+          right: 2rem;
+        `)}
+      }
+    }
+  }
   /*
   #cta-learn,
   #cta-build,
@@ -86,14 +127,7 @@ const styles = css`
     line-height: 4.35rem;
     margin-bottom: 3rem;
   }
-  #cta-series-fp,
-  #cta-series-oss {
-    ${h3D()}
-    font-size: 3rem;
-    line-height: 3rem;
-    margin-bottom: 2rem;
-    display: inline-block;
-  }
+  
   
   */
   a.anchor.before {

@@ -159,6 +159,10 @@ const el = Object.freeze({
 const ui = Object.freeze({
   link: activeColor([tertiary, $, primary, $]),
   menuButton: activeColor([tertiary]),
+  menuLink: activeColor([primary, $, tertiary, $]),
+  series: {
+    link: activeColor([primary, secondary, tertiary, primary])
+  },
   cog: mergeRight(activeColor([quaternary]), {
     above: { midTablet: activeColor([secondary, $, quaternary]) }
   }),

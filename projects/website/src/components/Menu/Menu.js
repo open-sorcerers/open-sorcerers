@@ -34,10 +34,10 @@ const getLinksRelativeToAuth = pipe(
         Profile
       </div>
     ],
-    loggedIn ? [LOGOUT, 'Logout'] : [LOGIN, 'Login'],
     [SERIES_FP, 'FP'],
-    [SERIES_JS, 'JS'],
-    [SERIES_OSS, 'OSS']
+    [SERIES_JS, 'JS', 'coming-soon'],
+    [SERIES_OSS, 'OSS', 'coming-soon'],
+    loggedIn ? [LOGOUT, 'Logout', 'log log-out'] : [LOGIN, 'Login', 'log log-in']
   ],
   filter(I)
 )
@@ -78,11 +78,15 @@ export const Menu = ({ setView, view }) => {
         <FloatingMenuContent onClick={eatClicksFor('floatingContent')}>
           <>
             {map(
-              ([to, what]) => (
+              ([to, what, className]) => (
                 <MenuItem key={to}>
-                  <MenuLink to={to} onClick={toggle}>
-                    {what}
-                  </MenuLink>
+                  {className !== 'coming-soon' ? (
+                    <MenuLink className={className} to={to} onClick={toggle}>
+                      {what}
+                    </MenuLink>
+                  ) : (
+                    <MenuLink className={className}>{what}</MenuLink>
+                  )}
                 </MenuItem>
               ),
               MENU_LINKS

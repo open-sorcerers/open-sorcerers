@@ -124,7 +124,7 @@ const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
 // elements
 const el = Object.freeze({
   /* body: colorable([primary, secondary]), */
-  body: colorable([primary, `linear-gradient(35deg, ${darken(0.05, secondary)}, ${secondary})`]),
+  body: colorable([primary, `linear-gradient(35deg, ${lighten(0.05, secondary)}, ${secondary})`]),
   blockquote: colorable([tertiary]),
   code: mergeRight(colorable([primary, mix(1 / 5, secondary, quaternary)]), {
     /*

@@ -1,8 +1,8 @@
 import { useStaticQuery, graphql } from 'gatsby'
 
-// export const getContributors = () => {}
+export const getContributors = () => {}
 
-//*
+/*
 export const getContributors = () =>
   useStaticQuery(graphql`
     query getContributors {

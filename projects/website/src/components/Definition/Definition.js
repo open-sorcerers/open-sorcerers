@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { Link } from 'gatsby'
 import { Box } from 'rebass'
 import { pipe, replace, toLower } from 'ramda'
-import { trace } from 'xtrace'
 
 import { checkWindowExists } from '@utils/url'
 
-const slugLink = pipe(replace(/ /g, '-'), toLower, z => '/glossary/' + z, trace('output'))
+import { StyledDefinition } from './styled'
+
+const slugLink = pipe(replace(/ /g, '-'), toLower, z => '/glossary/' + z)
 
 export const Definition = props => {
   const { of: x, children, parent } = props
@@ -34,10 +35,10 @@ export const Definition = props => {
     </>
   )
   return (
-    <Box>
+    <StyledDefinition>
       <h2>{breadcrumbs}</h2>
       {children ? <p>{children}</p> : null}
-    </Box>
+    </StyledDefinition>
   )
 }
 

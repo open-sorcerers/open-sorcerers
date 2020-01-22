@@ -59,6 +59,19 @@ const styles = css`
     /* stylelint-disable-next-line */
     font-size: 16px;
     line-height: 1.5rem;
+    body: ${ℂ.el.body.b};
+  }
+.coming-soon {
+    cursor: disabled;
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "Coming Soon";
+      display: inline-block;
+      font-size: 0.5rem;
+      font-weight: 500;
+      font-family: obviously-narrow, "Obviously", sans-serif;
+    }
   }
   /*
   #cta-learn,
@@ -69,6 +82,15 @@ const styles = css`
     line-height: 4.35rem;
     margin-bottom: 3rem;
   }
+  #cta-series-fp,
+  #cta-series-oss {
+    ${h3D()}
+    font-size: 3rem;
+    line-height: 3rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+  }
+  
   */
   a.anchor.before {
     svg {
@@ -275,14 +297,15 @@ const styles = css`
       font-family: 'Fira Code', monospace;
       text-transform: initial;
     }
+    a {
+      font-family: obviously, 'Obviously', sans-serif;
+      font-weight: 900;
+    }
     &.three-d {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
       ${h3D({})}
-      a {
-        font-family: obviously, 'Obviously', sans-serif;
-        font-weight: 900;
-      }
+      
     }
   }
   h1 {

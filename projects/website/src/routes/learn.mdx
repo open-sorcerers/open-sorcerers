@@ -15,7 +15,7 @@ import FP from './series-fp.mdx'
 <a id="cta-series-fp" href="/series/fp">FP</a>
 <a id="cta-series-oss" className="coming-soon">OSS</a>
 
-<List />
+<List customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
 <List title="Reviews" filter="reviews" />
 <List title="Glossary" filter="glossary" more="/glossary" />
 

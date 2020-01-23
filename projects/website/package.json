@@ -119,6 +119,7 @@
     "gatsby-remark-copy-linked-files": "^2.1.33",
     "gatsby-source-github": "^0.0.2",
     "husky": ">=1",
+    "lighthouse-ci": "^1.10.0",
     "lint-staged": ">=8",
     "modernizr": "^3.8.0",
     "nps": "^5.9.5",

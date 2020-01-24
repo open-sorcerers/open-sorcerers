@@ -1,6 +1,9 @@
 {
   "name": "open-sorcerers",
   "version": 2,
+  "env": {
+    "ENVIRONMENT": "staging"
+  },
   "rewrites": [
     { "source": "/settings/:setting", "destination": "/settings" },
     { "source": "/ask/:setting", "destination": "/ask" },

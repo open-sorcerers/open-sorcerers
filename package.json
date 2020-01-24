@@ -16,6 +16,6 @@
     "projects/*"
   ],
   "scripts": {
-    "build": "cd projects/website && nps build && cp public ../../public"
+    "build": "cd projects/website && nps build && mv public ../.."
   }
 }

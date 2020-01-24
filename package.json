@@ -14,5 +14,8 @@
   },
   "workspaces": [
     "projects/*"
-  ]
+  ],
+  "scripts": {
+    "build": "cd projects/website && nps build"
+  }
 }

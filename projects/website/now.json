@@ -8,6 +8,7 @@
     { "source": "/settings/:setting", "destination": "/settings" },
     { "source": "/ask/:setting", "destination": "/ask" },
     { "source": "/build/:setting", "destination": "/build" },
-    { "source": "/learn/:setting", "destination": "/learn" }
+    { "source": "/learn/:setting", "destination": "/learn" },
+    { "source": "/:whatever", "destination": "/404" }
   ]
 }

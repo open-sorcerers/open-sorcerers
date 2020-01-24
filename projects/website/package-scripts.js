@@ -27,7 +27,7 @@ module.exports = {
     },
     lint: {
       script: multiNPS('lint.eslint', 'lint.stylelint'),
-      eslint: 'eslint ./src --fix',
+      eslint: 'eslint --fix "src"',
       stylelint: `stylelint "./src/**/*.js"`
     },
     serve: 'gatsby serve',

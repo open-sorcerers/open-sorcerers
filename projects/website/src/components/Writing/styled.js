@@ -1,10 +1,11 @@
+import { memo } from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
 import styled from '@emotion/styled'
 import * as ℂ from '@styles/colors'
 import { above } from '@styles/media'
 
-export const GlossaryLinks = styled(Box)`
+export const GlossaryLinks = memo(styled(Box)`
   margin: 0;
   padding: 0;
   a {
@@ -30,16 +31,16 @@ export const GlossaryLinks = styled(Box)`
       margin-top: 0.5rem;
     }
   }
-`
+`)
 
-export const EntityLink = styled(Link)`
+export const EntityLink = memo(styled(Link)`
   font-size: 2rem;
   line-height: 2rem;
   font-style: italic;
   letter-spacing: 0.01rem;
-`
+`)
 
-export const StyledPost = styled(Box)`
+export const StyledPost = memo(styled(Box)`
   margin: 0;
   margin-bottom: 1rem;
   min-width: 100%;
@@ -75,9 +76,9 @@ export const StyledPost = styled(Box)`
        margin-right: 1rem;
      }
   `)}
-`
+`)
 
-export const StyledList = styled(Box)`
+export const StyledList = memo(styled(Box)`
   display: flex;
   flex-direction: column;
   h2 {
@@ -87,9 +88,9 @@ export const StyledList = styled(Box)`
     line-height: 3rem;
     margin-bottom: 1.5rem;
   }
-`
+`)
 
-export const StyledListWrapper = styled(Box)`
+export const StyledListWrapper = memo(styled(Box)`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -97,9 +98,8 @@ export const StyledListWrapper = styled(Box)`
   min-width: 100%;
   min-height: 10vh;
   justify-content: center;
-`
-
-export const PostHeader = styled.header`
+`)
+export const PostHeader = memo(styled.header`
   padding: 0.5rem;
   display: flex;
   flex-direction: row;
@@ -111,9 +111,9 @@ export const PostHeader = styled.header`
       color: ${ℂ.ui.post.header.link.a.f};
     }
   }
-`
+`)
 
-export const PostFooter = styled.footer`
+export const PostFooter = memo(styled.footer`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -130,34 +130,34 @@ export const PostFooter = styled.footer`
   border-top-width: 0;
   padding: 0.5rem;
   padding-bottom: 0.75rem;
-`
+`)
 
-export const FooterFirst = styled(Box)`
+export const FooterFirst = memo(styled(Box)`
   width: 33%;
   display: flex;
   flex-direction: column;
-`
+`)
 
-export const FooterLast = styled(Box)`
+export const FooterLast = memo(styled(Box)`
   width: 66%;
   display: flex;
   flex-direction: column;
   text-align: right;
-`
-export const PostContent = styled(Box)`
+`)
+export const PostContent = memo(styled(Box)`
   padding: 1rem;
   width: 100%;
-`
+`)
 
-export const ModuleToken = styled(Box)`
+export const ModuleToken = memo(styled(Box)`
   margin: 0.5rem;
   display: inline-block;
   font-style: normal;
   font-size: 2rem;
-`
+`)
 
-export const StyledReadingTime = styled(Box)`
+export const StyledReadingTime = memo(styled(Box)`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-`
+`)

@@ -18,10 +18,9 @@ export const QuizCo = ({ quiz }) => {
       </Box>
       <Box>
         <>
-          {quiz.questions.map(
-            (qq, i) =>
-             <Question {...qq} index={i} answerQuestion={answerQ} />
-          )}
+          {quiz.questions.map((qq, i) => (
+            <Question {...qq} index={i} key={i} answerQuestion={answerQ} />
+          ))}
         </>
       </Box>
     </Box>

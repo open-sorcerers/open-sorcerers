@@ -25,7 +25,6 @@ excerpt: |
 
 1. (Mostly) everything is functions all the way down. If it's more than a unary function i.e. `(a, b) => a + b`, they should be [curried].
   
-  (For a lot more, you could read up on [category theory] which will frame things a lot more formally.)
 
   Good functions are [pure functions] &mdash; pure functions are [deterministic], meaning that with the same inputs they return the same outputs, they have no [side-effects], meaning they do not make change external to the body of the function and they are [referentially transparent] so if you know the inputs you can compare them transparently with their outputs.
 
@@ -39,6 +38,11 @@ excerpt: |
   ```js
   pipe(slice(0, 3), toUpper)
   ```
+
+(For a lot more, you could check out our [references] page or see the wiki page on [category theory])
+
+
+[references]: /references
 [category theory]: //en.wikipedia.org/wiki/Category_Theory
 [curried]: /glossary/curry
 [deterministic]: /glossary/deterministic

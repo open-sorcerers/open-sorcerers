@@ -176,6 +176,9 @@ const ui = Object.freeze({
     },
     glossary: {
       link: activeColor([secondary, tertiary, tertiary, transparent])
+    },
+    module: {
+      link: activeColor([secondary, tertiary, primary, transparent])
     }
   },
   contributor: {

@@ -182,7 +182,12 @@ export const List = ({ title, filter: ff, more = false, customFilter = I }) => {
   )
 }
 
-List.propTypes = { title: PropTypes.string, filter: PropTypes.string, more: PropTypes.string }
+List.propTypes = {
+  title: PropTypes.string,
+  filter: PropTypes.string,
+  more: PropTypes.string,
+  customFilter: PropTypes.func
+}
 
 List.defaultProps = { title: 'Reading' }
 

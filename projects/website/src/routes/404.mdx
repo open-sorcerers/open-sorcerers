@@ -1,0 +1,34 @@
+---
+path: /404
+title: Page not found
+---
+
+# Page Not Found
+
+<br />
+
+```js
+import {
+  equals,
+  identity as I,
+  ifElse,
+  last,
+  pipe,
+  split
+} from 'ramda'
+
+const goto = z => {
+  window.location = window.location.host + '/' + z
+}
+
+const whatToDo = pipe(
+  z => z + '',
+  split('/'),
+  last,
+  ifElse(
+    equals('404'),
+    goto(''),
+    I 
+  )
+)(window.location)
+```

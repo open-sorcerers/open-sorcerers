@@ -58,7 +58,7 @@ export const Footer = ({ siteData }) => {
             <div>
               Built with{' '}
               <span role="img" aria-label="love">
-                💜
+                💛
               </span>{' '}
               by <Link to="/contributors">Open Sorcerers</Link>
             </div>

@@ -42,7 +42,7 @@ const h3D = ({
   )}
 `
 
-const h3DBig = () => h3D({ size: 5, and: `letter-spacing: 0.7rem` })
+/* const h3DBig = () => h3D({ size: 5, and: `letter-spacing: 0.7rem` }) */
 
 const styles = css`
   * {

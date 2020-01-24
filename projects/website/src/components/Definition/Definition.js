@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'gatsby'
-import { Box } from 'rebass'
 import { pipe, replace, toLower } from 'ramda'
 
 import { checkWindowExists } from '@utils/url'
@@ -10,7 +9,7 @@ import { StyledDefinition } from './styled'
 
 const slugLink = pipe(replace(/ /g, '-'), toLower, z => '/glossary/' + z)
 
-export const Definition = props => {
+export const Definition = memo(props => {
   const { of: x, children, parent } = props
   let onGlossaryPage = false
   if (checkWindowExists()) {
@@ -40,7 +39,7 @@ export const Definition = props => {
       {children ? <p>{children}</p> : null}
     </StyledDefinition>
   )
-}
+})
 
 Definition.propTypes = {
   of: PropTypes.string,

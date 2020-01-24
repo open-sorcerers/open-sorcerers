@@ -140,7 +140,7 @@ const el = Object.freeze({
     }
     */
     before: colorable([primary, tertiary]),
-    js: map(mix(2 / 5, mix(2 / 5, secondary, quaternary)))({
+    js: map(mix(2 / 5, lighten(0.1, mix(2 / 5, secondary, quaternary))))({
       // js: {
       constant: '#fc0',
       comment: '#328e93',
@@ -175,7 +175,7 @@ const ui = Object.freeze({
       link: activeColor([quaternary, $, tertiary])
     },
     glossary: {
-      link: activeColor([secondary, mix(7 / 10, tertiary, secondary), tertiary, transparent])
+      link: activeColor([secondary, tertiary, tertiary, transparent])
     }
   },
   contributor: {

@@ -1,42 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { concat, lt, curry, slice, indexOf, ifElse, pathOr, ap, pipe } from 'ramda'
-import { trace } from 'xtrace'
+import { concat, pathOr, ap, pipe } from 'ramda'
+import { cutAfter } from '@utils/string'
 
 import { AltColophon as Alt, StyledColophon, LinkWrapper } from './styled'
-
-/*
-Preserve for comparisons later:
-const cutInDirectionBy = curry((direction, and, lookup, str) => {
-  const idx = str.indexOf(lookup)
-  if (idx > -1) {
-    return direction ? str.slice(0, idx + and) : str.slice(idx + and, Infinity)
-  }
-  return str
-})
-*/
-
-const cutInDirectionBy = curry((direction, and, lookup, str) =>
-  pipe(
-    trace('input'),
-    indexOf(lookup),
-    trace('index'),
-    ifElse(
-      lt(-1),
-      // prettier is wrong about how to format this
-      direction
-        ? // so comments
-          z => slice(0, z + and, str)
-        : // will force it
-          z => slice(z + and, Infinity, str),
-      () => str
-    )
-  )(str)
-)
-const cutBeforeBy = cutInDirectionBy(true)
-const cutAfterBy = cutInDirectionBy(false)
-const cutBefore = cutBeforeBy(0)
-const cutAfter = cutAfterBy(0)
 
 const BLOBMASTER = 'https://github.com/open-sorcerers/open-sorcerers/blob/master/'
 const getSourcePath = pipe(
@@ -89,8 +56,7 @@ export const Colophon = props => {
 }
 
 Colophon.propTypes = {
-  // whatever: PropTypes.string,
-  // isWhatever: PropTypes.bool,
+  variant: PropTypes.string,
   children: PropTypes.node
 }
 

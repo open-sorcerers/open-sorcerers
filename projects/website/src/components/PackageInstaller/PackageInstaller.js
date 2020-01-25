@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  PackageName,
-  StyledPackageManager,
-  PreferYarn,
-  Pre,
-  Code,
-  Pullquote
-} from './styled'
+import { PackageName, StyledPackageManager, PreferYarn, Pre, Code, Pullquote } from './styled'
 
 export const PackageInstaller = ({ pkg, peer, dev, children }) => {
   const [useYarn, setPkgManager] = useState(true)

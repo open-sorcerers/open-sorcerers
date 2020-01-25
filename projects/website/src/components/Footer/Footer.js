@@ -9,7 +9,7 @@ import PKG from '@root/package.json'
 import { Colophon } from '@components/Colophon'
 import { Container } from '@components/Container'
 import { checkWindowExists } from '@utils/url'
-import { LinkWrapper, HiddenContent, StyledFooter, Inner, Left, Bottom, Right } from './styled'
+import { LinkWrapper, HiddenContent, StyledFooter, Inner, Bottom } from './styled'
 
 const parseISODate = pipe(
   pathOr('', ['currentBuildDate', 'currentDate']),

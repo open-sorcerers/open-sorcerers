@@ -1,10 +1,7 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
 
-import { ifElse, pathOr } from 'ramda'
-
 import { above } from '@styles/media'
-import { Z_INDEX } from '@styles/constants'
 import * as ℂ from '@styles/colors'
 import { lighten } from 'polished'
 
@@ -47,7 +44,7 @@ export const AltColophon = styled(Box)`
     width: 20rem;
     border-top: 1px solid transparent;
     border-radius: 10rem;
-  justify-content: space-around;
+    justify-content: space-around;
   `)}
 `
 

@@ -118,6 +118,7 @@
     "gatsby-plugin-webpack-bundle-analyzer": "^1.0.5",
     "gatsby-remark-copy-linked-files": "^2.1.33",
     "gatsby-source-github": "^0.0.2",
+    "get-stdin": "^7.0.0",
     "husky": ">=1",
     "lighthouse-ci": "^1.10.0",
     "lint-staged": ">=8",
@@ -139,7 +140,7 @@
     "stylelint-use-logical": "^1.1.0"
   },
   "name": "website",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "javascript x open-source x functional-programming",
   "main": "index.js",
   "repository": "//github.com/open-sorcerers/open-sorcerers",

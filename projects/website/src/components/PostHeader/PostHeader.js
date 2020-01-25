@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { concat, pipe, toLower, replace, pathOr } from 'ramda'
+import { pipe, toLower, replace, pathOr } from 'ramda'
 
 import { Colophon } from '@components/Colophon'
 

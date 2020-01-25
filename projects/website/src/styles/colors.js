@@ -165,7 +165,7 @@ const ui = Object.freeze({
     link: activeColor([primary, secondary, tertiary, primary])
   },
   cog: mergeRight(activeColor([quaternary]), {
-    above: { midTablet: activeColor([secondary, $, quaternary]) }
+    above: { midTablet: activeColor([secondary, $, tertiary]) }
   }),
   cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
   reveal: activeColor([secondary, tertiary, tertiary, secondary]),

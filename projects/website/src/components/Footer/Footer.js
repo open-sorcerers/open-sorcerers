@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 import { ifElse, pipe, split, map, pathOr } from 'ramda'
 import { Breakpoints } from '@styles/media'
 import PKG from '@root/package.json'
 
+import { Colophon } from '@components/Colophon'
 import { Container } from '@components/Container'
 import { checkWindowExists } from '@utils/url'
-import { HiddenContent, StyledFooter, Inner, Left, Right } from './styled'
+import { LinkWrapper, HiddenContent, StyledFooter, Inner, Bottom } from './styled'
 
 const parseISODate = pipe(
   pathOr('', ['currentBuildDate', 'currentDate']),
@@ -30,43 +32,55 @@ const hasBreakpointsInQueryString = ifElse(
   () => false
 )
 
-export const Footer = ({ siteData }) => {
+export const Footer = props => {
+  const { siteData } = props
   const [isOpen, setOpen] = useState(false)
   const [breakpointsActive, setBreakpointsActive] = useState(hasBreakpointsInQueryString())
   const date = parseISODate(siteData)
   return (
-    <StyledFooter
-      onDoubleClick={e => {
-        e.stopPropagation()
-        setOpen(!isOpen)
-      }}
-    >
+    <StyledFooter>
       <Container maxWidth={1200}>
+        <Colophon {...props} />
         <Inner>
-          <Left>
-            <div>
-              Contribute on <a href="https://github.com/open-sorcerers">Github</a>
-            </div>
-            <div>
-              Created with{' '}
-              <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener noreferrer">
-                Gatsby
-              </a>
-            </div>
-          </Left>
-          <Right>
-            <div>
-              Built with{' '}
-              <span role="img" aria-label="love">
-                💛
-              </span>{' '}
-              by <Link to="/contributors">Open Sorcerers</Link>
-            </div>
-          </Right>
+          <LinkWrapper>
+            Built with{' '}
+            <span
+              role="img"
+              css={css`
+                user-select: none;
+              `}
+              aria-label="love"
+              onDoubleClick={e => {
+                e.stopPropagation()
+                setOpen(!isOpen)
+              }}
+            >
+              {!isOpen ? '💛' : '🧠'}
+            </span>{' '}
+            by <Link to="/contributors">Open Sorcerers</Link>
+          </LinkWrapper>
+
+          <LinkWrapper>
+            <Link to="/references">📚 References</Link>
+          </LinkWrapper>
+          <LinkWrapper>
+            <Link to="/glossary">🔍 Glossary</Link>
+          </LinkWrapper>
         </Inner>
+        <Bottom>
+          Created with{' '}
+          <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener noreferrer">
+            Gatsby
+          </a>{' '}
+          using the{' '}
+          <a href="https://https://github.com/open-sorcerers/foresight-gatsby-starter">
+            😎 foresight
+          </a>{' '}
+          starter
+        </Bottom>
         {isOpen ? (
           <HiddenContent>
-            <h6>Open Sorcerers</h6>
+            <h6>open.sorcerers.dev</h6>
             <div className="brain">🧠 </div>
             <div className="version">v{PKG.version}</div>
             <div>

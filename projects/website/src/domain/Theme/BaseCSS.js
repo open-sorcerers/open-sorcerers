@@ -60,7 +60,6 @@ const styles = css`
     /* stylelint-disable-next-line */
     font-size: 16px;
     line-height: 1.5rem;
-    body: ${ℂ.el.body.b};
   }
   .coming-soon {
     cursor: not-allowed;
@@ -131,12 +130,28 @@ const styles = css`
       }
     }
   }
-  #cta-learn,
-  #cta-build,
-  #cta-talk {
+  #open-sorcerers {
+    ${aboveCalc.TINY_PHONE(
+      '4rem',
+      `
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    `
+    )}
+    ${aboveCalc.SMALL_PHONE(
+      '4rem',
+      `
     font-size: 4em;
     line-height: 4.35rem;
     margin-bottom: 3rem;
+    `
+    )}
+  }
+  #learn,
+  #build,
+  #talk {
+    font-size: 4em;
+    line-height: 4.35rem;
   }
 
   a.anchor.before {
@@ -361,6 +376,10 @@ const styles = css`
     font-weight: 900;
     &:first-of-type {
       ${h3D({})}
+      margin-bottom: 2rem;
+      ${above.TABLET_PORTRAIT(`
+        margin-top: 2rem;
+      `)}
     }
   }
   h1 {
@@ -409,6 +428,7 @@ const styles = css`
 
   body {
     background: ${ℂ.el.body.b};
+    border-bottom: 1px solid ${ℂ.area.footer.b};
     color: ${ℂ.el.body.f};
   }
 `

@@ -159,32 +159,31 @@ export const SettingsButton = styled(Box)`
     transform 6s ease-in-out;
 
   svg {
-  animation: ${rotate} 15s linear infinite;
-  ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
-  display: inline-block;
-  position: relative;
-  fill: ${ℂ.ui.menuButton.f};
-  width: 2.5rem;
-  height: 2.5rem;
-  max-width: 2.5rem;
-  max-height: 2.5rem;
-  top: -1.25rem;
-  left: -1.25rem;
-  z-index: ${INTERACTIVE};
-  margin: 0;
-  ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
+    animation: ${rotate} 15s linear infinite;
+    ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
+    display: inline-block;
+    position: relative;
+    fill: ${ℂ.ui.menuButton.f};
+    width: 2.5rem;
+    height: 2.5rem;
+    max-width: 2.5rem;
+    max-height: 2.5rem;
+    top: -1.25rem;
+    left: -1.25rem;
+    z-index: ${INTERACTIVE};
+    margin: 0;
+    ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
   }
 
   ${above.MID_TABLET(`
     right: -15rem;
     position: absolute;
     top: 3.25rem;
-    width: 9rem;
-    height: 9rem;
+    width: 6rem;
+    height: 6rem;
     z-index: ${MENU_UNDER};
     background-color: transparent;
     border-color: transparent;
-    /* background-color: lime; */
     &:hover {
       svg {
         fill: ${ℂ.ui.menuButton.a.f};
@@ -193,16 +192,15 @@ export const SettingsButton = styled(Box)`
       }
     }
     svg {
-
-  fill: ${ℂ.ui.menuButton.f};
-  top: -1.68rem;
-  left: -1.6rem;
-  width: 9rem;
-  min-width: 9rem;
-  height: 9rem;
-  min-height: 9rem;
-  stroke: ${ℂ.ui.menuButton.f};
-  stroke-width: 0.6rem;
+      fill: ${ℂ.ui.menuButton.f};
+      top: -1.64rem;
+      left: -1.64rem;
+      width: 6rem;
+      min-width: 6rem;
+      height: 6rem;
+      min-height: 6rem;
+      stroke: ${ℂ.ui.menuButton.f};
+      stroke-width: 0.6rem;
     }
   `)}
   ${above.TABLET_LANDSCAPE(`

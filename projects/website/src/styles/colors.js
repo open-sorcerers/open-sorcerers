@@ -165,7 +165,7 @@ const ui = Object.freeze({
     link: activeColor([primary, secondary, tertiary, primary])
   },
   cog: mergeRight(activeColor([quaternary]), {
-    above: { midTablet: activeColor([secondary, $, quaternary]) }
+    above: { midTablet: activeColor([secondary, $, tertiary]) }
   }),
   cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
   reveal: activeColor([secondary, tertiary, tertiary, secondary]),
@@ -176,6 +176,9 @@ const ui = Object.freeze({
     },
     glossary: {
       link: activeColor([secondary, tertiary, tertiary, transparent])
+    },
+    module: {
+      link: activeColor([secondary, tertiary, primary, transparent])
     }
   },
   contributor: {
@@ -228,7 +231,12 @@ const area = Object.freeze({
     img: colorable([tertiary, secondary])
   }),
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
-  profile: colorable([$, primary])
+  profile: colorable([$, primary]),
+  colophon: mergeRight(colorable([primary, quaternary]), {
+    alt: mergeRight(colorable([primary, transparent]), {
+      above: { subTablet: colorable([primary, mix(3 / 10, secondary, quaternary)]) }
+    })
+  })
 })
 
 const named = Object.freeze({

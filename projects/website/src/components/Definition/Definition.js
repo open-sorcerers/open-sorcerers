@@ -40,6 +40,7 @@ export const Definition = memo(props => {
     </StyledDefinition>
   )
 })
+Definition.displayName = 'Definition'
 
 Definition.propTypes = {
   of: PropTypes.string,

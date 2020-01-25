@@ -64,8 +64,8 @@ const SEO = props => {
 
 SEO.propTypes = {
   location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired
-  }).isRequired,
+    pathname: PropTypes.string
+  }),
   pageContext: PropTypes.shape({
     frontmatter: PropTypes.object
   }),

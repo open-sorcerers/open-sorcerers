@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useStaticQuery, graphql } from 'gatsby'
 import { uid } from 'react-uid'
 import { withTheme } from 'emotion-theming'
+import { pathOr } from 'ramda'
 
 import { stateView } from '@domain/Site'
 import Logo from '@assets/open-sorcerers2.svg'
@@ -27,10 +28,10 @@ const items = [
   { label: 'BUILD', to: BUILD },
   { label: 'TALK', to: TALK }
 ]
-
 const RawNavigation = props => {
   const state = stateView(props)
   const { path = '' } = props
+  const activeMenu = pathOr(path, ['pageContext', 'frontmatter', 'menu'], props)
   const {
     site: {
       siteMetadata: { name }
@@ -57,7 +58,7 @@ const RawNavigation = props => {
             <>
               {items.map(({ label, to, href }) =>
                 to ? (
-                  <StyledItem key={uid(label)} to={to} data-active={path.includes(to)}>
+                  <StyledItem key={uid(label)} to={to} data-active={activeMenu.includes(to)}>
                     {label}
                   </StyledItem>
                 ) : (

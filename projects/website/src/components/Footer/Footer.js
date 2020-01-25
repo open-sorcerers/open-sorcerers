@@ -72,10 +72,11 @@ export const Footer = props => {
           <a href="https://www.gatsbyjs.org/" target="_blank" rel="noopener noreferrer">
             Gatsby
           </a>{' '}
-          using{' '}
+          using the{' '}
           <a href="https://https://github.com/open-sorcerers/foresight-gatsby-starter">
-            this starter
-          </a>
+            😎 foresight
+          </a>{' '}
+          starter
         </Bottom>
         {isOpen ? (
           <HiddenContent>

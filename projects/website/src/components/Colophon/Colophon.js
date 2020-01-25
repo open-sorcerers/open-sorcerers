@@ -63,19 +63,23 @@ const getAllTheData = pipe(
 
 export const Colophon = props => {
   const data = getAllTheData(props)
+
+  const gh = data.githubLink.length > BLOBMASTER.length
+  const hasContent = gh || data.author
   return (
-    <StyledColophon>
-      {data.githubLink.length > BLOBMASTER.length && (
+    <StyledColophon hasContent>
+      {gh && (
         <LinkGithub>
-          View this page on{' '}
+          See this page on{' '}
           <a title="This page on github" href={data.githubLink}>
-            Github
+            👁 Github
           </a>
         </LinkGithub>
       )}
       {data.author && (
         <LinkAuthor>
-          Content on this page written by <a href={`//github.com/${data.author}`}>{data.author}</a>
+          Content on this page written by{' '}
+          <a href={`//github.com/${data.author}`}>😈 {data.author}</a>
         </LinkAuthor>
       )}
     </StyledColophon>

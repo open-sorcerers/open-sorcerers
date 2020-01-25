@@ -78,8 +78,8 @@ export const Colophon = props => {
       )}
       {data.author && (
         <LinkAuthor>
-          Content on this page written by{' '}
-          <a href={`//github.com/${data.author}`}>😈 {data.author}</a>
+          Content on this page written by 😈{' '}
+          <a href={`//github.com/${data.author}`}>{data.author}</a>
         </LinkAuthor>
       )}
     </StyledColophon>

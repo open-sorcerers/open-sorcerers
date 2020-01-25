@@ -32,6 +32,7 @@ exports.createPages = async ({ actions, graphql }) => {
             author
             path
             keywords
+            menu
             private
             draft
             excerpt
@@ -153,6 +154,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       author: String
       path: String
       keywords: [String]
+      menu: String
       glossary: [String]
       excerpt: String
       tags: [String]

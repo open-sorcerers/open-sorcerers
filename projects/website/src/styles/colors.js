@@ -232,7 +232,9 @@ const area = Object.freeze({
   }),
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
   profile: colorable([$, primary]),
-  colophon: colorable([primary, quaternary])
+  colophon: mergeRight(colorable([primary, quaternary]), {
+    alt: colorable([primary, quaternary])
+  })
 })
 
 const named = Object.freeze({

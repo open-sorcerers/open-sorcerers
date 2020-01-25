@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import { ContentContainer } from '@components/Container'
+import { Colophon } from '@components/Colophon'
 import { Site } from '@domain/Site'
 
 export const prefill = prefilled => {
@@ -14,8 +15,8 @@ export const prefill = prefilled => {
     ) : (
       <Site {...props}>
         <ContentContainer>
+          <Colophon {...props} variant="header" />
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
-         
         </ContentContainer>
       </Site>
     )

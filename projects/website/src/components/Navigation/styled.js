@@ -3,6 +3,8 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 
+import { Z_INDEX } from '@styles/constants'
+
 import { above, aboveCalc } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
 import * as ℂ from '@styles/colors'
@@ -17,11 +19,14 @@ const colors = {
 
 export const StyledNavigation = styled(Box)`
   display: flex;
+
   align-items: center;
   justify-content: space-around;
   background-color: ${ℂ.area.nav.b};
   color: ${ℂ.area.nav.f};
   min-height: 16rem;
+  position: relative;
+  z-index: ${Z_INDEX.MENU};
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
   ${above.SMALL_PHONE(`
     min-height: 18rem;

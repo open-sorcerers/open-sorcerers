@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { concat, lt, curry, slice, indexOf, ifElse, pathOr, ap, pipe } from 'ramda'
 import { trace } from 'xtrace'
 
-import { StyledColophon, LinkGithub, LinkAuthor } from './styled'
+import { AltColophon as Alt, StyledColophon, LinkGithub, LinkAuthor } from './styled'
 
 /*
 Preserve for comparisons later:
@@ -63,14 +63,16 @@ const getAllTheData = pipe(
 
 export const Colophon = props => {
   const data = getAllTheData(props)
+  const isHeader = props && props.variant && props.variant === 'header'
+  const CC = isHeader ? Alt : StyledColophon
 
   const gh = data.githubLink.length > BLOBMASTER.length
   const hasContent = gh || data.author
   return (
-    <StyledColophon hasContent>
+    <CC hasContent={hasContent} className={props.variant}>
       {gh && (
         <LinkGithub>
-          See this page on{' '}
+          {!isHeader && `See this page on `}
           <a title="This page on github" href={data.githubLink}>
             👁 Github
           </a>
@@ -78,11 +80,11 @@ export const Colophon = props => {
       )}
       {data.author && (
         <LinkAuthor>
-          Content on this page written by 😈{' '}
-          <a href={`//github.com/${data.author}`}>{data.author}</a>
+          {!isHeader && `Content on this page written by `}
+          <a href={`//github.com/${data.author}`}>😈 {data.author}</a>
         </LinkAuthor>
       )}
-    </StyledColophon>
+    </CC>
   )
 }
 

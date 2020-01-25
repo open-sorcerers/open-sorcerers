@@ -131,8 +131,13 @@ const styles = css`
     }
   }
   #open-sorcerers {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    ${aboveCalc.TINY_PHONE(
+      '4rem',
+      `
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    `
+    )}
     ${aboveCalc.SMALL_PHONE(
       '4rem',
       `

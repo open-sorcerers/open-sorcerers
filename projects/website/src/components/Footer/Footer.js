@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 import { ifElse, pipe, split, map, pathOr } from 'ramda'
 import { Breakpoints } from '@styles/media'
@@ -35,12 +36,7 @@ export const Footer = ({ siteData }) => {
   const [breakpointsActive, setBreakpointsActive] = useState(hasBreakpointsInQueryString())
   const date = parseISODate(siteData)
   return (
-    <StyledFooter
-      onDoubleClick={e => {
-        e.stopPropagation()
-        setOpen(!isOpen)
-      }}
-    >
+    <StyledFooter>
       <Container maxWidth={1200}>
         <Inner>
           <Left>
@@ -57,16 +53,29 @@ export const Footer = ({ siteData }) => {
           <Right>
             <div>
               Built with{' '}
-              <span role="img" aria-label="love">
-                💛
-              </span>{' '}
+              <span
+                role="img"
+                css={css`
+                  user-select: none;
+                `}
+                aria-label="love"
+                onDoubleClick={e => {
+                  e.stopPropagation()
+                  setOpen(!isOpen)
+                }}
+              >
+                {!isOpen ? '💛' : '✨'}
+              </span>
               by <Link to="/contributors">Open Sorcerers</Link>
+            </div>
+            <div>
+              <Link to="/references">📚 References</Link>
             </div>
           </Right>
         </Inner>
         {isOpen ? (
           <HiddenContent>
-            <h6>Open Sorcerers</h6>
+            <h6>open.sorcerers.dev</h6>
             <div className="brain">🧠 </div>
             <div className="version">v{PKG.version}</div>
             <div>

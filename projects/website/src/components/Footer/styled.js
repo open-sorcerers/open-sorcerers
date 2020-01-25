@@ -11,6 +11,7 @@ export const StyledFooter = withTheme(styled(Box)`
   background-color: ${ℂ.area.footer.b};
   transition: background 0.3s ease-out, height 0.3s ease-out;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
+  border-bottom: 2px solid ${ℂ.area.footer.b};
   color: ${ℂ.area.footer.f};
   font-size: 0.9rem;
   line-height: 1.5rem;

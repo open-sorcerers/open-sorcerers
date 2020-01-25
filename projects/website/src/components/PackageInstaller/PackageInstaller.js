@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {
   PackageName,
   StyledPackageManager,
-  PackageManagerHeader,
   PreferYarn,
   Pre,
   Code,
@@ -15,7 +14,6 @@ export const PackageInstaller = ({ pkg, peer, dev, children }) => {
   const [useYarn, setPkgManager] = useState(true)
   return (
     <StyledPackageManager>
-      <PackageManagerHeader>{pkg}</PackageManagerHeader>
       <PreferYarn>
         <label>
           <input

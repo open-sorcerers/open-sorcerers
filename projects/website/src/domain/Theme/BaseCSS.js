@@ -147,12 +147,11 @@ const styles = css`
     `
     )}
   }
-  #cta-learn,
-  #cta-build,
-  #cta-talk {
+  #learn,
+  #build,
+  #talk {
     font-size: 4em;
     line-height: 4.35rem;
-    margin-bottom: 3rem;
   }
 
   a.anchor.before {

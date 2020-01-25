@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { concat, lt, curry, slice, indexOf, ifElse, pathOr, ap, pipe } from 'ramda'
 import { trace } from 'xtrace'
 
-import { AltColophon as Alt, StyledColophon, LinkGithub, LinkAuthor } from './styled'
+import { AltColophon as Alt, StyledColophon, LinkWrapper } from './styled'
 
 /*
 Preserve for comparisons later:
@@ -71,18 +71,18 @@ export const Colophon = props => {
   return (
     <CC hasContent={hasContent} className={props.variant}>
       {gh && (
-        <LinkGithub>
+        <LinkWrapper>
           {!isHeader && `See this page on `}
           <a title="This page on github" href={data.githubLink}>
             👁 Github
           </a>
-        </LinkGithub>
+        </LinkWrapper>
       )}
       {data.author && (
-        <LinkAuthor>
+        <LinkWrapper>
           {!isHeader && `Content on this page written by `}
           <a href={`//github.com/${data.author}`}>😈 {data.author}</a>
-        </LinkAuthor>
+        </LinkWrapper>
       )}
     </CC>
   )

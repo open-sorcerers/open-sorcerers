@@ -1,6 +1,6 @@
 ---
 menu: learn
-title: FP | trace
+title: Using Side-Effects to Inspect Data 
 path: /series/fp/trace
 author: brekk
 keywords: [functional programming, fp, trace, xtrace, binary side-effect, side-effect]
@@ -8,7 +8,7 @@ glossary: [composition, binary, side-effect]
 excerpt: How can we take a look at data in a composed pipeline?
 ---
 
-# Trace
+## Trace
 
 Trace is a simple pattern which allows for invoking a [binary](/glossary/binary) [side-effect](/glossary/side-effect) in composition - normally we want to stay away from side-effects, but here we're exploiting side-effects to very simply augment our composed pipeline:
 
@@ -33,4 +33,8 @@ const addAndDivide = curry(
 
 ### Modules
 
-- [xtrace](//npmjs.org/package/xtrace)
+import { ModuleLinks } from '@components/ModuleLink'
+
+<ModuleLinks>{[
+  `xtrace`
+]}</ModuleLinks>

@@ -233,7 +233,9 @@ const area = Object.freeze({
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
   profile: colorable([$, primary]),
   colophon: mergeRight(colorable([primary, quaternary]), {
-    alt: colorable([primary, quaternary])
+    alt: mergeRight(colorable([primary, transparent]), {
+      above: { subTablet: colorable([primary, mix(3 / 10, secondary, quaternary)]) }
+    })
   })
 })
 

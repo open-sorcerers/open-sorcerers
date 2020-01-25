@@ -231,7 +231,8 @@ const area = Object.freeze({
     img: colorable([tertiary, secondary])
   }),
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
-  profile: colorable([$, primary])
+  profile: colorable([$, primary]),
+  colophon: colorable([primary, quaternary])
 })
 
 const named = Object.freeze({

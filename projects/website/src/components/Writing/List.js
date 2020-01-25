@@ -135,12 +135,11 @@ const Post = props => {
 }
 Post.propTypes = {
   frontmatter: PropTypes.shape({
-    author: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired
+    author: PropTypes.string,
+    path: PropTypes.string,
+    title: PropTypes.string
   }).isRequired,
-  timeToRead: PropTypes.number.isRequired,
-  excerpt: PropTypes.string.isRequired,
+  excerpt: PropTypes.string,
   tableOfContents: PropTypes.object
 }
 

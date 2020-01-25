@@ -15,10 +15,11 @@ export const prefill = prefilled => {
       <Site {...props}>
         <ContentContainer>
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
+         
         </ContentContainer>
       </Site>
     )
   }
-  MDXPage.propTypes = { data: PropTypes.object.isRequired, children: PropTypes.node }
+  MDXPage.propTypes = { data: PropTypes.object, children: PropTypes.node }
   return MDXPage
 }

@@ -67,7 +67,6 @@ module.exports = pipe(
         const ff = {
           m: mm,
           d: parseInt(d),
-          /* t: pipe(split(':'), map(parseInt))(t), */
           t,
           y: parseInt(y)
         }

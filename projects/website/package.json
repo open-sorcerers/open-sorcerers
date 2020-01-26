@@ -140,7 +140,7 @@
     "stylelint-use-logical": "^1.1.0"
   },
   "name": "website",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "javascript x open-source x functional-programming",
   "main": "index.js",
   "repository": "//github.com/open-sorcerers/open-sorcerers",

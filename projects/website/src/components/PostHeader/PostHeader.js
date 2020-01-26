@@ -9,13 +9,14 @@ import { StyledPostHeader } from './styled'
 const getTitle = pathOr('???', ['pageContext', 'frontmatter', 'title'])
 
 const idify = pipe(toLower, replace(/ /g, '-'))
+const notInBlacklist = pipe(idify, z => !['learn', 'build', 'talk'].includes(z))
 
 export const PostHeader = props => {
   const title = getTitle(props)
   return (
     <StyledPostHeader>
       <h1 id={idify(title)}>{title}</h1>
-      <Colophon {...props} variant="header" />
+      {notInBlacklist(title) && <Colophon {...props} variant="header" />}
     </StyledPostHeader>
   )
 }

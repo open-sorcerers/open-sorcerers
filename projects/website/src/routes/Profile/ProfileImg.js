@@ -13,7 +13,7 @@ const MenuFallback = styled(Box)`
   ${menuPlaceholder}
 `
 
-export const ProfileImg = ({ variant }) => {
+export const ProfileImg = ({ El = Img, variant, children }) => {
   const { getUser } = Auth()
   const user = getUser()
   if (!user) return null
@@ -21,14 +21,16 @@ export const ProfileImg = ({ variant }) => {
   const isValidImage = validDomain(picture)
   /* const isValidImage = false */
   return isValidImage ? (
-    <Img variant={variant}>
+    <El variant={variant}>
       <img src={picture} />
-    </Img>
+      {children}
+    </El>
   ) : variant === 'menu' ? (
     <MenuFallback>
       <span role="img" aria-label="No profile image set.">
         🖤
       </span>
+      {children}
     </MenuFallback>
   ) : (
     <Fallback />
@@ -36,7 +38,9 @@ export const ProfileImg = ({ variant }) => {
 }
 
 ProfileImg.propTypes = {
-  variant: PropTypes.string
+  variant: PropTypes.string,
+  El: PropTypes.object,
+  children: PropTypes.node
 }
 
 export default ProfileImg

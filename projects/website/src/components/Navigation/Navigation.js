@@ -6,7 +6,7 @@ import { withTheme } from 'emotion-theming'
 import { pathOr } from 'ramda'
 
 import { stateView } from '@domain/Site'
-import Logo from '@assets/open-sorcerers2.svg'
+import Logo from '@assets/open-sorcerers3.svg'
 import { Container } from '@components/Container'
 import { VIEW_STATES } from '@styles/constants'
 import { Menu } from '@components/Menu'

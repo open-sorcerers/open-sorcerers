@@ -40,7 +40,6 @@ export const Contributors = () => {
   const data = getContributors()
   return (
     <StyledContributors>
-      <h1>The Open Sorcerers</h1>
       <h2>The people behind this site</h2>
       <ul>
         {pipe(

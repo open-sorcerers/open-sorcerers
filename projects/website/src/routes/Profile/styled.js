@@ -60,8 +60,6 @@ export const placeholder = css`
   }
 `
 
-const variantSizing = p => (p.variant === 'menu' ? '6rem' : '8rem')
-
 export const Img = styled(Box)`
   display: block;
   margin: 0 auto;
@@ -70,11 +68,11 @@ export const Img = styled(Box)`
   position: relative;
   text-align: center;
   img {
-    max-width: ${variantSizing};
-    max-height: ${variantSizing};
-    min-width: ${variantSizing};
-    min-height: ${variantSizing};
-    background: ${ℂ.secondary};
+    max-width: 8rem;
+    max-height: 8rem;
+    min-width: 8rem;
+    min-height: 8rem;
+    background: ${ℂ.area.profile.img.b};
     clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: inline;
     margin: 0 auto;
@@ -86,18 +84,22 @@ export const logoutButton = css`
   float: right;
   z-index: ${Z_INDEX.INTERACTIVE};
   height: 3.25rem;
-  background-color: ${ℂ.red};
-  border: 4px solid ${ℂ.red};
+  background-color: ${ℂ.ui.logoutButton.b};
+  border: 4px solid ${ℂ.ui.logoutButton.b};
   ${transitionEaseOut(`0.3s`, ['background', 'border'])}
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   margin-right: 1rem;
   text-decoration: none;
-  color: ${ℂ.white};
+  color: ${ℂ.ui.logoutButton.f};
+  font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-style: italic;
 
   &:hover {
-    background-color: ${ℂ.white};
-    border-color: ${ℂ.red};
-    color: ${ℂ.red};
+    background-color: ${ℂ.ui.logoutButton.a.b};
+    border-color: ${ℂ.ui.logoutButton.a.b};
+    color: ${ℂ.ui.logoutButton.a.f};
   }
 `

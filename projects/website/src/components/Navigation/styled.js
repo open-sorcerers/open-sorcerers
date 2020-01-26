@@ -59,8 +59,8 @@ export const Brand = styled(Link)`
   svg {
     display: flex;
     fill: ${ℂ.ui.brand.f};
-    height: 6rem;
-    margin: 1rem auto;
+    height: 9rem;
+    margin: 0;
     ${transitionEaseOut('0.1s', ['fill', 'height', 'width', 'margin'])}
   }
   &:hover {

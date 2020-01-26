@@ -1,7 +1,6 @@
 const path = require('path')
 const {
   T,
-  once,
   always: K,
   ap,
   curry,
@@ -37,6 +36,8 @@ exports.createPages = async ({ actions, graphql }) => {
             draft
             excerpt
             publishAfter
+            dateEdited
+            datePublished
           }
           fileAbsolutePath
           excerpt(pruneLength: 420)
@@ -67,6 +68,7 @@ exports.createPages = async ({ actions, graphql }) => {
         propOr('/writing/' + getName(post), 'path')
       ])
     )(fm)
+    /* eslint-disable no-console */
     if (isProd) {
       // hide private
       if (priv) {
@@ -94,8 +96,7 @@ exports.createPages = async ({ actions, graphql }) => {
         }
       }
     }
-    /* console.log('post', post) */
-    // fileAbsolutePath: '/Users/brekkbockrath/work/open-sorcerers/projects/website/src/content/reviews/review-snowpack.mdx'
+    /* eslint-enable no-console */
     const PAGES = map(K, {
       series: path.resolve('./src/templates/SeriesPage/index.js'),
       verb: path.resolve('./src/templates/VerbPage/index.js'),
@@ -107,8 +108,6 @@ exports.createPages = async ({ actions, graphql }) => {
       [includes('routes'), PAGES.verb],
       [T, PAGES.default]
     ])(post.fileAbsolutePath)
-    if (includes('series-fp', post.fileAbsolutePath))
-      console.log('compoennt', postPath, component, 'abs', post.fileAbsolutePath)
     actions.createPage({
       path: postPath,
       frontmatter: fm,
@@ -160,11 +159,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       tags: [String]
       private: Boolean
       draft: Boolean
-      publishAfter: Date @dateformat(formatString: "DD-MM-YYYY")
+      publishAfter: Date @dateformat(formatString: "YYYY-MM-DD")
+      dateEdited: Date @dateformat(formatString: "YYYY-MM-DD")
+      datePublished: Date @dateformat(formatString: "YYYY-MM-DD")
     }
   `
   createTypes(typeDefs)
 }
+/*
 const logOnce = once(console.log)
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
@@ -172,3 +174,4 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     logOnce('hey node', node)
   }
 }
+*/

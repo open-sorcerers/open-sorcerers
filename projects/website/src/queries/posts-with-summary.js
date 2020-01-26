@@ -17,7 +17,8 @@ export const getMDXWithSummary = () => {
           reviewer
           link
           excerpt
-          date
+          dateEdited
+          datePublished
         }
         id
         wordCount {

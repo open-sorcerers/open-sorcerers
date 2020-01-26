@@ -20,6 +20,7 @@ export const GlossaryLinks = memo(styled(Box)`
     margin-bottom: 0.5rem;
     padding: 0.25rem 0.8rem 0.45rem;
     border-radius: 2.4rem 0.2rem;
+    font-size: 0.8em;
     transition: color 0.3s ease-out, background 0.3s ease-out;
     background-color: ${ℂ.ui.post.glossary.link.b};
     color: ${ℂ.ui.post.glossary.link.f};

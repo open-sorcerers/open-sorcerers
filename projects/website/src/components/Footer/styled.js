@@ -67,13 +67,15 @@ export const Inner = styled(Box)`
   text-align: center;
   vertical-align: middle;
   align-items: center;
-  ${above.SMALL_PHONE(`
+  ${above.TABLET_PORTRAIT(
+    `
     flex-direction: row;
     margin: 0 auto;
     width: 100%;
     justify-content: space-evenly;
     max-width: 34rem;
-  `)}
+  `
+  )}
 `
 
 export const Bottom = styled(Box)`
@@ -87,6 +89,6 @@ export const LinkWrapper = styled(Box)`
   margin: 0.5rem;
   display: inline-block;
   ${above.SMALL_PHONE(`
-    margin: 0.5 auto;
+    margin: 0.5rem auto;
   `)}
 `

@@ -248,17 +248,23 @@ export const MenuLink = styled(Link)`
   }
 
   ${above.TABLET_PORTRAIT(`
-    font-size: 9vw;
+    font-size: 8vw;
+  `)}
+  ${above.SUB_TABLET(`
+    font-size: 5.5vw;
   `)}
   ${above.MID_TABLET(`
     font-size: 4vw;
   `)}
   &.coming-soon {
     &::after {
-      right: 4rem;
       font-size: 0.8rem;
       line-height: 1.2rem;
       top: 1.35rem;
+      right: -20rem;
+      ${above.TINY_PHONE(`
+        right: 4rem;
+      `)}
       ${above.SMALL_PHONE(`
         right: 7rem;
       `)}
@@ -271,12 +277,54 @@ export const MenuLink = styled(Link)`
       ${above.LARGE_TABLET(`
         right: 7rem;
       `)}
+      ${above.DESKTOP(`
+        right: 6rem;
+      `)}
     }
   }
   &.log {
-    font-size: 0.8em;
+    margin-top: 0.5rem;
+    font-size: 8vw;
+    ${above.TABLET_PORTRAIT(`
+      font-size: 7vw;
+    `)}
+    ${above.SUB_TABLET(`
+      font-size: 4vw;
+    `)}
+    ${above.MID_TABLET(`
+      font-size: 2vw;
+    `)}
+  }
+  &.profile {
+    font-family: obviously-narrow, 'Obviously', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 1.25rem;
   }
 `
+export const ProfileImg = styled(Box)`
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  img {
+    margin-right: 2vw;
+    max-width: 10vw;
+    max-height: 10vw;
+    min-width: 10vw;
+    min-height: 10vw;
+    background: ${ℂ.area.profile.img.b};
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    display: inline;
+    margin: 0;
+    position: relative;
+  }
+`
+
 export const MenuItem = styled.li`
   list-style: none;
   width: 100%;
@@ -324,7 +372,7 @@ export const cog = css`
   ${above.MID_TABLET(`
     width: 10vw;
     position: fixed;
-    bottom: calc(4rem + -5vh);
+    bottom: calc(2rem + -5vh);
     right: -2.5rem;
     svg {
       fill: ${ℂ.ui.cog.above.midTablet.f};

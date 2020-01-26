@@ -45,6 +45,8 @@ const spoof = () => {
 export const Auth = once(() => {
   const DOMAIN =
     process.env.NODE_ENV === 'production'
+      ? 'https://open.sorcerers.dev'
+      : process.env.NODE_ENV === 'staging'
       ? 'https://open-sorcerers.brekk.now.sh'
       : 'http://localhost:8000'
   const zero = new auth0.WebAuth({

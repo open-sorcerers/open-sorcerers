@@ -158,6 +158,8 @@ const el = Object.freeze({
 // interactive elements
 const ui = Object.freeze({
   link: activeColor([tertiary, $, primary, $]),
+  colophonLink: activeColor([tertiary, transparent, primary, transparent]),
+  logoutButton: activeColor([primary, red, red, primary]),
   menuButton: activeColor([tertiary]),
   menuLink: activeColor([primary, $, tertiary, $]),
   button: activeColor([secondary, tertiary, primary, secondary]),
@@ -231,7 +233,7 @@ const area = Object.freeze({
     img: colorable([tertiary, secondary])
   }),
   pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
-  profile: colorable([$, primary]),
+  profile: mergeRight(colorable([$, primary]), { img: colorable([$, secondary]) }),
   colophon: mergeRight(colorable([primary, quaternary]), {
     alt: mergeRight(colorable([primary, transparent]), {
       above: { subTablet: colorable([primary, mix(3 / 10, secondary, quaternary)]) }

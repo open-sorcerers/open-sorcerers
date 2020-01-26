@@ -17,6 +17,7 @@ import { VIEW_STATES } from '@styles/constants'
 import { ProfileImg } from '@routes/Profile/ProfileImg'
 
 import {
+  ProfileImg as PImg,
   MenuItem,
   MenuCog,
   MenuCogTop,
@@ -33,14 +34,21 @@ import {
 
 const getLinksRelativeToAuth = pipe(
   Auth,
-  ({ isAuthenticated }) => isAuthenticated(),
-  loggedIn => [
+  ({ getUserName, isAuthenticated }) => {
+    const ax = isAuthenticated()
+    return ax ? [ax, getUserName()] : [ax]
+  },
+  ([loggedIn, name]) => [
     loggedIn && [
       PROFILE,
-      <div key="profile-image">
-        <ProfileImg variant="menu" />
-        Profile
-      </div>
+      /* <div key="profile-image" id="menu-profile"> */
+      <>
+        <ProfileImg El={PImg} variant="menu">
+          {name}
+        </ProfileImg>
+      </>,
+      /* </div>, */
+      'profile'
     ],
     [SERIES_FP, 'FP'],
     [SERIES_JS, 'JS', 'coming-soon'],

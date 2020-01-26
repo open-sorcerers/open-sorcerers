@@ -10,6 +10,11 @@ export const StyledColophon = styled(Box)`
   background-color: ${ℂ.area.colophon.b};
   color: ${ℂ.area.colophon.f};
   text-align: center;
+  a {
+    svg {
+      margin-top: 0.25rem;
+    }
+  }
   ${above.SUB_TABLET(`
     margin-bottom: ${p => (p.hasContent ? '1rem' : '0')};
     background-color: ${lighten(1 / 10, ℂ.area.colophon.b)};
@@ -19,6 +24,7 @@ export const StyledColophon = styled(Box)`
 export const AltColophon = styled(Box)`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   margin-bottom: 2rem;
   border-top: 1px solid ${ℂ.area.colophon.alt.f};
@@ -29,6 +35,13 @@ export const AltColophon = styled(Box)`
   height: 0;
   transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
   opacity: 0;
+  a {
+    display: flex;
+    flex-direction: row;
+    svg {
+      margin-top: 0.5rem;
+    }
+  }
   ${above.SMALL_PHONE(`
   height: 2rem;
   line-height: 2rem;
@@ -41,7 +54,10 @@ export const AltColophon = styled(Box)`
     background-color: ${lighten(1 / 10, ℂ.area.colophon.alt.above.subTablet.b)};
     margin: 1rem auto;
     height: 2.5rem;
-    width: 20rem;
+    line-height: 2.35rem;
+    width: 50%;
+    min-width: 40rem;
+    max-width: 50rem;
     border-top: 1px solid transparent;
     border-radius: 10rem;
     justify-content: space-around;
@@ -49,8 +65,50 @@ export const AltColophon = styled(Box)`
 `
 
 export const LinkWrapper = styled(Box)`
-  display: inline-block;
-  ${above.TABLET_PORTRAIT(`
+  font-size: 0.8rem;
   margin: 0 0.5rem;
+  svg {
+    transition: fill 0.3s ease-out;
+    fill: ${ℂ.ui.colophonLink.f};
+    max-height: 1.1rem;
+  }
+  a:hover {
+    svg {
+      fill: ${ℂ.ui.colophonLink.a.f};
+    }
+  }
+  ${above.TABLET_PORTRAIT(`
+    margin: 0 0.5rem;
   `)}
+  &.author {
+    a {
+      margin-left: 0.25rem;
+    }
+  }
+`
+
+export const AltWrapper = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+  svg {
+    transition: fill 0.3s ease-out;
+    fill: ${ℂ.ui.colophonLink.f};
+    max-height: 1.1rem;
+  }
+  a:hover {
+    svg {
+      fill: ${ℂ.ui.colophonLink.a.f};
+    }
+  }
+  ${above.TABLET_PORTRAIT(`
+    margin: 0 0.5rem;
+  `)}
+  &.author {
+    a {
+      margin-left: 0.25rem;
+    }
+  }
 `

@@ -49,6 +49,7 @@ export const Colophon = props => {
   const isHeader = props && props.variant && props.variant === 'header'
   const CC = isHeader ? Alt : StyledColophon
   const LW = isHeader ? AltWrapper : LinkWrapper
+  /* const LW = AltWrapper */
   const gh = data.githubLink.length > BLOBMASTER.length
   const hasContent = gh || data.author
   return (
@@ -63,18 +64,18 @@ export const Colophon = props => {
           <strong>Last edited:</strong> {data.dateEdited}
         </LW>
       )}
-      {gh && (
-        <LW>
-          {!isHeader && `See this page on `}
-          <a title="This page on github" href={data.githubLink}>
-            {isHeader ? <LogoGH /> : `Github`}
-          </a>
-        </LW>
-      )}
       {data.author && (
         <LW variant="author" className="author">
           {isHeader ? `By ` : 'Content by '}
           <a href={`//github.com/${data.author}`}>{data.author}</a>
+        </LW>
+      )}
+      {gh && (
+        <LW className="source">
+          {!isHeader && `See this page on `}
+          <a title="This page on github" href={data.githubLink}>
+            {isHeader ? <LogoGH /> : `Github`}
+          </a>
         </LW>
       )}
     </CC>

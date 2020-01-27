@@ -93,6 +93,10 @@ const styles = css`
     p {
       text-align: center;
     }
+    ol li p,
+    ul li p {
+      text-align: left;
+    }
   }
   #core-tenets-block {
     ol,

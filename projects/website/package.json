@@ -1,4 +1,11 @@
 {
+  "name": "website",
+  "version": "0.0.8",
+  "description": "javascript x open-source x functional-programming",
+  "main": "index.js",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "ISC",
   "scripts": {
     "build": "gatsby build",
     "build:storybook": "cross-env NODE_ENV=production build-storybook -c .storybook -o public/docs",
@@ -139,13 +146,6 @@
     "stylelint-processor-styled-components": "^1.9.0",
     "stylelint-use-logical": "^1.1.0"
   },
-  "name": "website",
-  "version": "0.0.7",
-  "description": "javascript x open-source x functional-programming",
-  "main": "index.js",
-  "repository": "//github.com/open-sorcerers/open-sorcerers",
-  "author": "brekk",
-  "license": "ISC",
   "private": false,
   "husky": {
     "hooks": {

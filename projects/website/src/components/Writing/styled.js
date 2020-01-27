@@ -16,10 +16,10 @@ export const GlossaryLinks = memo(styled(Box)`
     font-style: italic;
     letter-spacing: 0.03rem;
     font-weight: 500;
-    margin: 0;
+    margin: 0.25rem;
     margin-bottom: 0.5rem;
-    padding: 0.25rem 0.8rem 0.45rem;
-    border-radius: 2.4rem 0.2rem;
+    padding: 0.25rem 0.4rem 0.45rem;
+    border-radius: 1rem 0.2rem;
     font-size: 0.8em;
     transition: color 0.3s ease-out, background 0.3s ease-out;
     background-color: ${ℂ.ui.post.glossary.link.b};
@@ -75,6 +75,17 @@ export const StyledPost = memo(styled(Box)`
      &:nth-child(3n+2) {
        margin-left: 1rem;
        margin-right: 1rem;
+     }
+  `)}
+  ${above.DESKTOP(`
+     min-width: calc(25% - 1.5rem);
+     max-width: calc(25% - 1.5rem);
+     margin: 0.5rem;
+     &:nth-of-type(even), &:nth-of-type(odd) {
+       margin: 0.5rem;
+     }
+     &:nth-child(3n+2) {
+       margin: 0.5rem;
      }
   `)}
 `)

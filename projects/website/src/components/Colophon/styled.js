@@ -1,9 +1,11 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
+import { always as K, ifElse, prop } from 'ramda'
 
 import { above } from '@styles/media'
 import * as ℂ from '@styles/colors'
 import { lighten } from 'polished'
+const contentOrNot = ifElse(prop('hasContent'))
 
 export const StyledColophon = styled(Box)`
   width: 100%;
@@ -24,8 +26,8 @@ export const StyledColophon = styled(Box)`
     padding: 0.5rem 0;
   `)}
   ${above.SUB_TABLET(`
-    margin-bottom: ${p => (p.hasContent ? '1rem' : '0')};
-    background-color: ${lighten(1 / 10, ℂ.area.colophon.b)};
+    margin-bottom: ${contentOrNot(K('1rem'), K('0'))};
+    background-color: ${contentOrNot(K(lighten(1 / 10, ℂ.area.colophon.b)), K('transparent'))};
   `)}
 `
 
@@ -35,7 +37,8 @@ export const AltColophon = styled(Box)`
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 2rem;
-  border-top: 1px solid ${ℂ.area.colophon.alt.f};
+  border-top: 1px solid ${p => (p.hasContent ? ℂ.area.colophon.alt.f : 'transparent')};
+  padding-top: ${p => (p.hasContent ? '0.5rem' : '0')};
   background-color: ${ℂ.area.colophon.alt.b};
   color: ${ℂ.area.colophon.alt.f};
   justify-content: space-around;
@@ -59,13 +62,14 @@ export const AltColophon = styled(Box)`
     justify-content: center;
   `)}
   ${above.SUB_TABLET(`
+    padding-top: 0;
     margin: 1rem auto;
     height: 2.5rem;
     line-height: 2.35rem;
     width: 50%;
     min-width: 40rem;
     max-width: 50rem;
-  border: 1px solid ${ℂ.area.colophon.alt.f};
+    border: 1px solid ${ℂ.area.colophon.alt.f};
     border-radius: 10rem;
     justify-content: space-around;
   `)}

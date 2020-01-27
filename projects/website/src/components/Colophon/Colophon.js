@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { concat, pathOr, ap, pipe, when, is } from 'ramda'
 import { cutAfter } from '@utils/string'
-import { trace } from 'xtrace'
 
 import LogoGH from '@assets/logo-github.svg'
 
@@ -32,9 +31,7 @@ const getAuthor = pathOr(false, ['pageContext', 'frontmatter', 'author'])
 
 const getAllTheData = pipe(
   z => [z],
-  trace('raw'),
   ap([getSourcePath, getKeywords, getDatePublished, getDateEdited, getAuthor]),
-  trace('oooh'),
   ([githubLink, keywords, datePublished, dateEdited, author]) => ({
     githubLink,
     keywords,
@@ -51,7 +48,7 @@ export const Colophon = props => {
   const LW = isHeader ? AltWrapper : LinkWrapper
   /* const LW = AltWrapper */
   const gh = data.githubLink.length > BLOBMASTER.length
-  const hasContent = gh || data.author
+  const hasContent = gh || data.author || data.datePublished || data.dateEdited
   return (
     <CC hasContent={hasContent} className={props.variant}>
       {data.datePublished && (

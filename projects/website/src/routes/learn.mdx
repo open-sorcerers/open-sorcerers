@@ -8,8 +8,10 @@ import {List} from '@components/Writing/List'
 import FP from './series-fp.mdx'
 
 ## Series
+<div id="series-wrapper">
 <a id="cta-series-fp" href="/series/fp">FP</a>
 <a id="cta-series-oss" className="coming-soon">OSS</a>
+</div>
 
 <List customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
 <List title="Reviews" filter="reviews" />

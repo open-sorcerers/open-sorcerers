@@ -8,6 +8,6 @@ excerpt: What is functional programming and how can we use its tenets to make ou
 import CoreTenets from '@posts/fp-core-tenets.mdx'
 import List from '@components/Writing/List'
 
-<CoreTenets />
+<CoreTenets id="core-tenets-block" />
 <List title="FP Reading" customFilter={({frontmatter: fm}) => fm && fm.title && !fm.title.toLowerCase().includes('tenets')}/>
 

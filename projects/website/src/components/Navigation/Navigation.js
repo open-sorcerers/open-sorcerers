@@ -58,7 +58,7 @@ const RawNavigation = props => {
             <>
               {items.map(({ label, to, href }) =>
                 to ? (
-                  <StyledItem key={uid(label)} to={to} data-active={activeMenu.includes(to)}>
+                  <StyledItem key={uid(label)} to={to} data-active={to.includes(activeMenu)}>
                     {label}
                   </StyledItem>
                 ) : (

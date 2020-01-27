@@ -70,7 +70,7 @@ module.exports = pipe(
           t,
           y: parseInt(y)
         }
-        const formatted = `${ff.y}-${readableMonth(ff.m)}-${readableDay(ff.d)}T${t}.000Z`
+        const formatted = `${ff.y}-${readableMonth(ff.m)}-${readableDay(ff.d)}`
         return typeof t !== 'string'
           ? {}
           : {

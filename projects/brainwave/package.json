@@ -1,0 +1,15 @@
+{
+  "name": "brainwave",
+  "version": "0.0.0",
+  "description": "Programmatically update frontmatter without leaving JS",
+  "main": "brainwave.js",
+  "repository": "//github.com/open-sorcerers/brainwave",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "fluture": "^12.1.1",
+    "ramda": "^0.26.1",
+    "yargs-parser": "^16.1.0"
+  }
+}

@@ -1,12 +1,30 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { cond, T, always as K, prop } from 'ramda'
 
 import { PackageName, StyledPackageManager, PreferYarn, Pre, Code, Pullquote } from './styled'
 
-export const PackageInstaller = ({ pkg, peer, dev, children }) => {
+const flag = cond([
+  [prop('peer'), K('-P')],
+  [prop('dev'), K('-D')],
+  [prop('global'), K('')],
+  [T, K('')]
+])
+
+export const PackageInstaller = props => {
+  const { pkg, global: gl, children } = props
   const [useYarn, setPkgManager] = useState(true)
   return (
     <StyledPackageManager>
+      {children ? <Pullquote>{children}</Pullquote> : null}
+
+      <Pre>
+        <Code>
+          {useYarn ? (gl ? 'yarn global add ' : 'yarn add') : 'npm install'}{' '}
+          <PackageName>{pkg}</PackageName> {flag(props)}
+        </Code>
+      </Pre>
+
       <PreferYarn>
         <label>
           <input
@@ -20,14 +38,6 @@ export const PackageInstaller = ({ pkg, peer, dev, children }) => {
           <strong>Prefer {useYarn ? 'npm' : 'yarn'}?</strong>
         </label>
       </PreferYarn>
-      <Pre>
-        <Code>
-          {useYarn ? 'yarn add' : 'npm install'} <PackageName>{pkg}</PackageName>{' '}
-          {peer || dev ? (peer ? '-P' : '-D') : ''}
-        </Code>
-      </Pre>
-
-      {children ? <Pullquote>{children}</Pullquote> : null}
     </StyledPackageManager>
   )
 }
@@ -36,7 +46,8 @@ PackageInstaller.propTypes = {
   children: PropTypes.node,
   pkg: PropTypes.string,
   peer: PropTypes.bool,
-  dev: PropTypes.bool
+  dev: PropTypes.bool,
+  global: PropTypes.bool
 }
 
 export default PackageInstaller

@@ -22,7 +22,7 @@ export const StyledColophon = styled(Box)`
   ${above.SMALL_PHONE(`
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     padding: 0.5rem 0;
   `)}
   ${above.SUB_TABLET(`
@@ -107,7 +107,8 @@ export const AltWrapper = styled(Box)`
 export const LinkWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  width: 100%;
   font-size: 0.8rem;
   margin: 0 0.5rem;
   align-items: baseline;
@@ -115,13 +116,20 @@ export const LinkWrapper = styled(Box)`
     transition: fill 0.3s ease-out;
     fill: ${ℂ.ui.colophonLink.f};
   }
+  strong {
+    margin-right: 0.5rem;
+  }
   a:hover {
     svg {
       fill: ${ℂ.ui.colophonLink.a.f};
     }
   }
+  ${above.SMALL_PHONE(`
+    width: calc(50% - 4rem);
+  `)}
   ${above.TABLET_PORTRAIT(`
     margin: 0 0.5rem;
+    width: auto;
   `)}
   &.author, &.source {
     a {

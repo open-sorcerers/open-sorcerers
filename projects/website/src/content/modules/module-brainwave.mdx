@@ -1,0 +1,19 @@
+---
+title: brainwave
+path: /modules/brainwave
+excerpt: Ever needed to programmatically update content in frontmatter?
+---
+
+import Pkg from '@components/PackageInstaller'
+
+<Pkg global pkg="brainwave">
+  Ever needed to programmatically update content in frontmatter?
+</Pkg>
+
+`brainwave` is an in-house tool we built in order to automate parts of [open.sorcerers.dev]
+
+```sh
+npx brainwave ./src "filter(propEq('title', 'cool'))"
+```
+
+[open.sorcerers.dev]: https://open.sorcerers.dev

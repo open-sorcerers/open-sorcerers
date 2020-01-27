@@ -27,6 +27,7 @@ exports.createPages = async ({ actions, graphql }) => {
         nodes {
           id
           frontmatter {
+            menu
             title
             author
             path

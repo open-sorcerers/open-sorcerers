@@ -7,6 +7,15 @@ export const PackageInstaller = ({ pkg, peer, dev, children }) => {
   const [useYarn, setPkgManager] = useState(true)
   return (
     <StyledPackageManager>
+      {children ? <Pullquote>{children}</Pullquote> : null}
+
+      <Pre>
+        <Code>
+          {useYarn ? 'yarn add' : 'npm install'} <PackageName>{pkg}</PackageName>{' '}
+          {peer || dev ? (peer ? '-P' : '-D') : ''}
+        </Code>
+      </Pre>
+
       <PreferYarn>
         <label>
           <input
@@ -20,14 +29,6 @@ export const PackageInstaller = ({ pkg, peer, dev, children }) => {
           <strong>Prefer {useYarn ? 'npm' : 'yarn'}?</strong>
         </label>
       </PreferYarn>
-      <Pre>
-        <Code>
-          {useYarn ? 'yarn add' : 'npm install'} <PackageName>{pkg}</PackageName>{' '}
-          {peer || dev ? (peer ? '-P' : '-D') : ''}
-        </Code>
-      </Pre>
-
-      {children ? <Pullquote>{children}</Pullquote> : null}
     </StyledPackageManager>
   )
 }

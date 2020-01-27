@@ -89,14 +89,31 @@ const styles = css`
     h3,
     h4,
     h5,
-    h6 {
+    h6,
+    p {
       text-align: center;
     }
   }
-
+  #core-tenets-block {
+    ol,
+    p,
+    ul {
+      max-width: 50rem;
+      margin: 0 auto;
+    }
+    ol {
+      margin: 2rem auto;
+    }
+  }
+  #series-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
   #cta-series-fp,
   #cta-series-oss {
     width: calc(50% - 1rem);
+    max-width: 20rem;
     height: 4rem;
     font-size: 3rem;
     font-family: obviously, 'Obviously', sans-serif;

@@ -3,8 +3,7 @@ import { graphql } from 'gatsby'
 import { prefill } from '@components/pages/MDXPage'
 
 const SeriesPage = prefill({
-  className: 'series-page',
-  maxWidth: 1024
+  className: 'series-page'
 })
 
 export const pageQuery = graphql`

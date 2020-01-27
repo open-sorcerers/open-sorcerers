@@ -1,9 +1,11 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
+import { always as K, ifElse, prop } from 'ramda'
 
 import { above } from '@styles/media'
 import * as ℂ from '@styles/colors'
 import { lighten } from 'polished'
+const contentOrNot = ifElse(prop('hasContent'))
 
 export const StyledColophon = styled(Box)`
   width: 100%;
@@ -24,8 +26,8 @@ export const StyledColophon = styled(Box)`
     padding: 0.5rem 0;
   `)}
   ${above.SUB_TABLET(`
-    margin-bottom: ${p => (p.hasContent ? '1rem' : '0')};
-    background-color: ${lighten(1 / 10, ℂ.area.colophon.b)};
+    margin-bottom: ${contentOrNot(K('1rem'), K('0'))};
+    background-color: ${contentOrNot(K(lighten(1 / 10, ℂ.area.colophon.b)), K('transparent'))};
   `)}
 `
 

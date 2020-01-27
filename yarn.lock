@@ -10308,7 +10308,7 @@ fluture@^11.0.1, fluture@^11.0.2:
     sanctuary-show "^1.0.0"
     sanctuary-type-identifiers "^2.0.0"
 
-fluture@^12.0.2:
+fluture@^12.0.2, fluture@^12.1.1:
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/fluture/-/fluture-12.1.1.tgz#9e1ccf7ed67ef79fe94e634155f84077514482c9"
   integrity sha512-fj2a48sR/r8lfgauiz3FGDqmF9tt66UAVbRb4j42LGg1qcuEyTFdzlH6HsJh8aDrrc0bcXw86OgIfhu6tcpqRA==

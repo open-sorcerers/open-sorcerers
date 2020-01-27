@@ -51,7 +51,7 @@ export const Colophon = props => {
   const LW = isHeader ? AltWrapper : LinkWrapper
   /* const LW = AltWrapper */
   const gh = data.githubLink.length > BLOBMASTER.length
-  const hasContent = gh || data.author
+  const hasContent = gh || data.author || data.datePublished || data.dateEdited
   return (
     <CC hasContent={hasContent} className={props.variant}>
       {data.datePublished && (

@@ -35,7 +35,8 @@ export const AltColophon = styled(Box)`
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 2rem;
-  border-top: 1px solid ${ℂ.area.colophon.alt.f};
+  border-top: 1px solid ${p => (p.hasContent ? ℂ.area.colophon.alt.f : 'transparent')};
+  padding-top: ${p => (p.hasContent ? '0.5rem' : '0')};
   background-color: ${ℂ.area.colophon.alt.b};
   color: ${ℂ.area.colophon.alt.f};
   justify-content: space-around;
@@ -59,13 +60,14 @@ export const AltColophon = styled(Box)`
     justify-content: center;
   `)}
   ${above.SUB_TABLET(`
+    padding-top: 0;
     margin: 1rem auto;
     height: 2.5rem;
     line-height: 2.35rem;
     width: 50%;
     min-width: 40rem;
     max-width: 50rem;
-  border: 1px solid ${ℂ.area.colophon.alt.f};
+    border: 1px solid ${ℂ.area.colophon.alt.f};
     border-radius: 10rem;
     justify-content: space-around;
   `)}

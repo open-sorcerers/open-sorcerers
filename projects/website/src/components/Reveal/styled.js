@@ -11,6 +11,7 @@ export const StyledReveal = styled(Button)`
   background-color: ${ℂ.ui.reveal.b};
   color: ${ℂ.ui.reveal.f};
   text-transform: uppercase;
+  outline: 0px solid transparent;
   font-family: obviously-narrow, sans-serif;
   font-weight: 900;
   font-size: 2rem;

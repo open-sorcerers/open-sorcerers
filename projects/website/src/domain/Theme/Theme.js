@@ -9,8 +9,10 @@ import { BaseCSS } from './BaseCSS'
 
 const Theme = ({ children }) => (
   <>
-    <BaseCSS />
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <BaseCSS theme={theme} />
+      {children}
+    </ThemeProvider>
   </>
 )
 

@@ -5,7 +5,7 @@ import { Box } from 'rebass'
 import { Z_INDEX } from '@styles/constants'
 import { transitionEaseOut } from '@styles/animation'
 
-import * as ℂ from '@styles/colors'
+import { named } from '@styles/colors'
 import { pathOr } from 'ramda'
 const grab = pathOr('lime')
 
@@ -18,8 +18,8 @@ export const ProfilePage = styled(Box)`
 `
 
 const pseudo = css`
-  border-left: ${HEX / 2}px solid ${ℂ.named.transparent};
-  border-right: ${HEX / 2}px solid ${ℂ.named.transparent};
+  border-left: ${HEX / 2}px solid ${named.transparent};
+  border-right: ${HEX / 2}px solid ${named.transparent};
   content: '';
   height: 0;
   left: 0;

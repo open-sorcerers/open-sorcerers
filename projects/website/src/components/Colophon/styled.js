@@ -1,15 +1,15 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { pathOr, always as K, ifElse, prop } from 'ramda'
+import { pipe, pathOr, always as K, ifElse, prop } from 'ramda'
 
 import { above } from '@styles/media'
-import * as ℂ from '@styles/colors'
 import { lighten } from 'polished'
 const contentOrNot = ifElse(prop('hasContent'))
 const grab = pathOr('lime')
 
 const colophon = grab(['theme', 'colors', 'cs', 'colophon', 'f'])
 const colophonB = grab(['theme', 'colors', 'cs', 'colophon', 'b'])
+const colophonSubTabletB = pipe(colophonB, lighten(1 / 10))
 
 export const StyledColophon = styled(Box)`
   width: 100%;
@@ -31,7 +31,7 @@ export const StyledColophon = styled(Box)`
   `)}
   ${above.SUB_TABLET(`
     margin-bottom: ${contentOrNot(K('1rem'), K('0'))};
-    background-color: ${contentOrNot(K(lighten(1 / 10, ℂ.area.colophon.b)), K('transparent'))};
+    background-color: ${contentOrNot(colophonSubTabletB, K('transparent'))};
   `)}
 `
 
@@ -43,7 +43,7 @@ export const AltColophon = styled(Box)`
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 2rem;
-  border-top: 1px solid ${p => (p.hasContent ? ℂ.area.colophon.alt.f : 'transparent')};
+  border-top: 1px solid ${p => (p.hasContent ? p.theme.colors.cs.colophonAlt.f : 'transparent')};
   padding-top: ${p => (p.hasContent ? '0.5rem' : '0')};
   background-color: ${colophonAltB};
   color: ${colophonAlt};

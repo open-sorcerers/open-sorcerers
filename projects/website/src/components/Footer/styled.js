@@ -2,28 +2,35 @@ import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 import { Box } from 'rebass'
 import { lighten } from 'polished'
+import { pathOr, pipe } from 'ramda'
 
-import * as ℂ from '@styles/colors'
 import { above } from '@styles/media'
+const grab = pathOr('lime')
+
+const footerColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
+const footerActiveColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
+
+const footerLink = pipe(footerColor, lighten(1 / 10))
+const footerActiveLink = pipe(footerActiveColor, lighten(1 / 10))
 
 export const StyledFooter = withTheme(styled(Box)`
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
-  background-color: ${ℂ.area.footer.b};
+  background-color: ${grab(['theme', 'colors', 'cs', 'footer', 'b'])};
   transition: background 0.3s ease-out, height 0.3s ease-out;
   border-top: 1px solid rgba(0, 0, 0, 0.38);
-  color: ${ℂ.area.footer.f};
+  color: ${footerColor};
   font-size: 0.9rem;
   line-height: 1.5rem;
   padding-bottom: 2rem;
   a {
     transition: color 0.3s ease-in;
-    color: ${lighten(1 / 10, ℂ.ui.footer.link.f)};
+    color: ${footerLink};
     text-decoration: none;
 
     &:hover {
-      color: ${lighten(1 / 10, ℂ.ui.footer.link.a.f)};
+      color: ${footerActiveLink};
       text-decoration: underline;
     }
   }
@@ -35,6 +42,8 @@ export const StyledFooter = withTheme(styled(Box)`
   `)}
 `)
 
+const footerDate = grab(['theme', 'colors', 'cs', 'footerHiddenDate', 'f'])
+const footerEnv = grab(['theme', 'colors', 'cs', 'footerHiddenEnv', 'f'])
 export const HiddenContent = styled(Box)`
   padding: 1rem 0;
   width: 100%;
@@ -44,17 +53,15 @@ export const HiddenContent = styled(Box)`
   font-size: 1rem;
   line-height: 2rem;
   #current-date {
-    color: ${ℂ.area.footer.hidden.date.f};
+    color: ${footerDate};
   }
   #environment {
-    color: ${ℂ.area.footer.hidden.environment.f};
+    color: ${footerEnv};
   }
   .brain {
     font-size: 3rem;
     margin: 1rem;
-    text-shadow: 0 0 3rem ${ℂ.area.footer.hidden.brain.textShadow[0]},
-      0 0 1.5rem ${ℂ.area.footer.hidden.brain.textShadow[1]}, 0 0 5px white,
-      0 0 1px ${ℂ.area.footer.hidden.brain.textShadow[2]};
+    text-shadow: 0 0 3rem magenta, 0 0 1.5rem cyan, 0 0 5px white, 0 0 1px yellow;
   }
   .version {
     font-size: 1.5rem;

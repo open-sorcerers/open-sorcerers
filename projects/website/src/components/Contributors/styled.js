@@ -2,7 +2,8 @@ import styled from '@emotion/styled'
 import { Box } from 'rebass'
 import { above } from '@styles/media'
 
-import * as ℂ from '@styles/colors'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
 
 export const StyledContributors = styled(Box)`
   display: flex;
@@ -68,13 +69,20 @@ export const Li = styled(Box)`
     }
   `)}
 `
+
+const contributor = grab(['theme', 'colors', 'cs', 'contributor', 'f'])
+const contributorBack = grab(['theme', 'colors', 'cs', 'contributor', 'b'])
+const contributorImg = grab(['theme', 'colors', 'cs', 'contributorImg', 'f'])
+const contributorLink = grab(['theme', 'colors', 'ui', 'contributor', 'f'])
+const contributorActiveLink = grab(['theme', 'colors', 'ui', 'contributor', 'a', 'f'])
+const narrow = pathOr('Comic Sans', ['theme', 'fonts', 'obviouslyNarrow'])
 export const StyledContributor = styled(Box)`
   min-width: 10rem;
   display: inline-block;
   position: relative;
   text-align: center;
-  border: 2px solid ${ℂ.area.contributor.f};
-  color: ${ℂ.ui.contributor.link.f};
+  border: 2px solid ${contributor};
+  color: ${contributorLink};
   transition: border 0.1s ease-in, box-shadow 0.3s ease-out;
   background-clip: content-box;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.7);
@@ -82,19 +90,20 @@ export const StyledContributor = styled(Box)`
   padding: 2rem 0;
 
   a {
-    color: ${ℂ.ui.contributor.link.f};
+    color: ${contributorLink};
   }
   img {
     border-radius: 100rem;
-    border: 0 solid ${ℂ.area.contributor.img.f};
+    border: 0 solid ${contributorImg};
     transition: border 0.1s ease-out;
-    background-color: ${ℂ.area.contributor.img.b} !important;
+    background-color: ${contributorImg} !important;
   }
   strong {
-    font-family: obviously-narrow, 'Obviously', sans-serif;
+    ${narrow}
     font-style: italic;
-    font-weight: 500;
     font-size: 1.6rem;
+    color: ${contributorLink};
+    text-shadow: 0 0 1rem black;
   }
   &::before,
   &::after {
@@ -102,7 +111,7 @@ export const StyledContributor = styled(Box)`
     position: absolute;
     background-repeat: repeat;
     background-position: center;
-    background-color: ${ℂ.area.contributor.b};
+    background-color: ${contributorBack};
     top: -1rem;
     bottom: -1rem;
     left: -1rem;
@@ -114,14 +123,13 @@ export const StyledContributor = styled(Box)`
     background-image: url(/nebula.png);
     background-blend-mode: color-dodge;
     background-size: 110%;
-    background-color: ${ℂ.named.transparent};
-    /* opacity: 0.9; */
+    background-color: transparent;
   }
   &:hover {
     border: 2px solid transparent;
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.9), 0 1rem 1.5rem rgba(0, 0, 0, 0.6);
     strong {
-      color: ${ℂ.ui.contributor.link.a.f};
+      color: ${contributorActiveLink};
     }
     img {
       border-width: 0.75rem;

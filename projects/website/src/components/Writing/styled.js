@@ -2,8 +2,14 @@ import { memo } from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
 import styled from '@emotion/styled'
-import * as ℂ from '@styles/colors'
 import { above } from '@styles/media'
+import { ifElse, propOr, pathOr } from 'ramda'
+const grab = pathOr('lime')
+
+const postGlossary = grab(['theme', 'colors', 'ui', 'postGlossary', 'f'])
+const postGlossaryBack = grab(['theme', 'colors', 'ui', 'postGlossary', 'b'])
+const postGlossaryActive = grab(['theme', 'colors', 'ui', 'postGlossary', 'a', 'f'])
+const postGlossaryActiveBack = grab(['theme', 'colors', 'ui', 'postGlossary', 'a', 'b'])
 
 export const GlossaryLinks = memo(styled(Box)`
   margin: 0;
@@ -22,11 +28,11 @@ export const GlossaryLinks = memo(styled(Box)`
     border-radius: 1rem 0.2rem;
     font-size: 0.8em;
     transition: color 0.3s ease-out, background 0.3s ease-out;
-    background-color: ${ℂ.ui.post.glossary.link.b};
-    color: ${ℂ.ui.post.glossary.link.f};
+    background-color: ${postGlossaryBack};
+    color: ${postGlossary};
     &:hover {
-      background-color: ${ℂ.ui.post.glossary.link.a.b};
-      color: ${ℂ.ui.post.glossary.link.a.f};
+      background-color: ${postGlossaryActiveBack};
+      color: ${postGlossaryActive};
     }
     &:first-of-type: {
       margin-top: 0.5rem;
@@ -41,6 +47,8 @@ export const EntityLink = memo(styled(Link)`
   letter-spacing: 0.01rem;
 `)
 
+const post = grab(['theme', 'colors', 'cs', 'post', 'f'])
+const postBack = grab(['theme', 'colors', 'cs', 'post', 'b'])
 export const StyledPost = memo(styled(Box)`
   margin: 0;
   margin-bottom: 1rem;
@@ -49,9 +57,9 @@ export const StyledPost = memo(styled(Box)`
   position: relative;
   display: flex;
   justify-content: space-between;
-  background: ${ℂ.area.writing.post.b};
-  color: ${ℂ.area.writing.post.f};
-  border: 1px solid ${ℂ.area.writing.post.f};
+  background: ${postBack};
+  color: ${post};
+  border: 1px solid ${post};
   flex-direction: column;
   ${above.TABLET_PORTRAIT(`
      min-width: calc(50% - 0.5rem);
@@ -89,13 +97,12 @@ export const StyledPost = memo(styled(Box)`
      }
   `)}
 `)
-
+const obviously = pathOr('Comic Sans MS', ['theme', 'fonts', 'obviously'])
 export const StyledList = memo(styled(Box)`
   display: flex;
   flex-direction: column;
   h2 {
-    font-family: obviously, 'Obviously', sans-serif;
-    font-weight: 900;
+    ${obviously}
     font-size: 3rem;
     line-height: 3rem;
     margin-bottom: 1.5rem;
@@ -111,6 +118,9 @@ export const StyledListWrapper = memo(styled(Box)`
   min-height: 10vh;
   justify-content: center;
 `)
+
+const postHeaderLink = grab(['theme', 'colors', 'ui', 'postHeader', 'f'])
+const postHeaderActiveLink = grab(['theme', 'colors', 'ui', 'postHeader', 'a', 'f'])
 export const PostHeader = memo(styled.header`
   padding: 0.5rem;
   display: flex;
@@ -118,12 +128,24 @@ export const PostHeader = memo(styled.header`
   justify-content: space-between;
   a {
     display: block;
-    color: ${ℂ.ui.post.header.link.f};
+    color: ${postHeaderLink};
     &:hover {
-      color: ${ℂ.ui.post.header.link.a.f};
+      color: ${postHeaderActiveLink};
     }
   }
 `)
+
+const footerBack = ifElse(
+  propOr(false, 'isDraft'),
+  grab(['theme', 'colors', 'cs', 'postAltVariant', 'f']),
+  ifElse(
+    propOr(false, 'isPrivate'),
+    grab(['theme', 'colors', 'cs', 'postAltVariant', 'b']),
+    grab(['theme', 'colors', 'cs', 'postFooter', 'b'])
+  )
+)
+
+const footer = grab(['theme', 'colors', 'cs', 'postFooter', 'f'])
 
 export const PostFooter = memo(styled.footer`
   display: flex;
@@ -131,14 +153,9 @@ export const PostFooter = memo(styled.footer`
   flex-wrap: wrap;
   align-self: flex-end;
   width: 100%;
-  background: ${p =>
-    p.isDraft
-      ? ℂ.area.post.variant.draft
-      : p.isPrivate
-      ? ℂ.area.post.variant.private
-      : ℂ.area.post.footer.b};
-  color: ${ℂ.area.post.footer.f};
-  border: 1px solid ${ℂ.area.post.footer.f};
+  background: ${footerBack};
+  color: ${footer};
+  border: 1px solid ${footer};
   border-top-width: 0;
   padding: 0.5rem;
   padding-bottom: 0.75rem;

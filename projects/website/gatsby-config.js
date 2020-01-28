@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-const { nth, map, curry, pipe, reduce, merge } = R
+const { map, pipe, reduce, merge } = R
 
 const gatsbyRemarkPlugins = (process.env.OFFLINE
   ? []
@@ -8,7 +8,9 @@ const gatsbyRemarkPlugins = (process.env.OFFLINE
       { resolve: 'gatsby-remark-copy-linked-files' },
       {
         resolve: 'gatsby-remark-embed-gist'
-      }
+      },
+
+      'gatsby-remark-check-links'
     ]
 ).concat([
   'gatsby-remark-autolink-headers',
@@ -158,18 +160,6 @@ const plugins = (process.env.OFFLINE
     }
   },
   {
-    resolve: 'gatsby-plugin-manifest',
-    options: {
-      name: 'gatsby-starter-default',
-      short_name: 'starter',
-      start_url: '/',
-      background_color: '#440099',
-      theme_color: '#440099',
-      display: 'minimal-ui',
-      icon: 'src/assets/logo-open-sorcerers.png' // This path is relative to the root of the site
-    }
-  },
-  {
     resolve: `gatsby-plugin-react-svg`,
     options: {
       rule: {
@@ -189,6 +179,7 @@ const plugins = (process.env.OFFLINE
         '@assets': 'src/assets',
         '@components': 'src/components',
         '@constants': 'src/constants',
+        '@elements': 'src/elements',
         '@domain': 'src/domain',
         '@pages': 'src/pages',
         '@posts': 'src/posts',
@@ -219,7 +210,8 @@ const plugins = (process.env.OFFLINE
       icon: 'static/open-sorcerers-icon.png'
     }
   },
-  'gatsby-plugin-offline'
+  'gatsby-plugin-offline',
+  `gatsby-plugin-catch-links`
 ])
 
 module.exports = {

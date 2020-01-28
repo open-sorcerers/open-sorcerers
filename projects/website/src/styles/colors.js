@@ -121,42 +121,69 @@ const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
   a: { f: aF, b: aB }
 })
 
-// elements
-const el = Object.freeze({
-  /* body: colorable([primary, secondary]), */
-  body: colorable([primary, `linear-gradient(35deg, ${lighten(0.05, secondary)}, ${secondary})`]),
-  blockquote: colorable([tertiary]),
-  code: mergeRight(colorable([primary, mix(1 / 5, secondary, quaternary)]), {
-    /*
-    js: {
-      constant: '#fc0',
-      comment: '#328e93',
-      operator: 'crimson',
-      property: 'cyan',
-      string: '#01ec7e',
-      entity: 'mediumorchid',
-      lineNumber: '#a699b4',
-      parameter: 'white'
-    }
-    */
-    before: colorable([primary, tertiary]),
-    js: map(mix(2 / 5, lighten(0.1, mix(2 / 5, secondary, quaternary))))({
-      // js: {
-      constant: '#fc0',
-      comment: '#328e93',
-      operator: '#c00',
-      property: '#0ff',
-      string: '#01ec7e',
-      entity: '#ba55d3',
-      lineNumber: '#a699b4',
-      parameter: '#5987b7'
-    })
-  }),
-  pre: colorable([primary, mix(1 / 5, secondary, quaternary)])
+const ff = Object.freeze
+
+const _ = undefined
+
+const jsCode = map(mix(2 / 5, lighten(0.1, mix(2 / 5, secondary, quaternary))))({
+  constant: '#fc0',
+  comment: '#328e93',
+  operator: '#c00',
+  property: '#0ff',
+  string: '#01ec7e',
+  entity: '#ba55d3',
+  lineNumber: '#a699b4',
+  parameter: '#5987b7'
 })
 
+// elements
+export const el = ff(
+  map(colorable)({
+    body: [primary, `linear-gradient(35deg, ${lighten(0.05, secondary)}, ${secondary})`],
+    blockquote: [tertiary],
+    code: [primary, mix(1 / 5, secondary, quaternary)],
+    codeBefore: [primary, tertiary],
+    codeJSConstant: [jsCode.constant],
+    codeJSComment: [jsCode.comment],
+    codeJSOperator: [jsCode.operator],
+    codeJSProperty: [jsCode.property],
+    codeJSString: [jsCode.string],
+    codeJSEntity: [jsCode.entity],
+    codeJSLineNumber: [jsCode.lineNumber],
+    codeJSParameter: [jsCode.parameter],
+    pre: [primary, mix(1 / 5, secondary, quaternary)]
+  })
+)
+
+export const newui = ff(
+  map(activeColor)({
+    anchor: [transparent, $, tertiary, $],
+    brand: [secondary, $, tertiary, $],
+    button: [secondary, tertiary, primary, secondary],
+    cog: [quaternary],
+    cogOverMidTablet: [secondary, $, tertiary],
+    cog2: [tertiary, $, primary],
+    cog2Stroke: [tertiary, $, primary],
+    colophon: [tertiary, transparent, primary, transparent],
+    contributor: [tertiary, $, lighten(1 / 10, tertiary)],
+    footer: [tertiary, $, lighten(1 / 10, tertiary)],
+    link: [tertiary, $, primary, $],
+    logout: [primary, red, red, primary],
+    menu: [primary, $, tertiary, $],
+    menuButton: [tertiary],
+    /* nav: _, */
+    navInactiveAboveTabletPortrait: [primary],
+    navButton: [secondary, $, tertiary],
+    postGlossary: [secondary, tertiary, tertiary, transparent],
+    postHeader: [quaternary, $, tertiary],
+    postModule: [secondary, tertiary, primary, transparent],
+    reveal: [secondary, tertiary, tertiary, secondary],
+    series: [primary, secondary, tertiary, primary]
+  })
+)
+
 // interactive elements
-const ui = Object.freeze({
+export const ui = Object.freeze({
   link: activeColor([tertiary, $, primary, $]),
   colophonLink: activeColor([tertiary, transparent, primary, transparent]),
   logoutButton: activeColor([primary, red, red, primary]),
@@ -193,8 +220,39 @@ const ui = Object.freeze({
   anchor: activeColor([transparent, $, tertiary, $])
 })
 
+export const cs = ff(
+  map(colorable)({
+    nav: [secondary, primary],
+    navInactive: [primary],
+    menu: [$, quaternary],
+    menuProfile: [$, tertiary],
+    h3d: [lighten(1 / 12, primary), $],
+    h3dShadow: [tertiary, mix(6 / 10, secondary, '#000')],
+    footer: [primary, quaternary],
+    footerHiddenDate: [hotMustard],
+    footerHiddenEnv: [cyan],
+    footerHiddenBrain: ['magenta', 'yellow'],
+    badge: [tertiary, evenMix(tertiary, secondary)],
+    post: [secondary, primary],
+    postAltVariant: [
+      `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, cyan)})`,
+      `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, lime)})`
+    ],
+    postFooter: [primary, secondary],
+    breakpoint: [offBlack, debug],
+    contributor: [evenMix(tertiary, secondary), '#3c053a'],
+    contributorImg: [tertiary, secondary],
+    pkg: [evenMix(hotMustard, secondary), el.code.b],
+    profile: [$, primary],
+    profileImg: [$, secondary],
+    colophon: [primary, quaternary],
+    colophonAlt: [primary, transparent],
+    colophonOverTablet: [primary, mix(3 / 10, secondary, quaternary)]
+  })
+)
+
 // custom elements
-const area = Object.freeze({
+export const area = Object.freeze({
   // top nav
   nav: mergeRight(colorable([secondary, primary]), {
     inactive: { above: { tabletPortrait: colorable([primary]) } }
@@ -241,11 +299,6 @@ const area = Object.freeze({
   })
 })
 
-const named = Object.freeze({
-  debug,
-  transparent
-})
-
-export { ui, el, area, named }
-
 /* eslint-enable no-unused-vars */
+
+export const named = { debug, transparent }

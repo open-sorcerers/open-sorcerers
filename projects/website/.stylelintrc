@@ -2,6 +2,7 @@
   "processors": ["stylelint-processor-styled-components"],
   "extends": [
     "stylelint-config-standard",
+    "stylelint-config-rational-order",
     "@signal-noise/stylelint-scales",
     "stylelint-8-point-grid",
     "stylelint-high-performance-animation",

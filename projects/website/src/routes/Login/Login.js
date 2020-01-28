@@ -11,7 +11,7 @@ export const Login = () => {
   const { isAuthenticated } = auth
   if (isAuthenticated()) {
     navigate(PROFILE)
-    return
+    return null
   }
   return (
     <StyledLogin>

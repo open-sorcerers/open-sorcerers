@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-
-import * as ℂ from '@styles/colors'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
 
 export const StyledPackageManager = styled(Box)`
   margin-bottom: 1rem;
@@ -22,10 +22,10 @@ export const Code = styled.code`
 export const Pullquote = styled.blockquote`
   margin: 1rem;
 `
-
+const pkg = grab(['theme', 'colors', 'cs', 'pkg', 'f'])
 // TODO: fix this text-shadow color ref
 export const PackageName = styled.strong`
-  color: ${ℂ.area.pkg.f};
+  color: ${pkg};
   font-weight: 800;
   text-shadow: 0 0 1rem rgba(255, 255, 0, 0.3);
 `

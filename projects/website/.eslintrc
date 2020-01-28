@@ -22,3 +22,7 @@ rules:
       task: always
       svg: always
       mdx: always
+  max-lines:
+   - 2
+   - max: 300
+     skipComments: true

@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from '@elements/Link'
+import { MDXProvider } from '@mdx-js/react'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import { ContentContainer } from '@components/Container'
@@ -11,6 +13,7 @@ export const prefill = prefilled => {
     const props = { ...prefilled, ...other, siteData: data }
     const { id, className } = props
     const over = { id, className }
+    const components = { a: Link }
     // this allows for rendering of nested MDX imports
     return !data && props.children ? (
       <div {...over}>{props.children}</div>
@@ -18,7 +21,9 @@ export const prefill = prefilled => {
       <Site {...props}>
         <ContentContainer>
           <PostHeader {...props} />
-          <MDXRenderer>{data.mdx.body}</MDXRenderer>
+          <MDXProvider components={components}>
+            <MDXRenderer>{data.mdx.body}</MDXRenderer>
+          </MDXProvider>
         </ContentContainer>
       </Site>
     )

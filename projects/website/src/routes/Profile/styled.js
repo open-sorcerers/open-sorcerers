@@ -38,25 +38,25 @@ export const menuPlaceholder = css`
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 9999rem;
-  background-color: ${ℂ.area.menu.profile.b};
+  background-color: ${ℂ.cs.menuProfile.b};
 `
 export const placeholder = css`
   display: block;
   position: relative;
   margin: 4rem auto;
-  background-color: ${ℂ.area.profile.b};
+  background-color: ${ℂ.cs.profile.b};
   width: ${HEX}px;
   height: ${HEX * 0.55}px;
   ${rainbowShadows} 
   &::before {
     ${pseudo}
     top: -${hexHeight}px;
-    border-bottom: ${hexHeight}px solid ${ℂ.area.profile.b};
+    border-bottom: ${hexHeight}px solid ${ℂ.cs.profile.b};
   }
   &::after {
     ${pseudo}
     bottom: -${hexHeight}px;
-    border-top: ${hexHeight}px solid ${ℂ.area.profile.b};
+    border-top: ${hexHeight}px solid ${ℂ.cs.profile.b};
   }
 `
 
@@ -72,7 +72,7 @@ export const Img = styled(Box)`
     max-height: 8rem;
     min-width: 8rem;
     min-height: 8rem;
-    background: ${ℂ.area.profile.img.b};
+    background: ${ℂ.cs.profileImg.b};
     clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: inline;
     margin: 0 auto;
@@ -84,22 +84,22 @@ export const logoutButton = css`
   float: right;
   z-index: ${Z_INDEX.INTERACTIVE};
   height: 3.25rem;
-  background-color: ${ℂ.ui.logoutButton.b};
-  border: 4px solid ${ℂ.ui.logoutButton.b};
+  background-color: ${ℂ.newui.logout.b};
+  border: 4px solid ${ℂ.newui.logout.b};
   ${transitionEaseOut(`0.3s`, ['background', 'border'])}
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   margin-right: 1rem;
   text-decoration: none;
-  color: ${ℂ.ui.logoutButton.f};
+  color: ${ℂ.newui.logout.f};
   font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 500;
   text-transform: uppercase;
   font-style: italic;
 
   &:hover {
-    background-color: ${ℂ.ui.logoutButton.a.b};
-    border-color: ${ℂ.ui.logoutButton.a.b};
-    color: ${ℂ.ui.logoutButton.a.f};
+    background-color: ${ℂ.newui.logout.a.b};
+    border-color: ${ℂ.newui.logout.a.b};
+    color: ${ℂ.newui.logout.a.f};
   }
 `

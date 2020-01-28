@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "javascript x open-source x functional-programming",
   "main": "index.js",
   "repository": "//github.com/open-sorcerers/open-sorcerers",

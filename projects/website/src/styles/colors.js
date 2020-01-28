@@ -247,7 +247,8 @@ export const cs = ff(
     profileImg: [$, secondary],
     colophon: [primary, quaternary],
     colophonAlt: [primary, transparent],
-    colophonOverTablet: [primary, mix(3 / 10, secondary, quaternary)]
+    colophonOverTablet: [primary, mix(3 / 10, secondary, quaternary)],
+    comingSoon: [mix(1 / 2, primary, secondary)]
   })
 )
 

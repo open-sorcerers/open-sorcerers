@@ -1,6 +1,12 @@
 import styled from '@emotion/styled'
 
-import * as ℂ from '@styles/colors'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
+
+const link = grab(['theme', 'colors', 'ui', 'postModule', 'f'])
+const linkBack = grab(['theme', 'colors', 'ui', 'postModule', 'b'])
+const activeLink = grab(['theme', 'colors', 'ui', 'postModule', 'a', 'f'])
+const activeLinkBack = grab(['theme', 'colors', 'ui', 'postModule', 'a', 'b'])
 
 export const StyledModuleLink = styled.a`
   font-family: obviously-narrow, 'Obviously', sans-serif;
@@ -9,12 +15,12 @@ export const StyledModuleLink = styled.a`
   padding: 0.1rem 1rem 0.3rem;
   border-radius: 100rem;
   margin: 1rem 0.5rem 0 0;
-  background-color: ${ℂ.ui.post.module.link.b};
-  color: ${ℂ.ui.post.module.link.f};
-  border: 1px solid ${ℂ.ui.post.module.link.f};
+  background-color: ${linkBack};
+  color: ${link};
+  border: 1px solid ${link};
   &:hover {
-    background-color: ${ℂ.ui.post.module.link.a.b};
-    color: ${ℂ.ui.post.module.link.a.f};
-    border: 1px solid ${ℂ.ui.post.module.link.a.f};
+    background-color: ${activeLinkBack};
+    color: ${activeLink};
+    border: 1px solid ${activeLink};
   }
 `

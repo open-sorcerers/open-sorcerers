@@ -2,9 +2,11 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { above } from '@styles/media'
 import { easeIn } from '@styles/animation'
-import * as ℂ from '@styles/colors'
+import { named } from '@styles/colors'
 import { Box, Button } from 'rebass'
 import { Label, Input } from '@rebass/forms'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
 
 export const Main = styled(Box)`
   margin: 2rem 0;
@@ -26,7 +28,7 @@ export const site = css`
 `
 
 export const menuActive = css`
-  background-color: ${ℂ.named.transparent};
+  background-color: ${named.transparent};
   ${above.TABLET_PORTRAIT(`padding-right: 40vw;`)}
   ${above.TABLET_LANDSCAPE(`padding-right: 33vw;`)}
 `
@@ -65,17 +67,22 @@ export const PasswordInput = styled(Input)`
   width: 75%;
 `
 
+const button = grab(['theme', 'colors', 'ui', 'button', 'f'])
+const buttonBack = grab(['theme', 'colors', 'ui', 'button', 'b'])
+const activeButton = grab(['theme', 'colors', 'ui', 'button', 'a', 'f'])
+const activeButtonBack = grab(['theme', 'colors', 'ui', 'button', 'a', 'b'])
+
 export const PasswordButton = styled(Button)`
   width: 10%;
   cursor: pointer;
   text-transform: uppercase;
-  background-color: ${ℂ.ui.button.b};
-  color: ${ℂ.ui.button.f};
-  border: 1px solid ${ℂ.ui.button.b};
+  background-color: ${buttonBack};
+  color: ${button};
+  border: 1px solid ${buttonBack};
   &:hover {
-    background-color: ${ℂ.ui.button.a.b};
-    color: ${ℂ.ui.button.a.f};
-    border: 1px solid ${ℂ.ui.button.a.f};
+    background-color: ${activeButtonBack};
+    color: ${activeButton};
+    border: 1px solid ${activeButton};
   }
 `
 

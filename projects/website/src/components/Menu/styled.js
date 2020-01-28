@@ -2,13 +2,13 @@ import styled from '@emotion/styled'
 import { css, keyframes } from '@emotion/core'
 import { Link } from 'gatsby'
 import { Box } from 'rebass'
-import { join, map, pipe } from 'ramda'
-
-import * as ℂ from '@styles/colors'
+import { pathOr, join, map, pipe } from 'ramda'
 
 import { above } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
 import { transition, transitionEaseOut, easeOut } from '@styles/animation'
+
+const grab = pathOr('lime')
 
 const { MENU, MENU_CONTENT, MENU_OVER, MENU_UNDER, INTERACTIVE } = Z_INDEX
 
@@ -45,12 +45,13 @@ export const rotateSlowly = keyframes`
   ${sixthParts([1, 2, 3, 4, 5])}
 `
 
+const menuB = grab(['theme', 'colors', 'cs', 'menu', 'b'])
 export const FloatingMenuContent = styled.ul`
   z-index: ${MENU_CONTENT};
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: ${ℂ.area.menu.b};
+  background-color: ${menuB};
   padding: 0;
   margin: 0;
   display: flex;
@@ -104,7 +105,7 @@ export const activeMenu = css`
   visibility: visible;
   pointer-events: auto;
   transform: translate(0, 0);
-  background-color: ${ℂ.area.menu.b};
+  background-color: ${menuB};
   box-shadow: -1rem 0 1rem rgba(0, 0, 0, 0.7);
   left: 0;
   top: 0;
@@ -120,13 +121,16 @@ export const activeMenu = css`
 export const inactiveButtonState = css`
   transform: rotate(0deg);
 `
+
+const activeMenuButton = grab(['theme', 'colors', 'ui', 'menuButton', 'a', 'f'])
+const menuButton = grab(['theme', 'colors', 'ui', 'menuButton', 'f'])
 export const activeButtonState = css`
   background-color: rgba(0, 0, 0, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   transform: rotate(10turn);
   animation-play-state: paused;
   svg {
-    fill: ${ℂ.ui.menuButton.a.f};
+    fill: ${activeMenuButton};
   }
 `
 
@@ -163,7 +167,7 @@ export const SettingsButton = styled(Box)`
     ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
     display: inline-block;
     position: relative;
-    fill: ${ℂ.ui.menuButton.f};
+    fill: ${menuButton};
     width: 2.5rem;
     height: 2.5rem;
     max-width: 2.5rem;
@@ -186,20 +190,20 @@ export const SettingsButton = styled(Box)`
     border-color: transparent;
     &:hover {
       svg {
-        fill: ${ℂ.ui.menuButton.a.f};
+        fill: ${activeMenuButton};
         stroke-width: 1.2rem;
-        stroke: ${ℂ.ui.menuButton.a.f};
+        stroke: ${activeMenuButton};
       }
     }
     svg {
-      fill: ${ℂ.ui.menuButton.f};
+      fill: ${menuButton};
       top: -1.64rem;
       left: -1.64rem;
       width: 6rem;
       min-width: 6rem;
       height: 6rem;
       min-height: 6rem;
-      stroke: ${ℂ.ui.menuButton.f};
+      stroke: ${menuButton};
       stroke-width: 0.6rem;
     }
   `)}
@@ -211,7 +215,7 @@ export const SettingsButton = styled(Box)`
   `)}
   &:hover {
     svg {
-      fill: ${ℂ.ui.menuButton.a.f};
+      fill: ${activeMenuButton};
     }
   }
 `
@@ -230,13 +234,13 @@ export const menuWrapper = styled`
   flex-flow: nowrap row;
   align-items: center;
 `
-
+const narrow = pathOr('Comic Sans', ['theme', 'fonts', 'obviouslyNarrow'])
 export const MenuLink = styled(Link)`
   display: flex;
   pointer-events: auto;
   flex-direction: column;
   width: 100%;
-  color: ${ℂ.ui.menuLink.f};
+  color: ${grab(['theme', 'colors', 'ui', 'menu', 'f'])};
   line-height: 4rem;
   font-size: 10vw;
   font-family: obviously, sans-serif;
@@ -244,7 +248,7 @@ export const MenuLink = styled(Link)`
   padding: 0.55rem 0;
   letter-spacing: 0.1rem;
   &:hover {
-    color: ${ℂ.ui.menuLink.a.f};
+  color: ${grab(['theme', 'colors', 'ui', 'menu', 'a', 'f'])};
   }
 
   ${above.TABLET_PORTRAIT(`
@@ -296,9 +300,7 @@ export const MenuLink = styled(Link)`
     `)}
   }
   &.profile {
-    font-family: obviously-narrow, 'Obviously', sans-serif;
-    font-weight: 500;
-    text-transform: uppercase;
+    ${narrow}
     font-style: italic;
     font-size: 1.25rem;
   }
@@ -317,7 +319,7 @@ export const ProfileImg = styled(Box)`
     max-height: 10vw;
     min-width: 10vw;
     min-height: 10vw;
-    background: ${ℂ.area.profile.img.b};
+    background: ${grab(['theme', 'colors', 'cs', 'profileImg', 'b'])};
     clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: inline;
     margin: 0;
@@ -335,6 +337,11 @@ export const MenuItem = styled.li`
   min-height: 4rem;
 `
 
+const cogColor = grab(['theme', 'colors', 'ui', 'cog', 'f'])
+const cogActive = grab(['theme', 'colors', 'ui', 'cog', 'a', 'f'])
+const cogOverMidTablet = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'f'])
+const cogOverMidTabletActive = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'a', 'f'])
+
 export const cog = css`
   bottom: -6.75rem;
   cursor: pointer;
@@ -348,23 +355,23 @@ export const cog = css`
 
   /* stylelint-disable-next-line no-descending-specificity */
   svg {
-    fill: ${ℂ.ui.cog.f};
+    fill: ${cogColor};
     stroke-width: 0;
-    stroke: ${ℂ.ui.cog.f};
+    stroke: ${cogColor};
     transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
     animation: ${rotateSlowly} 18s ease-in-out infinite;
     animation-direction: normal;
     animation-play-state: ${p => (p.active ? 'running' : 'paused')};
     ${above.MID_TABLET(`
-      fill: ${ℂ.ui.cog.above.midTablet.f};
-      stroke: ${ℂ.ui.cog.above.midTablet.f};
+      fill: ${cogOverMidTablet};
+      stroke: ${cogOverMidTablet};
     `)}
   }
   
   &:hover {
     svg {
-      fill: ${ℂ.ui.cog.a.f};
-      stroke: ${ℂ.ui.cog.a.f};
+      fill: ${cogActive};
+      stroke: ${cogActive};
       stroke-width: 1.6rem;
     }
   }
@@ -375,12 +382,12 @@ export const cog = css`
     bottom: calc(2rem + -5vh);
     right: -2.5rem;
     svg {
-      fill: ${ℂ.ui.cog.above.midTablet.f};
+      fill: ${cogOverMidTablet};
     }
     &:hover {
       svg {
-        fill: ${ℂ.ui.cog.above.midTablet.a.f};
-        stroke: ${ℂ.ui.cog.above.midTablet.a.f};
+        fill: ${cogOverMidTabletActive};
+        stroke: ${cogOverMidTabletActive};
         stroke-width: 0.75rem;
       }
     }
@@ -399,8 +406,12 @@ export const MenuCog = styled(Box)`
   ${above.MID_TABLET(`
     z-index: ${MENU_OVER};
   `)}
-
 `
+
+const cog2 = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
+const cog2Active = grab(['theme', 'colors', 'ui', 'cog2', 'a', 'f'])
+const cog2Stroke = grab(['theme', 'colors', 'ui', 'cog2Stroke', 'a', 'f'])
+
 export const MenuCogTop = styled(Box)`
   ${cog}
   z-index: ${MENU_OVER};
@@ -410,13 +421,13 @@ export const MenuCogTop = styled(Box)`
   left: -50%;
   margin: 0 14%;
   svg {
-    fill: ${ℂ.ui.cog2.f};
-    stroke: ${ℂ.ui.cog2.f};
+    fill: ${cog2};
+    stroke: ${cog2};
   }
   &:hover {
     svg {
-      fill: ${ℂ.ui.cog2.a.f};
-      stroke: ${ℂ.ui.cog2.stroke.a.f};
+      fill: ${cog2Active};
+      stroke: ${cog2Stroke};
       stroke-width: 0.1rem;
     }
   }

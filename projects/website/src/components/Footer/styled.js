@@ -10,7 +10,7 @@ const grab = pathOr('lime')
 const footerColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
 const footerActiveColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
 
-const footerLink = pipe(footerColor, lighten(1 / 10))
+const footerLink = pipe(grab(['theme', 'colors', 'ui', 'footer', 'f']), lighten(1 / 10))
 const footerActiveLink = pipe(footerActiveColor, lighten(1 / 10))
 
 export const StyledFooter = withTheme(styled(Box)`
@@ -92,10 +92,10 @@ export const Bottom = styled(Box)`
   width: 100%;
 `
 
-export const LinkWrapper = styled(Box)`
+export const LinkWrapper = styled(Box)(`
   margin: 0.5rem;
   display: inline-block;
   ${above.SMALL_PHONE(`
     margin: 0.5rem auto;
   `)}
-`
+`)

@@ -160,7 +160,7 @@ export const newui = ff(
     anchor: [transparent, $, tertiary, $],
     brand: [secondary, $, tertiary, $],
     button: [secondary, tertiary, primary, secondary],
-    cog: [quaternary],
+    cog: [secondary],
     cogOverMidTablet: [secondary, $, tertiary],
     cog2: [tertiary, $, primary],
     cog2Stroke: [tertiary, $, primary],
@@ -170,7 +170,7 @@ export const newui = ff(
     link: [tertiary, $, primary, $],
     logout: [primary, red, red, primary],
     menu: [primary, $, tertiary, $],
-    menuButton: [tertiary, $, primary],
+    menuButton: [tertiary, $, 'black'],
     /* nav: _, */
     navInactiveAboveTabletPortrait: [primary],
     navButton: [secondary, $, tertiary],

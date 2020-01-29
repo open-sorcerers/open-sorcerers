@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { withTheme } from 'emotion-theming'
 import PropTypes from 'prop-types'
 import { pipe, filter, identity as I, map } from 'ramda'
 
@@ -59,7 +60,7 @@ const getLinksRelativeToAuth = pipe(
   filter(I)
 )
 
-export const Menu = ({ setView, view }) => {
+export const Menu = withTheme(({ setView, view, theme }) => {
   const [active, setActive] = useState(view === VIEW_STATES.MENU_ACTIVE)
   const toggle = () => {
     const bb = !active
@@ -74,9 +75,11 @@ export const Menu = ({ setView, view }) => {
     return false
   }
   const authenticated = Auth().isAuthenticated()
+  console.log('theme', theme, 'cogOVER', theme.colors.ui.cogOverMidTablet.a.f)
   return (
     <StyledMenu className="styled-menu">
       <SettingsButton
+        theme={theme}
         className="settings-button"
         css={active ? activeButtonState : inactiveButtonState}
         onClick={toggle}
@@ -89,7 +92,13 @@ export const Menu = ({ setView, view }) => {
         css={floating}
         onClick={eatClicksFor('floatingMenu')}
       >
-        <MenuCogTop active={active} onClick={toggle} authenticated={authenticated}>
+        <MenuCogTop
+          className="cog-top"
+          theme={theme}
+          active={active}
+          onClick={toggle}
+          authenticated={authenticated}
+        >
           <Cog />
         </MenuCogTop>
         <FloatingMenuContent onClick={eatClicksFor('floatingContent')}>
@@ -110,13 +119,13 @@ export const Menu = ({ setView, view }) => {
             )}
           </>
         </FloatingMenuContent>
-        <MenuCog active={active} onClick={toggle}>
+        <MenuCog className="cog-bottom" theme={theme} active={active} onClick={toggle}>
           <Cog />
         </MenuCog>
       </FloatingMenu>
     </StyledMenu>
   )
-}
+})
 Menu.propTypes = {
   setView: PropTypes.func,
   view: PropTypes.string

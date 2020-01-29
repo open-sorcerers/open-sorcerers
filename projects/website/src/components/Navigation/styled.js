@@ -155,8 +155,8 @@ export const activeNav = css`
 export const inactiveNav = css`
   padding: 0;
   ${above.TABLET_PORTRAIT(`
-  border-left: 12vw solid ${grab(['theme', 'colors', 'cs', 'navInactiveAboveTabletPortrait', 'f'])};
-  margin-left: -12vw;
+    border-left: 12vw solid transparent; 
+    margin-left: -12vw;
   `)}
 `
 

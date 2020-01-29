@@ -1,7 +1,9 @@
 import styled from '@emotion/styled'
+/* import { withTheme } from 'emotion-theming' */
 import { css, keyframes } from '@emotion/core'
 import { Link } from 'gatsby'
 import { Box } from 'rebass'
+import { trace } from 'xtrace'
 import { pathOr, join, map, pipe } from 'ramda'
 
 import { above } from '@styles/media'
@@ -164,10 +166,12 @@ export const SettingsButton = styled(Box)`
 
   svg {
     animation: ${rotate} 15s linear infinite;
-    ${transitionEaseOut('0.3s', ['fill', 'top', 'left'])}
+    ${transitionEaseOut('0.3s', ['fill', 'top', 'left', 'stroke'])}
     display: inline-block;
     position: relative;
     fill: ${menuButton};
+    stroke: ${menuButton};
+    stroke-width: 0;
     width: 2.5rem;
     height: 2.5rem;
     max-width: 2.5rem;
@@ -188,13 +192,7 @@ export const SettingsButton = styled(Box)`
     z-index: ${MENU_UNDER};
     background-color: transparent;
     border-color: transparent;
-    &:hover {
-      svg {
-        fill: ${activeMenuButton};
-        stroke-width: 1.2rem;
-        stroke: ${activeMenuButton};
-      }
-    }
+    
     svg {
       fill: ${menuButton};
       top: -1.64rem;
@@ -216,6 +214,8 @@ export const SettingsButton = styled(Box)`
   &:hover {
     svg {
       fill: ${activeMenuButton};
+      stroke-width: 1.2rem;
+      stroke: ${activeMenuButton};
     }
   }
 `
@@ -341,8 +341,70 @@ const cogColor = grab(['theme', 'colors', 'ui', 'cog', 'f'])
 const cogActive = grab(['theme', 'colors', 'ui', 'cog', 'a', 'f'])
 const cogOverMidTablet = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'f'])
 const cogOverMidTabletActive = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'a', 'f'])
+export const MenuCog = styled(Box)`
+  bottom: -6.75rem;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 10%;
+  position: absolute;
+  pointer-events: auto;
+  text-align: center;
+  ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
+  width: 80vw;
+  z-index: ${MENU_UNDER};
 
-export const cog = css`
+  /* stylelint-disable-next-line no-descending-specificity */
+  svg {
+    fill: ${cogColor};
+    stroke-width: 0;
+    stroke: ${cogColor};
+    transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
+    animation: ${rotateSlowly} 18s ease-in-out infinite;
+    animation-direction: normal;
+    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
+    
+  }
+  
+  &:hover {
+    svg {
+      fill: ${cogActive};
+      stroke: ${cogActive};
+      stroke-width: 1.6rem;
+    }
+  }
+
+  ${above.MID_TABLET(`
+    width: 10vw;
+    position: fixed;
+    bottom: calc(2rem + -5vh);
+    right: -2.5rem;
+    svg {
+      fill: ${cogOverMidTablet};
+    }
+    &:hover {
+      svg {
+        fill: ${cogOverMidTabletActive};
+        stroke: ${cogOverMidTabletActive} !important;
+        stroke-width: 0.75rem;
+      }
+    }
+  `)}
+  ${above.LARGE_TABLET(`
+     bottom: calc(4rem + -8vh);
+  `)}
+  ${above.DESKTOP(`
+     bottom: calc(4rem + -10vh);
+  `)}
+  ${above.MID_TABLET(`
+    z-index: ${MENU_OVER};
+  `)}
+`
+
+const cog2 = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
+const cog2Active = grab(['theme', 'colors', 'ui', 'cog2', 'a', 'f'])
+const cog2Stroke = grab(['theme', 'colors', 'ui', 'cog2Stroke', 'a', 'f'])
+
+export const MenuCogTop = styled(Box)`
   bottom: -6.75rem;
   cursor: pointer;
   display: inline-block;
@@ -398,22 +460,6 @@ export const cog = css`
   ${above.DESKTOP(`
      bottom: calc(4rem + -10vh);
   `)}
-`
-
-export const MenuCog = styled(Box)`
-  ${cog}
-  z-index: ${MENU_UNDER};
-  ${above.MID_TABLET(`
-    z-index: ${MENU_OVER};
-  `)}
-`
-
-const cog2 = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
-const cog2Active = grab(['theme', 'colors', 'ui', 'cog2', 'a', 'f'])
-const cog2Stroke = grab(['theme', 'colors', 'ui', 'cog2Stroke', 'a', 'f'])
-
-export const MenuCogTop = styled(Box)`
-  ${cog}
   z-index: ${MENU_OVER};
   transform: scale(0.3);
   position: fixed;

@@ -7,3 +7,14 @@ export const vary = curry(([aa, bb], props) =>
     () => aa
   )(props)
 )
+
+const $ = 'initial'
+
+// Let's make our colors follow patterns!
+export const colorable = ([f = $, b = $]) => ({ f, b })
+
+export const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
+  f,
+  b,
+  a: { f: aF, b: aB }
+})

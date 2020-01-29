@@ -1,15 +1,14 @@
 import { curry, pipe, range, map } from 'ramda'
 import { aboveCalc } from '@styles/media'
-import { cs } from '@styles/colors'
 
 const sh = curry((cl, xx, yy) => `${xx}px ${yy}px 0 ${cl}`)
 
 const surface = curry((edge, start, end) => pipe(range(start), map(edge))(end))
 
 export const h3D = ({
-  color = cs.h3d.f,
-  edge = cs.h3dShadow.f,
-  shadow: dropShade = cs.h3dShadow.b,
+  color = 'lime',
+  edge = 'red',
+  shadow: dropShade = 'cyan',
   shadowY: y = -2,
   size = 6,
   and = ''

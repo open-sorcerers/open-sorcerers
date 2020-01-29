@@ -1,6 +1,9 @@
 import { mix, darken } from 'polished'
 import {
+  futurePink,
+  royalPurp,
   c204,
+  chiquita,
   aliceblue,
   hotpink,
   darkGray,
@@ -42,10 +45,31 @@ const MUSTARD_SPILL = {
 
 const BONE_MUSCLE_CHEMICALS = {
   name: 'bone muscle chemicals',
-  primary: bone,
-  secondary: muscle,
-  tertiary: resilientGray,
-  quaternary: chemicalSpill
+  primary: muscle,
+  secondary: bone,
+  tertiary: chemicalSpill,
+  quaternary: resilientGray
 }
-export const PALETTES = [WINTER_HIMBEER, ORIGINAL_PALETTE, MUSTARD_SPILL, BONE_MUSCLE_CHEMICALS]
+const ARMY_BONE = {
+  name: 'army bone',
+  secondary: futurePink,
+  primary: armyGreen,
+  quaternary: royalPurp,
+  tertiary: chiquita
+}
+const BW = {
+  name: 'b&w',
+  primary: '#ddd',
+  secondary: '#222',
+  tertiary: '#f60',
+  quaternary: '#444'
+}
+export const PALETTES = [
+  WINTER_HIMBEER,
+  BW,
+  ARMY_BONE,
+  ORIGINAL_PALETTE,
+  MUSTARD_SPILL,
+  BONE_MUSCLE_CHEMICALS
+]
 export default PALETTES

@@ -19,8 +19,8 @@ import {
 const evenMix = mix(1 / 2)
 const ORIGINAL_PALETTE = {
   name: 'original',
-  primary: c204,
-  secondary: aliceblue,
+  primary: aliceblue,
+  secondary: c204,
   tertiary: hotpink,
   quaternary: darkGray
 }

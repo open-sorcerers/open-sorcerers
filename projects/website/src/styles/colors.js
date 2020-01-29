@@ -8,6 +8,7 @@ export const cadetblue = 'cadetblue'
 export const lemonchiffon = 'lemonchiffon'
 
 // named colors
+export const debug = lime
 export const offBlack = `#292828`
 export const darkGray = `#222`
 export const bondiBlue = `#0ff`

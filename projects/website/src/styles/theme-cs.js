@@ -8,6 +8,7 @@ const evenMix = mix(1 / 2)
 export const cs = ({ primary, secondary, tertiary, quaternary }) =>
   Object.freeze(
     map(colorable)({
+      picker: [$, 'rgba(0,0,0,0.2)'],
       nav: [secondary, primary],
       navInactive: [primary],
       menu: [$, quaternary],

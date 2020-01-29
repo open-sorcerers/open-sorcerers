@@ -3,6 +3,7 @@ import cs from './theme-cs'
 import el from './theme-el'
 
 const makeTheme = palette => {
+  console.log('PAL', palette, Object.keys(palette))
   return {
     colors: { ui: ui(palette), el: el(palette), cs: cs(palette) },
     fonts: {

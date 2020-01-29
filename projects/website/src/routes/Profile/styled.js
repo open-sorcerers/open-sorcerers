@@ -86,7 +86,7 @@ export const Img = styled(Box)`
 `
 
 const logoutB = grab(['theme', 'colors', 'ui', 'logout', 'b'])
-const logoutAB = grab(['theme', 'colors', 'ui', 'logout', 'b'])
+const logoutAB = grab(['theme', 'colors', 'ui', 'logout', 'a', 'b'])
 const logoutAF = grab(['theme', 'colors', 'ui', 'logout', 'a', 'f'])
 const logoutF = grab(['theme', 'colors', 'ui', 'logout', 'f'])
 export const StyledLogoutButton = styled(Link)`

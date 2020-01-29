@@ -6,10 +6,12 @@ import { ThemeProvider } from 'emotion-theming'
 import theme from '@styles/theme'
 
 import { BaseCSS } from './BaseCSS'
+import Picker from './Picker'
 
 const Theme = ({ children }) => (
   <>
     <ThemeProvider theme={theme}>
+      <Picker />
       <BaseCSS theme={theme} />
       {children}
     </ThemeProvider>

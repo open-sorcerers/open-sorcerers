@@ -157,6 +157,7 @@ export const el = ff(
 
 export const newui = ff(
   map(activeColor)({
+    picker: [primary, transparent, secondary, primary],
     anchor: [transparent, $, tertiary, $],
     brand: [secondary, $, tertiary, $],
     button: [secondary, tertiary, primary, secondary],

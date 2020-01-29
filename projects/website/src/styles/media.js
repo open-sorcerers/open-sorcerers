@@ -1,4 +1,5 @@
 import React from 'react'
+import { css } from '@emotion/core'
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
 import { __, replace, toPairs, propOr, pipe, pathOr, map, curry } from 'ramda'

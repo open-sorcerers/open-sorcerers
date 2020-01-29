@@ -67,7 +67,8 @@ export const AltColophon = styled(Box)`
   ${above.TABLET_PORTRAIT(`
     justify-content: center;
   `)}
-  ${above.SUB_TABLET(`
+  ${p =>
+    above.SUB_TABLET(`
     padding-top: 0;
     margin: 1rem auto;
     height: 2.5rem;
@@ -75,7 +76,7 @@ export const AltColophon = styled(Box)`
     width: 50%;
     min-width: 40rem;
     max-width: 50rem;
-    border: 1px solid ${colophonAlt};
+    border: ${pipe(colophonAlt, z => '1px solid  ' + z)(p)};
     border-radius: 10rem;
     justify-content: space-around;
   `)}

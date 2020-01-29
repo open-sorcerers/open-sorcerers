@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { above } from '@styles/media'
 import { easeIn } from '@styles/animation'
-import { named } from '@styles/colors'
+import { transparent} from '@styles/colors'
 import { Box, Button } from 'rebass'
 import { Label, Input } from '@rebass/forms'
 import { pathOr } from 'ramda'
@@ -28,7 +28,7 @@ export const site = css`
 `
 
 export const menuActive = css`
-  background-color: ${named.transparent};
+  background-color: ${transparent};
   ${above.TABLET_PORTRAIT(`padding-right: 40vw;`)}
   ${above.TABLET_LANDSCAPE(`padding-right: 33vw;`)}
 `

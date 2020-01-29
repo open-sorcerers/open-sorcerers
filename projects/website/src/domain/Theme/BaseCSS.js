@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withTheme } from 'emotion-theming'
 import { css, Global } from '@emotion/core'
 import { aboveCalc, above } from '@styles/media'
 import { easeOut } from '@styles/animation'
@@ -38,6 +37,9 @@ const stylesWithTheme = theme => {
   const body = grab(['colors', 'el', 'body', 'f'], theme)
   const bodyBack = grab(['colors', 'el', 'body', 'b'], theme)
   const footerBack = grab(['colors', 'cs', 'footer', 'b'], theme)
+  const h3d1 = grab(['colors', 'cs', 'h3d', 'f'], theme)
+  const h3d2 = grab(['colors', 'cs', 'h3dShadow', 'f'], theme)
+  const h3dShadow = grab(['colors', 'cs', 'h3dShadow', 'b'], theme)
   return css`
   * {
     margin: 0;
@@ -375,7 +377,11 @@ const stylesWithTheme = theme => {
     &.three-d {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
-      ${h3D({})}
+      ${h3D({
+        color: h3d1,
+        edge: h3d2,
+        shadow: h3dShadow
+      })}
     }
   }
   h1 {
@@ -384,7 +390,11 @@ const stylesWithTheme = theme => {
     line-height: 2.3rem;
     font-weight: 900;
     &:first-of-type {
-      ${h3D({})}
+      ${h3D({
+        color: h3d1,
+        edge: h3d2,
+        shadow: h3dShadow
+      })}
       margin-bottom: 2rem;
       ${above.TABLET_PORTRAIT(`
         margin-top: 2rem;

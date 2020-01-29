@@ -3,20 +3,22 @@ import PropTypes from 'prop-types'
 
 import { StyledPicker, Prev, Shuffle, Next } from './styled'
 
-export const Picker = () => (
+export const Picker = ({ theme, setActiveTheme, previousTheme, nextTheme }) => (
   <StyledPicker>
-    <Prev>{'←'}</Prev>
+    {theme && theme.name && <strong>{theme.name}</strong>}
+    <Prev onClick={previousTheme}>{'←'}</Prev>
     {' / '}
     <Shuffle>{'↯'}</Shuffle>
     {' / '}
-    <Next>{'→'}</Next>
+    <Next onClick={nextTheme}>{'→'}</Next>
   </StyledPicker>
 )
 
 Picker.propTypes = {
-  // whatever: PropTypes.string,
-  // isWhatever: PropTypes.bool,
-  children: PropTypes.node
+  theme: PropTypes.object,
+  setActiveTheme: PropTypes.func,
+  nextTheme: PropTypes.func,
+  previousTheme: PropTypes.func
 }
 
 export default Picker

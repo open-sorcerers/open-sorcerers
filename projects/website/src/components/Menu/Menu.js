@@ -80,7 +80,7 @@ export const Menu = withTheme(({ setView, view, theme }) => {
       <SettingsButton
         theme={theme}
         className="settings-button"
-        css={active ? activeButtonState : inactiveButtonState}
+        css={active ? activeButtonState({ theme }) : inactiveButtonState}
         onClick={toggle}
       >
         <Cog />

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 
 import { PickerButton, StyledPicker } from './styled'
 
-export const Picker = ({ shuffleIndex, theme, setIndex }) => {
+export const Picker = ({ name, shuffleIndex, theme, setIndex }) => {
+  console.log('theme', theme)
   useEffect(() => {
     theme = window.localStorage.getItem('theme')
   })
   return (
     <StyledPicker>
-      {theme && theme.name && <strong>{theme.name}</strong>}
+      {name && <strong>{name}</strong>}
       <PickerButton
         onClick={e => {
           e.preventDefault()
@@ -44,7 +45,9 @@ export const Picker = ({ shuffleIndex, theme, setIndex }) => {
 
 Picker.propTypes = {
   theme: PropTypes.object,
-  setIndex: PropTypes.func
+  setIndex: PropTypes.func,
+  name: PropTypes.string,
+  shuffleIndex: PropTypes.func
 }
 
 export default Picker

@@ -1,9 +1,14 @@
 import { mix, darken } from 'polished'
 import {
+  sickLizard,
+  cyan,
+  c2ex3,
   futurePink,
+  magicMagenta,
   royalPurp,
   c204,
-  chiquita,
+  c3dx3,
+  seriousBlue,
   aliceblue,
   hotpink,
   darkGray,
@@ -36,33 +41,40 @@ const WINTER_HIMBEER = {
 }
 
 const MUSTARD_SPILL = {
-  name: 'gray mustard spill',
-  primary: resilientGray,
-  secondary: chemicalSpill,
-  tertiary: mutedMustard,
+  name: 'Reptile',
+  primary: sickLizard,
+  secondary: resilientGray,
+  tertiary: chemicalSpill,
   quaternary: c29x3
 }
 
 const BONE_MUSCLE_CHEMICALS = {
-  name: 'bone muscle chemicals',
-  primary: muscle,
-  secondary: bone,
-  tertiary: chemicalSpill,
-  quaternary: resilientGray
+  name: 'sinew',
+  primary: bone,
+  secondary: muscle,
+  tertiary: `#208e8e`,
+  quaternary: c2ex3
 }
 const ARMY_BONE = {
-  name: 'army bone',
-  secondary: futurePink,
-  primary: armyGreen,
-  quaternary: royalPurp,
-  tertiary: chiquita
+  name: 'pink army',
+  primary: futurePink,
+  secondary: armyGreen,
+  tertiary: magicMagenta,
+  quaternary: c3dx3
 }
 const BW = {
-  name: 'b&w',
+  name: 'Giants',
   primary: '#ddd',
   secondary: '#222',
   tertiary: '#f60',
   quaternary: '#444'
+}
+const CREAMSICLE = {
+  name: 'Creamsicle',
+  primary: '#f60',
+  secondary: '#ddd',
+  tertiary: '#222',
+  quaternary: '#392516'
 }
 export const PALETTES = [
   WINTER_HIMBEER,
@@ -70,6 +82,7 @@ export const PALETTES = [
   ARMY_BONE,
   ORIGINAL_PALETTE,
   MUSTARD_SPILL,
+  CREAMSICLE,
   BONE_MUSCLE_CHEMICALS
 ]
 export default PALETTES

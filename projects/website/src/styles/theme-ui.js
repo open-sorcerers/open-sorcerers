@@ -10,7 +10,7 @@ export const ui = ({ primary, secondary, tertiary, quaternary }) =>
       anchor: [transparent, $, tertiary, $],
       brand: [secondary, $, tertiary, $],
       button: [secondary, tertiary, primary, secondary],
-      cog: [secondary],
+      cog: [quaternary],
       cogOverMidTablet: [secondary, $, tertiary],
       cog2: [tertiary, $, primary],
       cog2Stroke: [tertiary, $, primary],

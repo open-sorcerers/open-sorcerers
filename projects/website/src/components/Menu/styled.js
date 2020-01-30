@@ -126,13 +126,13 @@ export const inactiveButtonState = css`
 
 const activeMenuButton = grab(['theme', 'colors', 'ui', 'menuButton', 'a', 'f'])
 const menuButton = grab(['theme', 'colors', 'ui', 'menuButton', 'f'])
-export const activeButtonState = css`
+export const activeButtonState = p => css`
   background-color: rgba(0, 0, 0, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
   transform: rotate(10turn);
   animation-play-state: paused;
   svg {
-    fill: ${activeMenuButton};
+    fill: ${activeMenuButton(p)};
   }
 `
 
@@ -183,7 +183,8 @@ export const SettingsButton = styled(Box)`
     ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
   }
 
-  ${above.MID_TABLET(`
+  ${p =>
+    above.MID_TABLET(`
     right: -15rem;
     position: absolute;
     top: 3.25rem;
@@ -194,14 +195,14 @@ export const SettingsButton = styled(Box)`
     border-color: transparent;
     
     svg {
-      fill: ${menuButton};
+      fill: ${menuButton(p)};
       top: -1.64rem;
       left: -1.64rem;
       width: 6rem;
       min-width: 6rem;
       height: 6rem;
       min-height: 6rem;
-      stroke: ${menuButton};
+      stroke: ${menuButton(p)};
       stroke-width: 0.6rem;
     }
   `)}
@@ -373,18 +374,19 @@ export const MenuCog = styled(Box)`
     }
   }
 
-  ${above.MID_TABLET(`
+  ${p =>
+    above.MID_TABLET(`
     width: 10vw;
     position: fixed;
     bottom: calc(2rem + -5vh);
     right: -2.5rem;
     svg {
-      fill: ${cogOverMidTablet};
+      fill: ${cogOverMidTablet(p)};
     }
     &:hover {
       svg {
-        fill: ${cogOverMidTabletActive};
-        stroke: ${cogOverMidTabletActive} !important;
+        fill: ${cogOverMidTabletActive(p)};
+        stroke: ${cogOverMidTabletActive(p)};
         stroke-width: 0.75rem;
       }
     }

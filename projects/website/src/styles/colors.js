@@ -58,7 +58,37 @@ export const armyGreen = `#193225`
 export const chemicalSpill = `#8d8801`
 export const resilientGray = `#3b394f`
 
-export const muscle = `#c0e7e7`
-export const bone = `#421413`
+export const bone = `#c0e7e7`
+export const muscle = `#421413`
+
+export const dryDirt = `#5b3f2f`
+export const plasticBlue = `#2a95ef`
+
+export const foundation = `#d1a098`
+export const techForest = `#2f5b62`
+
+export const mustard = `#8e7414`
+export const c2ex3 = `#2e2e2e`
+
+export const neonPurp = `#9646ef`
+export const c2ax3 = `#2a2a2a`
+
+export const lizard = `#587b06`
+export const c27x3 = `#272727`
+
+export const barney = `#5c2d61`
+export const sickLizard = `#a8d3a3`
+
+export const disaffectedRed = `#fb3d28`
+export const c3dx3 = `#3d3d3d`
+
+export const taupe = `#c5dda4`
+export const porple = `#381e5c`
+
+export const techBlue = `#0579a1`
+// c27x3
+
+export const magicMagenta = `#ca1e79`
+export const mold = `#36f389`
 
 export const $ = 'initial'

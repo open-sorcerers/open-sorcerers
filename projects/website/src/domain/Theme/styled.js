@@ -28,7 +28,7 @@ export const StyledPicker = styled(Box)`
   z-index: ${Z_INDEX.FLOATING};
   align-items: center;
   strong {
-    margin-right: 1rem;
+    margin-left: 0.5rem;
     text-transform: uppercase;
     font-size: 0.6rem;
     line-height: 0.6rem;

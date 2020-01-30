@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { PickerButton, StyledPicker } from './styled'
 
-export const Picker = ({ theme, setIndex }) => {
+export const Picker = ({ shuffleIndex, theme, setIndex }) => {
   useEffect(() => {
     theme = window.localStorage.getItem('theme')
   })
@@ -20,7 +20,14 @@ export const Picker = ({ theme, setIndex }) => {
         ←
       </PickerButton>
       {' / '}
-      <PickerButton>↯</PickerButton>
+      <PickerButton
+        onClick={e => {
+          e.preventDefault()
+          shuffleIndex()
+        }}
+      >
+        ↯
+      </PickerButton>
       {' / '}
       <PickerButton
         onClick={e => {

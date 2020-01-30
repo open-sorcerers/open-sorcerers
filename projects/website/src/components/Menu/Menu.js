@@ -75,7 +75,6 @@ export const Menu = withTheme(({ setView, view, theme }) => {
     return false
   }
   const authenticated = Auth().isAuthenticated()
-  console.log('theme', theme, 'cogOVER', theme.colors.ui.cogOverMidTablet.a.f)
   return (
     <StyledMenu className="styled-menu">
       <SettingsButton

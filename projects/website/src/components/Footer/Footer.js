@@ -73,9 +73,7 @@ export const Footer = props => {
             Gatsby
           </a>{' '}
           using the{' '}
-          <a href="https://https://github.com/open-sorcerers/foresight-gatsby-starter">
-            😎 foresight
-          </a>{' '}
+          <a href="https://github.com/open-sorcerers/foresight-gatsby-starter">😎 foresight</a>{' '}
           starter
         </Bottom>
         {isOpen ? (

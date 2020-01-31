@@ -1,11 +1,12 @@
-import { map } from 'ramda'
-import { lighten, mix } from 'polished'
+import { memoizeWith, identity as I, map } from 'ramda'
+import { lighten as ll, mix as mm } from 'polished'
 import { colorable } from '@styles/utils'
 import { hotMustard, $, cyan, lime, offBlack, debug, transparent } from '@styles/colors'
 
-const evenMix = mix(1 / 2)
+const lighten = memoizeWith(I, ll)
+const mix = memoizeWith(I, mm)
 
-export const cs = ({ primary, secondary, tertiary, quaternary }) =>
+export const cs = memoizeWith(I, (primary, secondary, tertiary, quaternary) =>
   Object.freeze(
     map(colorable)({
       picker: [$, 'rgba(0,0,0,0.2)'],
@@ -19,17 +20,17 @@ export const cs = ({ primary, secondary, tertiary, quaternary }) =>
       footerHiddenDate: [hotMustard],
       footerHiddenEnv: [cyan],
       footerHiddenBrain: ['magenta', 'yellow'],
-      badge: [tertiary, evenMix(tertiary, secondary)],
+      badge: [tertiary, mix(1 / 2, tertiary, secondary)],
       post: [secondary, primary],
       postAltVariant: [
-        `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, cyan)})`,
-        `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, lime)})`
+        `linear-gradient(0.25turn, ${secondary}, ${mix(1 / 2, secondary, cyan)})`,
+        `linear-gradient(0.25turn, ${secondary}, ${mix(1 / 2, secondary, lime)})`
       ],
       postFooter: [primary, secondary],
       breakpoint: [offBlack, debug],
-      contributor: [evenMix(tertiary, secondary), '#3c053a'],
+      contributor: [mix(1 / 2, tertiary, secondary), '#3c053a'],
       contributorImg: [tertiary, secondary],
-      pkg: [evenMix(hotMustard, secondary), mix(1 / 5, secondary, quaternary)],
+      pkg: [mix(1 / 2, hotMustard, secondary), mix(1 / 5, secondary, quaternary)],
       profile: [$, primary],
       profileImg: [$, secondary],
       colophon: [primary, quaternary],
@@ -38,4 +39,5 @@ export const cs = ({ primary, secondary, tertiary, quaternary }) =>
       comingSoon: [mix(1 / 2, primary, secondary)]
     })
   )
+)
 export default cs

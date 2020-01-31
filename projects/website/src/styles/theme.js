@@ -3,8 +3,9 @@ import cs from './theme-cs'
 import el from './theme-el'
 
 const makeTheme = palette => {
+  const colors = { name: palette.name, ui: ui(palette), el: el(palette), cs: cs(palette) }
   return {
-    colors: { ui: ui(palette), el: el(palette), cs: cs(palette) },
+    colors,
     fonts: {
       firaCode: `
       font-family: 'Fira Code', Courier, monospace;

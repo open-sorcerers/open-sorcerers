@@ -107,7 +107,7 @@ export const Menu = withTheme(({ setView, view, themeConfig, theme }) => {
               ([to, what, className]) => (
                 <MenuItem key={to}>
                   {className !== 'coming-soon' ? (
-                    <MenuLink className={className} href={to} onClick={toggle}>
+                    <MenuLink className={className} to={to} onClick={toggle}>
                       {what}
                     </MenuLink>
                   ) : (

@@ -15,18 +15,22 @@ export const Picker = ({ name, shuffleIndex, setIndex }) => {
     e.preventDefault()
     setIndex(1)
   }
+
+  /*
+    <PickerButton
+      onClick={e => {
+        e.preventDefault()
+        shuffleIndex()
+      }}
+    >
+    ↯
+    </PickerButton>
+  */
   return (
     <StyledPicker>
       {name && <strong>{name}</strong>}
       <PickerButton onClick={previous}>←</PickerButton>
-      <PickerButton
-        onClick={e => {
-          e.preventDefault()
-          shuffleIndex()
-        }}
-      >
-        ↯
-      </PickerButton>
+
       <PickerButton onClick={next}>→</PickerButton>
     </StyledPicker>
   )

@@ -30,7 +30,7 @@ const Theme = ({ children }) => {
   }
   const setIndex = x => {
     const index =
-      activeIndex + x < PALETTES.length - 1 && activeIndex + x > -1
+      activeIndex + x < PALETTES.length && activeIndex + x > -1
         ? activeIndex + x
         : activeIndex + x < 0
         ? PALETTES.length - 1

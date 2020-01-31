@@ -47,7 +47,6 @@ export const Colophon = withTheme(props => {
   const isHeader = props && props.variant && props.variant === 'header'
   const CC = isHeader ? Alt : StyledColophon
   const LW = isHeader ? AltWrapper : LinkWrapper
-  console.log('by speaking', props.theme)
   /* const LW = AltWrapper */
   const gh = data.githubLink.length > BLOBMASTER.length
   const hasContent = gh || data.author || data.datePublished || data.dateEdited

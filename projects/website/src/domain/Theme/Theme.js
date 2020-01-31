@@ -30,9 +30,11 @@ const Theme = ({ children }) => {
   }
   const setIndex = x => {
     const index =
-      activeIndex + x > 0 && activeIndex < PALETTES.length
-        ? (activeIndex + x) % PALETTES.length
-        : PALETTES.length - 1
+      activeIndex + x < PALETTES.length - 1 && activeIndex + x > -1
+        ? activeIndex + x
+        : activeIndex + x < 0
+        ? PALETTES.length - 1
+        : 0
     setActiveIndex(index)
     const active = makeTheme(PALETTES[index])
     setActiveTheme(active)

@@ -32,6 +32,7 @@ export const StyledPicker = styled(Box)`
   align-items: center;
   strong {
     margin-right: 0.5rem;
+    margin-left: 0.5rem;
     text-transform: uppercase;
     font-size: 0.75rem;
     line-height: 0.75rem;
@@ -40,6 +41,7 @@ export const StyledPicker = styled(Box)`
 `
 
 export const PickerButton = styled(Box)`
+  cursor: pointer;
   width: 1.5rem;
   height: 1.5rem;
   line-height: 0.8rem;

@@ -1,0 +1,19 @@
+{
+  "name": "engraved",
+  "version": "0.0.0",
+  "description": "generate static color palettes at build time",
+  "main": "engraved.js",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "camel-case": "^4.1.1",
+    "color-contrast-checker": "^1.5.0",
+    "fluture": "^12.1.1",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "rollup": "^1.31.0"
+  }
+}

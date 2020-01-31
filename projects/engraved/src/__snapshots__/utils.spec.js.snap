@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`j2 1`] = `
+"{
+  \\"a\\": {
+    \\"b\\": {
+      \\"c\\": [
+        123
+      ]
+    }
+  }
+}"
+`;

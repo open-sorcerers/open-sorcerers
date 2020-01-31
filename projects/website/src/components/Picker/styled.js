@@ -27,7 +27,7 @@ export const StyledPicker = styled(Box)`
   position: relative;
   border-radius: 100rem;
   justify-content: space-between;
-  margin: 0 auto 0.5rem;
+  margin: 0 auto 1rem;
   z-index: ${Z_INDEX.FLOATING};
   align-items: center;
   strong {

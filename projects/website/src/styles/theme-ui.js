@@ -24,7 +24,6 @@ export const ui = ({ primary, secondary, tertiary, quaternary }) =>
     logout: [primary, cardinalRed, cardinalRed, primary],
     menu: [primary, $, tertiary, $],
     menuButton: [tertiary, $, 'black'],
-    /* nav: _, */
     navInactiveAboveTabletPortrait: [primary],
     navButton: [secondary, $, tertiary],
     postGlossary: [secondary, tertiary, tertiary, transparent],

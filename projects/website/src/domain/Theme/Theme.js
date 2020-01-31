@@ -5,10 +5,14 @@ import { checkWindowExists } from '@utils/url'
 import { assoc, reject, fromPairs, toPairs } from 'ramda'
 import { injectChildren } from '@utils/react'
 
-import makeTheme from '@styles/theme'
+import rawMakeTheme from '@styles/theme'
 import PALETTES from '@styles/palettes'
 
 import { BaseCSS } from './BaseCSS'
+
+// we memoized makeTheme and so we must patch it
+const makeTheme = ({ name, primary, secondary, tertiary, quaternary }) =>
+  rawMakeTheme(name, primary, secondary, tertiary, quaternary)
 
 const Theme = ({ children }) => {
   const [activeIndex, setActiveIndex] = useState(0)

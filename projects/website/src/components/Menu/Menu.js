@@ -62,7 +62,6 @@ const getLinksRelativeToAuth = pipe(
 )
 
 export const Menu = withTheme(({ setView, view, themeConfig, theme }) => {
-  console.log('THEME CONFIG', themeConfig)
   const [active, setActive] = useState(view === VIEW_STATES.MENU_ACTIVE)
   const toggle = () => {
     const bb = !active
@@ -108,7 +107,7 @@ export const Menu = withTheme(({ setView, view, themeConfig, theme }) => {
               ([to, what, className]) => (
                 <MenuItem key={to}>
                   {className !== 'coming-soon' ? (
-                    <MenuLink className={className} to={to} onClick={toggle}>
+                    <MenuLink className={className} href={to} onClick={toggle}>
                       {what}
                     </MenuLink>
                   ) : (

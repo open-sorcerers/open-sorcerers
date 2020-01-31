@@ -290,6 +290,7 @@ export const MenuLink = styled(Link)`
   &.log {
     margin-top: 0.5rem;
     font-size: 8vw;
+    margin-bottom: 4rem;
     ${above.TABLET_PORTRAIT(`
       font-size: 7vw;
     `)}

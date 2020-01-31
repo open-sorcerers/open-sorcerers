@@ -32,6 +32,7 @@ const RawNavigation = props => {
   const state = stateView(props)
   const { path = '' } = props
   const activeMenu = pathOr(path, ['pageContext', 'frontmatter', 'menu'], props)
+  const themeConfig = pathOr(path, ['themeConfig'], props)
   const {
     site: {
       siteMetadata: { name }
@@ -68,7 +69,7 @@ const RawNavigation = props => {
                 )
               )}
               <MenuWrapper>
-                <Menu {...state} />
+                <Menu {...state} {...{ themeConfig }} />
               </MenuWrapper>
             </>
           </Nav>

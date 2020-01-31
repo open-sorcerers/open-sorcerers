@@ -78,48 +78,41 @@ Styled.propTypes = {
   children: PropTypes.node
 }
 
-const SiteInner = ({ children, ...other }) => (
-  <div
-    style={{
-      overflow: 'hidden',
-      width: '100%',
-      height: '100%',
-      position: 'relative',
-      padding: 0,
-      margin: 0,
-      left: 0,
-      top: 0,
-      zIndex: Z_INDEX.DEFAULT
-    }}
-  >
-    <Styled {...other}>{children}</Styled>
-  </div>
-)
+const SiteInner = ({ children, ...other }) => {
+  const viewState = useState(VIEW_STATES.DEFAULT)
+  const [view, setView] = viewState
+  const viewable = { view, setView }
+  const innoculated = injectChildren({ viewable, themeConfig: other.themeConfig }, children)
+  return (
+    <div
+      style={{
+        overflow: 'hidden',
+        width: '100%',
+        height: '100%',
+        position: 'relative',
+        padding: 0,
+        margin: 0,
+        left: 0,
+        top: 0,
+        zIndex: Z_INDEX.DEFAULT
+      }}
+    >
+      <Styled {...other}>{innoculated}</Styled>
+    </div>
+  )
+}
 SiteInner.propTypes = {
   children: PropTypes.node
 }
 
-const Site = ({ children, seo, ...rest }) => {
-  const viewState = useState(VIEW_STATES.DEFAULT)
-  const [view, setView] = viewState
-  const viewable = { view, setView }
-  const other = { ...rest, seo, ...viewable }
-  const kids = injectChildren(viewable, children)
-  return (
-    <Theme>
-      <SiteInner {...other}>{kids}</SiteInner>
-    </Theme>
-  )
-}
+const Site = ({ children, ...rest }) => (
+  <Theme>
+    <SiteInner {...rest}>{children}</SiteInner>
+  </Theme>
+)
 
 Site.propTypes = {
-  children: PropTypes.node,
-  seo: SEO.propTypes.seo
-}
-
-Site.defaultProps = {
-  children: null,
-  seo: {}
+  children: PropTypes.node
 }
 
 export { Site }

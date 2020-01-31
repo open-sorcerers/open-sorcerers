@@ -9,6 +9,12 @@ import { PostHeader } from '@components/PostHeader'
 import { Site } from '@domain/Site'
 
 export const prefill = prefilled => {
+  const Content = ({ data, ...other }) => (
+    <ContentContainer>
+      <PostHeader {...other} />
+      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+    </ContentContainer>
+  )
   const MDXPage = ({ data, ...other }) => {
     const props = { ...prefilled, ...other, siteData: data }
     const { id, className } = props
@@ -21,10 +27,7 @@ export const prefill = prefilled => {
       <div {...over}>{props.children}</div>
     ) : (
       <Site {...props}>
-        <ContentContainer>
-          <PostHeader {...props} />
-          <MDXRenderer>{data.mdx.body}</MDXRenderer>
-        </ContentContainer>
+        <Content {...props} data={data} />
       </Site>
     )
   }

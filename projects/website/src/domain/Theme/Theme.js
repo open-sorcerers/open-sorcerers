@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import { ThemeProvider } from 'emotion-theming'
 import { checkWindowExists } from '@utils/url'
 import { assoc, reject, fromPairs, toPairs } from 'ramda'
-/* import preset from '@rebass/preset' */
+import { injectChildren } from '@utils/react'
 
 import makeTheme from '@styles/theme'
 import PALETTES from '@styles/palettes'
 
 import { BaseCSS } from './BaseCSS'
-import Picker from './Picker'
 
 const Theme = ({ children }) => {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -55,18 +54,18 @@ const Theme = ({ children }) => {
       setIndex(index)
     }
   })
+  const themeConfig = {
+    name: PALETTES[activeIndex].name,
+    shuffleIndex: shuffleIndex,
+    setIndex: setIndex,
+    theme: activeTheme,
+    setActiveTheme: setActiveTheme
+  }
   return (
     <>
       <ThemeProvider theme={activeTheme}>
         <BaseCSS theme={activeTheme} />
-        {children}
-        <Picker
-          name={PALETTES[activeIndex].name}
-          shuffleIndex={shuffleIndex}
-          setIndex={setIndex}
-          theme={activeTheme}
-          setActiveTheme={setActiveTheme}
-        />
+        {injectChildren({ themeConfig }, children)}
       </ThemeProvider>
     </>
   )

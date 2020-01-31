@@ -1,0 +1,15 @@
+{
+  "name": "farbenfrohe",
+  "version": "0.0.0",
+  "description": "generate static color palettes at build time",
+  "main": "farbenfrohe.js",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "color-contrast-checker": "^1.5.0",
+    "fluture": "^12.1.1",
+    "ramda": "^0.26.1"
+  }
+}

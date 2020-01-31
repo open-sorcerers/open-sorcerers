@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { withTheme } from 'emotion-theming'
 import PropTypes from 'prop-types'
 import { pipe, filter, identity as I, map } from 'ramda'
+import Picker from '@components/Picker'
 
 import { Auth } from '@services/auth'
 import Cog from '@assets/cog.svg'
@@ -60,7 +61,8 @@ const getLinksRelativeToAuth = pipe(
   filter(I)
 )
 
-export const Menu = withTheme(({ setView, view, theme }) => {
+export const Menu = withTheme(({ setView, view, themeConfig, theme }) => {
+  console.log('THEME CONFIG', themeConfig)
   const [active, setActive] = useState(view === VIEW_STATES.MENU_ACTIVE)
   const toggle = () => {
     const bb = !active
@@ -117,6 +119,8 @@ export const Menu = withTheme(({ setView, view, theme }) => {
               MENU_LINKS
             )}
           </>
+
+          <Picker {...themeConfig} />
         </FloatingMenuContent>
         <MenuCog className="cog-bottom" theme={theme} active={active} onClick={toggle}>
           <Cog />

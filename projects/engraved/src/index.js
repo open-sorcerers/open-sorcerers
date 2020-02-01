@@ -3,6 +3,7 @@ import { fork, Future as F } from "fluture"
 import { convert } from "./format"
 import { engrave } from "./engraved"
 import { renderJS } from "./render"
+export { compare } from "./colors"
 
 export const custom = curry((config, xx) => {
   let isCancelled = false

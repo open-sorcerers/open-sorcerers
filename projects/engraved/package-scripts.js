@@ -1,6 +1,10 @@
 module.exports = {
   scripts: {
     build: "rollup -c rollup.config.js",
-    test: "jest --verbose --coverage"
+    test: {
+      script: "jest --verbose --coverage",
+      description: "run tests",
+      watch: "jest --verbose --coverage --watchAll"
+    }
   }
 }

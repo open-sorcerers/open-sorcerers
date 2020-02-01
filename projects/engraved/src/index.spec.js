@@ -1,4 +1,5 @@
 import F from "fluture"
+import { pipe } from "ramda"
 import fixture from "../fixture.json"
 import { custom } from "./index"
 
@@ -76,9 +77,10 @@ test("engraved - tons of data - cancellable?", done => {
       f6: { d: { e: { f: fixture } } }
     }
   )
-  const cancel = F.fork(console.warn)(x => {
-    expect(x).toMatchSnapshot()
-    done()
-  })(ff)
+  const cancel = F.fork(done)(done)(ff)
   cancel()
+  setTimeout(() => {
+    expect("cool").toEqual("cool")
+    done()
+  }, 1)
 })

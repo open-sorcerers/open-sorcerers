@@ -1,3 +1,4 @@
+import F from "fluture"
 import {
   render,
   engrave,
@@ -83,7 +84,6 @@ test("engrave - no flatten", () => {
 test("render", done => {
   const routes = [[["a"], "cool"]]
   const flatten = true
-  const initial = {}
   const known = ["lime"]
 
   const consumer = out => {
@@ -94,6 +94,6 @@ export default Object.freeze({
 })`)
     done()
   }
-
-  render(flatten, initial, known, routes, consumer)
+  const future = F.resolve({ known, routes, initial: {} })
+  F.fork(done)(consumer)(render(flatten, future))
 })

@@ -1,18 +1,23 @@
 {
   "name": "engraved",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "generate static color palettes at build time",
   "main": "engraved.js",
   "repository": "//github.com/open-sorcerers/open-sorcerers",
   "author": "brekk",
   "license": "MIT",
   "private": false,
+  "bin": {
+    "engraved": "engraved-cli.js"
+  },
   "dependencies": {
     "camel-case": "^4.1.1",
     "color-contrast-checker": "^1.5.0",
     "eslint-config-sorcerers": "^0.0.2",
     "fluture": "^12.1.1",
-    "ramda": "^0.26.1"
+    "get-stdin": "^7.0.0",
+    "ramda": "^0.26.1",
+    "yargs-parser": "^16.1.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

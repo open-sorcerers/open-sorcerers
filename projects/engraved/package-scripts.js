@@ -1,6 +1,6 @@
 module.exports = {
   scripts: {
-    build: "rollup -c rollup.config.js",
+    build: "rollup -c rollup.config.js && chmod 755 engraved-cli.js",
     lint: "eslint ./src --fix",
     test: {
       script: "jest --verbose --coverage ",

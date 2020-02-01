@@ -1,5 +1,6 @@
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
+import cli from "rollup-plugin-cli"
 import buble from "@rollup/plugin-buble"
 import json from "@rollup/plugin-json"
 import progress from "rollup-plugin-progress"
@@ -30,5 +31,14 @@ export default [
     external,
     output: [{ file: pkg.main, format: `cjs` }],
     plugins
+  },
+  {
+    input: `src/cli-runner.js`,
+    external: external.concat(["fs"]),
+    output: [{ file: `engraved-cli.js`, format: `cjs` }],
+    plugins: plugins
+      .slice(0, 2)
+      .concat([cli()])
+      .concat(plugins.slice(2, Infinity))
   }
 ]

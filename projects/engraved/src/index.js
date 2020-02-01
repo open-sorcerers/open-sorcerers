@@ -1,7 +1,6 @@
-import { chain, curry, toPairs, map, is, pipe } from "ramda"
+import { curry, toPairs, map, is, pipe } from "ramda"
 import F from "fluture"
 import { convert, render } from "./engraved"
-import { trace } from "xtrace"
 
 export const custom = curry((config, xx) => {
   const { flatten = true } = config
@@ -34,7 +33,7 @@ export const custom = curry((config, xx) => {
         pipe(
           () => consume(initialThing, []),
           () => {
-            setImmediate(() => good({ initial: initialThing, known, routes }))
+            setTimeout(() => good({ initial: initialThing, known, routes }), 1)
           }
         )()
         return cancel

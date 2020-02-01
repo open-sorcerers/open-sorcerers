@@ -1,6 +1,7 @@
-import F from "fluture"
-import fixture from "../fixture.json"
-import { custom as cc } from "./index"
+const F = require("fluture")
+const fixture = require("./fixture.json")
+const engraved = require("./engraved")
+const { custom: cc } = engraved
 
 const harness = custom => {
   test("custom", done => {

@@ -10,10 +10,19 @@
   "dependencies": {
     "camel-case": "^4.1.1",
     "color-contrast-checker": "^1.5.0",
+    "eslint-config-sorcerers": "^0.0.2",
     "fluture": "^12.1.1",
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1",
     "rollup": "^1.31.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/engraved.js"
+    ]
   }
 }

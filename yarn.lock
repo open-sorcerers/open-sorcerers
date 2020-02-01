@@ -3791,6 +3791,15 @@
     regexpp "^3.0.0"
     tsutils "^3.17.1"
 
+"@typescript-eslint/experimental-utils@1.13.0", "@typescript-eslint/experimental-utils@^1.13.0":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-1.13.0.tgz#b08c60d780c0067de2fb44b04b432f540138301e"
+  integrity sha512-zmpS6SyqG4ZF64ffaJ6uah6tWWWgZ8m+c54XXgwFtUv0jNz8aJAVx8chMCvnk7yl6xwn8d+d96+tWp7fXzTuDg==
+  dependencies:
+    "@types/json-schema" "^7.0.3"
+    "@typescript-eslint/typescript-estree" "1.13.0"
+    eslint-scope "^4.0.0"
+
 "@typescript-eslint/experimental-utils@2.16.0", "@typescript-eslint/experimental-utils@^2.5.0":
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.16.0.tgz#bba65685728c532e0ddc811a0376e8d38e671f77"
@@ -3809,14 +3818,15 @@
     "@typescript-eslint/typescript-estree" "2.17.0"
     eslint-scope "^5.0.0"
 
-"@typescript-eslint/experimental-utils@^1.13.0":
+"@typescript-eslint/parser@^1.10.2":
   version "1.13.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-1.13.0.tgz#b08c60d780c0067de2fb44b04b432f540138301e"
-  integrity sha512-zmpS6SyqG4ZF64ffaJ6uah6tWWWgZ8m+c54XXgwFtUv0jNz8aJAVx8chMCvnk7yl6xwn8d+d96+tWp7fXzTuDg==
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-1.13.0.tgz#61ac7811ea52791c47dc9fd4dd4a184fae9ac355"
+  integrity sha512-ITMBs52PCPgLb2nGPoeT4iU3HdQZHcPaZVw+7CsFagRJHUhyeTgorEwHXhFf3e7Evzi8oujKNpHc8TONth8AdQ==
   dependencies:
-    "@types/json-schema" "^7.0.3"
+    "@types/eslint-visitor-keys" "^1.0.0"
+    "@typescript-eslint/experimental-utils" "1.13.0"
     "@typescript-eslint/typescript-estree" "1.13.0"
-    eslint-scope "^4.0.0"
+    eslint-visitor-keys "^1.0.0"
 
 "@typescript-eslint/parser@^2.11.0":
   version "2.17.0"
@@ -4302,6 +4312,11 @@ alphanum-sort@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
+
+amdefine@>=0.2.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
+  integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
 ansi-align@^2.0.0:
   version "2.0.0"
@@ -6619,6 +6634,13 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
+color-contrast-checker@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/color-contrast-checker/-/color-contrast-checker-1.5.0.tgz#741456b8b97d7cedcae8f10e8b17d1f734a8dd42"
+  integrity sha512-7vcVIjdieWaxDQk4RTqCgU/iM1JEllxymR7AmoSgoakas5EKqfLhTphwrCEABYGMN9VG+h5a9utUlyGgY1F9WQ==
+  dependencies:
+    amdefine ">=0.2.0"
+
 color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -7144,7 +7166,7 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^3.0.1, core-js@^3.0.4, core-js@^3.3.1, core-js@^3.4.1:
+core-js@^3.0.1, core-js@^3.0.4, core-js@^3.1.4, core-js@^3.3.1, core-js@^3.4.1:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
   integrity sha512-4paDGScNgZP2IXXilaffL9X7968RuvwlkK3xWtZRVqgd8SYNiVKRJvkFd1aqqEuPfN7E68ZHEp9hDj6lHj4Hyw==
@@ -9356,7 +9378,7 @@ eslint@^4.0.0:
     table "4.0.2"
     text-table "~0.2.0"
 
-eslint@^5.16.0:
+eslint@^5.0.0, eslint@^5.16.0:
   version "5.16.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.16.0.tgz#a1e3ac1aae4a3fbd8296fcf8f7ab7314cbb6abea"
   integrity sha512-S3Rz11i7c8AA5JPv7xAH+dOyq/Cu/VXHiHXBPOU1k/JAM5dXqQPt3qcrhpHSorXmrpu2g0gkIBVXAqCpzfoZIg==
@@ -18705,6 +18727,25 @@ prettier-eslint@^8.8.2:
     typescript-eslint-parser "^16.0.0"
     vue-eslint-parser "^2.0.2"
 
+prettier-eslint@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/prettier-eslint/-/prettier-eslint-9.0.1.tgz#fbf507cde7329141cd368c6aeb54a70715d02cf4"
+  integrity sha512-KZT65QTosSAqBBqmrC+RpXbsMRe7Os2YSR9cAfFbDlyPAopzA/S5bioiZ3rpziNQNSJaOxmtXSx07EQ+o2Dlug==
+  dependencies:
+    "@typescript-eslint/parser" "^1.10.2"
+    common-tags "^1.4.0"
+    core-js "^3.1.4"
+    dlv "^1.1.0"
+    eslint "^5.0.0"
+    indent-string "^4.0.0"
+    lodash.merge "^4.6.0"
+    loglevel-colored-level-prefix "^1.0.0"
+    prettier "^1.7.0"
+    pretty-format "^23.0.1"
+    require-relative "^0.8.7"
+    typescript "^3.2.1"
+    vue-eslint-parser "^2.0.2"
+
 prettier-linter-helpers@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/prettier-linter-helpers/-/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
@@ -23299,6 +23340,11 @@ typescript@^2.5.1:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
   integrity sha512-Gr4p6nFNaoufRIY4NMdpQRNmgxVIGMs4Fcu/ujdYk3nAZqk7supzBE9idmvfZIlH/Cuj//dvi+019qEue9lV0w==
+
+typescript@^3.2.1:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
+  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
 
 ua-parser-js@^0.7.18:
   version "0.7.21"

@@ -1,9 +1,10 @@
 import { curry, toPairs, map, is, pipe } from "ramda"
-import {fork, Future as F} from "fluture"
-import { convert, render } from "./engraved"
+import { fork, Future as F } from "fluture"
+import { convert } from "./format"
+import { engrave } from "./engraved"
+import { renderJS } from "./render"
 
 export const custom = curry((config, xx) => {
-  const { flatten = true } = config
   let isCancelled = false
   const cancel = () => {
     isCancelled = true
@@ -12,10 +13,11 @@ export const custom = curry((config, xx) => {
     new F((bad, good) => {
       const known = []
       const routes = []
-      const consume = (thing, pathing = []) =>
+      const consume = (thing, pathing) =>
         pipe(
           toPairs,
           map(([w, x]) => {
+            /* istanbul ignore next */
             if (isCancelled) return
             const y = convert(x)
             const toHere = pathing.concat(w)
@@ -48,13 +50,17 @@ export const custom = curry((config, xx) => {
       if (!xx || typeof xx !== "object") {
         bad(new Error("engraved - expected to be given an object as an input"))
       } else {
-        pipe(consumption, render(flatten), yy => fork(bad)(good)(yy))(xx)
+        pipe(consumption, renderJS(engrave, config), yy => fork(bad)(good)(yy))(
+          xx
+        )
       }
       return cancel
     } catch (e) {
+      /* istanbul ignore next */
       bad(e)
+      /* istanbul ignore next */
       return cancel
     }
   })
 })
-export const engraved = custom({})
+export const engraved = custom({ flatten: true })

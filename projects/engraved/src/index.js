@@ -5,7 +5,6 @@ import { engrave } from "./engraved"
 import { renderJS } from "./render"
 
 export const custom = curry((config, xx) => {
-  const { flatten } = config
   let isCancelled = false
   const cancel = () => {
     isCancelled = true
@@ -51,9 +50,9 @@ export const custom = curry((config, xx) => {
       if (!xx || typeof xx !== "object") {
         bad(new Error("engraved - expected to be given an object as an input"))
       } else {
-        pipe(consumption, renderJS(engrave, flatten), yy =>
-          fork(bad)(good)(yy)
-        )(xx)
+        pipe(consumption, renderJS(engrave, config), yy => fork(bad)(good)(yy))(
+          xx
+        )
       }
       return cancel
     } catch (e) {

@@ -41,7 +41,7 @@ test("unstring", () => {
 
 test("engrave - flatten", () => {
   const output = engrave(
-    true,
+    { flatten: true },
     { a: 1, b: 2, c: { d: { e: { f: { g: { h: 100 } } } } } },
     [["abc".split(""), "whatevertown"]]
   )
@@ -52,7 +52,7 @@ test("engrave - flatten", () => {
 
 test("engrave - no flatten", () => {
   const output = engrave(
-    false,
+    { flatten: false },
     { a: 1, b: 2, c: { d: { e: { f: { g: { h: 100 } } } } } },
     [["abc".split(""), "whatevertown"]]
   )
@@ -83,7 +83,9 @@ test("renderJS", done => {
   const known = ["lime"]
 
   const consumer = out => {
-    expect(out).toEqual(`const $lime = 'lime'
+    expect(out.substr(out.indexOf("\n"), Infinity)).toEqual(`
+
+const $lime = 'lime'
 
 export default Object.freeze({
   "a": "cool"
@@ -91,5 +93,5 @@ export default Object.freeze({
     done()
   }
   const future = resolve({ known, routes, initial: {} })
-  fork(done)(consumer)(renderJS(engrave, flatten, future))
+  fork(done)(consumer)(renderJS(engrave, { flatten }, future))
 })

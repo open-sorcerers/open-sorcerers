@@ -24,10 +24,11 @@ const write = curry(
 
 const OPTS = {
   boolean: [
-    "f" // flatten
+    "f", // flatten
+    "c" // compare
   ],
-  default: { flatten: true },
-  alias: { input: ["i"], output: ["o"], flatten: ["f"] }
+  default: { flatten: true, compare: true },
+  alias: { input: ["i"], output: ["o"], flatten: ["f"], compare: ["c"] }
 }
 
 const readJSON = jj => JSON.parse(jj)

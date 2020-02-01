@@ -90,8 +90,8 @@ const makeTheme = memoizeWith(I, (name, c1, c2, c3, c4) => {
   }
   const { consume, get, themify } = makeThemeWalker()
   consume(colors)
-  setTimeout(() => console.log('get!', get()), 5e3)
   // TODO: stop doing this shortly
+  setTimeout(() => console.log('get!', get()), 5e3)
   /* const trace = colorTrace('color: #c00') */
   /* trace(name, JSON.stringify(colors, null, 2)) */
   return {

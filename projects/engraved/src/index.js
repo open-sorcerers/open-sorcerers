@@ -1,5 +1,5 @@
 import { curry, toPairs, map, is, pipe } from "ramda"
-import F from "fluture"
+import {fork, Future as F} from "fluture"
 import { convert, render } from "./engraved"
 
 export const custom = curry((config, xx) => {
@@ -48,7 +48,7 @@ export const custom = curry((config, xx) => {
       if (!xx || typeof xx !== "object") {
         bad(new Error("engraved - expected to be given an object as an input"))
       } else {
-        pipe(consumption, render(flatten), yy => F.fork(bad)(good)(yy))(xx)
+        pipe(consumption, render(flatten), yy => fork(bad)(good)(yy))(xx)
       }
       return cancel
     } catch (e) {

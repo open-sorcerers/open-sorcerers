@@ -1,4 +1,4 @@
-import F from "fluture"
+import { resolve, fork } from "fluture"
 import {
   render,
   engrave,
@@ -94,6 +94,6 @@ export default Object.freeze({
 })`)
     done()
   }
-  const future = F.resolve({ known, routes, initial: {} })
-  F.fork(done)(consumer)(render(flatten, future))
+  const future = resolve({ known, routes, initial: {} })
+  fork(done)(consumer)(render(flatten, future))
 })

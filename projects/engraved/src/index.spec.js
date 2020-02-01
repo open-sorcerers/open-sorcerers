@@ -1,11 +1,11 @@
-import F from "fluture"
+import {fork} from "fluture"
 import fixture from "../fixture.json"
 import { custom as cc } from "./index"
 
 const harness = custom => {
   test("custom", done => {
     const ff = custom({ flatten: false }, fixture)
-    F.fork(done)(z => {
+    fork(done)(z => {
       expect(z).toMatchSnapshot()
       done()
     })(ff)
@@ -13,7 +13,7 @@ const harness = custom => {
 
   test("engraved", done => {
     const ff = custom({ flatten: false }, fixture)
-    F.fork(done)(z => {
+    fork(done)(z => {
       expect(z).toMatchSnapshot()
       done()
     })(ff)
@@ -21,7 +21,7 @@ const harness = custom => {
 
   test("engraved - bad data", done => {
     const ff = custom({ flatten: false }, "blah blah blah")
-    F.fork(e => {
+    fork(e => {
       expect(e.message).toEqual(
         "engraved - expected to be given an object as an input"
       )
@@ -33,7 +33,7 @@ const harness = custom => {
     const badData = { a: { b: { c: 123 } } }
     badData.a.b.c = badData
     const ff = custom({ flatten: true }, badData)
-    F.fork(e => {
+    fork(e => {
       expect(e.message).toEqual("Maximum call stack size exceeded")
       done()
     })(done)(ff)
@@ -77,7 +77,7 @@ const harness = custom => {
         f6: { d: { e: { f: fixture } } }
       }
     )
-    const cancel = F.fork(done)(done)(ff)
+    const cancel = fork(done)(done)(ff)
     cancel()
     setTimeout(() => {
       expect("cool").toEqual("cool")

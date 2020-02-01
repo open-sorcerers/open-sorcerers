@@ -1,14 +1,8 @@
 import { resolve, fork } from "fluture"
-import {
-  render,
-  engrave,
-  testHex,
-  constantColor,
-  noHexLead,
-  noParens,
-  convert,
-  unstring
-} from "./engraved"
+import { convert } from "./format"
+import { constantColor, renderJS, unstringJS } from "./render"
+import { testHex, noHexLead, noParens } from "./predicates"
+import { engrave } from "./engraved"
 
 test("testHex", () => {
   expect(testHex("yellow")).toBeFalsy()
@@ -39,8 +33,10 @@ test("convert", () => {
 })
 
 test("unstring", () => {
-  expect(unstring('"cool": "$yaaaa"')).toEqual("cool: $yaaaa")
-  expect(unstring('"cool": "chicken necks"')).toEqual('"cool": "chicken necks"')
+  expect(unstringJS('"cool": "$yaaaa"')).toEqual("cool: $yaaaa")
+  expect(unstringJS('"cool": "chicken necks"')).toEqual(
+    '"cool": "chicken necks"'
+  )
 })
 
 test("engrave - flatten", () => {
@@ -81,7 +77,7 @@ test("engrave - no flatten", () => {
 }`)
 })
 
-test("render", done => {
+test("renderJS", done => {
   const routes = [[["a"], "cool"]]
   const flatten = true
   const known = ["lime"]
@@ -95,5 +91,5 @@ export default Object.freeze({
     done()
   }
   const future = resolve({ known, routes, initial: {} })
-  fork(done)(consumer)(render(flatten, future))
+  fork(done)(consumer)(renderJS(engrave, flatten, future))
 })

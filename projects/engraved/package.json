@@ -1,6 +1,6 @@
 {
   "name": "engraved",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "generate static color palettes at build time",
   "main": "engraved.js",
   "repository": "//github.com/open-sorcerers/open-sorcerers",

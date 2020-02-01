@@ -94,4 +94,5 @@ export default Object.freeze({
   }
   const future = resolve({ known, routes, initial: {} })
   fork(done)(consumer)(renderJS(engrave, { flatten }, future))
+  /* fork(done)(consumer)(render(flatten, future)) */
 })

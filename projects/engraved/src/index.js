@@ -54,6 +54,9 @@ export const custom = curry((config, xx) => {
         pipe(consumption, renderJS(engrave, config), yy => fork(bad)(good)(yy))(
           xx
         )
+        /* ======= */
+        /*         pipe(consumption, render(flatten), yy => fork(bad)(good)(yy))(xx) */
+        /* >>>>>>> 5794404... engraved implementation example here */
       }
       return cancel
     } catch (e) {

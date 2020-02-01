@@ -1,21 +1,9 @@
-import {
-  uniq,
-  mergeRight,
-  assocPath,
-  reduce,
-  toPairs,
-  map,
-  pipe,
-  is,
-  memoizeWith,
-  identity as I
-} from 'ramda'
-import { colorTrace } from '@utils/trace'
+import { memoizeWith, identity as I } from 'ramda'
 
 import ui from './theme-ui'
 import cs from './theme-cs'
 import el from './theme-el'
-
+/*
 const hex3 = /[a-f0-9]{3}/
 const hex6 = /[a-f0-9]{6}/
 
@@ -79,6 +67,7 @@ const makeThemeWalker = () => {
       ')'
   }
 }
+*/
 
 const makeTheme = memoizeWith(I, (name, c1, c2, c3, c4) => {
   const palette = { name, primary: c1, secondary: c2, tertiary: c3, quaternary: c4 }
@@ -88,12 +77,14 @@ const makeTheme = memoizeWith(I, (name, c1, c2, c3, c4) => {
     el: el(c1, c2, c3, c4),
     cs: cs(c1, c2, c3, c4)
   }
-  const { consume, get, themify } = makeThemeWalker()
-  consume(colors)
   // TODO: stop doing this shortly
-  setTimeout(() => console.log('get!', get()), 5e3)
+  /* const { consume, get, themify } = makeThemeWalker() */
+  /* consume(colors) */
+  /* setTimeout(() => console.log('get!', get()), 5e3) */
   /* const trace = colorTrace('color: #c00') */
   /* trace(name, JSON.stringify(colors, null, 2)) */
+  /* const engravedF = engraved(colors) */
+  /* setTimeout(() => fork(console.warn)(console.log)(engravedF), 1) */
   return {
     colors,
     fonts: {

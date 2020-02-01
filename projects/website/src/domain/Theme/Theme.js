@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { trace } from 'xtrace'
 import PropTypes from 'prop-types'
 import { ThemeProvider } from 'emotion-theming'
 import { checkWindowExists } from '@utils/url'
 import { assoc, reject, fromPairs, toPairs } from 'ramda'
+import { fork } from 'fluture'
+import { engraved } from 'engraved'
+
 import { injectChildren } from '@utils/react'
 
 import rawMakeTheme from '@styles/theme'
@@ -55,6 +59,7 @@ const Theme = ({ children }) => {
 
   const [activeTheme, setActiveTheme] = useState(theme)
   useEffect(() => {
+    fork(trace('bad'))(trace('good'))(engraved(theme.colors))
     const index = parseInt(window.localStorage.getItem('themePalette'))
     if (index !== activeIndex) {
       setIndex(index)

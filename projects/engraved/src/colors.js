@@ -29,10 +29,23 @@ const getAccessibility = pipe(
 )
 
 export const compare = curry((ff, bb) => {
-  const raw = { foreground: ff, background: bb }
   const compared = pair(ff, bb)
   const readability = getAccessibility(compared)
+  const raw = { foreground: ff, background: bb }
   const options = map(palx, raw)
   const best = map(helloColor, raw)
-  return { best, options, compared, readability }
+  const suggested =
+    readability < 1 / 2
+      ? best.foreground.dark
+        ? {
+            foreground: best.foreground.base,
+            background: best.foreground.color
+          }
+        : {
+            foreground: best.foreground.color,
+            background: best.foreground.base
+          }
+      : raw
+
+  return { best, options, compared, readability, suggested }
 })

@@ -6,7 +6,6 @@ import { renderJS } from "./render"
 export { compare } from "./colors"
 
 export const custom = curry((config, xx) => {
-  const { flatten } = config
   let isCancelled = false
   const cancel = () => {
     isCancelled = true

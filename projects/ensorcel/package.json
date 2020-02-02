@@ -1,0 +1,34 @@
+{
+  "name": "ensorcel",
+  "version": "0.0.0",
+  "description": "common tools for sorcerers",
+  "main": "ensorcel.js",
+  "module": "ensorcel.mjs",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "fluture": "^12.1.1",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-buble": "^0.21.1",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-sorcerers": "^0.0.2",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-jsdoc": "^21.0.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-unicorn": "^16.0.0",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1",
+    "rollup": "^1.31.0",
+    "rollup-plugin-progress": "^1.1.1"
+  }
+}

@@ -9,7 +9,6 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "eslint-config-sorcerers": "^0.0.2",
     "fluture": "^12.1.1",
     "ramda": "^0.26.1"
   },
@@ -20,6 +19,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
+    "eslint-config-sorcerers": "^0.0.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-jsdoc": "^21.0.0",
     "eslint-plugin-node": "^11.0.0",

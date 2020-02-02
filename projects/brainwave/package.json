@@ -7,9 +7,10 @@
   "author": "brekk",
   "license": "MIT",
   "private": false,
-  "devDependencies": {
+  "dependencies": {
     "fluture": "^12.1.1",
     "ramda": "^0.26.1",
+    "torpor": "^0.0.1",
     "yargs-parser": "^16.1.0"
   }
 }

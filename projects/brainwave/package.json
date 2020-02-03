@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "date-fns": "^2.9.0",
     "fluture": "^12.1.1",
     "ramda": "^0.26.1",
     "torpor": "^0.0.1",

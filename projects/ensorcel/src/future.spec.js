@@ -1,5 +1,6 @@
 import { after, resolve, fork } from "fluture"
 import {
+  semiauto,
   auto,
   futurizeWithCancel,
   unfuturize,
@@ -73,6 +74,15 @@ test("idiotic - variant", done => {
 test("idiotic - final permutation", done => {
   const shitLater = after(5)("shit")
   const spoon = idiotic(3, fork)
+  spoon(done, x => {
+    expect(x).toEqual("shit")
+    done()
+  })(shitLater)
+})
+
+test("semiauto", done => {
+  const shitLater = after(5)("shit")
+  const spoon = semiauto("fork", fork)
   spoon(done, x => {
     expect(x).toEqual("shit")
     done()

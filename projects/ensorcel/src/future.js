@@ -1,7 +1,18 @@
-import { pipe, findIndex, includes, curryN, reduce } from "ramda"
+import {
+  pipe,
+  prop,
+  findIndex,
+  memoizeWith,
+  identity as I,
+  includes,
+  curryN,
+  reduce
+} from "ramda"
 /* import { Future, fork } from "fluture" */
 import * as FF from "fluture"
 import { freeze } from "./utils"
+
+const memo = memoizeWith(I)
 
 const { Future, fork } = FF
 
@@ -51,10 +62,15 @@ export const idiotic = curryN(2, (arity, raw) => {
   return curryN(arity, (...args) => reduce((fn, x) => fn(x), raw, args))
 })
 
-export const auto = lookup =>
-  pipe(findIndex(includes(lookup)), arity => idiotic(arity, FF[lookup]))(
-    FLUTURE_METHOD_ARITIES
-  )
+const hotLookup = memo(x => findIndex(includes(x)))
+
+// use semiauto if you wanna do tree-shaking
+export const semiauto = curryN(2, (lookup, fn) =>
+  pipe(hotLookup(lookup), arity => idiotic(arity, fn))(FLUTURE_METHOD_ARITIES)
+)
+
+// use auto if you dgaf
+export const auto = lookup => pipe(prop(lookup), fn => semiauto(lookup, fn))(FF)
 
 export const FLUTURE_METHOD_ARITIES = freeze([
   ["swap", "promise"],

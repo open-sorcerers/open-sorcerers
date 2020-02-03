@@ -1,0 +1,39 @@
+---
+path: /modules/engraved
+author: brekk
+title: engraved
+excerpt: polished in dev; engraved in prod
+draft: true
+dateEdited: 2020-02-01
+datePublished: 2020-02-03
+---
+
+## A complement to `polished`
+
+`polished` is a lovely library for providing the kinds of mixin utilities you may be used to in languages which target css (SASS / LESS) but for css-in-js. However, if (just, as a for instance) you are looking to build a performant page which allows you to toggle between radically different themes, then you might want to do something to take a theme that looks like this:
+
+```js
+const theme = {
+  elements: {
+    button: {
+      color: '#c0ffee',
+      background: '#ffcc00',
+      active: {color: mix(1/2, '#c00', '#c0ffee'), background: '#ffcc00'}
+    }
+  }
+}
+```
+
+and turn it into a flattened, static, deduplicated version of it:
+
+```js
+const $c0ffee = '#c0ffee'
+const $ffcc00 = '#ffcc00'
+const $c67f77 = '#c67f77'
+export default Object.freeze({
+  elementsButtonColor: $c0ffee,
+  elementsButtonBackground: $ffcc00,
+  elementsButtonActiveColor: $c67f77,
+  elementsButtonActiveBackground: $ffcc00
+})
+```

@@ -4,7 +4,7 @@ import {
   auto,
   futurizeWithCancel,
   unfuturize,
-  idiotic,
+  tacit,
   FLUTURE_METHOD_ARITIES
 } from "./future"
 
@@ -40,18 +40,18 @@ test("mandatory simple currying sucks", done => {
   })
   handler(shitLater)
 })
-test("idiotic - manual", done => {
+test("tacit - manual", done => {
   const shitLater = after(5)("shit")
-  const spoon = idiotic(3, fork)
+  const spoon = tacit(3, fork)
   const handler = spoon(done)(x => {
     expect(x).toEqual("shit")
     done()
   })
   handler(shitLater)
 })
-test("idiotic - all", done => {
+test("tacit - all", done => {
   const shitLater = after(5)("shit")
-  const spoon = idiotic(3, fork)
+  const spoon = tacit(3, fork)
   spoon(
     done,
     x => {
@@ -62,18 +62,18 @@ test("idiotic - all", done => {
   )
 })
 
-test("idiotic - variant", done => {
+test("tacit - variant", done => {
   const shitLater = after(5)("shit")
-  const spoon = idiotic(3, fork)
+  const spoon = tacit(3, fork)
   spoon(done)(x => {
     expect(x).toEqual("shit")
     done()
   }, shitLater)
 })
 
-test("idiotic - final permutation", done => {
+test("tacit - final permutation", done => {
   const shitLater = after(5)("shit")
-  const spoon = idiotic(3, fork)
+  const spoon = tacit(3, fork)
   spoon(done, x => {
     expect(x).toEqual("shit")
     done()

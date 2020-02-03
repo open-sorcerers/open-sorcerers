@@ -58,7 +58,7 @@ export const downgrade = unfuturize
 // not a fan of simple currying at some other library's whims
 // especially given that uncurryN doesn't fucking work with it
 // and we're not using sanctuary
-export const idiotic = curryN(2, (arity, raw) => {
+export const tacit = curryN(2, (arity, raw) => {
   return curryN(arity, (...args) => reduce((fn, x) => fn(x), raw, args))
 })
 
@@ -66,7 +66,7 @@ const hotLookup = memo(x => findIndex(includes(x)))
 
 // use semiauto if you wanna do tree-shaking
 export const semiauto = curryN(2, (lookup, fn) =>
-  pipe(hotLookup(lookup), arity => idiotic(arity, fn))(FLUTURE_METHOD_ARITIES)
+  pipe(hotLookup(lookup), arity => tacit(arity, fn))(FLUTURE_METHOD_ARITIES)
 )
 
 // use auto if you dgaf

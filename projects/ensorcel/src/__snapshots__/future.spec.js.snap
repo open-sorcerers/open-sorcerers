@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FLUTURE_METHOD_ARITIES 1`] = `
+Array [
+  Array [
+    "swap",
+    "promise",
+  ],
+  Array [
+    "ap",
+    "attempt",
+    "attemptP",
+    "chain",
+    "chainRej",
+    "go",
+    "isFuture",
+    "isNever",
+    "map",
+    "mapRej",
+    "node",
+    "pap",
+    "reject",
+    "resolve",
+  ],
+  Array [
+    "after",
+    "alt",
+    "and",
+    "both",
+    "done",
+    "encase",
+    "encaseP",
+    "lastly",
+    "parallel",
+    "rejectAfter",
+    "value",
+  ],
+  Array [
+    "bimap",
+    "coalesce",
+    "fork",
+    "hook",
+  ],
+  Array [
+    "forkCatch",
+  ],
+]
+`;

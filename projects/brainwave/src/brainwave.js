@@ -1,5 +1,3 @@
-import path from "path"
-import { stat as rawStat, readFile } from "torpor"
 import { unless, chain, ifElse, pipe, propOr, curryN, curry, map } from "ramda"
 import { Future } from "fluture"
 import { trace } from "xtrace"
@@ -53,7 +51,6 @@ const psychic = curry((loadOrSearch, bad, good, config) =>
   pipe(
     propOr(false, CF),
     loadOrSearch,
-    trace("==>"),
     map(unless(pipe(propOr(false, CC)), generateNeuralNetwork(bad))),
     chain(lookForFrontmatter(config)),
     fork(bad, good)

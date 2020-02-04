@@ -5,9 +5,7 @@ import { brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
 test("basic - no valid config", done => {
-  const xxx = brainwave({
-    basePath: fixture
-  })
+  const xxx = brainwave({})
   fork(error => {
     expect(error.message).toEqual(
       "Expected to have brainwave config return a function!"

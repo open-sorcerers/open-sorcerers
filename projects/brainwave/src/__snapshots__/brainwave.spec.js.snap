@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic - configFile 1`] = `
+Array [
+  "brains",
+  "control",
+  "telepathy",
+]
+`;
+
+exports[`basic - configFile 2`] = `
+Array [
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
+]
+`;
+
+exports[`basic - configFile 3`] = `
+Array [
+  "stats",
+  "filepath",
+]
+`;
+
+exports[`basic - configFile 4`] = `"/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md"`;
+
+exports[`basic - cosmiconfig 1`] = `
+Array [
+  "brains",
+  "control",
+  "telepathy",
+]
+`;
+
+exports[`basic - cosmiconfig 2`] = `
+Array [
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
+]
+`;
+
+exports[`basic - cosmiconfig 3`] = `
+Array [
+  "stats",
+  "filepath",
+]
+`;
+
+exports[`basic - cosmiconfig 4`] = `"/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md"`;

@@ -1,6 +1,6 @@
 {
   "name": "ensorcel",
-  "version": "0.0.2-beta.2",
+  "version": "0.0.2",
   "description": "common tools for sorcerers",
   "main": "ensorcel.js",
   "module": "ensorcel.mjs",

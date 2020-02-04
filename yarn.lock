@@ -8702,6 +8702,14 @@ enhanced-resolve@^4.1.0:
     memory-fs "^0.5.0"
     tapable "^1.0.0"
 
+ensorcel@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/ensorcel/-/ensorcel-0.0.2.tgz#0600a8093a4c5e2b0a4b936bce7b82488553bfe1"
+  integrity sha512-hlp/4NwyCAdNtvQwirMQPFqwt1SFLia/LaiGNxixLA1eurPsALZoClUNa+8KunQk4aP+1nvTqoRui9Z4c90Gzw==
+  dependencies:
+    fluture "^12.1.1"
+    ramda "^0.26.1"
+
 entities@^1.1.1, entities@^1.1.2, entities@~1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
@@ -9997,7 +10005,7 @@ fast-glob@^2.0.2, fast-glob@^2.2.6:
     merge2 "^1.2.3"
     micromatch "^3.1.10"
 
-fast-glob@^3.0.3, fast-glob@^3.0.4:
+fast-glob@^3.0.3, fast-glob@^3.0.4, fast-glob@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.1.1.tgz#87ee30e9e9f3eb40d6f254a7997655da753d7c82"
   integrity sha512-nTCREpBY8w8r+boyFYAx21iL6faSsQynliPHM4Uf56SbkyohCNxpVPEH9xrF5TXKy+IsjkPUHDKiUkzBVRXn9g==
@@ -11730,6 +11738,18 @@ globby@^10.0.1:
     glob "^7.1.3"
     ignore "^5.1.1"
     merge2 "^1.2.3"
+    slash "^3.0.0"
+
+globby@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.0.tgz#56fd0e9f0d4f8fb0c456f1ab0dee96e1380bc154"
+  integrity sha512-iuehFnR3xu5wBBtm4xi0dMe92Ob87ufyu/dHwpDYfbcpYpIbrO5OnS8M1vWvrBhSGEJ3/Ecj7gnX76P8YxpPEg==
+  dependencies:
+    array-union "^2.1.0"
+    dir-glob "^3.0.1"
+    fast-glob "^3.1.1"
+    ignore "^5.1.4"
+    merge2 "^1.3.0"
     slash "^3.0.0"
 
 globby@^4.0.0:
@@ -23210,13 +23230,14 @@ toposort@^0.2.10:
   resolved "https://registry.yarnpkg.com/toposort/-/toposort-0.2.12.tgz#c7d2984f3d48c217315cc32d770888b779491e81"
   integrity sha1-x9KYTz1IwhcxXMMtdwiIt3lJHoE=
 
-torpor@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/torpor/-/torpor-0.0.1.tgz#beb48a65eead90751b76c942a7312d94ac964dcb"
-  integrity sha512-rSDq/vEV2/2qkGx/H7o1kKgWMOasKLCPMSiVNa9MFKPqe2kDopRwPV1qFyF9F1xxO3Z3vPZ6edq530RTWggNaA==
+torpor@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/torpor/-/torpor-0.0.3.tgz#e91a600e99607c55b81ca85c5e5f1353d8916849"
+  integrity sha512-RgrkPuUZi8hYR9dTE1nwIN3mvJG0kGqjTlAwqh/Kuhs3cki8/O5YVK05dt9A2gJPmbJVhxh26VRpMknROZNYMQ==
   dependencies:
     chance "^1.0.18"
-    fluture "^11.0.2"
+    ensorcel "^0.0.2"
+    fluture "^12.1.1"
     nsfw "^1.2.5"
     ramda "^0.26.1"
 

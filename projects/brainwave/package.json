@@ -3,15 +3,18 @@
   "version": "0.0.0",
   "description": "Programmatically update frontmatter without leaving JS",
   "main": "brainwave.js",
+  "module": "brainwave.mjs",
   "repository": "//github.com/open-sorcerers/brainwave",
   "author": "brekk",
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "cosmiconfig": "^6.0.0",
     "date-fns": "^2.9.0",
     "fluture": "^12.1.1",
+    "globby": "^11.0.0",
     "ramda": "^0.26.1",
-    "torpor": "^0.0.1",
+    "torpor": "^0.0.3",
     "yargs-parser": "^16.1.0"
   }
 }

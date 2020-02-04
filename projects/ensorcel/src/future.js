@@ -36,6 +36,9 @@ export const futurizeWithCancel = curryN(3, (cancel, arity, fn) =>
   })
 )
 
+// for the lazy seeking to use the lazy
+export const futurize = futurizeWithCancel(() => {})
+
 /**
 Takes a Future-returning function and gives back a Promise-returning function.
 

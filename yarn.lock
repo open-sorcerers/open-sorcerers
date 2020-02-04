@@ -8702,14 +8702,6 @@ enhanced-resolve@^4.1.0:
     memory-fs "^0.5.0"
     tapable "^1.0.0"
 
-ensorcel@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/ensorcel/-/ensorcel-0.0.2.tgz#0600a8093a4c5e2b0a4b936bce7b82488553bfe1"
-  integrity sha512-hlp/4NwyCAdNtvQwirMQPFqwt1SFLia/LaiGNxixLA1eurPsALZoClUNa+8KunQk4aP+1nvTqoRui9Z4c90Gzw==
-  dependencies:
-    fluture "^12.1.1"
-    ramda "^0.26.1"
-
 entities@^1.1.1, entities@^1.1.2, entities@~1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"

@@ -11,6 +11,7 @@ Array [
 exports[`basic - configFile 2`] = `
 Array [
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
 ]
 `;
@@ -19,12 +20,11 @@ exports[`basic - configFile 3`] = `
 Array [
   "stats",
   "filepath",
+  "brain",
 ]
 `;
 
-exports[`basic - configFile 4`] = `"/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md"`;
-
-exports[`basic - cosmiconfig 1`] = `
+exports[`basic - namespace 1`] = `
 Array [
   "brains",
   "control",
@@ -32,18 +32,18 @@ Array [
 ]
 `;
 
-exports[`basic - cosmiconfig 2`] = `
+exports[`basic - namespace 2`] = `
 Array [
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
 ]
 `;
 
-exports[`basic - cosmiconfig 3`] = `
+exports[`basic - namespace 3`] = `
 Array [
   "stats",
   "filepath",
+  "brain",
 ]
 `;
-
-exports[`basic - cosmiconfig 4`] = `"/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md"`;

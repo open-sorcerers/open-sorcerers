@@ -1,7 +1,6 @@
 import path from "path"
 import { fork } from "fluture"
-import { prop, keys } from "ramda"
-import { j2 } from "ensorcel"
+import { curry, keys } from "ramda"
 import { brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
@@ -17,30 +16,29 @@ test("basic - no valid config", done => {
   })(done)(xxx)
 })
 
-test("basic - cosmiconfig", done => {
-  const xxx = brainwave({
-    basePath: fixture,
-    cosmiconfig: "example-brainwave"
-  })
+const runWithConfig = curry((config, done) => {
+  const xxx = brainwave(config)
   fork(done)(yyy => {
     expect(keys(yyy)).toMatchSnapshot()
-    expect(yyy.brains.map(prop("filepath"))).toMatchSnapshot()
-    expect(keys(yyy.brains[0])).toMatchSnapshot()
-    expect(yyy.brains[0].filepath).toMatchSnapshot()
+    const files = keys(yyy.brains)
+    expect(files).toMatchSnapshot()
+    expect(keys(yyy.brains[files[0]])).toMatchSnapshot()
     done()
   })(xxx)
 })
 
-test("basic - configFile", done => {
-  const xxx = brainwave({
-    basePath: fixture,
+test(
+  "basic - namespace",
+  runWithConfig({
+    root: fixture,
+    namespace: "example-brainwave"
+  })
+)
+
+test(
+  "basic - configFile",
+  runWithConfig({
+    root: fixture,
     configFile: path.resolve(__dirname, "..", "example-brainwave.config.js")
   })
-  fork(done)(yyy => {
-    expect(keys(yyy)).toMatchSnapshot()
-    expect(yyy.brains.map(prop("filepath"))).toMatchSnapshot()
-    expect(keys(yyy.brains[0])).toMatchSnapshot()
-    expect(yyy.brains[0].filepath).toMatchSnapshot()
-    done()
-  })(xxx)
-})
+)

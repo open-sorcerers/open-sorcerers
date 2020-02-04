@@ -1,6 +1,14 @@
 import path from "path"
-import { stat as rawStat } from "torpor"
+import { stat as rawStat, readFile } from "torpor"
 import {
+  groupBy,
+  prop,
+  dissoc,
+  reduce,
+  concat,
+  mergeRight,
+  uniq,
+  ap,
   unless,
   reject,
   is,
@@ -14,13 +22,15 @@ import {
   curry,
   map
 } from "ramda"
-import { Future, parallel } from "fluture"
-/* import { trace } from "xtrace" */
+import { Future, resolve as RESOLVE, parallel } from "fluture"
+import { trace } from "xtrace"
 import { cosmiconfig as cosmic } from "cosmiconfig"
-import { futurizeWithCancel } from "ensorcel"
-import brainScan from "gray-matter"
+import { box, futurizeWithCancel } from "ensorcel"
+import grayMatter from "gray-matter"
 
 import { fork, glob } from "./utils"
+
+const brainScan = pipe(readFile($, "utf8"), map(pipe(grayMatter, prop("data"))))
 
 export const relativePath = curryN(2, path.resolve)
 
@@ -34,14 +44,32 @@ export const stat = x =>
   )(x)
 
 // move minds with your mind
-export const teleTelekinesis = pipe(brainScan, wrap("brain"))
+export const teleTelekinesis = x =>
+  pipe(brainScan, map(pipe(wrap("brain"), assoc("filepath", x))))(x)
 
 export const findBrainsRelativeTo = curry((fileTypes, basePath) =>
   pipe(
     glob,
-    /* chain(list => parallel(10)(map(stat, list))) */
-    chain(pipe(map(stat), parallel(10)))
-    /* chain(pipe(map(teleTelekinesis), parallel(10))) */
+    chain(list =>
+      pipe(
+        box,
+        ap([map(stat), map(teleTelekinesis)]),
+        ([a, b]) => a.concat(b),
+        parallel(10),
+        /* map(groupBy(prop("filepath"))), */
+        /* map(map(map(dissoc("filepath")))), */
+        /* map(map(reduce(mergeRight, {}))), */
+
+        map(
+          pipe(
+            groupBy(prop("filepath")),
+            map(map(dissoc("filepath"))),
+            map(reduce(mergeRight, {}))
+          )
+        ),
+        map(trace("what"))
+      )(list)
+    )
   )(basePath + "/**/*." + fileTypes)
 )
 

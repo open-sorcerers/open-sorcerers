@@ -1,7 +1,7 @@
 import path from "path"
-import { fork } from "fluture"
+import { resolve, fork } from "fluture"
 import { curry, keys } from "ramda"
-import { brainwave } from "./brainwave"
+import { telepath, brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
 test("basic - no valid config", done => {
@@ -9,6 +9,15 @@ test("basic - no valid config", done => {
   fork(error => {
     expect(error.message).toEqual(
       "Expected to have brainwave config return a function!"
+    )
+    done()
+  })(done)(xxx)
+})
+test("basic - config doesn't have telepathy and mindControl ", done => {
+  const xxx = brainwave({ namespace: "example-brainwave2" })
+  fork(error => {
+    expect(error.message).toEqual(
+      "Expected brainwave config to have one or more keys in: [control, telepathy]"
     )
     done()
   })(done)(xxx)
@@ -40,3 +49,24 @@ test(
     configFile: path.resolve(__dirname, "..", "example-brainwave.config.js")
   })
 )
+test("telepath", done => {
+  const cancel = () => {}
+  const isCancelled = true
+  const unaryF = () => resolve({})
+  telepath(
+    cancel,
+    isCancelled,
+    unaryF,
+    z => {
+      expect(z.message).toEqual("Is cancelled!")
+      done()
+    },
+    done,
+    { namespace: "example-brainwave2" }
+  )
+})
+test("brainwave - cancel", done => {
+  const canceller = fork(done)(done)(brainwave({}))
+  canceller()
+  setTimeout(() => done(), 5)
+})

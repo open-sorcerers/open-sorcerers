@@ -1,26 +1,25 @@
 import {
   reduce,
+  unless,
   mergeRight,
   when,
-  cond,
   fromPairs,
   toPairs,
   chain,
   ifElse,
   pipe,
   propOr,
-  curryN,
   curry,
   map
 } from "ramda"
 import { Future } from "fluture"
 import { trace } from "xtrace"
 import { cosmiconfig as cosmic } from "cosmiconfig"
-import { smooth, futurizeWithCancel } from "ensorcel"
+import { j2, smooth, futurizeWithCancel } from "ensorcel"
 
 import { fork, globWithCancel } from "./utils"
 
-import { CC, CF, FT, MC, NS, RT, TK } from "./constants"
+import { DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
 import { consumeData } from "./consumers"
 
 const joint = curry((xx, aa, bb) => aa + xx + bb)
@@ -55,7 +54,9 @@ const runTelepathy = curry(
   ({ isCancelled, cancel }, { control: ct, brains, telepathy: tk }) =>
     new Future((bad, good) => {
       try {
+        /* istanbul ignore next */
         if (isCancelled) {
+          /* istanbul ignore next */
           bad("Is cancelled!")
           return
         }
@@ -74,86 +75,92 @@ const runTelepathy = curry(
           good
         )(tk)
       } catch (e) {
+        /* istanbul ignore next */
         bad(e)
       }
       return cancel
     })
+)
+
+const brainMapper = curry((conditions, brain) =>
+  reduce(
+    (agg, [kk, [pred, trans]]) => {
+      const changed = when(pred, trans, brain)
+      if (changed === brain) return agg
+      const keys = agg.keys.concat(kk)
+      return {
+        transformed: mergeRight(agg.transformed, changed),
+        keys
+      }
+    },
+    { transformed: brain, keys: [] },
+    conditions
+  )
 )
 
 const runMindControl = curry(
   ({ isCancelled, cancel }, { control: ct, brains, telepathy: tk }) =>
     new Future((bad, good) => {
       try {
+        /* istanbul ignore next */
         if (isCancelled) {
+          /* istanbul ignore next */
           bad("Is cancelled!")
           return
         }
         pipe(
           toPairs,
-          // each mindControl config entry
-          /*
-          map(([kk, [condition, mutation]]) => [
-            condition,
-            mutation
-            // pipe(mutation, ww => [kk, ww])
-          ]),*/
-          // we wanna be able to express constant functions without necessarily having that be the only thing which hits
-          // so we are gonna use when + reduce instead
-          /* conditions => map(cond(conditions), brains), */
-          conditions =>
-            map(
-              brain =>
-                reduce(
-                  (agg, [kk, [pred, trans]]) =>
-                    mergeRight(agg, when(pred, trans, brain)),
-                  brain,
-                  conditions
-                ),
-              brains
-            ),
+          // cond short-circuits, so we are gonna use when + reduce instead
+          conditions => map(brainMapper(conditions), brains),
           control => ({ control, brains, telepathy: tk }),
           good
         )(ct)
       } catch (e) {
+        /* istanbul ignore next */
         bad(e)
       }
       return cancel
     })
 )
 
-const lookForFrontmatter = curry(({ isCancelled, cancel }, config, network) => {
+const search = curry((cancellationPolicy, config, network) => {
   const control = propOr(null, MC, network)
   const telepathy = propOr(null, TK, network)
   const basePath = propOr(process.cwd(), RT, config)
   const getFileTypes = propOr("{md,mdx}", FT)
   return pipe(
     getFileTypes,
-    findBrainsRelativeTo(cancel, basePath),
+    findBrainsRelativeTo(cancellationPolicy.cancel, basePath),
     map(brains => ({ brains, control, telepathy })),
-    chain(runTelepathy({ isCancelled, cancel })),
-    chain(runMindControl({ isCancelled, cancel }))
+    chain(runTelepathy(cancellationPolicy)),
+    chain(runMindControl(cancellationPolicy))
   )(config)
 })
 
 export const psychic = curry(
-  ({ isCancelled, cancel, loadOrSearch }, bad, good, config) =>
+  ({ isCancelled, cancel, loadOrSearch }, bad, config) =>
     pipe(
       propOr(false, CF),
       loadOrSearch,
-      /* map(unless(pipe(propOr(false, CC)), generateNeuralNetwork(bad))), */
       map(generateNeuralNetwork(bad)),
-      chain(lookForFrontmatter({ isCancelled, cancel }, config)),
-      fork(bad, good)
+      chain(search({ isCancelled, cancel }, config))
     )(config)
 )
 
-export const telepath = curry(
-  ({ cancel, isCancelled, loadOrSearch }, bad, good, config) =>
-    ifElse(
-      () => isCancelled,
-      () => bad(new Error("Is cancelled!")),
-      psychic({ isCancelled, cancel, loadOrSearch }, bad, good)
-    )(config)
+export const telepath = curry((cancellationPolicy, bad, config) =>
+  ifElse(
+    () => cancellationPolicy.isCancelled,
+    () => bad(new Error("Is cancelled!")),
+    psychic(cancellationPolicy, bad)
+  )(config)
+)
+
+export const alter = map(
+  pipe(
+    trace("this would alter, if you were less lazy")
+    /* z => console.log("zzz", j2(z)) || z */
+    /* ({ brains, control, telepathy }) => pipe() */
+  )
 )
 
 export const brainwave = config => {
@@ -164,12 +171,17 @@ export const brainwave = config => {
     isCancelled = true
   }
   const futurize = futurizeWithCancel(cancel)
-  const load = futurize(1, cc.load)
-  const search = futurize(0, cc.search)
-  const loadOrSearch = c => (c ? load(c) : search())
+  const cosmicLoad = futurize(1, cc.load)
+  const cosmicSearch = futurize(0, cc.search)
+  const loadOrSearch = c => (c ? cosmicLoad(c) : cosmicSearch())
   const mindControl = telepath({ cancel, isCancelled, loadOrSearch })
+  const dryRun = propOr(false, DR, config)
   return new Future((bad, good) => {
-    mindControl(bad, good, config)
+    pipe(
+      mindControl(bad),
+      unless(() => dryRun, alter),
+      fork(bad, good)
+    )(config)
     return cancel
   })
 }

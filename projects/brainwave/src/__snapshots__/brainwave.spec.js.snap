@@ -2,8 +2,8 @@
 
 exports[`basic - configFile 1`] = `
 Array [
-  "brains",
   "control",
+  "brains",
   "telepathy",
 ]
 `;
@@ -12,6 +12,7 @@ exports[`basic - configFile 2`] = `
 Array [
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
 ]
 `;
@@ -24,10 +25,127 @@ Array [
 ]
 `;
 
+exports[`basic - configFile 4`] = `
+Object {
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md": Object {
+    "brain": Object {
+      "hey": "cool",
+      "test": "yes",
+      "whatever": Object {
+        "you": Object {
+          "do": Object {
+            "you": true,
+          },
+        },
+      },
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+    "stats": Object {
+      "birthtime": 2020-02-04T10:06:05.919Z,
+      "birthtimeMs": 1580810765918.8853,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-04T13:57:51.399Z,
+      "ctimeMs": 1580824671399.1277,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31190291,
+      "mode": 33188,
+      "mtime": 2020-02-04T10:06:05.919Z,
+      "mtimeMs": 1580810765918.9436,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 118,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx": Object {
+    "brain": Object {
+      "const": "yay",
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
+    "stats": Object {
+      "birthtime": 2020-02-05T06:38:11.511Z,
+      "birthtimeMs": 1580884691511.4507,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-05T06:38:11.512Z,
+      "ctimeMs": 1580884691511.7468,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31356705,
+      "mode": 33188,
+      "mtime": 2020-02-05T06:38:11.512Z,
+      "mtimeMs": 1580884691511.5408,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 195,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx": Object {
+    "brain": Object {
+      "const": "yay",
+      "datePublished": 2018-01-01T00:00:00.000Z,
+      "draft": true,
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx",
+    "stats": Object {
+      "birthtime": 2020-02-05T07:52:07.705Z,
+      "birthtimeMs": 1580889127705.169,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-05T07:52:07.711Z,
+      "ctimeMs": 1580889127710.6125,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31361547,
+      "mode": 33188,
+      "mtime": 2020-02-05T07:52:07.705Z,
+      "mtimeMs": 1580889127705.2874,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 192,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md": Object {
+    "brain": Object {},
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
+    "stats": Object {
+      "birthtime": 2020-02-04T10:05:06.720Z,
+      "birthtimeMs": 1580810706719.6296,
+      "blksize": 4096,
+      "blocks": 0,
+      "ctime": 2020-02-04T13:57:51.603Z,
+      "ctimeMs": 1580824671602.8286,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31190222,
+      "mode": 33188,
+      "mtime": 2020-02-04T10:05:06.720Z,
+      "mtimeMs": 1580810706719.6296,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 0,
+      "uid": 501,
+    },
+  },
+}
+`;
+
 exports[`basic - namespace 1`] = `
 Array [
-  "brains",
   "control",
+  "brains",
   "telepathy",
 ]
 `;
@@ -36,6 +154,7 @@ exports[`basic - namespace 2`] = `
 Array [
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx",
   "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
 ]
 `;
@@ -46,4 +165,121 @@ Array [
   "filepath",
   "brain",
 ]
+`;
+
+exports[`basic - namespace 4`] = `
+Object {
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md": Object {
+    "brain": Object {
+      "hey": "cool",
+      "test": "yes",
+      "whatever": Object {
+        "you": Object {
+          "do": Object {
+            "you": true,
+          },
+        },
+      },
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md",
+    "stats": Object {
+      "birthtime": 2020-02-04T10:06:05.919Z,
+      "birthtimeMs": 1580810765918.8853,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-04T13:57:51.399Z,
+      "ctimeMs": 1580824671399.1277,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31190291,
+      "mode": 33188,
+      "mtime": 2020-02-04T10:06:05.919Z,
+      "mtimeMs": 1580810765918.9436,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 118,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx": Object {
+    "brain": Object {
+      "const": "yay",
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx",
+    "stats": Object {
+      "birthtime": 2020-02-05T06:38:11.511Z,
+      "birthtimeMs": 1580884691511.4507,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-05T06:38:11.512Z,
+      "ctimeMs": 1580884691511.7468,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31356705,
+      "mode": 33188,
+      "mtime": 2020-02-05T06:38:11.512Z,
+      "mtimeMs": 1580884691511.5408,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 195,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx": Object {
+    "brain": Object {
+      "const": "yay",
+      "datePublished": 2018-01-01T00:00:00.000Z,
+      "draft": true,
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx",
+    "stats": Object {
+      "birthtime": 2020-02-05T07:52:07.705Z,
+      "birthtimeMs": 1580889127705.169,
+      "blksize": 4096,
+      "blocks": 8,
+      "ctime": 2020-02-05T07:52:07.711Z,
+      "ctimeMs": 1580889127710.6125,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31361547,
+      "mode": 33188,
+      "mtime": 2020-02-05T07:52:07.705Z,
+      "mtimeMs": 1580889127705.2874,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 192,
+      "uid": 501,
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md": Object {
+    "brain": Object {},
+    "filepath": "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md",
+    "stats": Object {
+      "birthtime": 2020-02-04T10:05:06.720Z,
+      "birthtimeMs": 1580810706719.6296,
+      "blksize": 4096,
+      "blocks": 0,
+      "ctime": 2020-02-04T13:57:51.603Z,
+      "ctimeMs": 1580824671602.8286,
+      "dev": 16777220,
+      "gid": 20,
+      "ino": 31190222,
+      "mode": 33188,
+      "mtime": 2020-02-04T10:05:06.720Z,
+      "mtimeMs": 1580810706719.6296,
+      "nlink": 1,
+      "rdev": 0,
+      "size": 0,
+      "uid": 501,
+    },
+  },
+}
 `;

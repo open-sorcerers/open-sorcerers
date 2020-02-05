@@ -1,6 +1,6 @@
 import path from "path"
 import { resolve, fork } from "fluture"
-import { curry, keys } from "ramda"
+import { mergeRight, map, omit, curry, keys } from "ramda"
 import { telepath, brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
@@ -30,6 +30,15 @@ const runWithConfig = curry((config, done) => {
     const files = keys(yyy.brains)
     expect(files).toMatchSnapshot()
     expect(keys(yyy.brains[files[0]])).toMatchSnapshot()
+    expect(
+      map(
+        bb =>
+          mergeRight(omit(["atime", "atimeMs"], bb), {
+            stats: omit(["atime", "atimeMs"], bb.stats)
+          }),
+        yyy.brains
+      )
+    ).toMatchSnapshot()
     done()
   })(xxx)
 })
@@ -38,7 +47,8 @@ test(
   "basic - namespace",
   runWithConfig({
     root: fixture,
-    namespace: "example-brainwave"
+    namespace: "example-brainwave",
+    dryRun: true
   })
 )
 
@@ -46,7 +56,8 @@ test(
   "basic - configFile",
   runWithConfig({
     root: fixture,
-    configFile: path.resolve(__dirname, "..", "example-brainwave.config.js")
+    configFile: path.resolve(__dirname, "..", "example-brainwave.config.js"),
+    dryRun: true
   })
 )
 test("telepath", done => {
@@ -64,7 +75,7 @@ test("telepath", done => {
   )
 })
 test("brainwave - cancel", done => {
-  const canceller = fork(done)(done)(brainwave({}))
+  const canceller = fork(done)(done)(brainwave({ dryRun: true }))
   canceller()
-  setTimeout(() => done(), 5)
+  setTimeout(() => done(), 1)
 })

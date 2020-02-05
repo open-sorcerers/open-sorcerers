@@ -26,6 +26,7 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
 const runWithConfig = curry((config, done) => {
   const xxx = brainwave(config)
   fork(done)(yyy => {
+    console.log(yyy, ">>>", yyy.telepathy)
     expect(keys(yyy)).toMatchSnapshot()
     const files = keys(yyy.brains)
     expect(files).toMatchSnapshot()
@@ -54,9 +55,7 @@ test("telepath", done => {
   const isCancelled = true
   const unaryF = () => resolve({})
   telepath(
-    cancel,
-    isCancelled,
-    unaryF,
+    { cancel, isCancelled, loadOrSearch: unaryF },
     z => {
       expect(z.message).toEqual("Is cancelled!")
       done()

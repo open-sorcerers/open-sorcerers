@@ -1,4 +1,5 @@
 const R = require("ramda")
+const { trace } = require("xtrace")
 const compareAsc = require("date-fns/fp/compareAsc")
 
 const timeAfterTime = R.curry((a, b) => compareAsc(a, b) > -1)
@@ -27,31 +28,32 @@ module.exports = () => ({
   // if mutation returns a non-null result, that value will be merged with the previous state
   // (using mergeRight)
   control: {
+    /* publishingPublished: [ */
+    /*   /1* condition *1/ */
+    /*   R.both( */
+    /*     // datePublished >= now */
+    /*     R.pipe( */
+    /*       trace("what"), */
+    /*       R.pathOr(-1, ["brain", "datePublished"]), */
+    /*       x => new Date(x), */
+    /*       // test this */
+    /*       timeAfterTime(new Date(Date.now())) */
+    /*     ), */
+    /*     // is draft */
+    /*     R.pathOr(false, ["brain", "draft"]) */
+    /*   ), */
+    /*   /1* mutation *1/ */
+    /*   R.assoc("draft", false) */
+    /* ], */
     publishingEdited: [
       /* condition */
       () => true,
       /* mutation */
       R.pipe(
         R.pathOr(-1, ["stats", "ctime"]),
-        z => z.substr(0, z.indexOf("T")),
-        R.assoc("dateEdited")
+        z => new Date(z),
+        z => ({ dateEdited: z })
       )
-    ],
-    publishingPublished: [
-      /* condition */
-      R.both(
-        // datePublished >= now
-        R.pipe(
-          R.pathOr(-1, ["brain", "datePublished"]),
-          x => new Date(x),
-          // test this
-          timeAfterTime(new Date(Date.now()))
-        ),
-        // is draft
-        R.pathOr(false, ["brain", "draft"])
-      ),
-      /* mutation */
-      R.assoc("draft", false)
     ]
   },
   // telepathy queries your frontmatter, using basically the same interface as mind control, but simplified

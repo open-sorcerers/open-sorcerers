@@ -1,8 +1,19 @@
-import { unless, chain, ifElse, pipe, propOr, curryN, curry, map } from "ramda"
+import {
+  cond,
+  fromPairs,
+  toPairs,
+  chain,
+  ifElse,
+  pipe,
+  propOr,
+  curryN,
+  curry,
+  map
+} from "ramda"
 import { Future } from "fluture"
 import { trace } from "xtrace"
 import { cosmiconfig as cosmic } from "cosmiconfig"
-import { futurizeWithCancel } from "ensorcel"
+import { smooth, futurizeWithCancel } from "ensorcel"
 
 import { fork, globWithCancel } from "./utils"
 
@@ -21,7 +32,7 @@ export const findBrainsRelativeTo = curry((cancel, basePath, fileTypes) =>
 
 const ERRORS = Object.freeze({
   RETURN_A_FUNCTION: "Expected to have brainwave config return a function!",
-  TELEPATHY_OR_CONTROL: `Expected brainwave config to have one or more keys in: [${MC}, ${TK}]`
+  TELEPATHY_OR_MIND_CONTROL: `Expected brainwave config to have one or more keys in: [${MC}, ${TK}]`
 })
 
 // ;)
@@ -32,12 +43,71 @@ const generateNeuralNetwork = curry((bad, xxx) => {
   const control = propOr(false, MC, memoryPalace)
   const telepathy = propOr(false, TK, memoryPalace)
   if (!control && !telepathy) {
-    return bad(new Error(ERRORS.TELEPATHY_OR_CONTROL))
+    return bad(new Error(ERRORS.TELEPATHY_OR_MIND_CONTROL))
   }
   return memoryPalace
 })
 
-const lookForFrontmatter = curry((cancel, config, network) => {
+const runTelepathy = curry(
+  ({ isCancelled, cancel }, { control: ct, brains, telepathy: tk }) =>
+    new Future((bad, good) => {
+      try {
+        if (isCancelled) {
+          bad("Is cancelled!")
+          return
+        }
+        pipe(
+          // each telepathy config entry
+          toPairs,
+          map(([kk, vv]) => {
+            // each brain
+            return [
+              kk,
+              pipe(map(pipe(propOr({}, "brain"), vv)), smooth)(brains)
+            ]
+          }),
+          fromPairs,
+          telepathy => ({ brains, control: ct, telepathy }),
+          good
+        )(tk)
+      } catch (e) {
+        bad(e)
+      }
+      return cancel
+    })
+)
+
+const runMindControl = curry(
+  ({ isCancelled, cancel }, { control: ct, brains, telepathy: tk }) =>
+    new Future((bad, good) => {
+      try {
+        if (isCancelled) {
+          bad("Is cancelled!")
+          return
+        }
+        pipe(
+          toPairs,
+          // each mindControl config entry
+          // now returns [key, value] instead
+          map(([kk, [condition, mutation]]) => [
+            condition,
+            mutation
+            /* pipe(mutation, ww => [kk, ww]) */
+          ]),
+          trace("yeah"),
+          conditions => map(cond(conditions), brains),
+          trace("cool"),
+          control => ({ control, brains, telepathy: tk }),
+          good
+        )(ct)
+      } catch (e) {
+        bad(e)
+      }
+      return cancel
+    })
+)
+
+const lookForFrontmatter = curry(({ isCancelled, cancel }, config, network) => {
   const control = propOr(null, MC, network)
   const telepathy = propOr(null, TK, network)
   const basePath = propOr(process.cwd(), RT, config)
@@ -45,27 +115,30 @@ const lookForFrontmatter = curry((cancel, config, network) => {
   return pipe(
     getFileTypes,
     findBrainsRelativeTo(cancel, basePath),
-    map(brains => ({ brains, control, telepathy }))
+    map(brains => ({ brains, control, telepathy })),
+    chain(runTelepathy({ isCancelled, cancel })),
+    chain(runMindControl({ isCancelled, cancel }))
   )(config)
 })
 
-export const psychic = curry((cancel, loadOrSearch, bad, good, config) =>
-  pipe(
-    propOr(false, CF),
-    loadOrSearch,
-    /* map(unless(pipe(propOr(false, CC)), generateNeuralNetwork(bad))), */
-    map(generateNeuralNetwork(bad)),
-    chain(lookForFrontmatter(cancel, config)),
-    fork(bad, good)
-  )(config)
+export const psychic = curry(
+  ({ isCancelled, cancel, loadOrSearch }, bad, good, config) =>
+    pipe(
+      propOr(false, CF),
+      loadOrSearch,
+      /* map(unless(pipe(propOr(false, CC)), generateNeuralNetwork(bad))), */
+      map(generateNeuralNetwork(bad)),
+      chain(lookForFrontmatter({ isCancelled, cancel }, config)),
+      fork(bad, good)
+    )(config)
 )
 
 export const telepath = curry(
-  (cancel, isCancelled, loadOrSearch, bad, good, config) =>
+  ({ cancel, isCancelled, loadOrSearch }, bad, good, config) =>
     ifElse(
       () => isCancelled,
       () => bad(new Error("Is cancelled!")),
-      psychic(cancel, loadOrSearch, bad, good)
+      psychic({ isCancelled, cancel, loadOrSearch }, bad, good)
     )(config)
 )
 
@@ -80,7 +153,7 @@ export const brainwave = config => {
   const load = futurize(1, cc.load)
   const search = futurize(0, cc.search)
   const loadOrSearch = c => (c ? load(c) : search())
-  const mindControl = telepath(cancel, isCancelled, loadOrSearch)
+  const mindControl = telepath({ cancel, isCancelled, loadOrSearch })
   return new Future((bad, good) => {
     mindControl(bad, good, config)
     return cancel

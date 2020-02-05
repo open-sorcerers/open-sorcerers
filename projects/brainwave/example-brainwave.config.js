@@ -2,7 +2,7 @@ const R = require("ramda")
 const { trace } = require("xtrace")
 const compareAsc = require("date-fns/fp/compareAsc")
 
-const timeAfterTime = R.curry((a, b) => compareAsc(a, b) > -1)
+const timeAfterTime = R.curry((b, a) => compareAsc(a, b) > -1)
 
 // brainwave (TM) output
 /*
@@ -28,23 +28,23 @@ module.exports = () => ({
   // if mutation returns a non-null result, that value will be merged with the previous state
   // (using mergeRight)
   control: {
-    /* publishingPublished: [ */
-    /*   /1* condition *1/ */
-    /*   R.both( */
-    /*     // datePublished >= now */
-    /*     R.pipe( */
-    /*       trace("what"), */
-    /*       R.pathOr(-1, ["brain", "datePublished"]), */
-    /*       x => new Date(x), */
-    /*       // test this */
-    /*       timeAfterTime(new Date(Date.now())) */
-    /*     ), */
-    /*     // is draft */
-    /*     R.pathOr(false, ["brain", "draft"]) */
-    /*   ), */
-    /*   /1* mutation *1/ */
-    /*   R.assoc("draft", false) */
-    /* ], */
+    publishingPublished: [
+      /* condition */
+      R.both(
+        // datePublished >= now
+        R.pipe(
+          R.pathOr(-1, ["brain", "datePublished"]),
+          x => new Date(x),
+          // test this
+          timeAfterTime(new Date(Date.now()))
+        ),
+        // is draft
+        R.pathOr(false, ["brain", "draft"])
+      ),
+      /* mutation */
+      /* R.assoc("draft", false) */
+      R.pipe(trace("child rock"), z => ({ draft: false, ...z }))
+    ],
     publishingEdited: [
       /* condition */
       () => true,
@@ -52,7 +52,7 @@ module.exports = () => ({
       R.pipe(
         R.pathOr(-1, ["stats", "ctime"]),
         z => new Date(z),
-        z => ({ dateEdited: z })
+        R.assoc("date")
       )
     ]
   },

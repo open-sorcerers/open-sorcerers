@@ -26,7 +26,6 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
 const runWithConfig = curry((config, done) => {
   const xxx = brainwave(config)
   fork(done)(yyy => {
-    console.log(yyy, ">>>", yyy.telepathy)
     expect(keys(yyy)).toMatchSnapshot()
     const files = keys(yyy.brains)
     expect(files).toMatchSnapshot()

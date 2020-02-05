@@ -1,4 +1,7 @@
 import {
+  reduce,
+  mergeRight,
+  when,
   cond,
   fromPairs,
   toPairs,
@@ -88,15 +91,26 @@ const runMindControl = curry(
         pipe(
           toPairs,
           // each mindControl config entry
-          // now returns [key, value] instead
+          /*
           map(([kk, [condition, mutation]]) => [
             condition,
             mutation
-            /* pipe(mutation, ww => [kk, ww]) */
-          ]),
-          trace("yeah"),
-          conditions => map(cond(conditions), brains),
-          trace("cool"),
+            // pipe(mutation, ww => [kk, ww])
+          ]),*/
+          // we wanna be able to express constant functions without necessarily having that be the only thing which hits
+          // so we are gonna use when + reduce instead
+          /* conditions => map(cond(conditions), brains), */
+          conditions =>
+            map(
+              brain =>
+                reduce(
+                  (agg, [kk, [pred, trans]]) =>
+                    mergeRight(agg, when(pred, trans, brain)),
+                  brain,
+                  conditions
+                ),
+              brains
+            ),
           control => ({ control, brains, telepathy: tk }),
           good
         )(ct)

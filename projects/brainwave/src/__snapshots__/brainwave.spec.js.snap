@@ -283,3 +283,65 @@ Object {
   },
 }
 `;
+
+exports[`brainwave - by-hand 1`] = `
+Object {
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-1.md": Object {
+    "matched": Array [
+      "publishingPublished",
+      "publishingEdited",
+    ],
+    "transformed": Object {
+      "dateEdited": 2020-02-04T13:57:51.399Z,
+      "hey": "cool",
+      "test": "yes",
+      "whatever": Object {
+        "you": Object {
+          "do": Object {
+            "you": true,
+          },
+        },
+      },
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-2.mdx": Object {
+    "matched": Array [
+      "publishingPublished",
+      "publishingEdited",
+    ],
+    "transformed": Object {
+      "const": "yay",
+      "dateEdited": 2020-02-05T06:38:11.512Z,
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/frontmatter-3.mdx": Object {
+    "matched": Array [
+      "publishingPublished",
+      "publishingEdited",
+    ],
+    "transformed": Object {
+      "const": "yay",
+      "dateEdited": 2020-02-05T07:52:07.711Z,
+      "datePublished": 2018-01-01T00:00:00.000Z,
+      "draft": false,
+      "hooray": "per se",
+      "let": "okay",
+      "menu": "learn",
+      "var": "nay",
+    },
+  },
+  "/Users/brekkbockrath/work/open-sorcerers/projects/brainwave/src/fixture/no-frontmatter.md": Object {
+    "matched": Array [
+      "publishingPublished",
+      "publishingEdited",
+    ],
+    "transformed": Object {
+      "dateEdited": 2020-02-04T13:57:51.603Z,
+    },
+  },
+}
+`;

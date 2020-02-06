@@ -1,7 +1,8 @@
 const R = require("ramda")
+const { trace } = require("xtrace")
 const compareAsc = require("date-fns/fp/compareAsc")
 
-const timeAfterTime = R.curry((a, b) => compareAsc(a, b) > -1)
+const timeAfterTime = R.curry((b, a) => compareAsc(a, b) > -1)
 
 module.exports = () => ({
   control: {
@@ -14,15 +15,16 @@ module.exports = () => ({
         ),
         R.pathOr(false, ["brain", "draft"])
       ),
-      z => ({ draft: false, ...z })
+      () => ({ draft: false })
     ],
     publishingEdited: [
       () => true,
-      R.pipe(
-        R.pathOr(-1, ["stats", "ctime"]),
-        z => new Date(z),
-        R.assoc("date")
-      )
+      input =>
+        R.pipe(
+          R.pathOr(-1, ["stats", "ctime"]),
+          z => new Date(z),
+          dateEdited => ({ dateEdited })
+        )(input)
     ]
   },
   telepathy: {

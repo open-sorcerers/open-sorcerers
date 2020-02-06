@@ -23,6 +23,10 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
   })(done)(xxx)
 })
 
+const omitATime = omit(["atime", "atimeMs"])
+const omitATimeAllOver = x =>
+  mergeRight(omitATime(x), x.stats ? { stats: omitATime(x.stats) } : {})
+
 const runWithConfig = curry((config, done) => {
   const xxx = brainwave(config)
   fork(done)(yyy => {
@@ -30,15 +34,7 @@ const runWithConfig = curry((config, done) => {
     const files = keys(yyy.brains)
     expect(files).toMatchSnapshot()
     expect(keys(yyy.brains[files[0]])).toMatchSnapshot()
-    expect(
-      map(
-        bb =>
-          mergeRight(omit(["atime", "atimeMs"], bb), {
-            stats: omit(["atime", "atimeMs"], bb.stats)
-          }),
-        yyy.brains
-      )
-    ).toMatchSnapshot()
+    expect(map(omitATimeAllOver, yyy.brains)).toMatchSnapshot()
     done()
   })(xxx)
 })
@@ -78,4 +74,12 @@ test("brainwave - cancel", done => {
   const canceller = fork(done)(done)(brainwave({ dryRun: true }))
   canceller()
   setTimeout(() => done(), 1)
+})
+
+test("brainwave - by-hand", done => {
+  fork(done)(x => {
+    const output = map(omitATimeAllOver)(x.control)
+    expect(output).toMatchSnapshot()
+    done()
+  })(brainwave({ root: fixture, namespace: "example-brainwave" }))
 })

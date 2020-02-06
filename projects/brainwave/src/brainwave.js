@@ -2,6 +2,7 @@ import {
   reduce,
   unless,
   mergeRight,
+  identity,
   when,
   fromPairs,
   toPairs,
@@ -82,18 +83,18 @@ const runTelepathy = curry(
     })
 )
 
-const brainMapper = curry((conditions, brain) =>
+const mindMapper = curry((conditions, mind) =>
   reduce(
     (agg, [kk, [pred, trans]]) => {
-      const changed = when(pred, trans, brain)
-      if (changed === brain) return agg
-      const keys = agg.keys.concat(kk)
+      const changed = ifElse(pred, trans, () => ({}))(mind)
+      const keys = agg.matched.concat(kk)
+      const transformed = mergeRight(agg.transformed, changed)
       return {
-        transformed: mergeRight(agg.transformed, changed),
-        keys
+        transformed,
+        matched: keys
       }
     },
-    { transformed: brain, keys: [] },
+    { transformed: mind.brain, matched: [] },
     conditions
   )
 )
@@ -111,7 +112,7 @@ const runMindControl = curry(
         pipe(
           toPairs,
           // cond short-circuits, so we are gonna use when + reduce instead
-          conditions => map(brainMapper(conditions), brains),
+          conditions => map(mindMapper(conditions), brains),
           control => ({ control, brains, telepathy: tk }),
           good
         )(ct)
@@ -157,7 +158,8 @@ export const telepath = curry((cancellationPolicy, bad, config) =>
 
 export const alter = map(
   pipe(
-    trace("this would alter, if you were less lazy")
+    identity
+    /* trace("this would alter, if you were less lazy") */
     /* z => console.log("zzz", j2(z)) || z */
     /* ({ brains, control, telepathy }) => pipe() */
   )

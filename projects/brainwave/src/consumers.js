@@ -17,7 +17,6 @@ import { readFile, stat as rawStat } from "torpor"
 import grayMatter from "gray-matter"
 import { parallel } from "fluture"
 import { box } from "ensorcel"
-import { trace } from "xtrace"
 
 import { FC, CO, FI, BR, ST, DA } from "./constants"
 import { wrap } from "./utils"

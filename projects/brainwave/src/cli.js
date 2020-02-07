@@ -1,5 +1,5 @@
-import { trace } from "xtrace"
-import { map, pipe } from "ramda"
+/* import { trace } from "xtrace" */
+import { pipe } from "ramda"
 import parser from "yargs-parser"
 import { brainwave } from "./brainwave"
 import { NS, DR, CC, TK } from "./constants"

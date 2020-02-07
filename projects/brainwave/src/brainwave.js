@@ -1,5 +1,4 @@
 import {
-  join,
   curryN,
   __ as $,
   reduce,
@@ -19,7 +18,7 @@ import {
 } from "ramda"
 import { parallel, Future } from "fluture"
 import { writeFile } from "torpor"
-import { trace } from "xtrace"
+/* import { trace } from "xtrace" */
 import { cosmiconfig as cosmic } from "cosmiconfig"
 import { box, smooth, futurizeWithCancel } from "ensorcel"
 import { safeDump as yamlize } from "js-yaml"
@@ -201,7 +200,6 @@ export const runTransformation = pipe(
         )
       ),
       values,
-      trace("what what"),
       parallel(10)
     )
   )

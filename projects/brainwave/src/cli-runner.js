@@ -1,5 +1,4 @@
 import { fork } from "fluture"
-import { identity as I } from "ramda"
 
 import { cli } from "./cli"
 

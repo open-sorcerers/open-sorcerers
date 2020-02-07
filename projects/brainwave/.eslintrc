@@ -1,1 +1,1 @@
-extends: ../eslint-config-sorcerers/eslint.config.js
+extends: eslint-config-sorcerers

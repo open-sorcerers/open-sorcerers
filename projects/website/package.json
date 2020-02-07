@@ -99,6 +99,7 @@
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
+    "date-fns": "^2.9.0",
     "emotion-theming": "^10.0.19",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",

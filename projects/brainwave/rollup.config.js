@@ -7,7 +7,9 @@ import progress from "rollup-plugin-progress"
 /* import sizes from "rollup-plugin-sizes" */
 import pkg from "./package.json"
 
-const external = pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
+const external = ["path"].concat(
+  pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
+)
 const plugins = [
   progress(),
   json(),
@@ -34,8 +36,8 @@ export default [
   },
   {
     input: `src/cli-runner.js`,
-    external: external.concat(["fs"]),
-    output: [{ file: `engraved-cli.js`, format: `cjs` }],
+    external,
+    output: [{ file: `brainwave-cli.js`, format: `cjs` }],
     plugins: plugins
       .slice(0, 2)
       .concat([cli()])

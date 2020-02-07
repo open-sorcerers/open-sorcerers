@@ -1,6 +1,10 @@
 module.exports = {
   scripts: {
-    build: "rollup -c rollup.config.js",
+    build: {
+      script: "nps build.rollup build.cli",
+      rollup: "rollup -c rollup.config.js",
+      cli: "chmod 755 ./brainwave-cli.js"
+    },
     lint: "eslint ./src --fix",
     test: {
       script: "jest --verbose --coverage ",

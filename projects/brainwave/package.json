@@ -4,6 +4,9 @@
   "description": "Programmatically update frontmatter without leaving JS",
   "main": "brainwave.js",
   "module": "brainwave.mjs",
+  "bin": {
+    "brainwave": "brainwave-cli.js"
+  },
   "repository": "//github.com/open-sorcerers/brainwave",
   "author": "brekk",
   "license": "MIT",

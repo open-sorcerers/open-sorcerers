@@ -33,14 +33,14 @@ export default [
     external,
     output: [{ file: pkg.main, format: `cjs` }],
     plugins
-  }
-  /*{
+  },
+  {
     input: `src/cli-runner.js`,
-    external: external.concat(["fs"]),
-    output: [{ file: `engraved-cli.js`, format: `cjs` }],
+    external,
+    output: [{ file: `brainwave-cli.js`, format: `cjs` }],
     plugins: plugins
       .slice(0, 2)
       .concat([cli()])
       .concat(plugins.slice(2, Infinity))
-  }*/
+  }
 ]

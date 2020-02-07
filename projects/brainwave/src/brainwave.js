@@ -1,9 +1,8 @@
 import {
   reduce,
+  keys,
   unless,
   mergeRight,
-  identity,
-  when,
   fromPairs,
   toPairs,
   chain,
@@ -11,12 +10,13 @@ import {
   pipe,
   propOr,
   curry,
-  map
+  map,
+  ap
 } from "ramda"
 import { Future } from "fluture"
-import { trace } from "xtrace"
+/* import { trace } from "xtrace" */
 import { cosmiconfig as cosmic } from "cosmiconfig"
-import { j2, smooth, futurizeWithCancel } from "ensorcel"
+import { box, smooth, futurizeWithCancel } from "ensorcel"
 
 import { fork, globWithCancel } from "./utils"
 
@@ -157,11 +157,22 @@ export const telepath = curry((cancellationPolicy, bad, config) =>
 )
 
 export const alter = map(
-  pipe(
-    identity
-    /* trace("this would alter, if you were less lazy") */
-    /* z => console.log("zzz", j2(z)) || z */
-    /* ({ brains, control, telepathy }) => pipe() */
+  pipe(({ brains, control, telepathy }) =>
+    pipe(
+      map(
+        pipe(
+          box,
+          ap([propOr({}, "brain"), propOr("???", "filepath")]),
+
+          ([brain, filepath]) => ({
+            before: brain,
+            after: control[filepath].transformed,
+            filepath,
+            because: control[filepath].matched
+          })
+        )
+      )
+    )(brains)
   )
 )
 
@@ -178,10 +189,15 @@ export const brainwave = config => {
   const loadOrSearch = c => (c ? cosmicLoad(c) : cosmicSearch())
   const mindControl = telepath({ cancel, isCancelled, loadOrSearch })
   const dryRun = propOr(false, DR, config)
+  const telepathyOnly = propOr(false, TK, config)
   return new Future((bad, good) => {
     pipe(
       mindControl(bad),
-      unless(() => dryRun, alter),
+      ifElse(
+        () => telepathyOnly,
+        map(({ telepathy }) => map(keys)(telepathy)),
+        unless(() => dryRun, alter)
+      ),
       fork(bad, good)
     )(config)
     return cancel

@@ -7,7 +7,9 @@ import progress from "rollup-plugin-progress"
 /* import sizes from "rollup-plugin-sizes" */
 import pkg from "./package.json"
 
-const external = pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
+const external = ["path"].concat(
+  pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
+)
 const plugins = [
   progress(),
   json(),

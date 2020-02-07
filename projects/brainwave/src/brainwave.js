@@ -4,7 +4,7 @@ import {
   reduce,
   keys,
   values,
-  unless,
+  identity as I,
   mergeRight,
   fromPairs,
   toPairs,
@@ -194,20 +194,16 @@ export const reyaml = curry(
 )
 
 export const runTransformation = pipe(
-  chain(
-    pipe(
-      map(
-        /* istanbul ignore next */
-        ({ fileContent = "", after, filepath }) =>
-          writeFile(filepath, reyaml(fileContent, after), "utf8")
-      ),
-      values,
-      parallel(10)
-    )
-  )
-  /* map(([kk, vv]) => kk + vv) */
-  /* map(join("\n")) */
+  map(
+    /* istanbul ignore next */
+    ({ fileContent = "", after, filepath }) =>
+      writeFile(filepath, reyaml(fileContent, after), "utf8")
+  ),
+  values,
+  parallel(10)
 )
+/* map(([kk, vv]) => kk + vv) */
+/* map(join("\n")) */
 
 export const brainwave = config => {
   const ccf = propOr("brainwave", NS, config)
@@ -231,7 +227,7 @@ export const brainwave = config => {
         map(({ telepathy }) => map(keys)(telepathy)),
         structureTransformation
       ),
-      unless(() => dryRun || telepathyOnly, runTransformation),
+      ifElse(() => dryRun || telepathyOnly, I, chain(runTransformation)),
       fork(bad, good)
     )(config)
     return cancel

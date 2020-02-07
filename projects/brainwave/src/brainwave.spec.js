@@ -1,11 +1,11 @@
 import path from "path"
 import { resolve, fork } from "fluture"
-import { mergeRight, map, omit, curry, keys } from "ramda"
+import { map, omit, curry, keys } from "ramda"
 import { reyaml, telepath, brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
 test("basic - no valid config", done => {
-  const xxx = brainwave({})
+  const xxx = brainwave({ dryRun: true })
   fork(error => {
     expect(error.message).toEqual(
       "Expected to have brainwave config return a function!"
@@ -14,7 +14,7 @@ test("basic - no valid config", done => {
   })(done)(xxx)
 })
 test("basic - config doesn't have telepathy and mindControl ", done => {
-  const xxx = brainwave({ namespace: "example-brainwave2" })
+  const xxx = brainwave({ namespace: "example-brainwave2", dryRun: true })
   fork(error => {
     expect(error.message).toEqual(
       "Expected brainwave config to have one or more keys in: [control, telepathy]"
@@ -23,9 +23,6 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
   })(done)(xxx)
 })
 
-const omitATime = omit(["atime", "atimeMs"])
-const omitATimeAllOver = x =>
-  mergeRight(omitATime(x), x.stats ? { stats: omitATime(x.stats) } : {})
 const truncateFromBrainwave = z => {
   return z.substr(z.indexOf("brainwave"))
 }

@@ -1,7 +1,7 @@
 import path from "path"
 import { resolve, fork } from "fluture"
 import { mergeRight, map, omit, curry, keys } from "ramda"
-import { telepath, brainwave } from "./brainwave"
+import { reyaml, telepath, brainwave } from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
 test("basic - no valid config", done => {
@@ -26,15 +26,17 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
 const omitATime = omit(["atime", "atimeMs"])
 const omitATimeAllOver = x =>
   mergeRight(omitATime(x), x.stats ? { stats: omitATime(x.stats) } : {})
-
+const truncateFromBrainwave = z => {
+  return z.substr(z.indexOf("brainwave"))
+}
 const runWithConfig = curry((config, done) => {
   const xxx = brainwave(config)
   fork(done)(yyy => {
-    expect(keys(yyy)).toMatchSnapshot()
-    const files = keys(yyy.brains)
-    expect(files).toMatchSnapshot()
-    expect(keys(yyy.brains[files[0]])).toMatchSnapshot()
-    expect(map(omitATimeAllOver, yyy.brains)).toMatchSnapshot()
+    const keyed = keys(yyy)
+    const out = keyed.map(truncateFromBrainwave)
+    expect(out).toMatchSnapshot()
+    expect(keys(yyy[keyed[0]])).toMatchSnapshot()
+    expect(omit(["dateEdited"], yyy[keyed[0]].after)).toMatchSnapshot()
     done()
   })(xxx)
 })
@@ -76,10 +78,22 @@ test("brainwave - cancel", done => {
   setTimeout(() => done(), 1)
 })
 
-test("brainwave - by-hand", done => {
+test("brainwave - telepathy", done => {
   fork(done)(x => {
-    const output = map(omitATimeAllOver)(x.control)
-    expect(output).toMatchSnapshot()
+    expect(map(map(truncateFromBrainwave))(x)).toMatchSnapshot()
     done()
-  })(brainwave({ root: fixture, namespace: "example-brainwave" }))
+  })(
+    brainwave({
+      telepathy: true,
+      root: fixture,
+      namespace: "example-brainwave",
+      dryRun: true
+    })
+  )
+})
+
+test("reyaml", () => {
+  const input = "input!"
+  const headContent = { a: { b: { c: { d: { cool: "so cool" } } } } }
+  expect(reyaml(input, headContent)).toMatchSnapshot()
 })

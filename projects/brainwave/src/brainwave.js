@@ -189,15 +189,17 @@ export const structureTransformation = map(
 
 const tripleDash = "---\n"
 
+export const reyaml = curry(
+  (content, head) => tripleDash + yamify(head) + tripleDash + content
+)
+
 export const runTransformation = pipe(
   chain(
     pipe(
-      map(({ fileContent = "", after, filepath }) =>
-        writeFile(
-          filepath,
-          tripleDash + yamify(after) + tripleDash + fileContent,
-          "utf8"
-        )
+      map(
+        /* istanbul ignore next */
+        ({ fileContent = "", after, filepath }) =>
+          writeFile(filepath, reyaml(fileContent, after), "utf8")
       ),
       values,
       parallel(10)

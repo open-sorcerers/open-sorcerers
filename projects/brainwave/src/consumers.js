@@ -17,8 +17,9 @@ import { readFile, stat as rawStat } from "torpor"
 import grayMatter from "gray-matter"
 import { parallel } from "fluture"
 import { box } from "ensorcel"
+import { trace } from "xtrace"
 
-import { FI, BR, ST, DA } from "./constants"
+import { FC, CO, FI, BR, ST, DA } from "./constants"
 import { wrap } from "./utils"
 
 export const addStats = x =>
@@ -29,11 +30,19 @@ export const addStats = x =>
 
 export const brainScan = pipe(
   readFile($, "utf8"),
-  map(pipe(grayMatter, prop(DA)))
+  map(pipe(grayMatter, box, ap([prop(DA), prop(CO)])))
 )
 
 export const addBrains = x =>
-  pipe(brainScan, map(pipe(wrap(BR), assoc(FI, x))))(x)
+  pipe(
+    brainScan,
+    map(
+      pipe(
+        ([brain, fileContent]) => ({ [BR]: brain, [FC]: fileContent }),
+        assoc(FI, x)
+      )
+    )
+  )(x)
 
 export const consumeData = pipe(
   reject(includes("node_modules")),

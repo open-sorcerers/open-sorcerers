@@ -1,6 +1,10 @@
 import {
+  join,
+  curryN,
+  __ as $,
   reduce,
   keys,
+  values,
   unless,
   mergeRight,
   fromPairs,
@@ -13,17 +17,30 @@ import {
   map,
   ap
 } from "ramda"
-import { Future } from "fluture"
-/* import { trace } from "xtrace" */
+import { parallel, Future } from "fluture"
+import { writeFile } from "torpor"
+import { trace } from "xtrace"
 import { cosmiconfig as cosmic } from "cosmiconfig"
 import { box, smooth, futurizeWithCancel } from "ensorcel"
+import { safeDump as yamlize } from "js-yaml"
 
 import { fork, globWithCancel } from "./utils"
 
-import { DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
+import { FI, FC, BR, DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
 import { consumeData } from "./consumers"
 
 const joint = curry((xx, aa, bb) => aa + xx + bb)
+
+const toYAML = curryN(2, yamlize)
+const yamify = toYAML($, {
+  indent: 2,
+  noArrayIndent: false,
+  skipInvalid: false,
+  flowLevel: -1,
+  sortKeys: true,
+  noRefs: true,
+  condenseFlow: false
+})
 
 export const findBrainsRelativeTo = curry((cancel, basePath, fileTypes) =>
   pipe(
@@ -66,10 +83,7 @@ const runTelepathy = curry(
           toPairs,
           map(([kk, vv]) => {
             // each brain
-            return [
-              kk,
-              pipe(map(pipe(propOr({}, "brain"), vv)), smooth)(brains)
-            ]
+            return [kk, pipe(map(pipe(propOr({}, BR), vv)), smooth)(brains)]
           }),
           fromPairs,
           telepathy => ({ brains, control: ct, telepathy }),
@@ -87,11 +101,11 @@ const mindMapper = curry((conditions, mind) =>
   reduce(
     (agg, [kk, [pred, trans]]) => {
       const changed = ifElse(pred, trans, () => ({}))(mind)
-      const keys = agg.matched.concat(kk)
+      const matched = agg.matched.concat(kk)
       const transformed = mergeRight(agg.transformed, changed)
       return {
         transformed,
-        matched: keys
+        matched
       }
     },
     { transformed: mind.brain, matched: [] },
@@ -156,24 +170,43 @@ export const telepath = curry((cancellationPolicy, bad, config) =>
   )(config)
 )
 
-export const alter = map(
-  pipe(({ brains, control, telepathy }) =>
-    pipe(
-      map(
-        pipe(
-          box,
-          ap([propOr({}, "brain"), propOr("???", "filepath")]),
-
-          ([brain, filepath]) => ({
-            before: brain,
-            after: control[filepath].transformed,
-            filepath,
-            because: control[filepath].matched
-          })
-        )
+export const structureTransformation = map(
+  pipe(({ brains, control }) =>
+    map(
+      pipe(
+        box,
+        ap([propOr({}, BR), propOr("???", FI), propOr("", FC)]),
+        ([brain, filepath, fileContent]) => ({
+          [FC]: fileContent,
+          before: brain,
+          after: control[filepath].transformed,
+          filepath,
+          because: control[filepath].matched
+        })
       )
     )(brains)
   )
+)
+
+const tripleDash = "---\n"
+
+export const runTransformation = pipe(
+  chain(
+    pipe(
+      map(({ fileContent = "", after, filepath }) =>
+        writeFile(
+          filepath,
+          tripleDash + yamify(after) + tripleDash + fileContent,
+          "utf8"
+        )
+      ),
+      values,
+      trace("what what"),
+      parallel(10)
+    )
+  )
+  /* map(([kk, vv]) => kk + vv) */
+  /* map(join("\n")) */
 )
 
 export const brainwave = config => {
@@ -196,8 +229,9 @@ export const brainwave = config => {
       ifElse(
         () => telepathyOnly,
         map(({ telepathy }) => map(keys)(telepathy)),
-        unless(() => dryRun, alter)
+        structureTransformation
       ),
+      unless(() => dryRun || telepathyOnly, runTransformation),
       fork(bad, good)
     )(config)
     return cancel

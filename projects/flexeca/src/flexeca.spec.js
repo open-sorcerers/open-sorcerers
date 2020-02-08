@@ -1,6 +1,6 @@
-import { flexeca } from "./flexeca"
 import { fork as rawFork } from "fluture"
 import { tacit } from "ensorcel"
+import { flexeca } from "./flexeca"
 
 const cmd = "node"
 const cwd = process.cwd()

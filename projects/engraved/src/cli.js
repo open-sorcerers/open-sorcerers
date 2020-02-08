@@ -1,6 +1,7 @@
 import fs from "fs"
+import { writeFile } from "torpor"
 import { Future as F, encaseP } from "fluture"
-import { map, ifElse, propOr, prop, curry, chain, pipe } from "ramda"
+import { __ as $, map, ifElse, propOr, prop, curry, chain, pipe } from "ramda"
 import parser from "yargs-parser"
 import getStdin from "get-stdin"
 import { custom } from "./index"
@@ -13,14 +14,6 @@ const read = x =>
     fs.readFile(x, "utf8", (e, o) => (e ? bad(e) : good(o)))
     return () => {}
   })
-// write a file in the Future
-const write = curry(
-  (fd, data) =>
-    new F((bad, good) => {
-      fs.writeFile(fd, data, "utf8", (e, f) => (e ? bad(e) : good(f)))
-      return () => {}
-    })
-)
 
 const OPTS = {
   boolean: [
@@ -44,10 +37,14 @@ export const cli = args => {
     ),
     chain(generateTheme),
     map(theme =>
-      ifElse(propOr(false, "output"), pipe(prop("output"), write), () => {
-        console.log(theme)
-        return ""
-      })(config)
+      ifElse(
+        propOr(false, "output"),
+        pipe(prop("output"), writeFile($, theme, "utf8")),
+        () => {
+          console.log(theme)
+          return ""
+        }
+      )(config)
     )
   )(config)
 }

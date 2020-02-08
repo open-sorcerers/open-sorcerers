@@ -1,10 +1,11 @@
+import path from "path"
 import {
   curryN,
+  when,
   __ as $,
   reduce,
   keys,
   values,
-  identity as I,
   mergeRight,
   fromPairs,
   toPairs,
@@ -18,28 +19,19 @@ import {
 } from "ramda"
 import { parallel, Future } from "fluture"
 import { writeFile } from "torpor"
-/* import { trace } from "xtrace" */
+import { trace } from "xtrace"
 import { cosmiconfig as cosmic } from "cosmiconfig"
 import { box, smooth, futurizeWithCancel } from "ensorcel"
 import { safeDump as yamlize } from "js-yaml"
 
 import { fork, globWithCancel } from "./utils"
 
-import { FI, FC, BR, DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
+import { RP, FI, FC, BR, DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
 import { consumeData } from "./consumers"
 
 const joint = curry((xx, aa, bb) => aa + xx + bb)
 
 const toYAML = curryN(2, yamlize)
-const yamify = toYAML($, {
-  indent: 2,
-  noArrayIndent: false,
-  skipInvalid: false,
-  flowLevel: -1,
-  sortKeys: true,
-  noRefs: true,
-  condenseFlow: false
-})
 
 export const findBrainsRelativeTo = curry((cancel, basePath, fileTypes) =>
   pipe(
@@ -96,10 +88,14 @@ const runTelepathy = curry(
     })
 )
 
+const NO_CHANGE = `NO_CHANGE`
+
 const mindMapper = curry((conditions, mind) =>
   reduce(
     (agg, [kk, [pred, trans]]) => {
-      const changed = ifElse(pred, trans, () => ({}))(mind)
+      const changed = ifElse(pred, trans, () => NO_CHANGE)(mind)
+      const hasChanged = changed !== NO_CHANGE
+      if (!hasChanged) return agg
       const matched = agg.matched.concat(kk)
       const transformed = mergeRight(agg.transformed, changed)
       return {
@@ -107,7 +103,7 @@ const mindMapper = curry((conditions, mind) =>
         matched
       }
     },
-    { transformed: mind.brain, matched: [] },
+    { transformed: {}, matched: [] },
     conditions
   )
 )
@@ -189,21 +185,78 @@ export const structureTransformation = map(
 
 const tripleDash = "---\n"
 
+const DEFAULT_YAML_OPTS = {
+  indent: 2,
+  noArrayIndent: false,
+  skipInvalid: false,
+  flowLevel: -1,
+  sortKeys: true,
+  noRefs: true,
+  condenseFlow: false
+}
+
 export const reyaml = curry(
-  (content, head) => tripleDash + yamify(head) + tripleDash + content
+  (config, content, head) =>
+    tripleDash +
+    toYAML(head, config.yamlOpts || DEFAULT_YAML_OPTS) +
+    tripleDash +
+    content
 )
 
-export const runTransformation = pipe(
-  map(
-    /* istanbul ignore next */
-    ({ fileContent = "", after, filepath }) =>
-      writeFile(filepath, reyaml(fileContent, after), "utf8")
-  ),
-  values,
-  parallel(10)
+const relativize = x =>
+  x.substr(path.resolve(x, process.cwd()).length, Infinity)
+
+export const runTransformationWithWriter = curry((writer, config, xxx) =>
+  pipe(
+    map(({ fileContent, before, after, filepath }) =>
+      pipe(
+        writer(
+          filepath,
+          reyaml(config, fileContent, mergeRight(before, after))
+        ),
+        map(() => filepath)
+      )("utf8")
+    ),
+    values,
+    parallel(10),
+    map(changed =>
+      toYAML(
+        { changed: map(relativize, changed) },
+        config.yamlOpts || DEFAULT_YAML_OPTS
+      )
+    )
+  )(xxx)
 )
-/* map(([kk, vv]) => kk + vv) */
-/* map(join("\n")) */
+
+export const runTransformation = runTransformationWithWriter(writeFile)
+
+const printOut = curry((config, xxx) =>
+  map(
+    pipe(
+      ifElse(
+        () => config.telepathy,
+        pipe(map(map(relativize)), x =>
+          toYAML(x, config.yamlOpts || DEFAULT_YAML_OPTS)
+        ),
+        pipe(
+          map(({ after: changes, because }) => ({
+            changes,
+            because
+          })),
+          when(
+            () => propOr(false, RP, config),
+            pipe(
+              toPairs,
+              map(([kk, vv]) => [relativize(kk), vv]),
+              fromPairs
+            )
+          ),
+          toYAML($, config.yamlOpts || DEFAULT_YAML_OPTS)
+        )
+      )
+    )
+  )(xxx)
+)
 
 export const brainwave = config => {
   const ccf = propOr("brainwave", NS, config)
@@ -227,7 +280,11 @@ export const brainwave = config => {
         map(({ telepathy }) => map(keys)(telepathy)),
         structureTransformation
       ),
-      ifElse(() => dryRun || telepathyOnly, I, chain(runTransformation)),
+      ifElse(
+        () => dryRun || telepathyOnly,
+        printOut(config),
+        chain(runTransformation(config))
+      ),
       fork(bad, good)
     )(config)
     return cancel

@@ -1,14 +1,8 @@
 import { resolve, fork } from "fluture"
-import {
-  render,
-  engrave,
-  testHex,
-  constantColor,
-  noHexLead,
-  noParens,
-  convert,
-  unstring
-} from "./engraved"
+import { convert } from "./format"
+import { constantColor, renderJS, unstringJS } from "./render"
+import { testHex, noHexLead, noParens } from "./predicates"
+import { engrave } from "./engraved"
 
 test("testHex", () => {
   expect(testHex("yellow")).toBeFalsy()
@@ -39,13 +33,15 @@ test("convert", () => {
 })
 
 test("unstring", () => {
-  expect(unstring('"cool": "$yaaaa"')).toEqual("cool: $yaaaa")
-  expect(unstring('"cool": "chicken necks"')).toEqual('"cool": "chicken necks"')
+  expect(unstringJS('"cool": "$yaaaa"')).toEqual("cool: $yaaaa")
+  expect(unstringJS('"cool": "chicken necks"')).toEqual(
+    '"cool": "chicken necks"'
+  )
 })
 
 test("engrave - flatten", () => {
   const output = engrave(
-    true,
+    { flatten: true },
     { a: 1, b: 2, c: { d: { e: { f: { g: { h: 100 } } } } } },
     [["abc".split(""), "whatevertown"]]
   )
@@ -56,7 +52,7 @@ test("engrave - flatten", () => {
 
 test("engrave - no flatten", () => {
   const output = engrave(
-    false,
+    { flatten: false },
     { a: 1, b: 2, c: { d: { e: { f: { g: { h: 100 } } } } } },
     [["abc".split(""), "whatevertown"]]
   )
@@ -81,13 +77,15 @@ test("engrave - no flatten", () => {
 }`)
 })
 
-test("render", done => {
+test("renderJS", done => {
   const routes = [[["a"], "cool"]]
   const flatten = true
   const known = ["lime"]
 
   const consumer = out => {
-    expect(out).toEqual(`const $lime = 'lime'
+    expect(out.substr(out.indexOf("\n"), Infinity)).toEqual(`
+
+const $lime = 'lime'
 
 export default Object.freeze({
   "a": "cool"
@@ -95,5 +93,5 @@ export default Object.freeze({
     done()
   }
   const future = resolve({ known, routes, initial: {} })
-  fork(done)(consumer)(render(flatten, future))
+  fork(done)(consumer)(renderJS(engrave, { flatten }, future))
 })

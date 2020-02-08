@@ -1,6 +1,6 @@
 {
   "name": "brainwave",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Programmatically update frontmatter without leaving JS",
   "main": "brainwave.js",
   "module": "brainwave.mjs",

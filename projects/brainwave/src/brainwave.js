@@ -235,8 +235,9 @@ const printOut = curry((config, xxx) =>
     pipe(
       ifElse(
         () => config.telepathy,
-        x => x,
-        /* x => toYAML(x, config.yamlOpts || DEFAULT_YAML_OPTS), */
+        pipe(map(map(relativize)), x =>
+          toYAML(x, config.yamlOpts || DEFAULT_YAML_OPTS)
+        ),
         pipe(
           map(({ after: changes, because }) => ({
             changes,

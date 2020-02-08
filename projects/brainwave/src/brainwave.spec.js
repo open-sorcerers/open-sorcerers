@@ -86,7 +86,7 @@ test("brainwave - cancel", done => {
 
 test("brainwave - telepathy", done => {
   fork(done)(x => {
-    expect(map(map(truncateFromBrainwave))(x)).toMatchSnapshot()
+    expect(x).toMatchSnapshot()
     done()
   })(
     brainwave({

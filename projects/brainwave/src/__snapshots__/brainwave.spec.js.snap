@@ -45,12 +45,10 @@ exports[`basic - namespace 1`] = `
 `;
 
 exports[`brainwave - telepathy 1`] = `
-Object {
-  "learnPages": Array [
-    "brainwave/src/fixture/frontmatter-2.mdx",
-    "brainwave/src/fixture/frontmatter-3.mdx",
-  ],
-}
+"learnPages:
+  - /src/fixture/frontmatter-2.mdx
+  - /src/fixture/frontmatter-3.mdx
+"
 `;
 
 exports[`reyaml 1`] = `

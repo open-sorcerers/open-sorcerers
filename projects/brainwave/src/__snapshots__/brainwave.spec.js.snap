@@ -1,69 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`basic - configFile 1`] = `
-Array [
-  "brainwave/src/fixture/frontmatter-1.md",
-  "brainwave/src/fixture/frontmatter-2.mdx",
-  "brainwave/src/fixture/frontmatter-3.mdx",
-  "brainwave/src/fixture/no-frontmatter.md",
-]
-`;
-
-exports[`basic - configFile 2`] = `
-Array [
-  "fileContent",
-  "before",
-  "after",
-  "filepath",
-  "because",
-]
-`;
-
-exports[`basic - configFile 3`] = `
-Object {
-  "hey": "cool",
-  "test": "yes",
-  "whatever": Object {
-    "you": Object {
-      "do": Object {
-        "you": true,
-      },
-    },
-  },
-}
+"/src/fixture/frontmatter-1.md:
+  because:
+    - publishingEdited
+  changes:
+/src/fixture/frontmatter-2.mdx:
+  because:
+    - publishingEdited
+  changes:
+/src/fixture/frontmatter-3.mdx:
+  because:
+    - publishingPublished
+    - publishingEdited
+  changes:
+    draft: false
+/src/fixture/no-frontmatter.md:
+  because:
+    - publishingEdited
+  changes:
+"
 `;
 
 exports[`basic - namespace 1`] = `
-Array [
-  "brainwave/src/fixture/frontmatter-1.md",
-  "brainwave/src/fixture/frontmatter-2.mdx",
-  "brainwave/src/fixture/frontmatter-3.mdx",
-  "brainwave/src/fixture/no-frontmatter.md",
-]
-`;
-
-exports[`basic - namespace 2`] = `
-Array [
-  "fileContent",
-  "before",
-  "after",
-  "filepath",
-  "because",
-]
-`;
-
-exports[`basic - namespace 3`] = `
-Object {
-  "hey": "cool",
-  "test": "yes",
-  "whatever": Object {
-    "you": Object {
-      "do": Object {
-        "you": true,
-      },
-    },
-  },
-}
+"/src/fixture/frontmatter-1.md:
+  because:
+    - publishingEdited
+  changes:
+/src/fixture/frontmatter-2.mdx:
+  because:
+    - publishingEdited
+  changes:
+/src/fixture/frontmatter-3.mdx:
+  because:
+    - publishingPublished
+    - publishingEdited
+  changes:
+    draft: false
+/src/fixture/no-frontmatter.md:
+  because:
+    - publishingEdited
+  changes:
+"
 `;
 
 exports[`brainwave - telepathy 1`] = `

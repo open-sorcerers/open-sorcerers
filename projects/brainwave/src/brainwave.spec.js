@@ -26,14 +26,16 @@ test("basic - config doesn't have telepathy and mindControl ", done => {
 const truncateFromBrainwave = z => {
   return z.substr(z.indexOf("brainwave"))
 }
+const stripDateEdited = z =>
+  z
+    .split("\n")
+    .filter(zz => !zz.includes("dateEdited"))
+    .join("\n")
+
 const runWithConfig = curry((config, done) => {
   const xxx = brainwave(config)
   fork(done)(yyy => {
-    const keyed = keys(yyy)
-    const out = keyed.map(truncateFromBrainwave)
-    expect(out).toMatchSnapshot()
-    expect(keys(yyy[keyed[0]])).toMatchSnapshot()
-    expect(omit(["dateEdited"], yyy[keyed[0]].after)).toMatchSnapshot()
+    expect(stripDateEdited(yyy)).toMatchSnapshot()
     done()
   })(xxx)
 })
@@ -41,6 +43,7 @@ const runWithConfig = curry((config, done) => {
 test(
   "basic - namespace",
   runWithConfig({
+    relativePath: true,
     root: fixture,
     namespace: "example-brainwave",
     dryRun: true
@@ -50,6 +53,7 @@ test(
 test(
   "basic - configFile",
   runWithConfig({
+    relativePath: true,
     root: fixture,
     configFile: path.resolve(__dirname, "..", "example-brainwave.config.js"),
     dryRun: true
@@ -81,10 +85,10 @@ test("brainwave - telepathy", done => {
     done()
   })(
     brainwave({
+      relativePath: true,
       telepathy: true,
       root: fixture,
-      namespace: "example-brainwave",
-      dryRun: true
+      namespace: "example-brainwave"
     })
   )
 })
@@ -92,5 +96,5 @@ test("brainwave - telepathy", done => {
 test("reyaml", () => {
   const input = "input!"
   const headContent = { a: { b: { c: { d: { cool: "so cool" } } } } }
-  expect(reyaml(input, headContent)).toMatchSnapshot()
+  expect(reyaml(false, input, headContent)).toMatchSnapshot()
 })

@@ -63,3 +63,11 @@ a:
 ---
 input!"
 `;
+
+exports[`runTransformationWithWriter 1`] = `
+"changed:
+  - /src/fixture/cool/a.mdx
+  - /src/fixture/cool/b.mdx
+  - /src/fixture/cool/c.mdx
+"
+`;

@@ -203,21 +203,32 @@ export const reyaml = curry(
     content
 )
 
-export const runTransformation = pipe(
-  map(
-    /* istanbul ignore next */
-    ({ fileContent = "", before, after, filepath }) =>
-      pipe(
-        writeFile(filepath, reyaml(fileContent, mergeRight(before, after))),
-        map(success => [filepath, success])
-      )("utf8")
-  ),
-  values,
-  parallel(10)
-)
-
 const relativize = x =>
   x.substr(path.resolve(x, process.cwd()).length, Infinity)
+
+export const runTransformationWithWriter = curry((writer, config, xxx) =>
+  pipe(
+    map(({ fileContent, before, after, filepath }) =>
+      pipe(
+        writer(
+          filepath,
+          reyaml(config, fileContent, mergeRight(before, after))
+        ),
+        map(() => filepath)
+      )("utf8")
+    ),
+    values,
+    parallel(10),
+    map(changed =>
+      toYAML(
+        { changed: map(relativize, changed) },
+        config.yamlOpts || DEFAULT_YAML_OPTS
+      )
+    )
+  )(xxx)
+)
+
+export const runTransformation = runTransformationWithWriter(writeFile)
 
 const printOut = curry((config, xxx) =>
   map(
@@ -271,7 +282,7 @@ export const brainwave = config => {
       ifElse(
         () => dryRun || telepathyOnly,
         printOut(config),
-        chain(runTransformation)
+        chain(runTransformation(config))
       ),
       fork(bad, good)
     )(config)

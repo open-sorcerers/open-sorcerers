@@ -1,7 +1,12 @@
 import path from "path"
 import { resolve, fork } from "fluture"
-import { map, omit, curry, keys } from "ramda"
-import { reyaml, telepath, brainwave } from "./brainwave"
+import { map, curry } from "ramda"
+import {
+  runTransformationWithWriter,
+  reyaml,
+  telepath,
+  brainwave
+} from "./brainwave"
 const fixture = path.resolve(process.cwd(), "src", "fixture")
 
 test("basic - no valid config", done => {
@@ -97,4 +102,34 @@ test("reyaml", () => {
   const input = "input!"
   const headContent = { a: { b: { c: { d: { cool: "so cool" } } } } }
   expect(reyaml(false, input, headContent)).toMatchSnapshot()
+})
+
+test("runTransformationWithWriter", done => {
+  const writer = curry((p, content, __x) => resolve([p, content]))
+  const forkable = runTransformationWithWriter(writer, {}, [
+    {
+      fileContent: "x",
+      before: {},
+      after: {},
+      filepath: __dirname + "/fixture/cool/a.mdx"
+    },
+    {
+      fileContent: "y",
+      before: {},
+      after: {},
+
+      filepath: __dirname + "/fixture/cool/b.mdx"
+    },
+    {
+      fileContent: "z",
+      before: {},
+      after: {},
+
+      filepath: __dirname + "/fixture/cool/c.mdx"
+    }
+  ])
+  fork(done)(x => {
+    expect(x).toMatchSnapshot()
+    done()
+  })(forkable)
 })

@@ -10581,6 +10581,14 @@ fluture@^12.0.2, fluture@^12.1.1:
     sanctuary-show "^1.0.0"
     sanctuary-type-identifiers "^2.0.0"
 
+fluture@^12.2.0:
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/fluture/-/fluture-12.2.0.tgz#40de127c88a4cb845b9f2292b89b91f53784a6bc"
+  integrity sha512-3Hs5gGA5/o1Fkz7jXndR6FStKD3VXJdto8WWvSMY5MRm0u6tJ51kxn/V+hpbSkkSlYd7TZ0hUVJ07iJPP7DS2w==
+  dependencies:
+    sanctuary-show "^2.0.0"
+    sanctuary-type-identifiers "^2.0.0"
+
 fn-name@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/fn-name/-/fn-name-1.0.1.tgz#de8d8a15388b33cbf2145782171f73770c6030f0"
@@ -21373,6 +21381,11 @@ sanctuary-show@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/sanctuary-show/-/sanctuary-show-1.0.0.tgz#72deb4812f9decec850e03286807dca1c97a1d61"
   integrity sha512-63UqNGr5M6wkzKp6eGc/Gy6JBIV2PbzPd3q88+0F9z0qydAQsCWJ+7e4oor39rEEwj2GkZMDEhqGuiMl9eEnYw==
+
+sanctuary-show@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/sanctuary-show/-/sanctuary-show-2.0.0.tgz#2326b4744f4b0f993f18ca56a29f68a50f514637"
+  integrity sha512-REj4ZiioUXnDLj6EpJ9HcYDIEGaEexmB9Fg5o6InZR9f0x5PfnnC21QeU9SZ9E7G8zXSZPNjy8VRUK4safbesw==
 
 sanctuary-type-identifiers@^2.0.0:
   version "2.0.1"

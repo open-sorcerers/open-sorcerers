@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`flexeca - slow 1`] = `"slow"`;
+
+exports[`flexeca 1`] = `"cool"`;

@@ -1,0 +1,23 @@
+{
+  "name": "flexeca",
+  "version": "0.0.0",
+  "description": "execa x fluture",
+  "main": "flexeca.js",
+  "module": "flexeca.mjs",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "ensorcel": "0.0.2",
+    "eslint-config-sorcerers": "^0.0.2",
+    "execa": "^4.0.0",
+    "fluture": "^12.2.0",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "prettier": "^1.19.1",
+    "prettier-eslint": "^9.0.1"
+  }
+}

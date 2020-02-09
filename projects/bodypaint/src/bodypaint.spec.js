@@ -3,7 +3,8 @@ import {
   GAP,
   DEFAULT_BREAKPOINTS,
   useDefaultPainter,
-  fillGaps
+  fillGaps,
+  asRelativeUnit
 } from "./bodypaint"
 
 test("makePainter", () => {
@@ -27,6 +28,20 @@ test("makePainter", () => {
       points: DEFAULT_BREAKPOINTS
     })
   ).toMatchSnapshot()
+})
+
+test("asRelativeUnit", () => {
+  const ratio = x => x * 11
+  const name = "levens"
+  const points = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+    e: 5,
+    f: 6
+  }
+  expect(asRelativeUnit(ratio, name, points)).toMatchSnapshot()
 })
 
 test("fillGaps", () => {

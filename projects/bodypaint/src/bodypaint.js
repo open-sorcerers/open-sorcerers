@@ -1,5 +1,6 @@
 import {
   values,
+  identity as I,
   when,
   range,
   keys,
@@ -27,21 +28,20 @@ export const DEFAULT_BREAKPOINTS = {
   XXL: 2560,
   XXXL: 4000
 }
-export const addUnit = curry((suffix, o) => map(z => z + suffix, o))
+export const withUnit = curry((suffix, o) => map(z => z + suffix, o))
 
-export const breakpointsAsRem = curry((baseFontSize, points) =>
-  pipe(
-    map(z => z / baseFontSize),
-    addUnit("rem"),
-    Object.freeze
-  )(points)
+export const asRelativeUnit = curry((ratio, name, points) =>
+  pipe(map(ratio), withUnit(name), Object.freeze)(points)
 )
-
-export const breakpointsAsPixels = pipe(addUnit("px"), Object.freeze)
+export const asPx = asRelativeUnit(I, "px")
+export const asRem = curry((base, points) =>
+  asRelativeUnit(z => z / base, "rem")(points)
+)
 
 export const minMedia = z => `@media(min-width: ${z})`
 export const maxMedia = z => `@media(max-width: ${z})`
 export const GAP = "%GAP%"
+export const __ = GAP
 
 export const fillGaps = curry((points, xxx) =>
   when(
@@ -67,7 +67,7 @@ export const fillGaps = curry((points, xxx) =>
 
 export const bodypaint = curry((useMin, baseFontSize, xxx) =>
   pipe(
-    breakpointsAsRem(baseFontSize),
+    asRem(baseFontSize),
     map(useMin ? minMedia : maxMedia),
     values,
     facepaint
@@ -75,11 +75,8 @@ export const bodypaint = curry((useMin, baseFontSize, xxx) =>
 )
 
 export const makePainter = ({ useMin, baseFontSize, points }) => {
-  /* export const REM = 16 */
   const rawPoints = Object.freeze(points)
-
   const bodypainter = bodypaint(useMin, baseFontSize, rawPoints)
-
   return pipe(map(fillGaps(rawPoints)), bodypainter)
 }
 

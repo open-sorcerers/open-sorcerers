@@ -1,0 +1,17 @@
+{
+  "name": "reconnoiter",
+  "version": "0.0.0",
+  "description": "osx connect to a wifi network",
+  "main": "reconnoiter.js",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "camel-case": "^4.1.1",
+    "flexeca": "^0.0.1",
+    "fluture": "^12.2.0",
+    "node-cron": "^2.0.3",
+    "ramda": "^0.27.0"
+  }
+}

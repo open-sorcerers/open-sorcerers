@@ -1,3 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`asRelativeUnit 1`] = `
+Object {
+  "a": "11levens",
+  "b": "22levens",
+  "c": "33levens",
+  "d": "44levens",
+  "e": "55levens",
+  "f": "66levens",
+}
+`;
+
 exports[`makePainter 1`] = `[Function]`;

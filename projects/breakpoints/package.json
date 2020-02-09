@@ -1,0 +1,32 @@
+{
+  "name": "@open-sorcerers/breakpoints",
+  "version": "0.0.0",
+  "description": "breakpoints the open sorcerer way",
+  "main": "breakpoints.js",
+  "module": "breakpoints.mjs",
+  "repository": "//github.com/open-sorcerers/open-sorcerers",
+  "author": "open.sorcerers.dev",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@emotion/core": "^10.0.27",
+    "@emotion/styled": "^10.0.27",
+    "bodypaint": "^0.0.1",
+    "ramda": "^0.27.0",
+    "react": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "babel-preset-react-app": "^9.1.1",
+    "eslint": "^6.8.0",
+    "rollup": "^1.31.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-progress": "^1.1.1"
+  }
+}

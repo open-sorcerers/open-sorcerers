@@ -1,6 +1,6 @@
 {
   "name": "bodypaint",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "facepaint utilities",
   "main": "bodypaint.js",
   "module": "bodypaint.mjs",

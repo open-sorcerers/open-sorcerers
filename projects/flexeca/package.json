@@ -1,6 +1,6 @@
 {
   "name": "flexeca",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "execa x fluture",
   "main": "flexeca.js",
   "module": "flexeca.mjs",

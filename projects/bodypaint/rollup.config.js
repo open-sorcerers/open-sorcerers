@@ -1,6 +1,5 @@
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
-import cli from "rollup-plugin-cli"
 import buble from "@rollup/plugin-buble"
 import json from "@rollup/plugin-json"
 import progress from "rollup-plugin-progress"
@@ -31,16 +30,10 @@ export default [
   {
     input: `src/index.js`,
     external,
-    output: [{ file: pkg.main, format: `cjs` }, {file: pkg.module, format: 'esm'}],
+    output: [
+      { file: pkg.main, format: `cjs` },
+      { file: pkg.module, format: "esm" }
+    ],
     plugins
   }
-  /* { */
-  /*   input: `src/cli-runner.js`, */
-  /*   external, */
-  /*   output: [{ file: `brainwave-cli.js`, format: `cjs` }], */
-  /*   plugins: plugins */
-  /*     .slice(0, 2) */
-  /*     .concat([cli()]) */
-  /*     .concat(plugins.slice(2, Infinity)) */
-  /* } */
 ]

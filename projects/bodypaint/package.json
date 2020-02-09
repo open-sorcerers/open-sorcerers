@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "facepaint utilities",
   "main": "bodypaint.js",
+  "module": "bodypaint.mjs",
   "repository": "//github.com/open-sorcerers/open-sorcerers",
   "author": "brekk",
   "license": "MIT",

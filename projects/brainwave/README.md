@@ -1,4 +1,4 @@
-![brainwave](/projects/brainwave/brainwave-readme.svg)
+![brainwave](https://open.sorcerers.dev/brainwave-readme.svg)
 
 # brainwave
 
@@ -52,6 +52,8 @@ module.exports = {
 4. Once you've made changes, run `brainwave --telepathy` to see only telepathy calls.
 5. Run `brainwave --dryRun` to see what your changes in `control` will do.
 6. If you're happy with the changes you're about to make (and you're using version control like a sane person), try running `brainwave` with no `--dryRun` flag, and it will update all `.mdx` and `.md` file in the local folder, excluding `node_modules`.
+
+Built by <img src="https://open.sorcerers.com/open-sorcerers3.svg" alt="Open Sorcerers" style="display: block; margin: 0 auto; max-width: 200px; height: auto;" />
 
 [MDX]: https://mdxjs.com/
 [issues]: https://github.com/open-sorcerers/open-sorcerers/issues

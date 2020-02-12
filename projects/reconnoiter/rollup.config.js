@@ -33,14 +33,14 @@ export default [
     external,
     output: [{ file: pkg.main, format: `cjs` }],
     plugins
+  },
+  {
+    input: `src/cli-runner.js`,
+    external,
+    output: [{ file: `reconnoiter-cli.js`, format: `cjs` }],
+    plugins: plugins
+      .slice(0, 2)
+      .concat([cli()])
+      .concat(plugins.slice(2, Infinity))
   }
-  /* { */
-  /*   input: `src/cli-runner.js`, */
-  /*   external, */
-  /*   output: [{ file: `brainwave-cli.js`, format: `cjs` }], */
-  /*   plugins: plugins */
-  /*     .slice(0, 2) */
-  /*     .concat([cli()]) */
-  /*     .concat(plugins.slice(2, Infinity)) */
-  /* } */
 ]

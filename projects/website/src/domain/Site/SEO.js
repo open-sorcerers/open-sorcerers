@@ -50,7 +50,7 @@ const SEO = props => {
       <meta name="viewport" content="initial-scale=1, viewport-fit=cover" />
       <meta name="description" content={description} />
       <meta name="keywords" content={kwords} />
-      <script type="text/javascript" src="modernizr.js" defer />
+      <script type="text/javascript" src="/modernizr.js" defer />
       <link rel="canonical" href={url} />
       <meta property="og:site_name" content={name} />
       <meta property="og:title" content={title} />

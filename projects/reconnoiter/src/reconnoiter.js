@@ -1,9 +1,9 @@
 import { flexeca } from "flexeca"
-import { reject, resolve, fork as rawFork, after as rawAfter } from "fluture"
+import ora from "ora"
+import { resolve, fork as rawFork } from "fluture"
+import { sideEffect } from "xtrace"
 import {
   not,
-  unless,
-  either,
   equals,
   ifElse,
   identity as I,
@@ -15,12 +15,12 @@ import {
   pipe,
   includes
 } from "ramda"
-import { trace } from "xtrace"
+/* import { trace } from "xtrace" */
 import { tacit } from "ensorcel"
-import { every } from "./cron"
+/* import { every } from "./cron" */
 
 const fork = tacit(2, rawFork)
-const after = tacit(1, rawFork)
+/* const after = tacit(1, rawFork) */
 
 const cwd = process.cwd()
 const netset = flexeca({ cwd }, "networksetup")
@@ -58,20 +58,18 @@ const testNetwork = () =>
 
 const connectTo = net => () => pipe(netset)(["-setairportnetwork", "en0", net])
 
-const runner = network => {
+export const runner = network => {
+  const spinner = ora(`Pinging ${network}`).start()
   const timerId = setInterval(
     pipe(
       isOn,
-      map(trace("has network connection")),
-      /* after(5), */
-      chain(ifElse(I, () => resolve(true), (on))),
-      map(trace("connected?")),
+      chain(ifElse(I, () => resolve(true), on)),
       chain(ipAddress),
-      map(trace("IP?")),
       chain(ifElse(equals("none"), testNetwork, () => resolve(true))),
-      map(trace("network?")),
+      sideEffect(x => {
+        spinner.color = x ? "cyan" : "magenta"
+      }),
       chain(ifElse(I, () => resolve(true), connectTo(network))),
-      map(trace("did connect?")),
       chain(
         ifElse(
           z =>
@@ -82,21 +80,23 @@ const runner = network => {
           () => resolve(true)
         )
       ),
+      sideEffect(x => {
+        spinner.color = x ? "green" : "red"
+      }),
       chain(didConnect => {
         if (didConnect) {
-          console.log("CONNECTED!")
+          spinner.succeed(`Connected to ${network}`)
           clearInterval(timerId)
           return resolve(true)
         } else {
-          console.log("no connection")
-          /* return pipe(off, chain(on))() */
+          spinner.text = "Retrying..."
+          spinner.color = "yellow"
+          process.stdout.write(".")
           return off()
         }
       }),
-      fork(trace("bad"), trace("good"))
+      fork(I, I)
     ),
     7000
   )
 }
-
-runner("Papa No-FreeWiFi")

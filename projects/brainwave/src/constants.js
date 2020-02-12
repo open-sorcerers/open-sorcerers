@@ -14,3 +14,5 @@ export const DA = "data"
 export const DR = "dryRun"
 export const FC = "fileContent"
 export const RP = "relativePath"
+
+export const INIT = `init`

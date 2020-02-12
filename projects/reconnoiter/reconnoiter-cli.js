@@ -1,6 +1,5 @@
+#!/usr/bin/env node
 'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
@@ -350,4 +349,4 @@ var runner = function (network) {
   );
 };
 
-exports.runner = runner;
+runner(process.argv.slice(2));

@@ -1,3 +1,5 @@
+![brainwave](/brainwave.svg)
+
 # brainwave
 
 _Walk the files and control the ones with frontmatter in them_

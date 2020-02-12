@@ -1,4 +1,4 @@
-![brainwave](https://raw.github.com/open-sorcerers/open-sorcerers/master/projects/brainwave/brainwave-readme.svg)
+![brainwave](/projects/brainwave/brainwave-readme.svg)
 
 # brainwave
 

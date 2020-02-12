@@ -1,4 +1,4 @@
-![brainwave](/brainwave.svg)
+![brainwave](https://raw.github.com/open-sorcerers/open-sorcerers/master/projects/brainwave/brainwave.svg?sanitize=true)
 
 # brainwave
 

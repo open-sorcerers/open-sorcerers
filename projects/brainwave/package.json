@@ -1,6 +1,6 @@
 {
   "name": "brainwave",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Programmatically update frontmatter without leaving JS",
   "homepage": "https://open.sorcerers.dev",
   "main": "brainwave.js",

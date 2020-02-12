@@ -152,7 +152,7 @@ const search = curry((cancellationPolicy, config, network) => {
   const control = propOr(null, MC, network)
   const telepathy = propOr(null, TK, network)
   const basePath = propOr(process.cwd(), RT, config)
-  const getFileTypes = propOr("{md,mdx}", FT)
+  const getFileTypes = propOr("{mdx}", FT)
   return pipe(
     getFileTypes,
     findBrainsRelativeTo(cancellationPolicy.cancel, basePath),

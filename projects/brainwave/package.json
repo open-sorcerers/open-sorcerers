@@ -7,7 +7,7 @@
   "bin": {
     "brainwave": "brainwave-cli.js"
   },
-  "repository": "//github.com/open-sorcerers/brainwave",
+  "repository": "https://github.com/open-sorcerers/open-sorcerers/tree/master/projects/brainwave",
   "author": "brekk",
   "license": "MIT",
   "private": false,

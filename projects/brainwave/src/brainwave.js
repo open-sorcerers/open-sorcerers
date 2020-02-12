@@ -1,5 +1,6 @@
 import path from "path"
 import {
+  is,
   curryN,
   when,
   __ as $,
@@ -19,14 +20,28 @@ import {
 } from "ramda"
 import { parallel, Future } from "fluture"
 import { writeFile } from "torpor"
-import { trace } from "xtrace"
+/* import { trace } from "xtrace" */
 import { cosmiconfig as cosmic } from "cosmiconfig"
 import { box, smooth, futurizeWithCancel } from "ensorcel"
 import { safeDump as yamlize } from "js-yaml"
 
 import { fork, globWithCancel } from "./utils"
 
-import { RP, FI, FC, BR, DR, CC, CF, FT, MC, NS, RT, TK } from "./constants"
+import {
+  INIT,
+  RP,
+  FI,
+  FC,
+  BR,
+  DR,
+  CC,
+  CF,
+  FT,
+  MC,
+  NS,
+  RT,
+  TK
+} from "./constants"
 import { consumeData } from "./consumers"
 
 const joint = curry((xx, aa, bb) => aa + xx + bb)
@@ -42,7 +57,7 @@ export const findBrainsRelativeTo = curry((cancel, basePath, fileTypes) =>
 )
 
 const ERRORS = Object.freeze({
-  RETURN_A_FUNCTION: "Expected to have brainwave config return a function!",
+  RETURN_A_FUNCTION: `Expected to have brainwave config return a function! Have you run 'brainwave --${INIT}'?`,
   TELEPATHY_OR_MIND_CONTROL: `Expected brainwave config to have one or more keys in: [${MC}, ${TK}]`
 })
 
@@ -50,7 +65,7 @@ const ERRORS = Object.freeze({
 const generateNeuralNetwork = curry((bad, xxx) => {
   const cnf = propOr(false, CC, xxx)
   if (!cnf) return bad(new Error(ERRORS.RETURN_A_FUNCTION))
-  const memoryPalace = cnf()
+  const memoryPalace = is(Function, cnf) ? cnf() : cnf
   const control = propOr(false, MC, memoryPalace)
   const telepathy = propOr(false, TK, memoryPalace)
   if (!control && !telepathy) {
@@ -258,8 +273,46 @@ const printOut = curry((config, xxx) =>
   )(xxx)
 )
 
+export const makeDefaultBrainwaveConfig = () =>
+  writeFile(
+    path.resolve(process.cwd(), "brainwave.config.js"),
+    `module.exports = {
+  // telepathy specifies function predicates to run against the codebase 
+  telepathy: {
+    // this will print out all files which have a "review" key in their frontmatter
+    review: z => z && z.review
+  },
+  // control specifies both predicates and mutations, each a function 
+  control: {
+    edited: [
+      // *REMEMBER* to use --dryRun and it will instead tell you what _would_ be modified
+      // this runs always!
+      () => true,
+      // it will add / update dateEdited field in the mdx files
+      x => (
+        x && x.stats && x.stats.ctime
+        ? { dateEdited: new Date(x.stats.ctime) }
+        : {}
+      )
+    ]
+  }
+}
+`,
+    { flag: "wx", format: "utf8" }
+  )
+
 export const brainwave = config => {
   const ccf = propOr("brainwave", NS, config)
+  const initialize = propOr(false, INIT, config)
+  if (initialize)
+    return pipe(
+      makeDefaultBrainwaveConfig,
+      map(z =>
+        z
+          ? "Wrote default config to brainwave.config.js"
+          : "Unable to write config file to brainwave.config.js"
+      )
+    )()
   const cc = cosmic(ccf)
   let isCancelled = false
   const cancel = () => {
@@ -272,6 +325,7 @@ export const brainwave = config => {
   const mindControl = telepath({ cancel, isCancelled, loadOrSearch })
   const dryRun = propOr(false, DR, config)
   const telepathyOnly = propOr(false, TK, config)
+
   return new Future((bad, good) => {
     pipe(
       mindControl(bad),

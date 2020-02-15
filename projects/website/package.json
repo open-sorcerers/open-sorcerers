@@ -86,8 +86,7 @@
     "typeface-merriweather": "^0.0.72",
     "typeface-raleway": "^0.0.75",
     "victory": "^34.0.1",
-    "xtrace": "^0.3.0",
-    "engraved": "^0.0.3"
+    "xtrace": "^0.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",

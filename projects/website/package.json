@@ -86,7 +86,8 @@
     "typeface-merriweather": "^0.0.72",
     "typeface-raleway": "^0.0.75",
     "victory": "^34.0.1",
-    "xtrace": "^0.3.0"
+    "xtrace": "^0.3.0",
+    "engraved": "^0.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
@@ -106,7 +107,6 @@
     "cross-env": "^6.0.3",
     "date-fns": "^2.9.0",
     "emotion-theming": "^10.0.19",
-    "engraved": "^0.0.3",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",

@@ -1,0 +1,7 @@
+gitpartyrc:
+  key: G
+  color: bgRed
+  matches:
+  - \**.gitpartyrc
+collapseAuthors: false
+timezone: utc

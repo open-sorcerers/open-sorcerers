@@ -32,6 +32,6 @@ module.exports = {
     },
     serve: 'gatsby serve',
     friend: `lint-staged`,
-    smoketest: `node -p "require('engraved').engraved"`
+    smoketest: `node -p "require('./engraved-raw').engraved"`
   }
 }

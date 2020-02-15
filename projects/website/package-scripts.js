@@ -12,7 +12,7 @@ module.exports = {
       gatsby: 'gatsby build',
       modernizr: 'modernizr -c modernizr.config.json -d static',
       storybook: 'cross-env NODE_ENV=production build-storybook -c .storybook -o public/docs',
-      script: 'nps build.modernizr && nps build.gatsby '
+      script: 'nps smoketest build.modernizr build.gatsby '
     },
     clean: `rimraf ${CLEANABLES.join(' ')}`,
     start: {
@@ -31,6 +31,7 @@ module.exports = {
       stylelint: `stylelint "./src/**/*.js"`
     },
     serve: 'gatsby serve',
-    friend: `lint-staged`
+    friend: `lint-staged`,
+    smoketest: `node -p "require('engraved').engraved"`
   }
 }

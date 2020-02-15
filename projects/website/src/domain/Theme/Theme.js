@@ -7,6 +7,8 @@ import { assoc, reject, fromPairs, toPairs } from 'ramda'
 import { fork } from 'fluture'
 import { engraved } from 'engraved'
 
+console.log('engraved', engraved)
+
 import { injectChildren } from '@utils/react'
 
 import rawMakeTheme from '@styles/theme'

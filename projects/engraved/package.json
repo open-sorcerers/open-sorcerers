@@ -11,9 +11,6 @@
   "author": "brekk",
   "license": "MIT",
   "private": false,
-  "bin": {
-    "engraved": "engraved-cli.js"
-  },
   "dependencies": {
     "camel-case": "^4.1.1",
     "color-contrast-checker": "^1.5.0",

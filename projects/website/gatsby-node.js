@@ -15,9 +15,9 @@ const {
   cond
 } = require('ramda')
 
-const engraved = require('engraved')
+/* const engraved = require('engraved') */
 
-console.log('hey fuck you', engraved)
+/* console.log('hey fuck you', engraved) */
 
 const box = x => [x]
 

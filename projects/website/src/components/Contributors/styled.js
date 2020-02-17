@@ -1,20 +1,25 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { above } from '@styles/media'
+import { mq } from '@styles/media'
+import { GAP as __ } from 'bodypaint'
 
 import { pathOr } from 'ramda'
 const grab = pathOr('lime')
 
+const contribUl = mq({
+  flexDirection: ['column', __, 'row']
+})
+
 export const StyledContributors = styled(Box)`
   display: flex;
   flex-direction: column;
-  flex-wrap: column;
   text-align: center;
   h1 {
     margin-top: 0;
     width: 100%;
   }
   ul {
+    ${contribUl}
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -23,51 +28,31 @@ export const StyledContributors = styled(Box)`
       list-style: none;
     }
     justify-content: center;
-    ${above.TABLET_PORTRAIT(`
-    flex-direction: row;
-      flex-wrap: wrap;
-    `)}
   }
 `
+
+const contribLi = mq({
+  margin: ['0 0 3rem', __, '2rem 0 1rem'],
+  width: ['100%', __, 'calc(50% - 1.5rem)', __, __, __, __, 'calc(33.33333% - 2rem)'],
+  '&:nth-of-type(even)': {
+    marginLeft: ['0', __, `1.5rem`, __, __, __, __, 'initial']
+  },
+  '&:nth-of-type(odd)': {
+    marginRight: ['0', __, `1.5rem`, __, __, __, __, 'initial']
+  },
+  '&:first-of-type': {
+    marginTop: ['4rem', __, '2rem']
+  },
+  '&:nth-of-type(3n + 2)': {
+    margin: ['initial', __, __, __, __, __, __, '2rem 3rem 1rem']
+  }
+})
+
 export const Li = styled(Box)`
   display: flex;
   min-width: 10rem;
   flex-direction: column;
-  margin: 0 0 3rem;
-  width: 100%;
-  &:first-of-type {
-    margin-top: 4rem;
-  }
-  ${above.TABLET_PORTRAIT(`
-    margin: 2rem 0 1rem;
-    width: calc(50% - 1.5rem);
-    &:nth-of-type(even) {
-      margin-left: 1.5rem;
-    }
-    &:nth-of-type(odd) {
-      margin-right: 1.5rem;
-    }
-    &:first-of-type {
-      margin-top: 2rem;
-    }
-  `)}
-  ${above.DESKTOP(`
-    margin: 2rem 0 1rem;
-    width: calc(33.333333333333333% - 2rem);
-    &:nth-of-type(even) {
-      margin-left: initial;
-    }
-    &:nth-of-type(odd) {
-      margin-right: initial;
-    }
-    &:nth-of-type(3n + 2) {
-      color: lime !important;
-      margin: 2rem 3rem 1rem;
-    }
-    &:first-of-type {
-      margin-top: 2rem;
-    }
-  `)}
+  ${contribLi}
 `
 
 const contributor = grab(['theme', 'colors', 'cs', 'contributor', 'f'])

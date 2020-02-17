@@ -6,7 +6,9 @@ import { Box } from 'rebass'
 import { trace } from 'xtrace'
 import { pathOr, join, map, pipe } from 'ramda'
 
-import { above } from '@styles/media'
+import { __ } from 'bodypaint'
+
+import { mq } from '@styles/media'
 import { Z_INDEX } from '@styles/constants'
 import { transition, transitionEaseOut, easeOut } from '@styles/animation'
 
@@ -59,6 +61,11 @@ export const FloatingMenuContent = styled.ul`
   display: flex;
   flex-direction: column;
 `
+const floatingMenu = mq({
+  width: ['100%', __, __, __, '40vw', __, __, __, '33vq'],
+  height: [p => (p.authenticated ? '80vh' : '50vh'), __, __, __, '100vh'],
+  minHeight: ['28rem', __, __, __, '100vh']
+})
 
 export const FloatingMenu = styled(Box)`
   z-index: ${MENU};
@@ -78,30 +85,26 @@ export const FloatingMenu = styled(Box)`
   flex-direction: column;
   width: 100%;
   min-height: 28rem;
-  height: ${p => (p.authenticated ? '80vh' : '50vh')};
   padding: 0;
   top: 0;
   opacity: 0;
-  ${above.MID_TABLET(`
-    width: 40vw;
-    height: 100vh;
-    min-height: 100vh;
-  `)}
-  ${above.DESKTOP(`
-    width: 33vw;
-  `)}
+  ${floatingMenu}
 `
 
+const inactiveMenuMQ = mq({
+  transform: ['translate(0, -100vh)', __, __, __, 'translate(76vw, 0)']
+})
 export const inactiveMenu = css`
-  transform: translate(0, -100vh);
   width: 100vw;
   left: 0;
   pointer-events: none;
   visibility: hidden;
-  ${above.MID_TABLET(`
-    transform: translate(76vw, 0);
-  `)}
+  ${inactiveMenuMQ}
 `
+
+const activeMenuMQ = mq({
+  left: ['0', __, __, __, '60vw', __, __, __, '68vw']
+})
 
 export const activeMenu = css`
   visibility: visible;
@@ -112,12 +115,7 @@ export const activeMenu = css`
   left: 0;
   top: 0;
   opacity: 1;
-  ${above.MID_TABLET(`
-     left: 60vw;
-  `)}
-  ${above.DESKTOP(`
-     left: 68vw;
-  `)}
+  ${activeMenuMQ}
 `
 
 export const inactiveButtonState = css`
@@ -136,12 +134,45 @@ export const activeButtonState = p => css`
   }
 `
 
+const settingsButtonSVGMQ = mq({
+  fill: [menuButton], // __, __, __, menuButton],
+  stroke: [menuButton], // __, __, __, menuButton],
+  top: ['-1.25rem', __, __, __, '-1.64rem'],
+  left: ['-1.25rem', __, __, __, '-1.64rem'],
+  width: ['2.5rem', __, __, __, '6rem'],
+  minWidth: ['2.5rem', __, __, __, '6rem'],
+  height: ['2.5rem', __, __, __, '6rem'],
+  minHeight: ['initial', __, __, __, '6rem'],
+  strokeWidth: [0, __, __, __, '0.6rem']
+})
+
+const settingsButtonSVG = css`
+  animation: ${rotate} 15s linear infinite;
+  display: inline-block;
+  position: relative;
+  stroke-width: 0;
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  z-index: ${INTERACTIVE};
+  margin: 0;
+  ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width', 'top', 'left'])}
+  ${settingsButtonSVGMQ}
+`
+
+export const settingsButtonMQ = mq({
+  right: ['initial', __, __, __, '-15rem'],
+  position: ['relative', __, __, __, 'absolute'],
+  top: ['initial', __, __, __, '3.25rem'],
+  width: ['2rem', __, __, __, '6rem'],
+  height: ['2rem', __, __, __, '6rem'],
+  zIndex: [MENU, __, __, __, MENU_UNDER],
+  border: ['2px solid rgba(255,255,255, 0.3)', __, __, __, '0 solid transparent'],
+  marginRight: ['0', __, __, __, __, '-3rem', __, '-6rem']
+})
+
 export const SettingsButton = styled(Box)`
-  z-index: ${MENU};
   cursor: pointer;
   border-radius: 1000rem;
-  width: 2rem;
-  height: 2rem;
   padding: 1.5rem;
   margin: 0;
   margin-top: 1.25rem;
@@ -149,7 +180,6 @@ export const SettingsButton = styled(Box)`
   text-align: center;
   display: inline-block;
   background-color: transparent;
-  border: 2px solid rgba(255,255,255, 0.3);
 
   /* the long transition on the transform makes the cog turn */
   transition: ${easeOut('0.3s', [
@@ -161,57 +191,14 @@ export const SettingsButton = styled(Box)`
     'width',
     'height',
     'margin'
-  ])},
-    transform 6s ease-in-out;
+  ])};
+  transform 6s ease-in-out;
+  ${settingsButtonMQ}
 
   svg {
-    animation: ${rotate} 15s linear infinite;
-    ${transitionEaseOut('0.3s', ['fill', 'top', 'left', 'stroke'])}
-    display: inline-block;
-    position: relative;
-    fill: ${menuButton};
-    stroke: ${menuButton};
-    stroke-width: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    max-width: 2.5rem;
-    max-height: 2.5rem;
-    top: -1.25rem;
-    left: -1.25rem;
-    z-index: ${INTERACTIVE};
-    margin: 0;
-    ${transitionEaseOut('0.3s', ['fill', 'stroke', 'stroke-width'])}
+    ${settingsButtonSVG}
   }
 
-  ${p =>
-    above.MID_TABLET(`
-    right: -15rem;
-    position: absolute;
-    top: 3.25rem;
-    width: 6rem;
-    height: 6rem;
-    z-index: ${MENU_UNDER};
-    background-color: transparent;
-    border-color: transparent;
-    
-    svg {
-      fill: ${menuButton(p)};
-      top: -1.64rem;
-      left: -1.64rem;
-      width: 6rem;
-      min-width: 6rem;
-      height: 6rem;
-      min-height: 6rem;
-      stroke: ${menuButton(p)};
-      stroke-width: 0.6rem;
-    }
-  `)}
-  ${above.TABLET_LANDSCAPE(`
-     margin-right: -3rem;
-  `)}
-  ${above.LARGE_TABLET(`
-     margin-right: -6rem;
-  `)}
   &:hover {
     svg {
       fill: ${activeMenuButton};
@@ -236,6 +223,18 @@ export const menuWrapper = styled`
   align-items: center;
 `
 const narrow = pathOr('Comic Sans', ['theme', 'fonts', 'obviouslyNarrow'])
+
+const soonAfter = mq({
+  right: ['-20rem', '4rem', '7rem', '10rem', '4rem', '7rem', '6rem']
+})
+
+const log = mq({
+  fontSize: ['8vw', __, '7vw', '4vw', '2vw']
+})
+
+const menuLinkMq = mq({
+  fontSize: ['10vw', __, '8vw', '5.5vw', '4vw']
+})
 export const MenuLink = styled(Link)`
   display: flex;
   pointer-events: auto;
@@ -249,57 +248,22 @@ export const MenuLink = styled(Link)`
   padding: 0.55rem 0;
   letter-spacing: 0.1rem;
   &:hover {
-  color: ${grab(['theme', 'colors', 'ui', 'menu', 'a', 'f'])};
+    color: ${grab(['theme', 'colors', 'ui', 'menu', 'a', 'f'])};
   }
-
-  ${above.TABLET_PORTRAIT(`
-    font-size: 8vw;
-  `)}
-  ${above.SUB_TABLET(`
-    font-size: 5.5vw;
-  `)}
-  ${above.MID_TABLET(`
-    font-size: 4vw;
-  `)}
+  ${menuLinkMq}
   &.coming-soon {
     &::after {
       font-size: 0.8rem;
       line-height: 1.2rem;
       top: 1.35rem;
-      right: -20rem;
-      ${above.TINY_PHONE(`
-        right: 4rem;
-      `)}
-      ${above.SMALL_PHONE(`
-        right: 7rem;
-      `)}
-      ${above.TABLET_PORTRAIT(`
-        right: 10rem;
-      `)}
-      ${above.MID_TABLET(`
-        right: 4rem;
-      `)}
-      ${above.LARGE_TABLET(`
-        right: 7rem;
-      `)}
-      ${above.DESKTOP(`
-        right: 6rem;
-      `)}
+      ${soonAfter}
     }
   }
   &.log {
     margin-top: 0.5rem;
     font-size: 8vw;
     margin-bottom: 4rem;
-    ${above.TABLET_PORTRAIT(`
-      font-size: 7vw;
-    `)}
-    ${above.SUB_TABLET(`
-      font-size: 4vw;
-    `)}
-    ${above.MID_TABLET(`
-      font-size: 2vw;
-    `)}
+    ${log}
   }
   &.profile {
     ${narrow}
@@ -343,66 +307,69 @@ const cogColor = grab(['theme', 'colors', 'ui', 'cog', 'f'])
 const cogActive = grab(['theme', 'colors', 'ui', 'cog', 'a', 'f'])
 const cogOverMidTablet = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'f'])
 const cogOverMidTabletActive = grab(['theme', 'colors', 'ui', 'cogOverMidTablet', 'a', 'f'])
+
+const sviggie = css({
+  strokeWidth: 0,
+  stroke: cogColor,
+  transition: `${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])}`,
+  animation: `${rotateSlowly} 18s ease-in-out infinite`,
+  animationDirection: `normal`,
+  animationPlayState: p => (p.active ? 'running' : 'paused')
+})
+
+const menuCogMQ = mq({
+  zIndex: [MENU_UNDER, __, __, __, MENU_OVER],
+  width: ['initial', __, __, __, '10vw'],
+  position: ['initial', __, __, __, 'fixed'],
+  bottom: [
+    'initial',
+    __,
+    __,
+    __,
+    'calc(2rem + -5vh)',
+    __,
+    __,
+    'calc(4rem + -8vh)',
+    'calc(5rem - 10vw)'
+  ],
+  right: ['initial', __, __, __, '-2.5rem'],
+  svg: {
+    fill: [cogColor, __, __, __, cogOverMidTablet],
+    stroke: [cogColor, __, __, __, cogOverMidTablet],
+    strokeWidth: [0, __, __, __, '0.75rem']
+  },
+  '&:hover': {
+    svg: { fill: [cogActive, cogOverMidTabletActive] }
+  }
+})
+
+const cog = css({
+  bottom: '-6.75rem',
+  cursor: 'pointer',
+  display: 'inline-block',
+  margin: '0 10%',
+  position: 'absolute',
+  pointerEvents: 'auto',
+  textAlign: 'center',
+  transition: easeOut('0.3s', ['bottom', 'left', 'margin']),
+  width: '80vw',
+  zIndex: MENU_UNDER,
+  svg: sviggie,
+  '&:hover': {
+    svg: {
+      fill: cogActive,
+      stroke: cogActive,
+      strokeWidth: '1.6rem'
+    }
+  }
+})
+
 export const MenuCog = styled(Box)`
-  bottom: -6.75rem;
-  cursor: pointer;
-  display: inline-block;
-  margin: 0 10%;
-  position: absolute;
-  pointer-events: auto;
-  text-align: center;
-  ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
-  width: 80vw;
-  z-index: ${MENU_UNDER};
-
-  /* stylelint-disable-next-line no-descending-specificity */
-  svg {
-    fill: ${cogColor};
-    stroke-width: 0;
-    stroke: ${cogColor};
-    transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
-    animation: ${rotateSlowly} 18s ease-in-out infinite;
-    animation-direction: normal;
-    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
-    
-  }
-  
-  &:hover {
-    svg {
-      fill: ${cogActive};
-      stroke: ${cogActive};
-      stroke-width: 1.6rem;
-    }
-  }
-
-  ${p =>
-    above.MID_TABLET(`
-    width: 10vw;
-    position: fixed;
-    bottom: calc(2rem + -5vh);
-    right: -2.5rem;
-    svg {
-      fill: ${cogOverMidTablet(p)};
-    }
-    &:hover {
-      svg {
-        fill: ${cogOverMidTabletActive(p)};
-        stroke: ${cogOverMidTabletActive(p)};
-        stroke-width: 0.75rem;
-      }
-    }
-  `)}
-  ${above.LARGE_TABLET(`
-     bottom: calc(4rem + -8vh);
-  `)}
-  ${above.DESKTOP(`
-     bottom: calc(4rem + -10vh);
-  `)}
-  ${above.MID_TABLET(`
-    z-index: ${MENU_OVER};
-  `)}
+  ${cog}
+  ${menuCogMQ}
 `
 
+/*
 const cog2 = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
 const cog2Active = grab(['theme', 'colors', 'ui', 'cog2', 'a', 'f'])
 const cog2Stroke = grab(['theme', 'colors', 'ui', 'cog2Stroke', 'a', 'f'])
@@ -418,7 +385,6 @@ export const MenuCogTop = styled(Box)`
   ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
   width: 80vw;
 
-  /* stylelint-disable-next-line no-descending-specificity */
   svg {
     fill: ${cogColor};
     stroke-width: 0;
@@ -488,4 +454,4 @@ export const MenuCogTop = styled(Box)`
     transform: scale(0.6);
     left: -69vw;
   `)}
-`
+`*/

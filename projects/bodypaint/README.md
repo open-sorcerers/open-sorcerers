@@ -74,7 +74,7 @@ You can also use "explicit mode" (`{implicit: false}`), to use a declarative arr
 
 ```js
 import {makePainter, GAP} from 'bodypaint'
-import facepaint from 'facepaint
+import facepaint from 'facepaint'
 
 const points = { A: 100, B: 200, C: 300}
 

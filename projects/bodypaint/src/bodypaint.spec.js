@@ -68,7 +68,7 @@ test("makePainter - nested", () => {
     implicit: true
   }
 
-  const arrayStyleOutput = bodypaint(RAW_ARRAY_STYLE)
+  const arrayStyleOutput = bodypaint(input)
   expect(arrayStyleOutput).toMatchSnapshot()
 })
 

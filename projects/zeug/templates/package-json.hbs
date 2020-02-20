@@ -13,13 +13,25 @@
   "author": "{{author}}",
   "license": "{{license}}",
   "private": {{makePrivate}},
-  "keywords": {{#jsonArray}}{{keywords}}{{/jsonArray}},
-  "dependencies": {
-  },
+  "keywords": [
+  {{#arrayish indent=4 json=true}}
+    {{keywords}}
+  {{/arrayish}}
+  ],
+  {{#if deps}}
+  "dependencies": {{#installable indent=4}}{{deps}}{{/installable}},
+  {{/if}}
+  {{#if devDeps}}
+  "devDependencies": {{#installable indent=4}}{{devDeps}}{{/installable}},
+  {{/if}}
   "files": [
     "{{dashCase name}}.js",
-    "{{dashCase name}}.mjs"
-    {{#if isCLI}},"{{dashCase name}}-cli.js"{{/if}}
+    {{#if isCLI}}
+    "{{dashCase name}}.mjs",
+    "{{dashCase name}}-cli.js"
+    {{else}}
+    "{{dashCase name}}-mjs.js"
+    {{/if}}
   ]
 }
 

@@ -56,7 +56,9 @@ module.exports = {
     "jsdoc/require-returns-check": 1,
     "jsdoc/require-returns-description": 1,
     "jsdoc/require-returns-type": 1,
-    "jsdoc/valid-types": 1
+    "jsdoc/valid-types": 1,
+    "fp/no-mutating-assign": "error",
+    "fp/no-delete": "error"
   },
   extends: ["standard", "prettier"],
   plugins: ["babel", "fp", "import", "prettier", "jsdoc", "ramda"]

@@ -5,7 +5,7 @@
   "main": "doppelganger.js",
   "module": "doppelganger.mjs",
   "bin": {
-    "consign": "doppelganger.js"
+    "doppelganger": "doppelganger.js"
   },
   "repository": "open-sorcerers/doppelganger",
   "author": "brekk",

@@ -1,17 +1,17 @@
 {
-  "name": "consigned",
+  "name": "doppelganger",
   "version": "0.0.0",
-  "description": "ship commits on an interval",
-  "main": "consigned.js",
-  "module": "consigned.mjs",
+  "description": "remote control your git commits",
+  "main": "doppelganger.js",
+  "module": "doppelganger.mjs",
   "bin": {
-    "consign": "consigned.js"
+    "consign": "doppelganger.js"
   },
-  "repository": "https://github.com/open-sorcerers/consigned",
+  "repository": "open-sorcerers/doppelganger",
   "author": "brekk",
   "contributors": [
     "Pedro Costa Neves <costa.neves@me.com> (https://github.com/persocon)",
-    "Brekk Bockrath <brekk@brekkbockrath.com> (https://github.com/persocon)"
+    "Brekk Bockrath <brekk@brekkbockrath.com> (https://github.com/brekk)"
   ],
   "license": "MIT",
   "private": false,

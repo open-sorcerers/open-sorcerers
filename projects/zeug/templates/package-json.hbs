@@ -1,0 +1,25 @@
+{
+  "name": "{{dashCase name}}",
+  "version": "0.0.0",
+  "description": "{{description}}",
+  "main": "{{dashCase name}}.js",
+  "module": "{{dashCase name}}.mjs",
+  {{#if isCLI}}
+  "bin": {
+    "{{dashCase name}}": "{{dashCase name}}-cli.js"
+  },
+  {{/if}}
+  "repository": "{{repo}}",
+  "author": "{{author}}",
+  "license": "{{license}}",
+  "private": {{makePrivate}},
+  "keywords": {{#jsonArray}}{{keywords}}{{/jsonArray}},
+  "dependencies": {
+  },
+  "files": [
+    "{{dashCase name}}.js",
+    "{{dashCase name}}.mjs"
+    {{#if isCLI}},"{{dashCase name}}-cli.js"{{/if}}
+  ]
+}
+

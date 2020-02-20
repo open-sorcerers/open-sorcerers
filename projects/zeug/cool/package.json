@@ -1,0 +1,23 @@
+{
+  "name": "cool",
+  "version": "0.0.0",
+  "description": "",
+  "main": "cool.js",
+  "module": "cool.mjs",
+  "bin": {
+    "cool": "cool-cli.js"
+  },
+  "repository": "ass",
+  "author": "fuck",
+  "license": "dumb",
+  "private": true,
+  "keywords": ,
+  "dependencies": {
+  },
+  "files": [
+    "cool.js",
+    "cool.mjs"
+    ,"cool-cli.js"
+  ]
+}
+

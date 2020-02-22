@@ -44,10 +44,10 @@ module.exports = plop => {
         type: "add",
         path: "{{dashCase name}}/package.json",
         templateFile: "templates/package-json.hbs"
-      },
-      {
-        type: "install"
       }
+      /* , {
+        type: "install"
+      }*/
     ]
   })
   const C = {
@@ -84,19 +84,19 @@ module.exports = plop => {
       const args = useNPM ? ["i"] : []
       fork(reject)(resolve)(flexeca({ cwd: process.cwd() }, cmd, args))
     })
-    /* return new Promise((resolve, reject) => { */
-    /*   const useNPM = propOr(false, "useNPM", config) */
-    /*   const isDev = propOr(false, "dev", config) */
-    /*   const cmd = useNPM ? "npm" : "yarn" */
-    /*   const useWorkspace = propOr(false, "workspace", config) */
-    /*   const deppies = (isDev ? answers.devDeps : answers.deps).split(" ") */
-    /*   const args = [ */
-    /*     useWorkspace ? "workspace " + useWorkspace : false, */
-    /*     useNPM ? "install" : "add", */
-    /*     ...deppies, */
-    /*     isDev ? "-D" : "-S" */
-    /*   ].filter(I) */
-    /*   return fork(reject)(resolve)(flexeca({ cwd: process.cwd() }, cmd, args)) */
-    /* }) */
+    /* return new Promise((resolve, reject) => {
+      const useNPM = propOr(false, "useNPM", config)
+      const isDev = propOr(false, "dev", config)
+      const cmd = useNPM ? "npm" : "yarn"
+      const useWorkspace = propOr(false, "workspace", config)
+      const deppies = (isDev ? answers.devDeps : answers.deps).split(" ")
+      const args = [
+        useWorkspace ? "workspace " + useWorkspace : false,
+        useNPM ? "install" : "add",
+        ...deppies,
+        isDev ? "-D" : "-S"
+      ].filter(I)
+      return fork(reject)(resolve)(flexeca({ cwd: process.cwd() }, cmd, args))
+    }) */
   })
 }

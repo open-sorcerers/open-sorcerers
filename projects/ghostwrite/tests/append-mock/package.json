@@ -1,0 +1,10 @@
+{
+	"name": "basic-bonefile-test",
+	"private": true,
+	"config": {
+		"nested": [
+			"basic-bonefile-test-propertyPath-value-index-0",
+			"basic-bonefile-test-propertyPath-value-index-1"
+		]
+	}
+}

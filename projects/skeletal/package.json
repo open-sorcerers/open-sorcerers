@@ -54,5 +54,6 @@
     "skeletal.js",
     "skeletal.mjs",
     "bone-cli.js"
-  ]
+  ],
+  "preferGlobal": "true"
 }

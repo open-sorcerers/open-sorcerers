@@ -1,11 +1,11 @@
 {
   "name": "skeletal",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Build the bones of a project",
   "main": "skeletal.js",
   "module": "skeletal.mjs",
   "bin": {
-    "bone": "bone-cli.js"
+    "skeletal": "skeletal.js"
   },
   "repository": {
     "type": "git",
@@ -37,23 +37,15 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
-    "clean-stack": "^2.2.0",
     "cosmiconfig": "^6.0.0",
     "ensorcel": "^0.0.2",
     "flexeca": "^0.0.1",
     "fluture": "^12.2.0",
     "handlebars": "^4.7.3",
     "inquirer": "^7.0.4",
-    "kleur": "^3.0.3",
     "ora": "^4.0.3",
     "ramda": "^0.27.0",
     "torpor": "^0.0.4",
     "yargs-parser": "^17.0.0"
-  },
-  "files": [
-    "skeletal.js",
-    "skeletal.mjs",
-    "bone-cli.js"
-  ],
-  "preferGlobal": "true"
+  }
 }

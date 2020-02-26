@@ -4,12 +4,18 @@ test("skeletal - basic", done => {
   fork(
     done,
     out => {
-      console.log("OUTPUT", out)
-      expect(Object.keys(out)).toMatchSnapshot()
+      console.log("out", out)
+      expect(out).toBeTruthy() // eventually
       done()
     },
     skeletal({
-      namespace: "example-basic"
+      namespace: "example-basic",
+      pattern: data => {
+        console.log("data", data)
+        expect(data).toBeTruthy()
+        expect(Object.keys(data)).toEqual(["?"])
+        expect(data).toMatchSnapshot()
+      }
     })
   )
 })

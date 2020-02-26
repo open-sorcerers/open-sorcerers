@@ -1,18 +1,13 @@
+#!/usr/bin/env node
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var kleur = require('kleur');
 var ramda = require('ramda');
-var torpor = require('torpor');
 var fluture = require('fluture');
 var ensorcel = require('ensorcel');
-var handlebars = require('handlebars');
+require('handlebars');
 var cosmiconfig = require('cosmiconfig');
-var inquirer = require('inquirer');
-var cleanStack = _interopDefault(require('clean-stack'));
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -166,261 +161,34 @@ var segmentTrace = segment({
   effect: console.log
 });
 
-var name = "skeletal";
-var version = "0.0.0";
-var description = "Build the bones of a project";
-var main = "skeletal.js";
-var module$1 = "skeletal.mjs";
-var bin = {
-	skeletal: "skeletal.js"
-};
-var repository = {
-	type: "git",
-	url: "https://github.com/open-sorcerers/skeletal.git"
-};
-var keywords = [
-	"generator",
-	"generate",
-	"scaffolding",
-	"scaffold",
-	"template",
-	"build",
-	"pattern",
-	"gen",
-	"plop",
-	"bones",
-	"structure"
-];
-var author = "brekk";
-var license = "MIT";
-var devDependencies = {
-	eslint: "^6.8.0",
-	"eslint-config-sorcerers": "^0.0.2",
-	jest: "^25.1.0",
-	nps: "^5.9.12",
-	prettier: "^1.19.1",
-	"prettier-eslint": "^9.0.1",
-	rollup: "^1.31.1"
-};
-var dependencies = {
-	chalk: "^1.1.3",
-	"clean-stack": "^2.2.0",
-	cosmiconfig: "^6.0.0",
-	ensorcel: "^0.0.2",
-	flexeca: "^0.0.1",
-	fluture: "^12.2.0",
-	handlebars: "^4.7.3",
-	inquirer: "^7.0.4",
-	kleur: "^3.0.3",
-	ora: "^4.0.3",
-	ramda: "^0.27.0",
-	torpor: "^0.0.4",
-	"yargs-parser": "^17.0.0"
-};
-var pkg = {
-	name: name,
-	version: version,
-	description: description,
-	main: main,
-	module: module$1,
-	bin: bin,
-	repository: repository,
-	keywords: keywords,
-	author: author,
-	license: license,
-	devDependencies: devDependencies,
-	dependencies: dependencies
-};
-
-var freeze = Object.freeze;
-var own = function (z) { return Object.getOwnPropertyNames(z); };
-
-function deepfreeze(o) {
-  if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { freeze(o); }
-    own(o).forEach(function (prop) {
-      if (prop !== "constructor") { deepfreeze(o[prop]); }
-    });
-  }
-  return o
-}
-
 var fork = ensorcel.tacit(2, fluture.fork);
 
-var cosmicConfigurate = ramda.curry(function (ligament, cosmic) {
-  var cancel = ramda.propOr(ramda.identity, "cancel", ligament);
+var cosmicConfigurate = ramda.curry(function (ligament, cancel, conf) {
   var futurize = ensorcel.futurizeWithCancel(cancel);
-  var cosmicLoad = futurize(1, cosmic.load);
-  var cosmicSearch = futurize(0, cosmic.search);
+  var cosmicLoad = futurize(1, conf.load);
+  var cosmicSearch = futurize(0, conf.search);
+
   return ramda.pipe(
-    ramda.ifElse(ramda.pathOr(false, ["config", "configFile"]), cosmicLoad, function () { return cosmicSearch(); }
-    ),
-    ramda.map(
-      ramda.pipe(
-        ramda.propOr(ramda.identity, "config"),
-        // ligasure ^^
-        function (z) { return z(ligament); }
-      )
-    )
-  )(ligament)
-});
-
-var UNSET = "%UNSET%";
-
-var error = ramda.curry(function (ns, message, data) {
-  var name = (kleur.bold(pkg.name + pkg.version)) + "::" + ns;
-  var e = new Error(message);
-  e.name = name;
-  e.data = data;
-  e.stack = cleanStack(e.stack, { pretty: true });
-  return e
-});
-
-var getName = ramda.propOr(UNSET, "name");
-var getPrompts = ramda.propOr(UNSET, "prompts");
-var getActions = ramda.propOr(UNSET, "actions");
-var ERROR = deepfreeze({
-  EXPECTED_NAME_AND_MORE: error(
-    "pattern",
-    "Expected pattern to have {name, prompts, actions} properties."
-  ),
-  INCOMPLETE_ACTION: error(
-    "render",
-    "Expected action to have {type, path, template} properties."
-  )
-});
-
-var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ramda.pipe(
-    ensorcel.box,
-    ramda.ap([getName, getPrompts, getActions]),
-    ramda.ifElse(
-      ramda.any(ramda.equals(UNSET)),
-      ramda.pipe(ERROR.EXPECTED_NAME_AND_MORE, bad),
-      function (ref) {
-        var name = ref[0];
-        var prompts = ref[1];
-        var actions = ref[2];
-
-        return ({ name: name, prompts: prompts, actions: actions });
-    }
-    ),
-    good
-  )(raw); }
-);
-
-var pattern = ramda.curry(function (config, raw) {
-  var cancel = ramda.propOr(ramda.identity, "cancel", config);
-  var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
-  return [
-    raw.name,
-    ramda.pipe(
-      ramda.chain(function (futurePattern) { return ramda.pipe(
-          ramda.propOr([], "prompts"),
-          ramda.map(willPrompt),
-          ramda.reduce(
-            function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
-            fluture.resolve({})
-          ),
-          ramda.map(function (answers) { return ramda.mergeRight(futurePattern, { answers: answers }); })
-        )(futurePattern); }
-      )
-    )(
-      new fluture.Future(function (bad, good) {
-        validatePatternAndSubmit(bad, good, raw);
-        return cancel
-      })
-    )
-  ]
-});
-
-var render = ramda.curry(function (config, filled) {
-  var parallelThreadMax = ramda.propOr(10, "threads", config);
-  var answers = filled.answers;
-  var actions = filled.actions;
-  return ramda.pipe(
-    ramda.map(
-      ramda.pipe(
-        ensorcel.box,
-        ramda.ap([ramda.propOr(UNSET, "template"), ramda.propOr(UNSET, "path")]),
-        ramda.ifElse(
-          ramda.any(ramda.equals(UNSET)),
-          ramda.pipe(ERROR.INCOMPLETE_ACTION, fluture.reject),
-          function (ref) {
-              var templateFile = ref[0];
-              var outputFile = ref[1];
-
-              return ramda.pipe(
-              torpor.readFile(templateFile),
-              ramda.map(handlebars.compile),
-              ramda.map(function (fn) { return fn(answers); }),
-              ramda.chain(torpor.writeFile(outputFile, ramda.__, { format: "utf8", flag: "wx" }))
-            )("utf8");
-  }
-        )
-      )
-    ),
-    fluture.parallel(parallelThreadMax)
-  )(actions)
-});
-
-var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
-    fn,
-    call(function (x) { return into.push(x); })
-  ); }
-);
-
-var saveKeyed = ramda.curry(function (struct, fn, input) {
-  var ref = fn(input);
-  var key = ref[0];
-  var ff = ref[1];
-  struct[key] = ff;
-  return ff
+    function (z) { return z || {}; },
+    ramda.ifElse(ramda.propOr(false, "configFile"), cosmicLoad, function () { return cosmicSearch(); }),
+    ramda.map(ramda.pipe(ramda.propOr(ramda.identity, "config"), function (z) { return z(ligament); }))
+  )(conf)
 });
 
 var skeletal = function (config) {
-  var parallelThreadMax = ramda.propOr(10, "threads", config);
-  var which = ramda.propOr(false, "pattern", config);
   var isCancelled = false;
-  /* const patterns = [] */
-  var patterns = {};
   var cancel = function () {
     isCancelled = true;
-    process.exit(1);
   };
-  // closured, for your safety
-  var checkCancelled = function () { return isCancelled; };
-  // wrap our composition steps with this so we can barf early
-  var cancellable = ramda.unless(checkCancelled);
-  // this is what the consumer sees as "bones" in the config file
-  var ligament = {
-    parallelThreadMax: parallelThreadMax,
-    cancel: cancel,
-    checkCancelled: checkCancelled,
-    config: deepfreeze(config)
-  };
-  /* ligament.pattern = pushInto(patterns, pattern(ligament)) */
-  ligament.pattern = saveKeyed(patterns, pattern(ligament));
+  var ligament = { cancel: cancel, isCancelled: isCancelled, pattern: trace("it's a pattern") };
+  var run = ramda.unless(function () { return isCancelled; });
   return ramda.pipe(
     ramda.propOr("skeletal", "namespace"),
     cosmiconfig.cosmiconfig,
-    cancellable(cosmicConfigurate(ligament)),
-    ramda.chain(
-      ramda.cond([
-        [checkCancelled, function () { return fluture.reject(new Error("CANCELLED")); }],
-        [
-          function () { return which; },
-          function () { return ramda.pipe(ramda.prop(which), ramda.chain(render(ligament)))(patterns); }
-        ],
-        [function () { return true; }, function () { return fluture.resolve({ patterns: ramda.keys(patterns) }); }]
-      ])
-    )
+    run(cosmicConfigurate(ligament, cancel))
   )(config)
 };
 
 exports.cosmicConfigurate = cosmicConfigurate;
-exports.deepfreeze = deepfreeze;
 exports.fork = fork;
-exports.pattern = pattern;
-exports.pushInto = pushInto;
-exports.saveKeyed = saveKeyed;
 exports.skeletal = skeletal;

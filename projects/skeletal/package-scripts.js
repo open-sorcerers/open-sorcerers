@@ -1,9 +1,9 @@
 module.exports = {
   scripts: {
     build: {
-      script: "nps build.rollup build.cli",
+      script: "nps build.rollup",
       rollup: "rollup -c rollup.config.js",
-      cli: "chmod 755 ./bone-cli.js"
+      cli: "chmod 755 ./skeletal.js"
     },
     lint: "eslint ./src --fix",
     test: {

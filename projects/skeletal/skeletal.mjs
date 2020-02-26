@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, chain, reduce, mergeRight, ap, any, equals, unless } from 'ramda';
-import { fork as fork$1, parallel, Future } from 'fluture';
+import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, chain, ap, any, equals, reduce, mergeRight, unless } from 'ramda';
+import { fork as fork$1, resolve, Future, parallel } from 'fluture';
 import { tacit, futurizeWithCancel, box, j2 } from 'ensorcel';
 import 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
@@ -276,37 +275,44 @@ var ERROR = deepfreeze({
   )
 });
 
+var validatePatternAndSubmit = curry$1(function (bad, good, raw) { return pipe$1(
+    box,
+    ap([getName, getPrompts, getActions]),
+    ifElse(
+      any(equals(UNSET)),
+      pipe$1(ERROR.EXPECTED_NAME_AND_MORE, bad),
+      function (ref) {
+        var name = ref[0];
+        var prompts = ref[1];
+        var actions = ref[2];
+
+        return ({ name: name, prompts: prompts, actions: actions });
+    }
+    ),
+    good
+  )(raw); }
+);
+
 var pattern = curry$1(function (config, raw) {
   var cancel = propOr(identity, "cancel", config);
-  var parallelThreadMax = propOr(10, "parallelThreadMax", config);
   var willPrompt = futurizeWithCancel(cancel, 1, prompt);
   return pipe$1(
     chain(function (futurePattern) { return pipe$1(
         propOr([], "prompts"),
         map(willPrompt),
-        parallel(parallelThreadMax),
-        map(reduce(mergeRight, {})),
+        reduce(function (left, right) {
+          return chain(function (leftVal) {
+            return map(function (rightVal) {
+              return mergeRight(leftVal, rightVal)
+            }, right)
+          }, left)
+        }, resolve({})),
         map(function (prompts) { return mergeRight(futurePattern, { prompts: prompts }); })
       )(futurePattern); }
     )
   )(
     new Future(function (bad, good) {
-      pipe$1(
-        box,
-        ap([getName, getPrompts, getActions]),
-        ifElse(
-          any(equals(UNSET)),
-          pipe$1(ERROR.EXPECTED_NAME_AND_MORE, bad),
-          function (ref) {
-            var name = ref[0];
-            var prompts = ref[1];
-            var actions = ref[2];
-
-            return ({ name: name, prompts: prompts, actions: actions });
-      }
-        ),
-        good
-      )(raw);
+      validatePatternAndSubmit(bad, good, raw);
       return cancel
     })
   )
@@ -319,7 +325,7 @@ var pushInto = curry$1(function (into, fn) { return pipe$1(
 );
 
 var skeletal = function (config) {
-  var parallelThreadMax = propOr(10, "parallelThreadMax", config);
+  var parallelThreadMax = propOr(10, "threads", config);
   var isCancelled = false;
   var patterns = [];
   var cancel = function () {

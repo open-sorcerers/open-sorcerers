@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -280,37 +279,44 @@ var ERROR = deepfreeze({
   )
 });
 
+var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ramda.pipe(
+    ensorcel.box,
+    ramda.ap([getName, getPrompts, getActions]),
+    ramda.ifElse(
+      ramda.any(ramda.equals(UNSET)),
+      ramda.pipe(ERROR.EXPECTED_NAME_AND_MORE, bad),
+      function (ref) {
+        var name = ref[0];
+        var prompts = ref[1];
+        var actions = ref[2];
+
+        return ({ name: name, prompts: prompts, actions: actions });
+    }
+    ),
+    good
+  )(raw); }
+);
+
 var pattern = ramda.curry(function (config, raw) {
   var cancel = ramda.propOr(ramda.identity, "cancel", config);
-  var parallelThreadMax = ramda.propOr(10, "parallelThreadMax", config);
   var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
   return ramda.pipe(
     ramda.chain(function (futurePattern) { return ramda.pipe(
         ramda.propOr([], "prompts"),
         ramda.map(willPrompt),
-        fluture.parallel(parallelThreadMax),
-        ramda.map(ramda.reduce(ramda.mergeRight, {})),
+        ramda.reduce(function (left, right) {
+          return ramda.chain(function (leftVal) {
+            return ramda.map(function (rightVal) {
+              return ramda.mergeRight(leftVal, rightVal)
+            }, right)
+          }, left)
+        }, fluture.resolve({})),
         ramda.map(function (prompts) { return ramda.mergeRight(futurePattern, { prompts: prompts }); })
       )(futurePattern); }
     )
   )(
     new fluture.Future(function (bad, good) {
-      ramda.pipe(
-        ensorcel.box,
-        ramda.ap([getName, getPrompts, getActions]),
-        ramda.ifElse(
-          ramda.any(ramda.equals(UNSET)),
-          ramda.pipe(ERROR.EXPECTED_NAME_AND_MORE, bad),
-          function (ref) {
-            var name = ref[0];
-            var prompts = ref[1];
-            var actions = ref[2];
-
-            return ({ name: name, prompts: prompts, actions: actions });
-      }
-        ),
-        good
-      )(raw);
+      validatePatternAndSubmit(bad, good, raw);
       return cancel
     })
   )
@@ -323,7 +329,7 @@ var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
 );
 
 var skeletal = function (config) {
-  var parallelThreadMax = ramda.propOr(10, "parallelThreadMax", config);
+  var parallelThreadMax = ramda.propOr(10, "threads", config);
   var isCancelled = false;
   var patterns = [];
   var cancel = function () {

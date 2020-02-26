@@ -180,7 +180,12 @@ var skeletal = function (config) {
   var cancel = function () {
     isCancelled = true;
   };
-  var ligament = { cancel: cancel, isCancelled: isCancelled, pattern: trace("it's a pattern") };
+  var ligament = {
+    cancel: cancel,
+    isCancelled: isCancelled,
+    pattern: config.pattern || ramda.identity,
+    config: Object.freeze(config)
+  };
   var run = ramda.unless(function () { return isCancelled; });
   return ramda.pipe(
     ramda.propOr("skeletal", "namespace"),
@@ -189,6 +194,30 @@ var skeletal = function (config) {
   )(config)
 };
 
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+function deepfreeze(o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { Object.freeze(o); }
+    Object.getOwnPropertyNames(o).forEach(function (prop) {
+      if (prop !== "constructor") { deepfreeze(o[prop]); }
+    });
+  }
+  return o
+}
+function icy(xx) {
+  return ramda.when(
+    function (z) { return z === Object(z); },
+    ramda.pipe(freeze, function (frozen) {
+      ramda.pipe(own, ramda.forEach(ramda.unless(ramda.equals("constructor"), icy)))(frozen);
+      return frozen
+    })
+  )(xx)
+}
+
 exports.cosmicConfigurate = cosmicConfigurate;
+exports.deepfreeze = deepfreeze;
 exports.fork = fork;
+exports.icy = icy;
 exports.skeletal = skeletal;

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { curry as curry$1, pipe as pipe$1, ifElse, propOr, map, identity, unless } from 'ramda';
+import { curry as curry$1, pipe as pipe$1, ifElse, propOr, map, identity, unless, when, forEach, equals } from 'ramda';
 import { fork as fork$1 } from 'fluture';
 import { tacit, futurizeWithCancel } from 'ensorcel';
 import 'handlebars';
@@ -176,7 +176,12 @@ var skeletal = function (config) {
   var cancel = function () {
     isCancelled = true;
   };
-  var ligament = { cancel: cancel, isCancelled: isCancelled, pattern: trace("it's a pattern") };
+  var ligament = {
+    cancel: cancel,
+    isCancelled: isCancelled,
+    pattern: config.pattern || identity,
+    config: Object.freeze(config)
+  };
   var run = unless(function () { return isCancelled; });
   return pipe$1(
     propOr("skeletal", "namespace"),
@@ -185,4 +190,26 @@ var skeletal = function (config) {
   )(config)
 };
 
-export { cosmicConfigurate, fork, skeletal };
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+function deepfreeze(o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { Object.freeze(o); }
+    Object.getOwnPropertyNames(o).forEach(function (prop) {
+      if (prop !== "constructor") { deepfreeze(o[prop]); }
+    });
+  }
+  return o
+}
+function icy(xx) {
+  return when(
+    function (z) { return z === Object(z); },
+    pipe$1(freeze, function (frozen) {
+      pipe$1(own, forEach(unless(equals("constructor"), icy)))(frozen);
+      return frozen
+    })
+  )(xx)
+}
+
+export { cosmicConfigurate, deepfreeze, fork, icy, skeletal };

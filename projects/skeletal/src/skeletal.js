@@ -1,38 +1,35 @@
+import { bold } from "kleur"
 import {
-  nth,
-  head,
-  toPairs,
-  values,
+  join,
+  __ as $,
+  includes,
+  prop,
   keys,
   cond,
   mergeRight,
   chain,
-  __ as $,
   ap,
   any,
   equals,
-  apply,
   curry,
   pipe,
   ifElse,
+  split,
   identity as I,
-  always as K,
   unless,
   map,
-  filter,
-  join,
-  split,
   reduce,
-  is,
   propOr,
   pathOr
 } from "ramda"
+import { writeFile, readFile } from "torpor"
 import { sideEffect, trace } from "xtrace"
 import { reject, resolve, parallel, Future, fork as rawFork } from "fluture"
 import { j2, box, tacit, futurizeWithCancel } from "ensorcel"
 import { compile } from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
 import { prompt } from "inquirer"
+import cleanStack from "clean-stack"
 
 import pkg from "../package.json"
 
@@ -62,11 +59,12 @@ export const cosmicConfigurate = curry((ligament, cosmic) => {
 const UNSET = `%UNSET%`
 
 const error = curry((ns, message, data) => {
-  const name = `${pkg.name}@${pkg.version}-${ns}`
+  const name = `${bold(pkg.name + pkg.version)}::${ns}`
   const e = new Error(message)
   e.name = name
   e.data = data
-  throw e
+  e.stack = cleanStack(e.stack, { pretty: true })
+  return e
 })
 
 const getName = propOr(UNSET, "name")
@@ -74,8 +72,12 @@ const getPrompts = propOr(UNSET, "prompts")
 const getActions = propOr(UNSET, "actions")
 const ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
-    `pattern__badinputs`,
-    `Expected name, prompts and actions properties to be given.`
+    `pattern`,
+    `Expected pattern to have {name, prompts, actions} properties.`
+  ),
+  INCOMPLETE_ACTION: error(
+    `render`,
+    `Expected action to have {type, path, template} properties.`
   )
 })
 
@@ -106,7 +108,7 @@ export const pattern = curry((config, raw) => {
             (left, right) => chain(ll => map(mergeRight(ll), right), left),
             resolve({})
           ),
-          map(prompts => mergeRight(futurePattern, { prompts }))
+          map(answers => mergeRight(futurePattern, { answers }))
         )(futurePattern)
       )
     )(
@@ -116,6 +118,31 @@ export const pattern = curry((config, raw) => {
       })
     )
   ]
+})
+
+const render = curry((config, filled) => {
+  const parallelThreadMax = propOr(10, "threads", config)
+  const { answers, actions } = filled
+  return pipe(
+    map(
+      pipe(
+        box,
+        ap([propOr(UNSET, "template"), propOr(UNSET, "path")]),
+        ifElse(
+          any(equals(UNSET)),
+          pipe(ERROR.INCOMPLETE_ACTION, reject),
+          ([templateFile, outputFile]) =>
+            pipe(
+              readFile(templateFile),
+              map(compile),
+              map(fn => fn(answers)),
+              chain(writeFile(outputFile, $, { format: "utf8", flag: "wx" }))
+            )("utf8")
+        )
+      )
+    ),
+    parallel(parallelThreadMax)
+  )(actions)
 })
 
 export const pushInto = curry((into, fn) =>
@@ -139,6 +166,7 @@ export const skeletal = config => {
   const patterns = {}
   const cancel = () => {
     isCancelled = true
+    process.exit(1)
   }
   // closured, for your safety
   const checkCancelled = () => isCancelled
@@ -147,14 +175,6 @@ export const skeletal = config => {
   // this is what the consumer sees as "bones" in the config file
   const ligament = {
     parallelThreadMax,
-    done: cancellable(() =>
-      pipe(
-        toPairs,
-        filter(([k]) => equals(which, k)),
-        map(nth(1)),
-        head
-      )(patterns)
-    ),
     cancel,
     checkCancelled,
     config: deepfreeze(config)
@@ -168,7 +188,10 @@ export const skeletal = config => {
     chain(
       cond([
         [checkCancelled, () => reject(new Error("CANCELLED"))],
-        [() => which, ligament.done],
+        [
+          () => which,
+          () => pipe(prop(which), chain(render(ligament)))(patterns)
+        ],
         [() => true, () => resolve({ patterns: keys(patterns) })]
       ])
     )

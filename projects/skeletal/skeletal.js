@@ -2,12 +2,17 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var kleur = require('kleur');
 var ramda = require('ramda');
+var torpor = require('torpor');
 var fluture = require('fluture');
 var ensorcel = require('ensorcel');
-require('handlebars');
+var handlebars = require('handlebars');
 var cosmiconfig = require('cosmiconfig');
 var inquirer = require('inquirer');
+var cleanStack = _interopDefault(require('clean-stack'));
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -199,12 +204,14 @@ var devDependencies = {
 };
 var dependencies = {
 	chalk: "^1.1.3",
+	"clean-stack": "^2.2.0",
 	cosmiconfig: "^6.0.0",
 	ensorcel: "^0.0.2",
 	flexeca: "^0.0.1",
 	fluture: "^12.2.0",
 	handlebars: "^4.7.3",
 	inquirer: "^7.0.4",
+	kleur: "^3.0.3",
 	ora: "^4.0.3",
 	ramda: "^0.27.0",
 	torpor: "^0.0.4",
@@ -261,11 +268,12 @@ var cosmicConfigurate = ramda.curry(function (ligament, cosmic) {
 var UNSET = "%UNSET%";
 
 var error = ramda.curry(function (ns, message, data) {
-  var name = (pkg.name) + "@" + (pkg.version) + "-" + ns;
+  var name = (kleur.bold(pkg.name + pkg.version)) + "::" + ns;
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  throw e
+  e.stack = cleanStack(e.stack, { pretty: true });
+  return e
 });
 
 var getName = ramda.propOr(UNSET, "name");
@@ -273,8 +281,12 @@ var getPrompts = ramda.propOr(UNSET, "prompts");
 var getActions = ramda.propOr(UNSET, "actions");
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
-    "pattern__badinputs",
-    "Expected name, prompts and actions properties to be given."
+    "pattern",
+    "Expected pattern to have {name, prompts, actions} properties."
+  ),
+  INCOMPLETE_ACTION: error(
+    "render",
+    "Expected action to have {type, path, template} properties."
   )
 });
 
@@ -309,7 +321,7 @@ var pattern = ramda.curry(function (config, raw) {
             function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
             fluture.resolve({})
           ),
-          ramda.map(function (prompts) { return ramda.mergeRight(futurePattern, { prompts: prompts }); })
+          ramda.map(function (answers) { return ramda.mergeRight(futurePattern, { answers: answers }); })
         )(futurePattern); }
       )
     )(
@@ -319,6 +331,36 @@ var pattern = ramda.curry(function (config, raw) {
       })
     )
   ]
+});
+
+var render = ramda.curry(function (config, filled) {
+  var parallelThreadMax = ramda.propOr(10, "threads", config);
+  var answers = filled.answers;
+  var actions = filled.actions;
+  return ramda.pipe(
+    ramda.map(
+      ramda.pipe(
+        ensorcel.box,
+        ramda.ap([ramda.propOr(UNSET, "template"), ramda.propOr(UNSET, "path")]),
+        ramda.ifElse(
+          ramda.any(ramda.equals(UNSET)),
+          ramda.pipe(ERROR.INCOMPLETE_ACTION, fluture.reject),
+          function (ref) {
+              var templateFile = ref[0];
+              var outputFile = ref[1];
+
+              return ramda.pipe(
+              torpor.readFile(templateFile),
+              ramda.map(handlebars.compile),
+              ramda.map(function (fn) { return fn(answers); }),
+              ramda.chain(torpor.writeFile(outputFile, ramda.__, { format: "utf8", flag: "wx" }))
+            )("utf8");
+  }
+        )
+      )
+    ),
+    fluture.parallel(parallelThreadMax)
+  )(actions)
 });
 
 var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
@@ -343,6 +385,7 @@ var skeletal = function (config) {
   var patterns = {};
   var cancel = function () {
     isCancelled = true;
+    process.exit(1);
   };
   // closured, for your safety
   var checkCancelled = function () { return isCancelled; };
@@ -351,17 +394,6 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function () { return ramda.pipe(
-        ramda.toPairs,
-        ramda.filter(function (ref) {
-          var k = ref[0];
-
-          return ramda.equals(which, k);
-        }),
-        ramda.map(ramda.nth(1)),
-        ramda.head
-      )(patterns); }
-    ),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)
@@ -375,7 +407,10 @@ var skeletal = function (config) {
     ramda.chain(
       ramda.cond([
         [checkCancelled, function () { return fluture.reject(new Error("CANCELLED")); }],
-        [function () { return which; }, ligament.done],
+        [
+          function () { return which; },
+          function () { return ramda.pipe(ramda.prop(which), ramda.chain(render(ligament)))(patterns); }
+        ],
         [function () { return true; }, function () { return fluture.resolve({ patterns: ramda.keys(patterns) }); }]
       ])
     )

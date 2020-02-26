@@ -1,9 +1,12 @@
-import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, ap, any, equals, chain, reduce, mergeRight, unless, toPairs, filter as filter$1, nth, head, cond, keys as keys$1 } from 'ramda';
-import { fork as fork$1, resolve, Future, reject } from 'fluture';
+import { bold } from 'kleur';
+import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, ap, any, equals, chain, reduce, mergeRight, __, unless, cond, prop as prop$1, keys as keys$1 } from 'ramda';
+import { readFile, writeFile } from 'torpor';
+import { fork as fork$1, resolve, Future, reject, parallel } from 'fluture';
 import { tacit, futurizeWithCancel, box } from 'ensorcel';
-import 'handlebars';
+import { compile } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt } from 'inquirer';
+import cleanStack from 'clean-stack';
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -195,12 +198,14 @@ var devDependencies = {
 };
 var dependencies = {
 	chalk: "^1.1.3",
+	"clean-stack": "^2.2.0",
 	cosmiconfig: "^6.0.0",
 	ensorcel: "^0.0.2",
 	flexeca: "^0.0.1",
 	fluture: "^12.2.0",
 	handlebars: "^4.7.3",
 	inquirer: "^7.0.4",
+	kleur: "^3.0.3",
 	ora: "^4.0.3",
 	ramda: "^0.27.0",
 	torpor: "^0.0.4",
@@ -257,11 +262,12 @@ var cosmicConfigurate = curry$1(function (ligament, cosmic) {
 var UNSET = "%UNSET%";
 
 var error = curry$1(function (ns, message, data) {
-  var name = (pkg.name) + "@" + (pkg.version) + "-" + ns;
+  var name = (bold(pkg.name + pkg.version)) + "::" + ns;
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  throw e
+  e.stack = cleanStack(e.stack, { pretty: true });
+  return e
 });
 
 var getName = propOr(UNSET, "name");
@@ -269,8 +275,12 @@ var getPrompts = propOr(UNSET, "prompts");
 var getActions = propOr(UNSET, "actions");
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
-    "pattern__badinputs",
-    "Expected name, prompts and actions properties to be given."
+    "pattern",
+    "Expected pattern to have {name, prompts, actions} properties."
+  ),
+  INCOMPLETE_ACTION: error(
+    "render",
+    "Expected action to have {type, path, template} properties."
   )
 });
 
@@ -305,7 +315,7 @@ var pattern = curry$1(function (config, raw) {
             function (left, right) { return chain(function (ll) { return map(mergeRight(ll), right); }, left); },
             resolve({})
           ),
-          map(function (prompts) { return mergeRight(futurePattern, { prompts: prompts }); })
+          map(function (answers) { return mergeRight(futurePattern, { answers: answers }); })
         )(futurePattern); }
       )
     )(
@@ -315,6 +325,36 @@ var pattern = curry$1(function (config, raw) {
       })
     )
   ]
+});
+
+var render = curry$1(function (config, filled) {
+  var parallelThreadMax = propOr(10, "threads", config);
+  var answers = filled.answers;
+  var actions = filled.actions;
+  return pipe$1(
+    map(
+      pipe$1(
+        box,
+        ap([propOr(UNSET, "template"), propOr(UNSET, "path")]),
+        ifElse(
+          any(equals(UNSET)),
+          pipe$1(ERROR.INCOMPLETE_ACTION, reject),
+          function (ref) {
+              var templateFile = ref[0];
+              var outputFile = ref[1];
+
+              return pipe$1(
+              readFile(templateFile),
+              map(compile),
+              map(function (fn) { return fn(answers); }),
+              chain(writeFile(outputFile, __, { format: "utf8", flag: "wx" }))
+            )("utf8");
+  }
+        )
+      )
+    ),
+    parallel(parallelThreadMax)
+  )(actions)
 });
 
 var pushInto = curry$1(function (into, fn) { return pipe$1(
@@ -339,6 +379,7 @@ var skeletal = function (config) {
   var patterns = {};
   var cancel = function () {
     isCancelled = true;
+    process.exit(1);
   };
   // closured, for your safety
   var checkCancelled = function () { return isCancelled; };
@@ -347,17 +388,6 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function () { return pipe$1(
-        toPairs,
-        filter$1(function (ref) {
-          var k = ref[0];
-
-          return equals(which, k);
-        }),
-        map(nth(1)),
-        head
-      )(patterns); }
-    ),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)
@@ -371,7 +401,10 @@ var skeletal = function (config) {
     chain(
       cond([
         [checkCancelled, function () { return reject(new Error("CANCELLED")); }],
-        [function () { return which; }, ligament.done],
+        [
+          function () { return which; },
+          function () { return pipe$1(prop$1(which), chain(render(ligament)))(patterns); }
+        ],
         [function () { return true; }, function () { return resolve({ patterns: keys$1(patterns) }); }]
       ])
     )

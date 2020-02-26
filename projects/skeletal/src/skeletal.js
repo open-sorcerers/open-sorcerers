@@ -1,4 +1,5 @@
 import {
+  mergeRight,
   chain,
   __ as $,
   ap,
@@ -22,9 +23,10 @@ import {
 } from "ramda"
 import { sideEffect, trace } from "xtrace"
 import { parallel, Future, fork as rawFork } from "fluture"
-import { box, tacit, futurizeWithCancel } from "ensorcel"
+import { j2, box, tacit, futurizeWithCancel } from "ensorcel"
 import { compile } from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
+import { prompt } from "inquirer"
 
 import pkg from "../package.json"
 
@@ -72,8 +74,21 @@ const ERROR = deepfreeze({
   )
 })
 
-export const pattern = curry(
-  (cancel, raw) =>
+export const pattern = curry((config, raw) => {
+  const cancel = propOr(I, "cancel", config)
+  const parallelThreadMax = propOr(10, "parallelThreadMax", config)
+  const willPrompt = futurizeWithCancel(cancel, 1, prompt)
+  return pipe(
+    chain(futurePattern =>
+      pipe(
+        propOr([], "prompts"),
+        map(willPrompt),
+        parallel(parallelThreadMax),
+        map(reduce(mergeRight, {})),
+        map(prompts => mergeRight(futurePattern, { prompts }))
+      )(futurePattern)
+    )
+  )(
     new Future((bad, good) => {
       pipe(
         box,
@@ -87,9 +102,10 @@ export const pattern = curry(
       )(raw)
       return cancel
     })
-)
+  )
+})
 
-export const pushable = curry((into, fn) =>
+export const pushInto = curry((into, fn) =>
   pipe(
     fn,
     sideEffect(x => into.push(x))
@@ -105,24 +121,24 @@ export const skeletal = config => {
   }
   // closured, for your safety
   const checkCancelled = () => isCancelled
-  // this is what the consumer sees as "bones" in the config file
-  const ligament = {
-    done: () => {
-      const allPatterns = parallel(parallelThreadMax)(patterns)
-      return allPatterns
-    },
-    cancel,
-    checkCancelled,
-    config: deepfreeze(config),
-    pattern: pushable(patterns, pattern(cancel))
-  }
   // wrap our composition steps with this so we can barf early
   const cancellable = unless(checkCancelled)
+  // this is what the consumer sees as "bones" in the config file
+  const ligament = {
+    parallelThreadMax,
+    done: cancellable(() => {
+      const allPatterns = parallel(parallelThreadMax)(patterns)
+      return allPatterns
+    }),
+    cancel,
+    checkCancelled,
+    config: deepfreeze(config)
+  }
+  ligament.pattern = pushInto(patterns, pattern(ligament))
   return pipe(
     propOr("skeletal", "namespace"),
-    trace("loading namespace"),
     cosmiconfig,
     cancellable(cosmicConfigurate(ligament)),
-    map(trace("what dis?"))
+    map(sideEffect(x => console.log("what dis?", j2(x))))
   )(config)
 }

@@ -8,6 +8,7 @@ var fluture = require('fluture');
 var ensorcel = require('ensorcel');
 require('handlebars');
 var cosmiconfig = require('cosmiconfig');
+var inquirer = require('inquirer');
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -161,37 +162,68 @@ var segmentTrace = segment({
   effect: console.log
 });
 
-var fork = ensorcel.tacit(2, fluture.fork);
-
-var cosmicConfigurate = ramda.curry(function (ligament, cancel, conf) {
-  var futurize = ensorcel.futurizeWithCancel(cancel);
-  var cosmicLoad = futurize(1, conf.load);
-  var cosmicSearch = futurize(0, conf.search);
-
-  return ramda.pipe(
-    function (z) { return z || {}; },
-    ramda.ifElse(ramda.propOr(false, "configFile"), cosmicLoad, function () { return cosmicSearch(); }),
-    ramda.map(ramda.pipe(ramda.propOr(ramda.identity, "config"), function (z) { return z(ligament); }))
-  )(conf)
-});
-
-var skeletal = function (config) {
-  var isCancelled = false;
-  var cancel = function () {
-    isCancelled = true;
-  };
-  var ligament = {
-    cancel: cancel,
-    isCancelled: isCancelled,
-    pattern: config.pattern || ramda.identity,
-    config: Object.freeze(config)
-  };
-  var run = ramda.unless(function () { return isCancelled; });
-  return ramda.pipe(
-    ramda.propOr("skeletal", "namespace"),
-    cosmiconfig.cosmiconfig,
-    run(cosmicConfigurate(ligament, cancel))
-  )(config)
+var name = "skeletal";
+var version = "0.0.0";
+var description = "Build the bones of a project";
+var main = "skeletal.js";
+var module$1 = "skeletal.mjs";
+var bin = {
+	skeletal: "skeletal.js"
+};
+var repository = {
+	type: "git",
+	url: "https://github.com/open-sorcerers/skeletal.git"
+};
+var keywords = [
+	"generator",
+	"generate",
+	"scaffolding",
+	"scaffold",
+	"template",
+	"build",
+	"pattern",
+	"gen",
+	"plop",
+	"bones",
+	"structure"
+];
+var author = "brekk";
+var license = "MIT";
+var devDependencies = {
+	eslint: "^6.8.0",
+	"eslint-config-sorcerers": "^0.0.2",
+	jest: "^25.1.0",
+	nps: "^5.9.12",
+	prettier: "^1.19.1",
+	"prettier-eslint": "^9.0.1",
+	rollup: "^1.31.1"
+};
+var dependencies = {
+	chalk: "^1.1.3",
+	cosmiconfig: "^6.0.0",
+	ensorcel: "^0.0.2",
+	flexeca: "^0.0.1",
+	fluture: "^12.2.0",
+	handlebars: "^4.7.3",
+	inquirer: "^7.0.4",
+	ora: "^4.0.3",
+	ramda: "^0.27.0",
+	torpor: "^0.0.4",
+	"yargs-parser": "^17.0.0"
+};
+var pkg = {
+	name: name,
+	version: version,
+	description: description,
+	main: main,
+	module: module$1,
+	bin: bin,
+	repository: repository,
+	keywords: keywords,
+	author: author,
+	license: license,
+	devDependencies: devDependencies,
+	dependencies: dependencies
 };
 
 var freeze = Object.freeze;
@@ -199,25 +231,131 @@ var own = function (z) { return Object.getOwnPropertyNames(z); };
 
 function deepfreeze(o) {
   if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { Object.freeze(o); }
-    Object.getOwnPropertyNames(o).forEach(function (prop) {
+    if (!Object.isFrozen(o)) { freeze(o); }
+    own(o).forEach(function (prop) {
       if (prop !== "constructor") { deepfreeze(o[prop]); }
     });
   }
   return o
 }
-function icy(xx) {
-  return ramda.when(
-    function (z) { return z === Object(z); },
-    ramda.pipe(freeze, function (frozen) {
-      ramda.pipe(own, ramda.forEach(ramda.unless(ramda.equals("constructor"), icy)))(frozen);
-      return frozen
+
+var fork = ensorcel.tacit(2, fluture.fork);
+
+var cosmicConfigurate = ramda.curry(function (ligament, cosmic) {
+  var cancel = ramda.propOr(ramda.identity, "cancel", ligament);
+  var futurize = ensorcel.futurizeWithCancel(cancel);
+  var cosmicLoad = futurize(1, cosmic.load);
+  var cosmicSearch = futurize(0, cosmic.search);
+  return ramda.pipe(
+    ramda.ifElse(ramda.pathOr(false, ["config", "configFile"]), cosmicLoad, function () { return cosmicSearch(); }
+    ),
+    ramda.map(
+      ramda.pipe(
+        ramda.propOr(ramda.identity, "config"),
+        // ligasure ^^
+        function (z) { return z(ligament); }
+      )
+    ),
+    ramda.chain(ligament.done)
+  )(ligament)
+});
+
+var UNSET = "%UNSET%";
+
+var error = ramda.curry(function (ns, message, data) {
+  var name = (pkg.name) + "@" + (pkg.version) + "-" + ns;
+  var e = new Error(message);
+  e.name = name;
+  e.data = data;
+  throw e
+});
+
+var getName = ramda.propOr(UNSET, "name");
+var getPrompts = ramda.propOr(UNSET, "prompts");
+var getActions = ramda.propOr(UNSET, "actions");
+var ERROR = deepfreeze({
+  EXPECTED_NAME_AND_MORE: error(
+    "pattern__badinputs",
+    "Expected name, prompts and actions properties to be given."
+  )
+});
+
+var pattern = ramda.curry(function (config, raw) {
+  var cancel = ramda.propOr(ramda.identity, "cancel", config);
+  var parallelThreadMax = ramda.propOr(10, "parallelThreadMax", config);
+  var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
+  return ramda.pipe(
+    ramda.chain(function (futurePattern) { return ramda.pipe(
+        ramda.propOr([], "prompts"),
+        ramda.map(willPrompt),
+        fluture.parallel(parallelThreadMax),
+        ramda.map(ramda.reduce(ramda.mergeRight, {})),
+        ramda.map(function (prompts) { return ramda.mergeRight(futurePattern, { prompts: prompts }); })
+      )(futurePattern); }
+    )
+  )(
+    new fluture.Future(function (bad, good) {
+      ramda.pipe(
+        ensorcel.box,
+        ramda.ap([getName, getPrompts, getActions]),
+        ramda.ifElse(
+          ramda.any(ramda.equals(UNSET)),
+          ramda.pipe(ERROR.EXPECTED_NAME_AND_MORE, bad),
+          function (ref) {
+            var name = ref[0];
+            var prompts = ref[1];
+            var actions = ref[2];
+
+            return ({ name: name, prompts: prompts, actions: actions });
+      }
+        ),
+        good
+      )(raw);
+      return cancel
     })
-  )(xx)
-}
+  )
+});
+
+var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
+    fn,
+    call(function (x) { return into.push(x); })
+  ); }
+);
+
+var skeletal = function (config) {
+  var parallelThreadMax = ramda.propOr(10, "parallelThreadMax", config);
+  var isCancelled = false;
+  var patterns = [];
+  var cancel = function () {
+    isCancelled = true;
+  };
+  // closured, for your safety
+  var checkCancelled = function () { return isCancelled; };
+  // wrap our composition steps with this so we can barf early
+  var cancellable = ramda.unless(checkCancelled);
+  // this is what the consumer sees as "bones" in the config file
+  var ligament = {
+    parallelThreadMax: parallelThreadMax,
+    done: cancellable(function () {
+      var allPatterns = fluture.parallel(parallelThreadMax)(patterns);
+      return allPatterns
+    }),
+    cancel: cancel,
+    checkCancelled: checkCancelled,
+    config: deepfreeze(config)
+  };
+  ligament.pattern = pushInto(patterns, pattern(ligament));
+  return ramda.pipe(
+    ramda.propOr("skeletal", "namespace"),
+    cosmiconfig.cosmiconfig,
+    cancellable(cosmicConfigurate(ligament)),
+    ramda.map(call(function (x) { return console.log("what dis?", ensorcel.j2(x)); }))
+  )(config)
+};
 
 exports.cosmicConfigurate = cosmicConfigurate;
 exports.deepfreeze = deepfreeze;
 exports.fork = fork;
-exports.icy = icy;
+exports.pattern = pattern;
+exports.pushInto = pushInto;
 exports.skeletal = skeletal;

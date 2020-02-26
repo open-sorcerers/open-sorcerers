@@ -1,4 +1,7 @@
 import {
+  values,
+  keys,
+  cond,
   mergeRight,
   chain,
   __ as $,
@@ -22,7 +25,7 @@ import {
   pathOr
 } from "ramda"
 import { sideEffect, trace } from "xtrace"
-import { resolve, parallel, Future, fork as rawFork } from "fluture"
+import { reject, resolve, parallel, Future, fork as rawFork } from "fluture"
 import { j2, box, tacit, futurizeWithCancel } from "ensorcel"
 import { compile } from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
@@ -49,8 +52,7 @@ export const cosmicConfigurate = curry((ligament, cosmic) => {
         // ligasure ^^
         z => z(ligament)
       )
-    ),
-    chain(ligament.done)
+    )
   )(ligament)
 })
 
@@ -90,27 +92,27 @@ const validatePatternAndSubmit = curry((bad, good, raw) =>
 export const pattern = curry((config, raw) => {
   const cancel = propOr(I, "cancel", config)
   const willPrompt = futurizeWithCancel(cancel, 1, prompt)
-  return pipe(
-    chain(futurePattern =>
-      pipe(
-        propOr([], "prompts"),
-        map(willPrompt),
-        reduce((left, right) => {
-          return chain(leftVal => {
-            return map(rightVal => {
-              return mergeRight(leftVal, rightVal)
-            }, right)
-          }, left)
-        }, resolve({})),
-        map(prompts => mergeRight(futurePattern, { prompts }))
-      )(futurePattern)
+  return [
+    raw.name,
+    pipe(
+      chain(futurePattern =>
+        pipe(
+          propOr([], "prompts"),
+          map(willPrompt),
+          reduce(
+            (left, right) => chain(ll => map(mergeRight(ll), right), left),
+            resolve({})
+          ),
+          map(prompts => mergeRight(futurePattern, { prompts }))
+        )(futurePattern)
+      )
+    )(
+      new Future((bad, good) => {
+        validatePatternAndSubmit(bad, good, raw)
+        return cancel
+      })
     )
-  )(
-    new Future((bad, good) => {
-      validatePatternAndSubmit(bad, good, raw)
-      return cancel
-    })
-  )
+  ]
 })
 
 export const pushInto = curry((into, fn) =>
@@ -120,10 +122,17 @@ export const pushInto = curry((into, fn) =>
   )
 )
 
+export const saveKeyed = curry((struct, fn, input) => {
+  const [key, ff] = fn(input)
+  struct[key] = ff
+  return ff
+})
+
 export const skeletal = config => {
   const parallelThreadMax = propOr(10, "threads", config)
   let isCancelled = false
-  const patterns = []
+  /* const patterns = [] */
+  const patterns = {}
   const cancel = () => {
     isCancelled = true
   }
@@ -134,19 +143,28 @@ export const skeletal = config => {
   // this is what the consumer sees as "bones" in the config file
   const ligament = {
     parallelThreadMax,
-    done: cancellable(() => {
-      const allPatterns = parallel(parallelThreadMax)(patterns)
+    done: cancellable(ongoing => {
+      const pat = propOr(false, "pattern", config)
+      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat)
+      const allPatterns = pipe(values, parallel(parallelThreadMax))(patterns)
       return allPatterns
     }),
     cancel,
     checkCancelled,
     config: deepfreeze(config)
   }
-  ligament.pattern = pushInto(patterns, pattern(ligament))
+  /* ligament.pattern = pushInto(patterns, pattern(ligament)) */
+  ligament.pattern = saveKeyed(patterns, pattern(ligament))
   return pipe(
     propOr("skeletal", "namespace"),
     cosmiconfig,
     cancellable(cosmicConfigurate(ligament)),
-    map(sideEffect(x => console.log("what dis?", j2(x))))
+    chain(
+      cond([
+        [checkCancelled, () => reject(new Error("CANCELLED"))],
+        [() => propOr(false, "pattern", config), ligament.done],
+        [() => true, () => resolve({ patterns: keys(patterns) })]
+      ])
+    )
   )(config)
 }

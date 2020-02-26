@@ -5,9 +5,10 @@ import { skeletal, fork } from "./skeletal"
 
 const OPTS = {
   number: ["t"],
-  string: ["n"],
+  string: ["n", "p"],
   default: { threads: 10, namespace: "skeletal" },
   alias: {
+    pattern: ["p"],
     threads: ["t"],
     namespace: ["n"]
   }
@@ -16,7 +17,6 @@ const OPTS = {
 pipe(
   slice(2, Infinity),
   z => yargsParser(z, OPTS),
-  trace("uhhhh"),
   skeletal,
   fork(console.warn, console.log)
 )(process.argv)

@@ -254,8 +254,7 @@ var cosmicConfigurate = ramda.curry(function (ligament, cosmic) {
         // ligasure ^^
         function (z) { return z(ligament); }
       )
-    ),
-    ramda.chain(ligament.done)
+    )
   )(ligament)
 });
 
@@ -300,26 +299,26 @@ var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ra
 var pattern = ramda.curry(function (config, raw) {
   var cancel = ramda.propOr(ramda.identity, "cancel", config);
   var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
-  return ramda.pipe(
-    ramda.chain(function (futurePattern) { return ramda.pipe(
-        ramda.propOr([], "prompts"),
-        ramda.map(willPrompt),
-        ramda.reduce(function (left, right) {
-          return ramda.chain(function (leftVal) {
-            return ramda.map(function (rightVal) {
-              return ramda.mergeRight(leftVal, rightVal)
-            }, right)
-          }, left)
-        }, fluture.resolve({})),
-        ramda.map(function (prompts) { return ramda.mergeRight(futurePattern, { prompts: prompts }); })
-      )(futurePattern); }
+  return [
+    raw.name,
+    ramda.pipe(
+      ramda.chain(function (futurePattern) { return ramda.pipe(
+          ramda.propOr([], "prompts"),
+          ramda.map(willPrompt),
+          ramda.reduce(
+            function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
+            fluture.resolve({})
+          ),
+          ramda.map(function (prompts) { return ramda.mergeRight(futurePattern, { prompts: prompts }); })
+        )(futurePattern); }
+      )
+    )(
+      new fluture.Future(function (bad, good) {
+        validatePatternAndSubmit(bad, good, raw);
+        return cancel
+      })
     )
-  )(
-    new fluture.Future(function (bad, good) {
-      validatePatternAndSubmit(bad, good, raw);
-      return cancel
-    })
-  )
+  ]
 });
 
 var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
@@ -328,10 +327,19 @@ var pushInto = ramda.curry(function (into, fn) { return ramda.pipe(
   ); }
 );
 
+var saveKeyed = ramda.curry(function (struct, fn, input) {
+  var ref = fn(input);
+  var key = ref[0];
+  var ff = ref[1];
+  struct[key] = ff;
+  return ff
+});
+
 var skeletal = function (config) {
   var parallelThreadMax = ramda.propOr(10, "threads", config);
   var isCancelled = false;
-  var patterns = [];
+  /* const patterns = [] */
+  var patterns = {};
   var cancel = function () {
     isCancelled = true;
   };
@@ -342,20 +350,29 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function () {
-      var allPatterns = fluture.parallel(parallelThreadMax)(patterns);
+    done: cancellable(function (ongoing) {
+      var pat = ramda.propOr(false, "pattern", config);
+      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat);
+      var allPatterns = ramda.pipe(ramda.values, fluture.parallel(parallelThreadMax))(patterns);
       return allPatterns
     }),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)
   };
-  ligament.pattern = pushInto(patterns, pattern(ligament));
+  /* ligament.pattern = pushInto(patterns, pattern(ligament)) */
+  ligament.pattern = saveKeyed(patterns, pattern(ligament));
   return ramda.pipe(
     ramda.propOr("skeletal", "namespace"),
     cosmiconfig.cosmiconfig,
     cancellable(cosmicConfigurate(ligament)),
-    ramda.map(call(function (x) { return console.log("what dis?", ensorcel.j2(x)); }))
+    ramda.chain(
+      ramda.cond([
+        [checkCancelled, function () { return fluture.reject(new Error("CANCELLED")); }],
+        [function () { return ramda.propOr(false, "pattern", config); }, ligament.done],
+        [function () { return true; }, function () { return fluture.resolve({ patterns: ramda.keys(patterns) }); }]
+      ])
+    )
   )(config)
 };
 
@@ -364,4 +381,5 @@ exports.deepfreeze = deepfreeze;
 exports.fork = fork;
 exports.pattern = pattern;
 exports.pushInto = pushInto;
+exports.saveKeyed = saveKeyed;
 exports.skeletal = skeletal;

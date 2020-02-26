@@ -1,6 +1,6 @@
-import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, chain, ap, any, equals, reduce, mergeRight, unless } from 'ramda';
-import { fork as fork$1, resolve, Future, parallel } from 'fluture';
-import { tacit, futurizeWithCancel, box, j2 } from 'ensorcel';
+import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, ap, any, equals, chain, reduce, mergeRight, unless, values, cond, keys as keys$1 } from 'ramda';
+import { fork as fork$1, resolve, Future, parallel, reject } from 'fluture';
+import { tacit, futurizeWithCancel, box } from 'ensorcel';
 import 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt } from 'inquirer';
@@ -250,8 +250,7 @@ var cosmicConfigurate = curry$1(function (ligament, cosmic) {
         // ligasure ^^
         function (z) { return z(ligament); }
       )
-    ),
-    chain(ligament.done)
+    )
   )(ligament)
 });
 
@@ -296,26 +295,26 @@ var validatePatternAndSubmit = curry$1(function (bad, good, raw) { return pipe$1
 var pattern = curry$1(function (config, raw) {
   var cancel = propOr(identity, "cancel", config);
   var willPrompt = futurizeWithCancel(cancel, 1, prompt);
-  return pipe$1(
-    chain(function (futurePattern) { return pipe$1(
-        propOr([], "prompts"),
-        map(willPrompt),
-        reduce(function (left, right) {
-          return chain(function (leftVal) {
-            return map(function (rightVal) {
-              return mergeRight(leftVal, rightVal)
-            }, right)
-          }, left)
-        }, resolve({})),
-        map(function (prompts) { return mergeRight(futurePattern, { prompts: prompts }); })
-      )(futurePattern); }
+  return [
+    raw.name,
+    pipe$1(
+      chain(function (futurePattern) { return pipe$1(
+          propOr([], "prompts"),
+          map(willPrompt),
+          reduce(
+            function (left, right) { return chain(function (ll) { return map(mergeRight(ll), right); }, left); },
+            resolve({})
+          ),
+          map(function (prompts) { return mergeRight(futurePattern, { prompts: prompts }); })
+        )(futurePattern); }
+      )
+    )(
+      new Future(function (bad, good) {
+        validatePatternAndSubmit(bad, good, raw);
+        return cancel
+      })
     )
-  )(
-    new Future(function (bad, good) {
-      validatePatternAndSubmit(bad, good, raw);
-      return cancel
-    })
-  )
+  ]
 });
 
 var pushInto = curry$1(function (into, fn) { return pipe$1(
@@ -324,10 +323,19 @@ var pushInto = curry$1(function (into, fn) { return pipe$1(
   ); }
 );
 
+var saveKeyed = curry$1(function (struct, fn, input) {
+  var ref = fn(input);
+  var key = ref[0];
+  var ff = ref[1];
+  struct[key] = ff;
+  return ff
+});
+
 var skeletal = function (config) {
   var parallelThreadMax = propOr(10, "threads", config);
   var isCancelled = false;
-  var patterns = [];
+  /* const patterns = [] */
+  var patterns = {};
   var cancel = function () {
     isCancelled = true;
   };
@@ -338,21 +346,30 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function () {
-      var allPatterns = parallel(parallelThreadMax)(patterns);
+    done: cancellable(function (ongoing) {
+      var pat = propOr(false, "pattern", config);
+      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat);
+      var allPatterns = pipe$1(values, parallel(parallelThreadMax))(patterns);
       return allPatterns
     }),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)
   };
-  ligament.pattern = pushInto(patterns, pattern(ligament));
+  /* ligament.pattern = pushInto(patterns, pattern(ligament)) */
+  ligament.pattern = saveKeyed(patterns, pattern(ligament));
   return pipe$1(
     propOr("skeletal", "namespace"),
     cosmiconfig,
     cancellable(cosmicConfigurate(ligament)),
-    map(call(function (x) { return console.log("what dis?", j2(x)); }))
+    chain(
+      cond([
+        [checkCancelled, function () { return reject(new Error("CANCELLED")); }],
+        [function () { return propOr(false, "pattern", config); }, ligament.done],
+        [function () { return true; }, function () { return resolve({ patterns: keys$1(patterns) }); }]
+      ])
+    )
   )(config)
 };
 
-export { cosmicConfigurate, deepfreeze, fork, pattern, pushInto, skeletal };
+export { cosmicConfigurate, deepfreeze, fork, pattern, pushInto, saveKeyed, skeletal };

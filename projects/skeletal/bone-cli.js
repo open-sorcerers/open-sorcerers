@@ -339,6 +339,7 @@ var saveKeyed = ramda.curry(function (struct, fn, input) {
 
 var skeletal = function (config) {
   var parallelThreadMax = ramda.propOr(10, "threads", config);
+  var which = ramda.propOr(false, "pattern", config);
   var isCancelled = false;
   /* const patterns = [] */
   var patterns = {};
@@ -357,7 +358,7 @@ var skeletal = function (config) {
         ramda.filter(function (ref) {
           var k = ref[0];
 
-          return ramda.equals(ramda.propOr(false, "pattern", config), k);
+          return ramda.equals(which, k);
         }),
         ramda.map(ramda.nth(1)),
         ramda.head
@@ -376,7 +377,7 @@ var skeletal = function (config) {
     ramda.chain(
       ramda.cond([
         [checkCancelled, function () { return fluture.reject(new Error("CANCELLED")); }],
-        [function () { return ramda.propOr(false, "pattern", config); }, ligament.done],
+        [function () { return which; }, ligament.done],
         [function () { return true; }, function () { return fluture.resolve({ patterns: ramda.keys(patterns) }); }]
       ])
     )

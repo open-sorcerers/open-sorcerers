@@ -133,6 +133,7 @@ export const saveKeyed = curry((struct, fn, input) => {
 
 export const skeletal = config => {
   const parallelThreadMax = propOr(10, "threads", config)
+  const which = propOr(false, "pattern", config)
   let isCancelled = false
   /* const patterns = [] */
   const patterns = {}
@@ -149,7 +150,7 @@ export const skeletal = config => {
     done: cancellable(() =>
       pipe(
         toPairs,
-        filter(([k]) => equals(propOr(false, "pattern", config), k)),
+        filter(([k]) => equals(which, k)),
         map(nth(1)),
         head
       )(patterns)
@@ -167,7 +168,7 @@ export const skeletal = config => {
     chain(
       cond([
         [checkCancelled, () => reject(new Error("CANCELLED"))],
-        [() => propOr(false, "pattern", config), ligament.done],
+        [() => which, ligament.done],
         [() => true, () => resolve({ patterns: keys(patterns) })]
       ])
     )

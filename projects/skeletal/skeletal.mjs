@@ -333,6 +333,7 @@ var saveKeyed = curry$1(function (struct, fn, input) {
 
 var skeletal = function (config) {
   var parallelThreadMax = propOr(10, "threads", config);
+  var which = propOr(false, "pattern", config);
   var isCancelled = false;
   /* const patterns = [] */
   var patterns = {};
@@ -351,7 +352,7 @@ var skeletal = function (config) {
         filter$1(function (ref) {
           var k = ref[0];
 
-          return equals(propOr(false, "pattern", config), k);
+          return equals(which, k);
         }),
         map(nth(1)),
         head
@@ -370,7 +371,7 @@ var skeletal = function (config) {
     chain(
       cond([
         [checkCancelled, function () { return reject(new Error("CANCELLED")); }],
-        [function () { return propOr(false, "pattern", config); }, ligament.done],
+        [function () { return which; }, ligament.done],
         [function () { return true; }, function () { return resolve({ patterns: keys$1(patterns) }); }]
       ])
     )

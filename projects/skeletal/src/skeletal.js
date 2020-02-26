@@ -1,4 +1,7 @@
 import {
+  nth,
+  head,
+  toPairs,
   values,
   keys,
   cond,
@@ -143,12 +146,14 @@ export const skeletal = config => {
   // this is what the consumer sees as "bones" in the config file
   const ligament = {
     parallelThreadMax,
-    done: cancellable(ongoing => {
-      const pat = propOr(false, "pattern", config)
-      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat)
-      const allPatterns = pipe(values, parallel(parallelThreadMax))(patterns)
-      return allPatterns
-    }),
+    done: cancellable(() =>
+      pipe(
+        toPairs,
+        filter(([k]) => equals(propOr(false, "pattern", config), k)),
+        map(nth(1)),
+        head
+      )(patterns)
+    ),
     cancel,
     checkCancelled,
     config: deepfreeze(config)

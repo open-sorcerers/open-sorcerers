@@ -1,5 +1,5 @@
-import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, ap, any, equals, chain, reduce, mergeRight, unless, values, cond, keys as keys$1 } from 'ramda';
-import { fork as fork$1, resolve, Future, parallel, reject } from 'fluture';
+import { curry as curry$1, propOr, identity, pipe as pipe$1, ifElse, pathOr, map, ap, any, equals, chain, reduce, mergeRight, unless, toPairs, filter as filter$1, nth, head, cond, keys as keys$1 } from 'ramda';
+import { fork as fork$1, resolve, Future, reject } from 'fluture';
 import { tacit, futurizeWithCancel, box } from 'ensorcel';
 import 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
@@ -346,12 +346,17 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function (ongoing) {
-      var pat = propOr(false, "pattern", config);
-      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat);
-      var allPatterns = pipe$1(values, parallel(parallelThreadMax))(patterns);
-      return allPatterns
-    }),
+    done: cancellable(function () { return pipe$1(
+        toPairs,
+        filter$1(function (ref) {
+          var k = ref[0];
+
+          return equals(propOr(false, "pattern", config), k);
+        }),
+        map(nth(1)),
+        head
+      )(patterns); }
+    ),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)

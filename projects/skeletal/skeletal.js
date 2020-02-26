@@ -350,12 +350,17 @@ var skeletal = function (config) {
   // this is what the consumer sees as "bones" in the config file
   var ligament = {
     parallelThreadMax: parallelThreadMax,
-    done: cancellable(function (ongoing) {
-      var pat = ramda.propOr(false, "pattern", config);
-      console.log("ongoing", ongoing, "CONFIG", config, ">> PATTERN", pat);
-      var allPatterns = ramda.pipe(ramda.values, fluture.parallel(parallelThreadMax))(patterns);
-      return allPatterns
-    }),
+    done: cancellable(function () { return ramda.pipe(
+        ramda.toPairs,
+        ramda.filter(function (ref) {
+          var k = ref[0];
+
+          return ramda.equals(ramda.propOr(false, "pattern", config), k);
+        }),
+        ramda.map(ramda.nth(1)),
+        ramda.head
+      )(patterns); }
+    ),
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config)

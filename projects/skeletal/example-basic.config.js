@@ -4,11 +4,11 @@ const { trace } = require("xtrace")
 console.log("SKELETAL CONFIG")
 
 module.exports = bones => {
-  /* bones.pattern({ */
-  /*   name: "one", */
-  /*   prompts: [{ type: "input", name: "name", message: "Name?" }], */
-  /*   actions: [{ type: "add", template: "one.hbs" }] */
-  /* }) */
+  bones.pattern({
+    name: "one",
+    prompts: [{ type: "input", name: "name", message: "Name?" }],
+    actions: [{ type: "add", template: "one.hbs" }]
+  })
 
   bones.pattern({
     name: "two",

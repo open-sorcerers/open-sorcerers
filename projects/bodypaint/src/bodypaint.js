@@ -1,4 +1,12 @@
 import {
+  ifElse,
+  difference,
+  all,
+  fromPairs,
+  __ as $,
+  mergeRight,
+  toPairs,
+  includes,
   values,
   identity as I,
   when,
@@ -11,7 +19,7 @@ import {
   map
 } from "ramda"
 import facepaint from "facepaint"
-/* import { trace } from "xtrace" */
+import { trace } from "xtrace"
 
 export const DEFAULT_BREAKPOINTS = {
   XT: 320,
@@ -44,7 +52,7 @@ export const GAP = "%GAP%"
 export const __ = GAP
 
 export const fillGaps = curry((points, xxx) =>
-  when(
+  ifElse(
     Array.isArray,
     pipe(
       z => {
@@ -61,11 +69,12 @@ export const fillGaps = curry((points, xxx) =>
         const cc = bb === GAP ? last(aa) : bb
         return aa.concat(cc)
       }, [])
-    )
+    ),
+    map(fillGaps(points))
   )(xxx)
 )
 
-export const bodypaint = curry((useMin, baseFontSize, xxx) =>
+export const paint = curry((useMin, baseFontSize, xxx) =>
   pipe(
     asRem(baseFontSize),
     map(useMin ? minMedia : maxMedia),
@@ -74,14 +83,77 @@ export const bodypaint = curry((useMin, baseFontSize, xxx) =>
   )(xxx)
 )
 
-export const makePainter = ({ useMin, baseFontSize, points }) => {
+const orderedKeyReduction = reduce(
+  (agg, [kk, vv, doStuff]) =>
+    mergeRight(agg, doStuff ? { [kk]: pipe(values)(vv) } : { [kk]: vv }),
+  {}
+)
+const makeBaseFromPattern = pipe(
+  toPairs,
+  map(([k]) => [k, GAP]),
+  fromPairs
+)
+
+const isPatternObject = curry((pattern, xxx) => {
+  const points = keys(pattern)
+  return pipe(
+    keys,
+    difference(keys(xxx)),
+    map(includes($, points)),
+    all(z => z)
+  )(points)
+})
+
+const dropNeedlessGaps = curry((pattern, list) => {
+  if (!Array.isArray(list)) return list
+  const copy = [].concat(list)
+  let chained = true
+  let terminal = list.length
+  let cur = null
+  let prev = null
+  for (let i = list.length; i > -1; i--) {
+    if (!chained) break
+    cur = list[i]
+    prev = list[i + 1]
+    if (cur && prev) {
+      if ((prev === GAP && cur !== GAP) || prev !== GAP) {
+        chained = false
+        terminal = prev !== GAP ? i + 1 : i
+      }
+    }
+  }
+  return copy.slice(0, terminal + 1)
+})
+
+export const gaplessPlayback = curry((pattern, mqInput) => {
+  const smashable = makeBaseFromPattern(pattern)
+  return pipe(
+    toPairs,
+    map(([k, v]) => [
+      k,
+      isPatternObject(pattern, v)
+        ? mergeRight(smashable, v)
+        : gaplessPlayback(pattern, v),
+      isPatternObject(pattern, v)
+    ]),
+    orderedKeyReduction,
+    map(dropNeedlessGaps(pattern))
+  )(mqInput)
+})
+
+export const makePainter = ({ useMin, baseFontSize, points, implicit }) => {
   const rawPoints = Object.freeze(points)
-  const bodypainter = bodypaint(useMin, baseFontSize, rawPoints)
-  return pipe(map(fillGaps(rawPoints)), bodypainter)
+  const painter = paint(useMin, baseFontSize, rawPoints)
+  return pipe(
+    implicit ? gaplessPlayback(rawPoints) : I,
+    map(fillGaps(rawPoints)),
+    painter
+  )
 }
 
-export const useDefaultPainter = makePainter({
+export const bodypaint = makePainter({
   useMin: true,
   baseFontSize: 16,
-  points: DEFAULT_BREAKPOINTS
+  points: DEFAULT_BREAKPOINTS,
+  implicit: true
 })

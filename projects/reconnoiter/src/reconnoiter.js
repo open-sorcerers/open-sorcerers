@@ -1,72 +1,52 @@
-import { flexeca } from "flexeca"
 import ora from "ora"
-import { resolve, fork as rawFork } from "fluture"
 import { sideEffect } from "xtrace"
 import {
-  not,
-  equals,
+  gt,
   ifElse,
-  identity as I,
-  chain,
-  nth,
-  filter,
-  split,
-  map,
   pipe,
-  includes
+  chain,
+  range,
+  always as K,
+  map,
+  join,
+  includes,
+  equals,
+  identity as I
 } from "ramda"
-/* import { trace } from "xtrace" */
-import { tacit } from "ensorcel"
-/* import { every } from "./cron" */
+import { resolve } from "fluture"
+import {
+  fork,
+  ping,
+  isOn,
+  ipAddress,
+  off,
+  on,
+  testNetwork,
+  connectTo
+} from "./utils"
 
-const fork = tacit(2, rawFork)
-/* const after = tacit(1, rawFork) */
-
-const cwd = process.cwd()
-const netset = flexeca({ cwd }, "networksetup")
-
-const isOn = () =>
-  pipe(netset, map(includes("On")))(["-getairportpower", "en0"])
-
-const on = () =>
-  pipe(
-    netset,
-    map(() => true)
-  )(["-setairportpower", "en0", "on"])
-
-const off = () =>
-  pipe(
-    netset,
-    map(() => true)
-  )(["-setairportpower", "en0", "off"])
-
-const ipAddress = () =>
-  pipe(
-    netset,
-    map(
-      pipe(split("\n"), filter(includes("IP address")), nth(0), z =>
-        z.substr(z.indexOf(":") + 2, Infinity)
-      )
-    )
-  )(["-getinfo", "Wi-Fi"])
-
-const testNetwork = () =>
-  pipe(
-    netset,
-    map(pipe(includes("not associated"), not))
-  )(["-getairportnetwork", "en0"])
-
-const connectTo = net => () => pipe(netset)(["-setairportnetwork", "en0", net])
-
-export const runner = network => {
-  const spinner = ora(`Pinging ${network}`).start()
-  const timerId = setInterval(
-    pipe(
+export const runner = (network, rawAttempts = 1, wait = 5000) => {
+  let attempts = rawAttempts
+  const attempt = () => {
+    return ifElse(
+      gt(10),
+      pipe(range(0), map(K(".")), join("")),
+      z => " - " + z + "th attempt"
+    )(attempts)
+  }
+  const spinner = ora(`Connecting to ${network}`).start()
+  let cancelId = null
+  let timerId = null
+  let slowdown = wait
+  const rece = () => {
+    const cancel = pipe(
       isOn,
+      sideEffect(() => (attempts += 1)),
       chain(ifElse(I, () => resolve(true), on)),
       chain(ipAddress),
       chain(ifElse(equals("none"), testNetwork, () => resolve(true))),
       sideEffect(x => {
+        spinner.text = `Signal found${attempt()}`
         spinner.color = x ? "cyan" : "magenta"
       }),
       chain(ifElse(I, () => resolve(true), connectTo(network))),
@@ -81,22 +61,40 @@ export const runner = network => {
         )
       ),
       sideEffect(x => {
-        spinner.color = x ? "green" : "red"
+        spinner.color = x ? "green" : "yellow"
       }),
       chain(didConnect => {
         if (didConnect) {
-          spinner.succeed(`Connected to ${network}`)
-          clearInterval(timerId)
+          spinner.text = `Connected to ${network}`
+          return ping(5, "npmjs.com")
+        } else {
+          spinner.text = `Retrying${attempt()}`
+          spinner.color = "yellow"
+          return resolve(false)
+        }
+      }),
+      chain(didResolve => {
+        if (didResolve > 1 / 4) {
+          spinner.succeed(
+            `Got ${didResolve *
+              100}% internet from ${network} after ${attempts} tries.`
+          )
+          clearTimeout(timerId)
+          clearTimeout(cancelId)
           return resolve(true)
         } else {
-          spinner.text = "Retrying..."
-          spinner.color = "yellow"
-          process.stdout.write(".")
+          spinner.color = "red"
+          spinner.text = `Cycling wifi${attempt()}`
+          clearTimeout(timerId)
+          clearTimeout(cancelId)
+          slowdown = wait + attempts * 3
+          timerId = setTimeout(rece, slowdown)
           return off()
         }
       }),
       fork(I, I)
-    ),
-    7000
-  )
+    )()
+    cancelId = setTimeout(cancel, 60e3)
+  }
+  timerId = setTimeout(rece, slowdown)
 }

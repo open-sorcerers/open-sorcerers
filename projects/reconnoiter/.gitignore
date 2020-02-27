@@ -1,1 +1,3 @@
-*.reconnoiter
+reconnoiter.*
+!src/reconnoiter.*
+

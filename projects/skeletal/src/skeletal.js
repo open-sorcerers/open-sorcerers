@@ -179,7 +179,6 @@ export const skeletal = config => {
     checkCancelled,
     config: deepfreeze(config)
   }
-  /* ligament.pattern = pushInto(patterns, pattern(ligament)) */
   ligament.pattern = saveKeyed(patterns, pattern(ligament))
   return pipe(
     propOr("skeletal", "namespace"),

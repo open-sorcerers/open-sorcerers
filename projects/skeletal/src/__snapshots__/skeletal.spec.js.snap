@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`skeletal - basic 1`] = `
+Array [
+  "cancel",
+  "checkCancelled",
+  "config",
+  "pattern",
+]
+`;

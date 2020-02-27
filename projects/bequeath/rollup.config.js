@@ -1,15 +1,14 @@
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
-import cli from "rollup-plugin-cli"
 import buble from "@rollup/plugin-buble"
 import json from "@rollup/plugin-json"
 import progress from "rollup-plugin-progress"
-/* import sizes from "rollup-plugin-sizes" */
 import pkg from "./package.json"
 
-const external = ["path"].concat(
-  pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
-)
+/* const external = ["path"].concat( */
+/*   pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : [] */
+/* ) */
+const external = []
 const plugins = [
   progress(),
   json(),
@@ -36,14 +35,5 @@ export default [
       { file: pkg.module, format: "esm" }
     ],
     plugins
-  },
-  {
-    input: `src/cli-runner.js`,
-    external: external.concat(["fs"]),
-    output: [{ file: `engraved-cli.js`, format: `cjs` }],
-    plugins: plugins
-      .slice(0, 2)
-      .concat([cli()])
-      .concat(plugins.slice(2, Infinity))
   }
 ]

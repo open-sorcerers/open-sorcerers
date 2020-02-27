@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "description": "osx connect to a wifi network",
   "main": "reconnoiter.js",
+  "bin": {
+    "recce": "reconnoiter-cli.js"
+  },
   "repository": "//github.com/open-sorcerers/open-sorcerers",
   "author": "brekk",
   "license": "MIT",
   "private": false,
+  "files": ["reconnoiter.js", "reconnoiter-cli.js"],
   "dependencies": {
     "camel-case": "^4.1.1",
     "flexeca": "^0.0.1",

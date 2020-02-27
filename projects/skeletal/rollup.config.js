@@ -4,10 +4,9 @@ import cli from "rollup-plugin-cli"
 import buble from "@rollup/plugin-buble"
 import json from "@rollup/plugin-json"
 import progress from "rollup-plugin-progress"
-/* import sizes from "rollup-plugin-sizes" */
 import pkg from "./package.json"
 
-const external = ["path"].concat(
+const external = ["fs", "path"].concat(
   pkg && pkg.dependencies ? Object.keys(pkg.dependencies) : []
 )
 const plugins = [
@@ -38,9 +37,9 @@ export default [
     plugins
   },
   {
-    input: `src/cli-runner.js`,
-    external: external.concat(["fs"]),
-    output: [{ file: `engraved-cli.js`, format: `cjs` }],
+    input: `src/skeletal-cli.js`,
+    external,
+    output: [{ file: `bone-cli.js`, format: `cjs` }],
     plugins: plugins
       .slice(0, 2)
       .concat([cli()])

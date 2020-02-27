@@ -1,0 +1,34 @@
+{
+  "name": "bequeath",
+  "main": "bequeath.js",
+  "module": "bequeath.mjs",
+  "version": "0.0.1",
+  "description": "generator async control flow with futures",
+  "keywords": [
+    "async",
+    "flow",
+    "generator",
+    "coro",
+    "coroutine",
+    "fluture",
+    "future",
+    "yield",
+    "will yield"
+  ],
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/runtime": "^7.8.4"
+  },
+  "scripts": {},
+  "files": [
+    "bequeath.js",
+    "bequeath.mjs"
+  ],
+  "license": "MIT",
+  "repository": "open-sorcerers/bequeath",
+  "dependencies": {
+    "ensorcel": "^0.0.2",
+    "fluture": "^12.2.0",
+    "ramda": "^0.27.0"
+  }
+}

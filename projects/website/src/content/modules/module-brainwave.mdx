@@ -10,10 +10,122 @@ import Pkg from '@components/PackageInstaller'
   Ever needed to programmatically update content in frontmatter?
 </Pkg>
 
-`brainwave` is an in-house tool we built in order to automate parts of [open.sorcerers.dev]
+`brainwave` is an in-house tool built to automate parts of this site, which is built on top of [MDX].
 
-```sh
-npx brainwave ./src "filter(propEq('title', 'cool'))"
+It manages `frontmatter` content programmatically, using a config file written in JS.
+
+## Usage
+
+Create a `brainwave.config.js` file:
+
+```js
+module.exports = () => ({
+  telepathy: {
+    // predicate function
+    test: x => {
+      console.log("ref 1", x)
+      return tru
+    }
+  },
+  control: {
+    // we'll get to this shortly
+    test: [() => false, x => x]
+  }
+})
 ```
 
-[open.sorcerers.dev]: https://open.sorcerers.dev
+This file is composed to two primary parts, `telepathy` and `control`.
+
+### The `telepathy` field
+
+The `telepathy` field is an object whose fields are predicate functions, each of which receives the [frontmatter content](#example-mdx-file) for all files in the folder. For example, if you wanted to find any `*.mdx` file which had the field "cool", for instance, you could write:
+
+```js
+module.exports = () => ({
+  telepathy: {
+    cool: z => z && z.cool
+    // or with ramda
+    // cool: require('ramda').prop('cool')
+  }
+  // [...]
+})
+```
+
+The intention here is to be able to use `telepathy` fields as a way of searching and filtering content initially, and then to take those predicates and add them to `control` fields.
+
+### The `control` field
+
+The control field is an object whose values take the form: `[predicateFunction, mutationFunction]`. *Additionally*, instead of the consuming functions taking the frontmatter content directly, they consume an object which takes the form: `{stats, filepath, brain, fileContent}` where the `brain` property refers to the frontmatter.
+
+```js
+const { prop, path } = require('ramda')
+module.exports = () => ({
+  telepathy: {
+    cool: prop('cool')
+  },
+  control: {
+    cool: [
+      // if the frontmatter has the 'cool' property
+      path(['brain', 'cool']),
+      // uh, set a 'reallyCool' property
+      () => ({
+        reallyCool: "this is added to whatever the previous frontmatter content is"
+      })
+  }
+})
+```
+
+Because this mutation function consumes more than just the frontmatter content, you can have a function which branches based on content in other fields. Some simple ideas which you could write yourself (and we might add as recipes in the future as time allows):
+
+* Add the field `explicit` if `pipe(prop('fileContent'), includes('swears'))`
+* Add the field `menu` based on something in the file exists in a specific folder
+* Add the field `reallyCool` if there's already a `cool` field in the frontmatter 😏
+
+
+## Motivation
+
+This site is built upon [Gatsby] and [a starter] which leverages [MDX].
+
+### What is MDX?
+
+An [MDX] file is a wonderful file format which combines three distinct ways of expressing content:
+
+1. Markdown - A simple way of expressing content which compiles to HTML.
+2. React - A (reasonably) simple way of expressing content which compiles to JS.
+3. Frontmatter - A super simple way of expressing content (in YAML) which compiles to JSON.
+
+### Example MDX File
+
+```mdx
+---
+frontmatter: right here 
+content: goes here, no strings needed
+list:
+  - sure
+  - why
+  - not
+datePublished: 2020-15-02
+---
+
+This is _some_ *regular* markdown.
+
+import {Meta} from '@self/reference'
+
+<Meta>MDX content in an MDX file</Meta>
+```
+
+That frontmatter content is expressed as YAML, which is like super non-strict JSON.
+
+Because that content is structured, we wanted to have a way of programmatically managing it.
+
+Specifically, that `datePublished` field was being used initially as a template field, but later was being used in semantic logic.
+
+Now the default `brainwave.config.js` file will spit out a config which will automatically generate `dateEdited` fields for any MDX file in the folder. (See our [actual config file] for more, as it's a great example of tooling in use.)
+
+Additionally, we designed `brainwave` so that if you simply have a file with some frontmatter in it ("`---`" wrapped content at the beginning of the file), you can pass a `fileTypes` field which will allow for different file filtering, i.e: `{mdx,md,cool,reallyCool}`
+
+[Gatsby]: https://www.gatsbyjs.org/
+[a starter]: https://github.com/open-sorcerers/foresight-gatsby-starter
+[MDX]: https://mdxjs.com/
+[open.sorcerers.dev]: https://open.sorcerers.dev:
+[actual config file]: https://github.com/open-sorcerers/open-sorcerers/blob/master/projects/website/brainwave.config.js

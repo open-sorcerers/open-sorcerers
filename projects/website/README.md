@@ -1,7 +1,10 @@
 # Open Sorcerers
 ## Functional Programming &times; JavaScript &times; Open-Source
 
-Our goal is to create a community dedicated to highlighting effective usage of the Functional Programming (FP) paradigm in JavaScript. We hope to provide tools, resources and training towards this goal.
+Our goal is to create a community dedicated towards:
+* highlighting effective usage of the Functional Programming (FP) paradigm in JavaScript.
+* demonstrating good practices for open-source software (OSS)
+We hope to provide tools, resources and training towards these goals.
 
 ### Learn about the FP Paradigm
 

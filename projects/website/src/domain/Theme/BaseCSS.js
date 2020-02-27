@@ -1,50 +1,46 @@
 import React from 'react'
-import { curry, pipe, range, map } from 'ramda'
+import PropTypes from 'prop-types'
 import { css, Global } from '@emotion/core'
-import * as ℂ from '@styles/colors'
+import { aboveCalc, above } from '@styles/media'
 import { easeOut } from '@styles/animation'
-import { above, aboveCalc } from '@styles/media'
-import { mix } from 'polished'
 import 'typeface-fira-sans'
 import 'typeface-fira-code'
 
-const sh = curry((cl, xx, yy) => `${xx}px ${yy}px 0 ${cl}`)
+import { h3D } from '@styles/mixins'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
 
-const surface = curry((edge, start, end) => pipe(range(start), map(edge))(end))
-
-const h3D = ({
-  color = ℂ.area.h3d.f,
-  edge = ℂ.area.h3d.s[0],
-  shadow: dropShade = ℂ.area.h3d.s[1],
-  shadowY: y = -2,
-  size = 6,
-  and = ''
-}) => `
-  text-align: center;
-  transition: letter-spacing 0.1s ease-out, text-shadow 0.3s ease-out, font-size 0.3s ease-out;
-  color: ${color};
-  font-weight: 900;
-  a {
-    color: ${color};
-  }
-  ${aboveCalc.TINY_PHONE('2rem')(
-    `
-    letter-spacing: 0.38rem;
-
-    text-shadow: ${[
-      `0 0 0 ${color}`,
-      ...surface(z => sh(edge, z, z), 0, size),
-      ...surface(z => sh(dropShade, -z + (size + y), z + size), 0, size + y)
-    ].join(', ')};
-    line-height: 3.3rem;
-    ${and}
-  `
-  )}
-`
-
-/* const h3DBig = () => h3D({ size: 5, and: `letter-spacing: 0.7rem` }) */
-
-const styles = css`
+const stylesWithTheme = theme => {
+  const series = grab(['colors', 'ui', 'series', 'f'], theme)
+  const seriesBack = grab(['colors', 'ui', 'series', 'b'], theme)
+  const activeSeries = grab(['colors', 'ui', 'series', 'a', 'f'], theme)
+  const activeSeriesBack = grab(['colors', 'ui', 'series', 'a', 'b'], theme)
+  const comingSoon = grab(['colors', 'cs', 'comingSoon', 'f'], theme)
+  const activeAnchor = grab(['colors', 'ui', 'anchor', 'a', 'f'], theme)
+  const link = grab(['colors', 'ui', 'link', 'f'], theme)
+  const activeLink = grab(['colors', 'ui', 'link', 'a', 'f'], theme)
+  const pre = grab(['colors', 'el', 'pre', 'f'], theme)
+  const preBack = grab(['colors', 'el', 'pre', 'b'], theme)
+  const code = grab(['colors', 'el', 'code', 'f'], theme)
+  const codeBack = grab(['colors', 'el', 'code', 'b'], theme)
+  const codeBeforeBack = grab(['colors', 'el', 'codeBefore', 'b'], theme)
+  const codeBefore = grab(['colors', 'el', 'codeBefore', 'f'], theme)
+  const codeComment = grab(['colors', 'el', 'codeJSComment', 'f'], theme)
+  const codeConstant = grab(['colors', 'el', 'codeJSConstant', 'f'], theme)
+  const codeOperator = grab(['colors', 'el', 'codeJSOperator', 'f'], theme)
+  const codeProperty = grab(['colors', 'el', 'codeJSProperty', 'f'], theme)
+  const codeString = grab(['colors', 'el', 'codeJSString', 'f'], theme)
+  const codeLineNumber = grab(['colors', 'el', 'codeJSLineNumber', 'f'], theme)
+  const codeParameter = grab(['colors', 'el', 'codeJSParameter', 'f'], theme)
+  const codeEntity = grab(['colors', 'el', 'codeJSEntity', 'f'], theme)
+  const blockquote = grab(['colors', 'el', 'blockquote', 'f'], theme)
+  const body = grab(['colors', 'el', 'body', 'f'], theme)
+  const bodyBack = grab(['colors', 'el', 'body', 'b'], theme)
+  const footerBack = grab(['colors', 'cs', 'footer', 'b'], theme)
+  const h3d1 = grab(['colors', 'cs', 'h3d', 'f'], theme)
+  const h3d2 = grab(['colors', 'cs', 'h3dShadow', 'f'], theme)
+  const h3dShadow = grab(['colors', 'cs', 'h3dShadow', 'b'], theme)
+  return css`
   * {
     margin: 0;
     padding: 0;
@@ -65,19 +61,22 @@ const styles = css`
     cursor: not-allowed;
     position: relative;
     &::after {
+      display: none;
       position: absolute;
       width: 2rem;
-      top: 0.35rem;
-      right: -1rem;
+      top: 0.75rem;
+      right: 1rem;
       content: 'Coming Soon!';
-      display: inline-block;
       font-size: 0.5rem;
       line-height: 0.8rem;
       font-weight: 500;
       font-family: obviously-narrow, 'Obviously', sans-serif;
+      ${above.SMALL_PHONE(`
+         display: inline-block;
+      `)}
       ${above.TABLET_PORTRAIT(`
         font-size: 0.75rem;
-        gight: -2rem;
+        right: 2rem;
         top: 0.75rem;
       `)}
     }
@@ -126,18 +125,18 @@ const styles = css`
     margin: 0.5rem;
     margin-bottom: 2rem;
     display: inline-block;
-    border: 2px solid ${ℂ.ui.series.link.f};
-    color: ${ℂ.ui.series.link.f};
-    background: ${ℂ.ui.series.link.b};
+    border: 2px solid ${series};
+    color: ${series}; 
+    background: ${seriesBack};
     text-align: center;
     &:hover {
-      border: 2px solid ${ℂ.ui.series.link.a.f};
-      color: ${ℂ.ui.series.link.a.f};
-      background-color: ${ℂ.ui.series.link.a.b};
+      border: 2px solid ${activeSeries};
+      color: ${activeSeries};
+      background-color: ${activeSeriesBack};
     }
     &.coming-soon {
-      color: ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
-      border: 2px solid ${mix(1 / 2, ℂ.ui.series.link.b, ℂ.ui.series.link.f)};
+      color: ${comingSoon};
+      border: 2px solid ${comingSoon}
       &::after {
         display: none;
         ${above.TABLET_PORTRAIT(`
@@ -157,15 +156,15 @@ const styles = css`
       `
       font-size: 3rem;
       margin-bottom: 2rem;
-    `
+      `
     )}
     ${aboveCalc.SMALL_PHONE(
       '4rem',
       `
-    font-size: 4em;
-    line-height: 4.35rem;
-    margin-bottom: 3rem;
-    `
+      font-size: 4em;
+      line-height: 4.35rem;
+      margin-bottom: 3rem;
+      `
     )}
   }
   #learn,
@@ -177,7 +176,7 @@ const styles = css`
 
   a.anchor.before {
     svg {
-      fill: ${ℂ.ui.anchor.a.f};
+      fill: ${activeAnchor};
     }
   }
   .listing-page {
@@ -196,14 +195,6 @@ const styles = css`
     li {
       list-style: none;
       padding: 0;
-
-      a.strikethrough {
-        text-decoration: line-through solid rgba(0, 0, 0, 0.6);
-        cursor: not-allowed;
-        :hover {
-          color: ${ℂ.ui.link.f};
-        }
-      }
     }
   }
   #glossary {
@@ -211,19 +202,18 @@ const styles = css`
       margin-top: 2rem;
     }
   }
-
   a {
     text-decoration: none;
     font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, sans-serif;
     text-transform: uppercase;
     font-weight: 500;
-    color: ${ℂ.ui.link.f};
+    color: ${link};
     display: inline-block;
     padding: 0 0.1em;
     vertical-align: baseline;
     transition: ${easeOut('0.3s', ['color'])};
     &:hover {
-      color: ${ℂ.ui.link.a.f};
+      color: ${activeLink};
     }
   }
   em {
@@ -236,8 +226,8 @@ const styles = css`
   }
   pre {
     font-size: 1.2rem;
-    background-color: ${ℂ.el.pre.b};
-    color: ${ℂ.el.pre.f};
+    background-color: ${preBack};
+    color: ${pre};
     padding: 0.75rem 0.5rem;
     position: relative;
     overflow: hidden;
@@ -261,8 +251,8 @@ const styles = css`
       padding-left: 0.2rem;
       padding-right: 0.2rem;
       vertical-align: bottom;
-      background-color: ${ℂ.el.code.before.b};
-      color: ${ℂ.el.code.before.f};
+      background-color: ${codeBeforeBack};
+      color: ${codeBefore};
     }
     .line-numbers-rows {
       top: 0.75rem;
@@ -277,25 +267,25 @@ const styles = css`
   .language-js {
     .token {
       &.keyword {
-        color: ${ℂ.el.code.js.property};
+        color: ${codeProperty};
       }
       &.function {
-        color: ${ℂ.el.code.js.entity};
+        color: ${codeEntity};
       }
       &.string {
-        color: ${ℂ.el.code.js.string};
+        color: ${codeString};
       }
       &.comment {
-        color: ${ℂ.el.code.js.comment};
+        color: ${codeComment};
       }
       &.operator {
-        color: ${ℂ.el.code.js.operator};
+        color: ${codeOperator};
       }
       &.punctuation {
-        color: ${ℂ.el.code.js.constant};
+        color: ${codeConstant};
       }
       &.parameter {
-        color: ${ℂ.el.code.js.parameter};
+        color: ${codeParameter};
       }
     }
   }
@@ -308,7 +298,7 @@ const styles = css`
     .gist-meta {
       a:first-of-type {
         padding: 0.2rem 0.5rem 0.5rem;
-        background-color: ${ℂ.el.code.js.constant};
+        background-color: ${codeConstant};
         color: black;
         transform: background 0.7s ease-out, color 0.7s ease-out;
         &:hover {
@@ -320,33 +310,33 @@ const styles = css`
     .js-gist-file-update-container {
       display: flex;
       flex-direction: column;
-      background-color: ${ℂ.el.code.b};
-      color: ${ℂ.el.code.f};
+      background-color: ${codeBack};
+      color: ${code};
       padding: 0.5rem;
     }
     td.js-line-number::before {
       content: attr(data-line-number);
       padding: 0 0.5rem;
-      color: ${ℂ.el.code.js.lineNumber};
+      color: ${codeLineNumber};
     }
   }
   .pl-smi {
-    color: ${ℂ.el.code.js.property};
+    color: ${codeProperty};
   }
   .pl-en {
-    color: ${ℂ.el.code.js.entity};
+    color: ${codeEntity};
   }
   .pl-s {
-    color: ${ℂ.el.code.js.string};
+    color: ${codeString};
   }
   .pl-c {
-    color: ${ℂ.el.code.js.comment};
+    color: ${codeComment};
   }
   .pl-k {
-    color: ${ℂ.el.code.js.operator};
+    color: ${codeOperator};
   }
   .pl-c1 {
-    color: ${ℂ.el.code.js.constant};
+    color: ${codeConstant};
   }
 
   ul,
@@ -387,7 +377,11 @@ const styles = css`
     &.three-d {
       font-family: obviously, 'Obviously', sans-serif;
       font-weight: 900;
-      ${h3D({})}
+      ${h3D({
+        color: h3d1,
+        edge: h3d2,
+        shadow: h3dShadow
+      })}
     }
   }
   h1 {
@@ -396,7 +390,11 @@ const styles = css`
     line-height: 2.3rem;
     font-weight: 900;
     &:first-of-type {
-      ${h3D({})}
+      ${h3D({
+        color: h3d1,
+        edge: h3d2,
+        shadow: h3dShadow
+      })}
       margin-bottom: 2rem;
       ${above.TABLET_PORTRAIT(`
         margin-top: 2rem;
@@ -426,12 +424,12 @@ const styles = css`
   }
   blockquote {
     padding-left: 1rem;
-    border-left: 0.25rem solid ${ℂ.el.blockquote.f};
+    border-left: 0.25rem solid ${blockquote};
   }
   blockquote.one-liner {
     padding: 0.5rem;
-    background-color: ${ℂ.el.code.b};
-    color: ${ℂ.el.code.f};
+    background-color: ${codeBack};
+    color: ${code};
     &::before {
       vertical-align: text-top;
       content: '';
@@ -439,7 +437,7 @@ const styles = css`
       width: 0;
       height: 0;
       border: 0.6rem solid transparent;
-      border-left-color: ${ℂ.el.blockquote.f};
+      border-left-color: ${blockquote};
     }
     p {
       margin: 0;
@@ -448,9 +446,11 @@ const styles = css`
   }
 
   body {
-    background: ${ℂ.el.body.b};
-    border-bottom: 1px solid ${ℂ.area.footer.b};
-    color: ${ℂ.el.body.f};
+    background: ${bodyBack};
+    border-bottom: 1px solid ${footerBack};
+    color: ${body};
   }
 `
-export const BaseCSS = () => <Global styles={styles} />
+}
+export const BaseCSS = ({ theme }) => <Global styles={stylesWithTheme(theme)} />
+BaseCSS.propTypes = { theme: PropTypes.object }

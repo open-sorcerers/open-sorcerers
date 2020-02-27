@@ -1,16 +1,30 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-import { always as K, ifElse, prop } from 'ramda'
+import { pipe, pathOr, always as K, ifElse, prop } from 'ramda'
+import { GAP as __ } from 'bodypaint'
 
-import { above } from '@styles/media'
-import * as ℂ from '@styles/colors'
+import { mq } from '@styles/media'
 import { lighten } from 'polished'
 const contentOrNot = ifElse(prop('hasContent'))
+const grab = pathOr('lime')
+
+const colophon = grab(['theme', 'colors', 'cs', 'colophon', 'f'])
+const colophonB = grab(['theme', 'colors', 'cs', 'colophon', 'b'])
+const colophonSubTabletB = pipe(colophonB, lighten(1 / 10))
+
+const colophonic = mq({
+  flexDirection: ['column', 'row'],
+  flexWrap: ['initial', 'wrap'],
+  justifyContent: ['initial', 'center'],
+  padding: ['initial', '0.5rem 0'],
+  marginBottom: ['initial', __, __, contentOrNot(K('1rem'), K('0'))],
+  backgroundColor: ['initial', __, __, contentOrNot(colophonSubTabletB, K('transparent'))]
+})
 
 export const StyledColophon = styled(Box)`
   width: 100%;
-  background-color: ${ℂ.area.colophon.b};
-  color: ${ℂ.area.colophon.f};
+  background-color: ${colophonB};
+  color: ${colophon};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -19,17 +33,28 @@ export const StyledColophon = styled(Box)`
       margin-top: 0.25rem;
     }
   }
-  ${above.SMALL_PHONE(`
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0.5rem 0;
-  `)}
-  ${above.SUB_TABLET(`
-    margin-bottom: ${contentOrNot(K('1rem'), K('0'))};
-    background-color: ${contentOrNot(K(lighten(1 / 10, ℂ.area.colophon.b)), K('transparent'))};
-  `)}
+  ${colophonic}
 `
+
+const colophonAlt = grab(['theme', 'colors', 'cs', 'colophonAlt', 'f'])
+const colophonAltB = grab(['theme', 'colors', 'cs', 'colophonAlt', 'b'])
+
+const altColophon = mq({
+  a: { svg: { padding: ['0.1rem 0', '0.4rem 0'] } },
+  flexDirection: ['column', 'row'],
+  height: ['initial', '2rem', __, '2.5rem'],
+  opacity: ['1'],
+  lineHeight: ['initial', '2rem', __, '2.35rem'],
+  justifyContent: ['space-around', __, 'center', 'space-around'],
+  paddingTop: [p => (p.hasContent ? '0.5rem' : '0'), __, __, '0'],
+  margin: ['initial', __, __, '1rem auto'],
+  width: ['100%', __, __, '50%'],
+  minWidth: ['initial', __, __, '40rem'],
+  maxWidth: ['initial', __, __, '50rem'],
+  borderTop: [`1px solid ${p => (p.hasContent ? colophonAlt(p) : 'transparent')};`],
+  border: ['initial', __, __, pipe(colophonAlt, z => '1px solid  ' + z)],
+  borderRadius: ['0', __, __, '10rem']
+})
 
 export const AltColophon = styled(Box)`
   display: flex;
@@ -37,44 +62,16 @@ export const AltColophon = styled(Box)`
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 2rem;
-  border-top: 1px solid ${p => (p.hasContent ? ℂ.area.colophon.alt.f : 'transparent')};
-  padding-top: ${p => (p.hasContent ? '0.5rem' : '0')};
-  background-color: ${ℂ.area.colophon.alt.b};
-  color: ${ℂ.area.colophon.alt.f};
+  border-top: 1px solid ${p => (p.hasContent ? colophonAlt(p) : 'transparent')};
+  background-color: ${colophonAltB};
+  color: ${colophonAlt};
   justify-content: space-around;
   text-align: center;
   transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
-  a {
-    display: flex;
-    flex-direction: row;
-    svg {
-      padding: 0.1rem 0;
-    }
-  }
-  ${above.SMALL_PHONE(`
-    flex-direction: row;
-    height: 2rem;
-    line-height: 2rem;
-    opacity: 1;
-    a { svg { padding: 0.4rem 0; } }
-  `)}
-  ${above.TABLET_PORTRAIT(`
-    justify-content: center;
-  `)}
-  ${above.SUB_TABLET(`
-    padding-top: 0;
-    margin: 1rem auto;
-    height: 2.5rem;
-    line-height: 2.35rem;
-    width: 50%;
-    min-width: 40rem;
-    max-width: 50rem;
-    border: 1px solid ${ℂ.area.colophon.alt.f};
-    border-radius: 10rem;
-    justify-content: space-around;
-  `)}
+  ${altColophon}
 `
-
+const colophonLink = grab(['theme', 'colors', 'ui', 'colophon', 'f'])
+const colophonLinkActive = grab(['theme', 'colors', 'ui', 'colophon', 'a', 'f'])
 export const AltWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
@@ -84,16 +81,13 @@ export const AltWrapper = styled(Box)`
   margin: 0 0.5rem;
   svg {
     transition: fill 0.3s ease-out;
-    fill: ${ℂ.ui.colophonLink.f};
+    fill: ${colophonLink};
   }
   a:hover {
     svg {
-      fill: ${ℂ.ui.colophonLink.a.f};
+      fill: ${colophonLinkActive};
     }
   }
-  ${above.TABLET_PORTRAIT(`
-    margin: 0 0.5rem;
-  `)}
   &.author {
     a {
       margin-left: 0.25rem;
@@ -103,6 +97,10 @@ export const AltWrapper = styled(Box)`
     align-self: center;
   }
 `
+
+const linkWrapper = mq({
+  width: ['100%', 'calc(50% - 4rem)', 'auto']
+})
 
 export const LinkWrapper = styled(Box)`
   display: flex;
@@ -114,24 +112,18 @@ export const LinkWrapper = styled(Box)`
   align-items: baseline;
   svg {
     transition: fill 0.3s ease-out;
-    fill: ${ℂ.ui.colophonLink.f};
+    fill: ${colophonLink};
   }
   strong {
     margin-right: 0.5rem;
   }
   a:hover {
     svg {
-      fill: ${ℂ.ui.colophonLink.a.f};
+      fill: ${colophonLinkActive};
     }
   }
-  ${above.SMALL_PHONE(`
-    width: calc(50% - 4rem);
-  `)}
-  ${above.TABLET_PORTRAIT(`
-    margin: 0 0.5rem;
-    width: auto;
-  `)}
-  &.author, &.source {
+  &.author,
+  &.source {
     a {
       margin-left: 0.25rem;
     }

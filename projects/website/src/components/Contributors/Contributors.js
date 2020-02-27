@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withTheme } from 'emotion-theming'
 
 import { css } from '@emotion/core'
 import { prop, pipe, pathOr, map } from 'ramda'
@@ -13,7 +14,7 @@ import { Li, StyledContributors, StyledContributor } from './styled'
 const contribs = pipe(prop('contributions'), z => (z > 999 ? Math.floor(z / 100) / 10 + 'K' : z))
 
 /* <Badge content="" variant="left" /> */
-const Contributor = pp => (
+const Contributor = withTheme(pp => (
   <StyledContributor dataurl={pp.avatarUrl}>
     <a href={pp.url}>
       <Badge content={contribs(pp)} />
@@ -27,7 +28,7 @@ const Contributor = pp => (
       </Img>
     </a>
   </StyledContributor>
-)
+))
 
 Contributor.propTypes = {
   url: PropTypes.string,
@@ -104,4 +105,4 @@ export const Contributors = () => {
   )
 }
 
-export default Contributors
+export default withTheme(Contributors)

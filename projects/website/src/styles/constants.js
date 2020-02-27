@@ -35,6 +35,7 @@ D. MENU - The Menu (activated by clicking A3)
 
 export const Z_INDEX = Object.freeze({
   GUIDE: 30,
+  FLOATING: 25,
   MENU_OVER: 22,
   MENU_CONTENT: 21,
   MENU: 20,

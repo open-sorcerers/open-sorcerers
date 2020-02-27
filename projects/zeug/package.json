@@ -1,0 +1,18 @@
+{
+  "name": "zeug",
+  "version": "0.0.0",
+  "description": "build stuff with zeug",
+  "main": "zeug.js",
+  "repository": "github.com/open-sorcerers/zeug",
+  "author": "brekk",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "cosmiconfig": "^6.0.0",
+    "ensorcel": "^0.0.2",
+    "flexeca": "^0.0.1",
+    "fluture": "^12.2.0",
+    "plop": "^2.5.4",
+    "ramda": "^0.27.0"
+  }
+}

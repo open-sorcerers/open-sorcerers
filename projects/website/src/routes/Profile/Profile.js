@@ -1,16 +1,12 @@
 import React from 'react'
+import { withTheme } from 'emotion-theming'
 import Auth from '@services/auth'
-import { Link } from 'gatsby'
 import { pipe, replace } from 'ramda'
 import { LOGOUT } from '@constants/routes'
 import { ProfileImg } from './ProfileImg'
-import { ProfilePage, logoutButton } from './styled'
+import { ProfilePage, StyledLogoutButton } from './styled'
 
-const LogoutButton = () => (
-  <Link to={LOGOUT} css={logoutButton}>
-    Log Out
-  </Link>
-)
+const LogoutButton = withTheme(() => <StyledLogoutButton to={LOGOUT}>Log Out</StyledLogoutButton>)
 
 const formatUsername = pipe(
   z => z.toLowerCase(),
@@ -18,7 +14,7 @@ const formatUsername = pipe(
   z => '@' + z
 )
 
-export const Profile = () => {
+export const Profile = withTheme(() => {
   const { getUser } = Auth()
   const user = getUser()
   const { name } = user
@@ -32,5 +28,5 @@ export const Profile = () => {
       </ProfilePage>
     </>
   )
-}
+})
 export default Profile

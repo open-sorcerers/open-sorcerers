@@ -1,13 +1,13 @@
 {
   "name": "eslint-config-sorcerers",
-  "version": "0.0.2",
+  "version": "0.0.3-beta.1",
   "description": "open-sorcerers x eslint",
   "main": "eslint.config.js",
   "repository": "//github.com/open-sorcerers/eslint-config-sorcerers",
   "author": "Open Sorcerers",
   "contributors": [
     "Pedro Costa Neves <costa.neves@me.com> (https://github.com/persocon)",
-    "Brekk Bockrath <brekk@brekkbockrath.com> (https://github.com/persocon)"
+    "Brekk Bockrath <brekk@brekkbockrath.com> (https://brekk.is)"
   ],
   "license": "ISC",
   "private": false,

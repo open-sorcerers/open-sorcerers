@@ -24,7 +24,7 @@
     "brainwave.mjs",
     "brainwave-cli.js"
   ],
-  "repository": "https://github.com/open-sorcerers/open-sorcerers/tree/master/projects/brainwave",
+  "repository": "https://github.com/open-sorcerers/brainwave",
   "author": "brekk",
   "license": "MIT",
   "private": false,

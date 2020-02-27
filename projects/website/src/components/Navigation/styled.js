@@ -2,28 +2,20 @@ import { Box } from 'rebass'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
+import { pathOr } from 'ramda'
 
 import { Z_INDEX } from '@styles/constants'
 
 import { above, aboveCalc } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
-import * as ℂ from '@styles/colors'
-
-/*
-import { pathOr } from 'ramda'
-const colors = {
-  primary: pathOr(primary, ['theme', 'colors', 'core', 'primary']),
-  secondary: pathOr(secondary, ['theme', 'colors', 'core', 'secondary'])
-}
-*/
+const grab = pathOr('lime')
 
 export const StyledNavigation = styled(Box)`
   display: flex;
-
   align-items: center;
   justify-content: space-around;
-  background-color: ${ℂ.area.nav.b};
-  color: ${ℂ.area.nav.f};
+  background-color: ${grab(['theme', 'colors', 'cs', 'nav', 'b'])};
+  color: ${grab(['theme', 'colors', 'cs', 'nav', 'f'])};
   min-height: 16rem;
   position: relative;
   z-index: ${Z_INDEX.MENU};
@@ -48,7 +40,7 @@ export const Brand = styled(Link)`
   width: 50%;
   height: 100%;
   flex: 0 0 auto;
-  color: ${ℂ.ui.brand.f};
+  color: ${grab(['theme', 'colors', 'ui', 'brand', 'f'])};
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
@@ -58,14 +50,14 @@ export const Brand = styled(Link)`
 
   svg {
     display: flex;
-    fill: ${ℂ.ui.brand.f};
+    fill: ${grab(['theme', 'colors', 'ui', 'brand', 'f'])};
     height: 9rem;
     margin: 0;
     ${transitionEaseOut('0.1s', ['fill', 'height', 'width', 'margin'])}
   }
   &:hover {
     svg {
-      fill: ${ℂ.ui.brand.a.f};
+      fill: ${grab(['theme', 'colors', 'ui', 'brand', 'a', 'f'])};
     }
   }
 
@@ -119,7 +111,7 @@ export const activeItemHover = css`
 
 export const StyledItem = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
-  color: ${ℂ.ui.navItem.f};
+  color: ${grab(['theme', 'colors', 'ui', 'navButton', 'f'])};
   font-family: obviously, sans-serif;
   font-size: 2.2rem;
   font-style: ${p => (!p['data-active'] ? 'italic' : 'normal')};
@@ -132,7 +124,7 @@ export const StyledItem = styled(Link)`
   text-decoration: none;
 
   &:hover {
-    color: ${ℂ.ui.navItem.a.f};
+    color: ${grab(['theme', 'colors', 'ui', 'navButton', 'a', 'f'])};
     opacity: 1;
   }
 
@@ -163,8 +155,8 @@ export const activeNav = css`
 export const inactiveNav = css`
   padding: 0;
   ${above.TABLET_PORTRAIT(`
-  border-left: 12vw solid ${ℂ.area.nav.inactive.above.tabletPortrait.f};
-  margin-left: -12vw;
+    border-left: 12vw solid transparent; 
+    margin-left: -12vw;
   `)}
 `
 

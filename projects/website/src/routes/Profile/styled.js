@@ -1,10 +1,13 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
+import { Link } from 'gatsby'
 import { Box } from 'rebass'
 import { Z_INDEX } from '@styles/constants'
 import { transitionEaseOut } from '@styles/animation'
 
-import * as ℂ from '@styles/colors'
+import { transparent} from '@styles/colors'
+import { pathOr } from 'ramda'
+const grab = pathOr('lime')
 
 const HEX = 100
 
@@ -15,8 +18,8 @@ export const ProfilePage = styled(Box)`
 `
 
 const pseudo = css`
-  border-left: ${HEX / 2}px solid ${ℂ.named.transparent};
-  border-right: ${HEX / 2}px solid ${ℂ.named.transparent};
+  border-left: ${HEX / 2}px solid ${transparent};
+  border-right: ${HEX / 2}px solid ${transparent};
   content: '';
   height: 0;
   left: 0;
@@ -38,28 +41,30 @@ export const menuPlaceholder = css`
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 9999rem;
-  background-color: ${ℂ.area.menu.profile.b};
+  background-color: ${grab(['theme', 'colors', 'cs', 'menuProfile', 'b'])};
 `
+const placeholderB = grab(['theme', 'colors', 'cs', 'profile', 'b'])
 export const placeholder = css`
   display: block;
   position: relative;
   margin: 4rem auto;
-  background-color: ${ℂ.area.profile.b};
+  background-color: ${placeholderB};
   width: ${HEX}px;
   height: ${HEX * 0.55}px;
   ${rainbowShadows} 
   &::before {
     ${pseudo}
     top: -${hexHeight}px;
-    border-bottom: ${hexHeight}px solid ${ℂ.area.profile.b};
+    border-bottom: ${hexHeight}px solid ${placeholderB};
   }
   &::after {
     ${pseudo}
     bottom: -${hexHeight}px;
-    border-top: ${hexHeight}px solid ${ℂ.area.profile.b};
+    border-top: ${hexHeight}px solid ${placeholderB};
   }
 `
 
+const profileImgBack = grab(['theme', 'colors', 'cs', 'profileImg', 'b'])
 export const Img = styled(Box)`
   display: block;
   margin: 0 auto;
@@ -72,7 +77,7 @@ export const Img = styled(Box)`
     max-height: 8rem;
     min-width: 8rem;
     min-height: 8rem;
-    background: ${ℂ.area.profile.img.b};
+    background: ${profileImgBack};
     clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: inline;
     margin: 0 auto;
@@ -80,26 +85,30 @@ export const Img = styled(Box)`
   }
 `
 
-export const logoutButton = css`
+const logoutB = grab(['theme', 'colors', 'ui', 'logout', 'b'])
+const logoutAB = grab(['theme', 'colors', 'ui', 'logout', 'a', 'b'])
+const logoutAF = grab(['theme', 'colors', 'ui', 'logout', 'a', 'f'])
+const logoutF = grab(['theme', 'colors', 'ui', 'logout', 'f'])
+export const StyledLogoutButton = styled(Link)`
   float: right;
   z-index: ${Z_INDEX.INTERACTIVE};
   height: 3.25rem;
-  background-color: ${ℂ.ui.logoutButton.b};
-  border: 4px solid ${ℂ.ui.logoutButton.b};
+  background-color: ${logoutB};
+  border: 4px solid ${logoutB};
   ${transitionEaseOut(`0.3s`, ['background', 'border'])}
   padding: 0.5rem 1rem;
   margin: 0.5rem;
   margin-right: 1rem;
   text-decoration: none;
-  color: ${ℂ.ui.logoutButton.f};
+  color: ${logoutF};
   font-family: obviously-narrow, 'Obviously', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 500;
   text-transform: uppercase;
   font-style: italic;
 
   &:hover {
-    background-color: ${ℂ.ui.logoutButton.a.b};
-    border-color: ${ℂ.ui.logoutButton.a.b};
-    color: ${ℂ.ui.logoutButton.a.f};
+    background-color: ${logoutAB};
+    border-color: ${logoutAB};
+    color: ${logoutAF};
   }
 `

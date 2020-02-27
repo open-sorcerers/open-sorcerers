@@ -1,251 +1,94 @@
-import { mergeRight, map } from 'ramda'
-import { darken, lighten, mix } from 'polished'
+export const transparent = 'transparent'
+export const yellow = 'yellow'
+export const cyan = 'cyan'
+export const lime = 'lime'
+export const aliceblue = `aliceblue`
+export const goldenrod = 'goldenrod'
+export const cadetblue = 'cadetblue'
+export const lemonchiffon = 'lemonchiffon'
 
-/* eslint-disable no-unused-vars */
-
-const evenMix = mix(5 / 10)
-const transparent = 'transparent'
-const offBlack = `#292828`
-const darkGray = `#222`
-const bondiBlue = `#0ff`
-const lightGray = '#a0aba6'
-const midGray = '#585255'
-const c204 = '#204'
-const hotpink = '#f06'
-const hotMustard = `#fc0`
+// named colors
+export const debug = lime
+export const offBlack = `#292828`
+export const darkGray = `#222`
+export const bondiBlue = `#0ff`
+export const lightGray = '#a0aba6'
+export const midGray = '#585255'
+export const c204 = '#204'
+export const hotpink = '#f06'
+export const hotMustard = `#fc0`
+export const cardinalRed = `#c00`
+export const peopleEater = `#409`
 
 // 🥰 jxnblk
-const forestgreen = `#277940`
-const darkerGray = `#202020`
+// hello-color pairs
+export const forestgreen = `#277940`
+export const darkerGray = `#202020`
 
-const seriousBlue = `#003690`
-const offMauve = `#958378`
+export const seriousBlue = `#003690`
+export const offMauve = `#958378`
 
-const purpGray = `#454a5b`
-const mutedMustard = `#b4924c`
+export const purpGray = `#454a5b`
+export const mutedMustard = `#b4924c`
 
-const berlinWinter = `#a2aeb3`
-const winterMud = `#63534c`
+export const berlinWinter = `#a2aeb3`
+export const winterMud = `#63534c`
 
-const c31x3 = `#313131`
-const somberRain = `#2d7ad9`
+export const c31x3 = `#313131`
+export const somberRain = `#2d7ad9`
 
-const chiquita = `#ceef54`
-const royalPurp = `#3716ab`
+export const chiquita = `#ceef54`
+export const royalPurp = `#3716ab`
 
-const burntUmber = `#6b4016`
-const lilac = `#96bce2`
+export const burntUmber = `#6b4016`
+export const lilac = `#96bce2`
 
-const gatorSkin = `#4a7026`
-const dankPurp = `#20005a`
+export const gatorSkin = `#4a7026`
+export const dankPurp = `#20005a`
 
-const laserPink = `#ca10c3`
-const c29x3 = `#292929`
+export const laserPink = `#ca10c3`
+export const c29x3 = `#292929`
 
-const poshYellow = `#dfbb59`
-const composedBlue = `#1b41a8`
+export const poshYellow = `#dfbb59`
+export const composedBlue = `#1b41a8`
 
-const futurePink = `#e7c9d8`
-const armyGreen = `#193225`
+export const futurePink = `#e7c9d8`
+export const armyGreen = `#193225`
 
-const chemicalSpill = `#8d8801`
-const resilientGray = `#3b394f`
+export const chemicalSpill = `#8d8801`
+export const resilientGray = `#3b394f`
 
-const muscle = `#c0e7e7`
-const bone = `#421413`
+export const bone = `#c0e7e7`
+export const muscle = `#421413`
 
-// named color constants
-const yellow = 'yellow'
-const cyan = 'cyan'
-const lime = 'lime'
-const aliceblue = `aliceblue`
-const goldenrod = 'goldenrod'
-const cadetblue = 'cadetblue'
-const lemonchiffon = 'lemonchiffon'
+export const dryDirt = `#5b3f2f`
+export const plasticBlue = `#2a95ef`
 
-// relative colors
-const white = `aliceblue`
-const red = `#c00`
-const purple = `#409`
+export const foundation = `#d1a098`
+export const techForest = `#2f5b62`
 
-/*
-const primary = c204
-const secondary = white
-const tertiary = hotpink
-const quaternary = darkGray
-*/
+export const mustard = `#8e7414`
+export const c2ex3 = `#2e2e2e`
 
-const DEFAULT_PALETTE = {
-  primary: c204,
-  secondary: aliceblue,
-  tertiary: hotpink,
-  quaternary: darkGray
-}
-const PALETTES = [
-  DEFAULT_PALETTE,
-  {
-    primary: resilientGray,
-    secondary: chemicalSpill,
-    tertiary: mutedMustard,
-    quaternary: c29x3
-  },
-  {
-    primary: bone,
-    secondary: muscle,
-    tertiary: resilientGray,
-    quaternary: chemicalSpill
-  },
-  {
-    primary: berlinWinter,
-    secondary: darken(3 / 10, laserPink), // composedBlue, // armyGreen,
-    tertiary: evenMix(hotMustard, armyGreen),
-    quaternary: '#1b202b' // winterMud
-  }
-]
+export const neonPurp = `#9646ef`
+export const c2ax3 = `#2a2a2a`
 
-/* const PALETTE = Object.freeze(WORKING_PALETTE) */
-const ref = PALETTES[3]
-const PALETTE = Object.freeze(ref)
-const { primary, secondary, tertiary, quaternary } = PALETTE
+export const lizard = `#587b06`
+export const c27x3 = `#272727`
 
-export const debug = lime
+export const barney = `#5c2d61`
+export const sickLizard = `#a8d3a3`
 
-const $ = `inherit`
+export const disaffectedRed = `#fb3d28`
+export const c3dx3 = `#3d3d3d`
 
-// Let's make our colors follow patterns!
-const colorable = ([f = $, b = $]) => ({ f, b })
+export const taupe = `#c5dda4`
+export const porple = `#381e5c`
 
-const activeColor = ([f = $, b = $, aF = f, aB = b]) => ({
-  f,
-  b,
-  a: { f: aF, b: aB }
-})
+export const techBlue = `#0579a1`
+// c27x3
 
-// elements
-const el = Object.freeze({
-  /* body: colorable([primary, secondary]), */
-  body: colorable([primary, `linear-gradient(35deg, ${lighten(0.05, secondary)}, ${secondary})`]),
-  blockquote: colorable([tertiary]),
-  code: mergeRight(colorable([primary, mix(1 / 5, secondary, quaternary)]), {
-    /*
-    js: {
-      constant: '#fc0',
-      comment: '#328e93',
-      operator: 'crimson',
-      property: 'cyan',
-      string: '#01ec7e',
-      entity: 'mediumorchid',
-      lineNumber: '#a699b4',
-      parameter: 'white'
-    }
-    */
-    before: colorable([primary, tertiary]),
-    js: map(mix(2 / 5, lighten(0.1, mix(2 / 5, secondary, quaternary))))({
-      // js: {
-      constant: '#fc0',
-      comment: '#328e93',
-      operator: '#c00',
-      property: '#0ff',
-      string: '#01ec7e',
-      entity: '#ba55d3',
-      lineNumber: '#a699b4',
-      parameter: '#5987b7'
-    })
-  }),
-  pre: colorable([primary, mix(1 / 5, secondary, quaternary)])
-})
+export const magicMagenta = `#ca1e79`
+export const mold = `#36f389`
 
-// interactive elements
-const ui = Object.freeze({
-  link: activeColor([tertiary, $, primary, $]),
-  colophonLink: activeColor([tertiary, transparent, primary, transparent]),
-  logoutButton: activeColor([primary, red, red, primary]),
-  menuButton: activeColor([tertiary]),
-  menuLink: activeColor([primary, $, tertiary, $]),
-  button: activeColor([secondary, tertiary, primary, secondary]),
-  series: {
-    link: activeColor([primary, secondary, tertiary, primary])
-  },
-  cog: mergeRight(activeColor([quaternary]), {
-    above: { midTablet: activeColor([secondary, $, tertiary]) }
-  }),
-  cog2: mergeRight(activeColor([tertiary, $, primary]), { stroke: { a: { f: primary } } }),
-  reveal: activeColor([secondary, tertiary, tertiary, secondary]),
-  navItem: activeColor([secondary, $, tertiary]),
-  post: {
-    header: {
-      link: activeColor([quaternary, $, tertiary])
-    },
-    glossary: {
-      link: activeColor([secondary, tertiary, tertiary, transparent])
-    },
-    module: {
-      link: activeColor([secondary, tertiary, primary, transparent])
-    }
-  },
-  contributor: {
-    link: activeColor([tertiary, $, lighten(1 / 10, tertiary)])
-  },
-  footer: {
-    link: activeColor([tertiary, $, lighten(1 / 10, tertiary)])
-  },
-  brand: activeColor([secondary, $, tertiary, $]),
-  anchor: activeColor([transparent, $, tertiary, $])
-})
-
-// custom elements
-const area = Object.freeze({
-  // top nav
-  nav: mergeRight(colorable([secondary, primary]), {
-    inactive: { above: { tabletPortrait: colorable([primary]) } }
-  }),
-  menu: mergeRight(colorable([$, quaternary]), { profile: colorable([$, tertiary]) }),
-
-  h3d: {
-    f: lighten(1 / 12, primary),
-    b: $,
-    s: [tertiary, mix(6 / 10, secondary, '#000')]
-  },
-
-  // footer
-  footer: mergeRight(colorable([primary, quaternary]), {
-    hidden: {
-      date: colorable([hotMustard]),
-      environment: colorable([cyan]),
-      brain: { textShadow: ['magenta', 'yellow', 'white'] }
-    }
-  }),
-
-  // everything else
-  badge: colorable([tertiary, evenMix(tertiary, secondary)]),
-  post: {
-    variant: {
-      draft: `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, cyan)})`,
-      private: `linear-gradient(0.25turn, ${secondary}, ${evenMix(secondary, lime)})`
-    },
-    footer: colorable([primary, secondary])
-  },
-  writing: {
-    post: colorable([secondary, primary])
-  },
-  breakpoint: colorable([offBlack, debug]),
-  contributor: mergeRight(colorable([evenMix(tertiary, secondary), '#3c053a']), {
-    img: colorable([tertiary, secondary])
-  }),
-  pkg: colorable([evenMix(hotMustard, secondary), el.code.b]),
-  profile: mergeRight(colorable([$, primary]), { img: colorable([$, secondary]) }),
-  colophon: mergeRight(colorable([primary, quaternary]), {
-    alt: mergeRight(colorable([primary, transparent]), {
-      above: { subTablet: colorable([primary, mix(3 / 10, secondary, quaternary)]) }
-    })
-  })
-})
-
-const named = Object.freeze({
-  debug,
-  transparent
-})
-
-export { ui, el, area, named }
-
-/* eslint-enable no-unused-vars */
+export const $ = 'initial'

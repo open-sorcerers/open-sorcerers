@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withTheme } from 'emotion-theming'
 import { concat, pathOr, ap, pipe, when, is } from 'ramda'
 import { cutAfter } from '@utils/string'
 
@@ -41,7 +42,7 @@ const getAllTheData = pipe(
   })
 )
 
-export const Colophon = props => {
+export const Colophon = withTheme(props => {
   const data = getAllTheData(props)
   const isHeader = props && props.variant && props.variant === 'header'
   const CC = isHeader ? Alt : StyledColophon
@@ -77,7 +78,7 @@ export const Colophon = props => {
       )}
     </CC>
   )
-}
+})
 
 Colophon.propTypes = {
   variant: PropTypes.string,

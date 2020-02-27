@@ -1,20 +1,10 @@
 import styled from '@emotion/styled'
 import { Box } from 'rebass'
-/* import { curry, propEq, ifElse } from 'ramda' */
 
-import * as ℂ from '@styles/colors'
+import { pathOr } from 'ramda'
 
 import { Z_INDEX } from '@styles/constants'
-
-/*
-const vary = curry(([aa, bb], props) =>
-  ifElse(
-    propEq('variant', 'left'),
-    () => bb,
-    () => aa
-  )(props)
-)
-*/
+const grab = pathOr('lime')
 
 export const StyledBadge = styled(Box)`
   position: absolute;
@@ -28,20 +18,22 @@ export const StyledBadge = styled(Box)`
   padding: 0.25rem;
   margin-left: -1rem;
 `
-
+const badgeFront = grab(['theme', 'colors', 'cs', 'badge', 'f'])
+const badgeBack = grab(['theme', 'colors', 'cs', 'badge', 'b'])
+const contributor = grab(['theme', 'colors', 'ui', 'contributor', 'a'])
 export const BadgeContent = styled(Box)`
   width: 3.25rem;
   height: 3.25rem;
   position: relative;
   z-index: ${Z_INDEX.CONTENT};
-  color: ${ℂ.area.badge.f};
-  border: 2px solid ${ℂ.area.badge.b};
+  color: ${badgeFront};
+  border: 2px solid ${badgeBack};
   transition: border 0.1s ease-out, color 0.1s ease-out, background 0.1s ease-out;
   border-radius: 100rem;
   vertical-align: middle;
   line-height: 2.75rem;
   a:hover & {
-    color: ${ℂ.ui.contributor.link.a.f};
+    color: ${contributor};
     border-color: transparent;
     background-color: transparent;
   }

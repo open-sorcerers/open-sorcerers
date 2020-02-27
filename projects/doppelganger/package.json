@@ -1,0 +1,28 @@
+{
+  "name": "doppelganger",
+  "version": "0.0.0",
+  "description": "remote control your git commits",
+  "main": "doppelganger.js",
+  "module": "doppelganger.mjs",
+  "bin": {
+    "doppelganger": "doppelganger.js"
+  },
+  "repository": "open-sorcerers/doppelganger",
+  "author": "brekk",
+  "contributors": [
+    "Pedro Costa Neves <costa.neves@me.com> (https://github.com/persocon)",
+    "Brekk Bockrath <brekk@brekkbockrath.com> (https://github.com/brekk)"
+  ],
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "date-fns": "^2.9.0",
+    "ensorcel": "^0.0.2",
+    "flexeca": "^0.0.1",
+    "fluture": "^12.2.0",
+    "isomorphic-git": "^0.78.4",
+    "node-git-server": "^0.6.0",
+    "ramda": "^0.27.0",
+    "torpor": "^0.0.4"
+  }
+}

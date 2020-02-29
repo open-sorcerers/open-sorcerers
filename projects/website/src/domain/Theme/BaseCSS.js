@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { css, Global } from '@emotion/core'
-import { aboveCalc, above } from '@styles/media'
+import { mq, __ } from '@styles/media'
 import { easeOut } from '@styles/animation'
 import 'typeface-fira-sans'
 import 'typeface-fira-code'
@@ -71,14 +71,14 @@ const stylesWithTheme = theme => {
       line-height: 0.8rem;
       font-weight: 500;
       font-family: obviously-narrow, 'Obviously', sans-serif;
-      ${above.SMALL_PHONE(`
+      @media (min-width: 30rem) {
          display: inline-block;
-      `)}
-      ${above.TABLET_PORTRAIT(`
+      }
+      @media (min-width: 37.5rem) {
         font-size: 0.75rem;
         right: 2rem;
         top: 0.75rem;
-      `)}
+      }
     }
   }
   .series-page,
@@ -139,33 +139,27 @@ const stylesWithTheme = theme => {
       border: 2px solid ${comingSoon}
       &::after {
         display: none;
-        ${above.TABLET_PORTRAIT(`
+        @media (min-width: 37.5rem) {
           display: inline-block;
           top: 1rem;
           right: 2rem;
-        `)}
-        ${above.SUB_TABLET(`
+        }
+        @media (min-width: 46rem) {
           right: 3rem;
-        `)}
+        }
       }
     }
   }
   #open-sorcerers {
-    ${aboveCalc.TINY_PHONE(
-      '4rem',
-      `
+    @media( min-width: 24rem) {
       font-size: 3rem;
       margin-bottom: 2rem;
-      `
-    )}
-    ${aboveCalc.SMALL_PHONE(
-      '4rem',
-      `
+    }
+    @media( min-width: 34rem) {
       font-size: 4em;
       line-height: 4.35rem;
       margin-bottom: 3rem;
-      `
-    )}
+    }
   }
   #learn,
   #build,
@@ -396,16 +390,16 @@ const stylesWithTheme = theme => {
         shadow: h3dShadow
       })}
       margin-bottom: 2rem;
-      ${above.TABLET_PORTRAIT(`
+      @media (min-width: 30rem) {
         margin-top: 2rem;
-      `)}
+      }
     }
   }
   h1 {
-    ${above.TABLET_PORTRAIT(`
+    @media (min-width: 30rem) {
       font-size: 3rem;
       line-height: 3.3rem;
-    `)}
+    }
   }
   h2 {
     font-size: 2em;

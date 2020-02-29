@@ -1,6 +1,7 @@
 import { renderBreakpoints } from '@open-sorcerers/breakpoints'
 import { asRem, useDefaultPainter, DEFAULT_BREAKPOINTS } from 'bodypaint'
 import { pipe } from 'ramda'
+export { __ } from 'bodypaint'
 
 export const mq = useDefaultPainter
 

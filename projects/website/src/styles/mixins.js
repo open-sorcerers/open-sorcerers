@@ -1,5 +1,4 @@
 import { curry, pipe, range, map } from 'ramda'
-import { aboveCalc } from '@styles/media'
 
 const sh = curry((cl, xx, yy) => `${xx}px ${yy}px 0 ${cl}`)
 
@@ -20,8 +19,7 @@ export const h3D = ({
   a {
     color: ${color};
   }
-  ${aboveCalc.TINY_PHONE('2rem')(
-    `
+  @media (min-width: 416px) {
     letter-spacing: 0.38rem;
 
     text-shadow: ${[
@@ -31,6 +29,5 @@ export const h3D = ({
     ].join(', ')};
     line-height: 3.3rem;
     ${and}
-  `
-  )}
+  }
 `

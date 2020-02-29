@@ -2,7 +2,7 @@ import { memo } from 'react'
 import { Box } from 'rebass'
 import { Link } from 'gatsby'
 import styled from '@emotion/styled'
-import { above } from '@styles/media'
+import { mq, __ } from '@styles/media'
 import { ifElse, propOr, pathOr } from 'ramda'
 const grab = pathOr('lime')
 
@@ -49,6 +49,43 @@ export const EntityLink = memo(styled(Link)`
 
 const post = grab(['theme', 'colors', 'cs', 'post', 'f'])
 const postBack = grab(['theme', 'colors', 'cs', 'post', 'b'])
+
+const styledPost = mq({
+  margin: [0, __, __, __, __, '0.5rem 0', __, __, '0.5rem'],
+
+  minWidth: [
+    '100%',
+    __,
+    'calc(50% - 0.5rem)',
+    __,
+    __,
+    'calc(33% - 1rem)',
+    __,
+    __,
+    'calc(25% - 1.5rem)'
+  ],
+  maxWidth: [
+    'initial',
+    __,
+    'calc(50% - 0.5rem)',
+    __,
+    __,
+    'calc(33% - 1rem)',
+    __,
+    __,
+    'calc(25% - 1.5rem)'
+  ],
+  '&:nth-of-type(even)': {
+    marginLeft: ['0', __, '0.5rem', __, __, '0.5rem 0', __, __, '0.5rem']
+  },
+  '&:nth-of-type(odd)': {
+    marginRight: ['0', __, '0.5rem', __, __, '0.5rem 0', __, __, '0.5rem']
+  },
+  '&:nth-child(3n+2)': {
+    marginLeft: ['0', __, __, __, __, '1rem', __, __, '0.5rem'],
+    marginRight: ['0', __, __, __, __, '1rem', __, __, '0.5rem']
+  }
+})
 export const StyledPost = memo(styled(Box)`
   margin: 0;
   margin-bottom: 1rem;
@@ -61,41 +98,6 @@ export const StyledPost = memo(styled(Box)`
   color: ${post};
   border: 1px solid ${post};
   flex-direction: column;
-  ${above.TABLET_PORTRAIT(`
-     min-width: calc(50% - 0.5rem);
-     max-width: calc(50% - 0.5rem);
-     margin: 0;
-     margin-bottom: 1rem;
-     &:nth-of-type(even) {
-       margin-left: 0.5rem;
-     }
-     &:nth-of-type(odd) {
-      margin-right: 0.5rem;
-     }
-  `)}
-  ${above.TABLET_LANDSCAPE(`
-     min-width: calc(33% - 1rem);
-     max-width: calc(33% - 1rem);
-     margin: 0.5rem 0;
-     &:nth-of-type(even), &:nth-of-type(odd) {
-       margin: 0.5rem 0;
-     }
-     &:nth-child(3n+2) {
-       margin-left: 1rem;
-       margin-right: 1rem;
-     }
-  `)}
-  ${above.DESKTOP(`
-     min-width: calc(25% - 1.5rem);
-     max-width: calc(25% - 1.5rem);
-     margin: 0.5rem;
-     &:nth-of-type(even), &:nth-of-type(odd) {
-       margin: 0.5rem;
-     }
-     &:nth-child(3n+2) {
-       margin: 0.5rem;
-     }
-  `)}
 `)
 const obviously = pathOr('Comic Sans MS', ['theme', 'fonts', 'obviously'])
 export const StyledList = memo(styled(Box)`

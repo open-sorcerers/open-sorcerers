@@ -6,9 +6,13 @@ import { pathOr } from 'ramda'
 
 import { Z_INDEX } from '@styles/constants'
 
-import { above, aboveCalc } from '@styles/media'
+import { mq, __ } from '@styles/media'
 import { easeIn, transitionEaseOut } from '@styles/animation'
 const grab = pathOr('lime')
+
+const styledNav = mq({
+  minHeight: ['16rem', '18rem', __, __, '13rem']
+})
 
 export const StyledNavigation = styled(Box)`
   display: flex;
@@ -20,12 +24,7 @@ export const StyledNavigation = styled(Box)`
   position: relative;
   z-index: ${Z_INDEX.MENU};
   transition: ${easeIn('0.6s', ['background', 'padding', 'border', 'min-height'])};
-  ${above.SMALL_PHONE(`
-    min-height: 18rem;
-  `)}
-  ${above.MID_TABLET(`
-    min-height: 13rem;
-  `)}
+  ${styledNav}
 `
 
 export const Inner = styled(Box)`
@@ -34,6 +33,19 @@ export const Inner = styled(Box)`
   align-items: center;
   justify-content: space-between;
 `
+
+const brand = mq({
+  width: ['50%', '60%', '55%', __, '28%'],
+  margin: ['initial', '0', '0.5rem 0', __, '0.5rem 2rem'],
+  justifyContent: ['initial', __, 'center'],
+  padding: ['initial', '0'],
+  svg: {
+    height: ['9rem', __, '12rem'],
+    width: ['100%'],
+    margin: ['initial', '0'],
+    padding: ['initial', '0']
+  }
+})
 
 export const Brand = styled(Link)`
   display: flex;
@@ -44,9 +56,6 @@ export const Brand = styled(Link)`
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 900;
-  &:hover {
-    text-decoration: none;
-  }
 
   svg {
     display: flex;
@@ -56,33 +65,20 @@ export const Brand = styled(Link)`
     ${transitionEaseOut('0.1s', ['fill', 'height', 'width', 'margin'])}
   }
   &:hover {
+    text-decoration: none;
     svg {
       fill: ${grab(['theme', 'colors', 'ui', 'brand', 'a', 'f'])};
     }
   }
-
-  ${above.SMALL_PHONE(`
-    width: 60%;
-    margin: 0;
-    padding: 0;
-    svg {
-      height: 9rem;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-  `)}
-  ${above.TABLET_PORTRAIT(`
-    width: 55%;
-    margin: 0.5rem 0;
-    justify-content: center;
-    svg { height: 12rem; }
-  `)}
-  ${above.MID_TABLET(`
-    margin: 0.5rem 2rem;
-    width: 28%;
-  `)}
+  ${brand}
 `
+
+const nav = mq({
+  margin: ['0 -1.5rem', __, __, __, '0'],
+  flexDirection: ['column', __, __, __, 'row'],
+  height: ['initial', __, __, __, '5rem'],
+  alignItems: ['center', __, __, __, 'flex-start']
+})
 
 export const Nav = styled(Box)`
   align-items: center;
@@ -95,12 +91,6 @@ export const Nav = styled(Box)`
   justify-content: center;
   margin: 0 -1.5rem;
   overflow: hidden;
-  ${above.MID_TABLET(`
-    margin: 0;
-    flex-direction: row;
-    height: 5rem;
-    align-items: flex-start;
-  `)}
 `
 
 export const activeItemHover = css`
@@ -108,6 +98,14 @@ export const activeItemHover = css`
   color: #fff;
   text-decoration: none;
 `
+
+const styledItem = mq({
+  verticalAlign: ['initial', __, 'top'],
+  fontSize: ['2.2rem', '3rem', __, __, '2.6rem', '3.3rem'],
+  margin: ['1rem auto', '0.5rem auto', __, __, '0 0.5rem', '0.5rem auto'],
+  lineHeight: ['0.75rem', '2.2rem'],
+  padding: ['0 0.5rem', __, __, '0']
+})
 
 export const StyledItem = styled(Link)`
   ${transitionEaseOut('0.3s', ['opacity', 'color'])};
@@ -127,38 +125,26 @@ export const StyledItem = styled(Link)`
     color: ${grab(['theme', 'colors', 'ui', 'navButton', 'a', 'f'])};
     opacity: 1;
   }
-
-  ${above.SMALL_PHONE(`
-    font-size: 3rem;
-    margin: 0.5rem auto; 
-    line-height: 2.2rem;
-  `)}
-  ${above.TABLET_PORTRAIT(`
-    padding: 0 0.5rem;
-    vertical-align: top;
-  `)}
-  ${above.MID_TABLET(`
-    font-size: 2.6rem;
-    padding: 0;
-    margin: 0 0.5rem;
-  `)}
-  ${aboveCalc.TABLET_LANDSCAPE('6rem')(`
-    font-size: 3.3rem;
-    margin: 0.5rem auto;
-  `)}
 `
 
 export const activeNav = css`
   padding-right: 0;
   padding-left: 0;
 `
+
+const navInactive = mq({
+  borderLeft: ['initial', __, '12vw solid transparent'],
+  marginLeft: ['initial', __, '-12vw']
+})
+
 export const inactiveNav = css`
   padding: 0;
-  ${above.TABLET_PORTRAIT(`
-    border-left: 12vw solid transparent; 
-    margin-left: -12vw;
-  `)}
+  ${navInactive}
 `
+
+const menuWrapper = mq({
+  position: ['initial', __, __, __, 'absolute']
+})
 
 export const MenuWrapper = styled.div`
   text-align: center;
@@ -166,7 +152,5 @@ export const MenuWrapper = styled.div`
   display: flex;
   flex-flow: nowrap row;
   align-items: center;
-  ${above.MID_TABLET(`
-    position: absolute;
-  `)}
+  ${menuWrapper}
 `

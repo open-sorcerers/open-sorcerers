@@ -369,66 +369,17 @@ export const MenuCog = styled(Box)`
   ${menuCogMQ}
 `
 
-/*
-const cog2 = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
+const cogTop = mq({
+  bottom: ['initial', p => (p.authenticated ? '-18rem' : '0')],
+  transform: ['scale(0.3)', __, __, __, 'scale(0.6)'],
+  left: ['-50%', __, __, __, '-69vw']
+})
+
+const cog2Color = grab(['theme', 'colors', 'ui', 'cog2', 'f'])
 const cog2Active = grab(['theme', 'colors', 'ui', 'cog2', 'a', 'f'])
-const cog2Stroke = grab(['theme', 'colors', 'ui', 'cog2Stroke', 'a', 'f'])
 
 export const MenuCogTop = styled(Box)`
-  bottom: -6.75rem;
-  cursor: pointer;
-  display: inline-block;
-  margin: 0 10%;
-  position: absolute;
-  pointer-events: auto;
-  text-align: center;
-  ${transitionEaseOut('0.3s', ['bottom', 'left', 'margin'])}
-  width: 80vw;
-
-  svg {
-    fill: ${cogColor};
-    stroke-width: 0;
-    stroke: ${cogColor};
-    transition: ${easeOut('0.3s', ['fill', 'stroke'])}, ${easeOut('0.6s', ['stroke-width'])};
-    animation: ${rotateSlowly} 18s ease-in-out infinite;
-    animation-direction: normal;
-    animation-play-state: ${p => (p.active ? 'running' : 'paused')};
-    ${above.MID_TABLET(`
-      fill: ${cogOverMidTablet};
-      stroke: ${cogOverMidTablet};
-    `)}
-  }
-  
-  &:hover {
-    svg {
-      fill: ${cogActive};
-      stroke: ${cogActive};
-      stroke-width: 1.6rem;
-    }
-  }
-
-  ${above.MID_TABLET(`
-    width: 10vw;
-    position: fixed;
-    bottom: calc(2rem + -5vh);
-    right: -2.5rem;
-    svg {
-      fill: ${cogOverMidTablet};
-    }
-    &:hover {
-      svg {
-        fill: ${cogOverMidTabletActive};
-        stroke: ${cogOverMidTabletActive};
-        stroke-width: 0.75rem;
-      }
-    }
-  `)}
-  ${above.LARGE_TABLET(`
-     bottom: calc(4rem + -8vh);
-  `)}
-  ${above.DESKTOP(`
-     bottom: calc(4rem + -10vh);
-  `)}
+  ${cog}
   z-index: ${MENU_OVER};
   transform: scale(0.3);
   position: fixed;
@@ -436,22 +387,15 @@ export const MenuCogTop = styled(Box)`
   left: -50%;
   margin: 0 14%;
   svg {
-    fill: ${cog2};
-    stroke: ${cog2};
+    fill: ${cog2Color};
+    stroke: ${cog2Color};
   }
   &:hover {
     svg {
       fill: ${cog2Active};
-      stroke: ${cog2Stroke};
+      stroke: ${cog2Active};
       stroke-width: 0.1rem;
     }
   }
-  ${above.SMALL_PHONE(`
-    bottom: ${p => (p.authenticated ? '-18rem' : '0')};
-  `)}
-
-  ${above.MID_TABLET(`
-    transform: scale(0.6);
-    left: -69vw;
-  `)}
-`*/
+  ${cogTop}
+`

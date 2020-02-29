@@ -4,7 +4,7 @@ import { Box } from 'rebass'
 import { lighten } from 'polished'
 import { pathOr, pipe } from 'ramda'
 
-import { above } from '@styles/media'
+import { mq, __ } from '@styles/media'
 const grab = pathOr('lime')
 
 const footerColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
@@ -13,7 +13,12 @@ const footerActiveColor = grab(['theme', 'colors', 'cs', 'footer', 'f'])
 const footerLink = pipe(grab(['theme', 'colors', 'ui', 'footer', 'f']), lighten(1 / 10))
 const footerActiveLink = pipe(footerActiveColor, lighten(1 / 10))
 
+const styledFooter = mq({
+  padding: ['1.5rem 0', __, '1rem auto', '0 auto']
+})
+
 export const StyledFooter = withTheme(styled(Box)`
+  ${styledFooter}
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
@@ -34,12 +39,6 @@ export const StyledFooter = withTheme(styled(Box)`
       text-decoration: underline;
     }
   }
-  ${above.TABLET_PORTRAIT(`
-    padding: 1rem auto;
-  `)}
-  ${above.SUB_TABLET(`
-    padding: 0 auto;
-  `)}
 `)
 
 const footerDate = grab(['theme', 'colors', 'cs', 'footerHiddenDate', 'f'])
@@ -68,21 +67,20 @@ export const HiddenContent = styled(Box)`
   }
 `
 
+const inner = mq({
+  flexDirection: ['column', __, 'row'],
+  margin: ['initial', __, '0 auto'],
+  width: ['initial', __, '100%'],
+  maxWidth: ['initial', __, '34rem']
+})
+
 export const Inner = styled(Box)`
   display: flex;
   flex-direction: column;
   text-align: center;
   vertical-align: middle;
   align-items: center;
-  ${above.TABLET_PORTRAIT(
-    `
-    flex-direction: row;
-    margin: 0 auto;
-    width: 100%;
-    justify-content: space-evenly;
-    max-width: 34rem;
-  `
-  )}
+  ${inner}
 `
 
 export const Bottom = styled(Box)`
@@ -92,10 +90,10 @@ export const Bottom = styled(Box)`
   width: 100%;
 `
 
+const linkWrapper = mq({margin: ['0.5rem', '0.5rem auto']})
+
 export const LinkWrapper = styled(Box)(`
   margin: 0.5rem;
   display: inline-block;
-  ${above.SMALL_PHONE(`
-    margin: 0.5rem auto;
-  `)}
+  ${linkWrapper}
 `)

@@ -1,19 +1,23 @@
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
-import { above } from '@styles/media'
+import { mq, __ } from '@styles/media'
 import { easeIn } from '@styles/animation'
-import { transparent} from '@styles/colors'
+import { transparent } from '@styles/colors'
 import { Box, Button } from 'rebass'
 import { Label, Input } from '@rebass/forms'
 import { pathOr } from 'ramda'
 const grab = pathOr('lime')
+
+const main = mq({
+  margin: ['2rem 0', __, '0 auto']
+})
 
 export const Main = styled(Box)`
   margin: 2rem 0;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-left);
   min-height: calc(100vh - 20rem);
-  ${above.TABLET_PORTRAIT(`margin: 0 auto`)}
+  ${main}
 `
 const eased = easeIn('0.6s', ['position', 'top', 'left', 'padding'])
 
@@ -27,10 +31,13 @@ export const site = css`
   transition: ${eased};
 `
 
+const activeMenu = mq({
+  paddingRight: ['initial', __, '40vw', __, __, '33vw']
+})
+
 export const menuActive = css`
   background-color: ${transparent};
-  ${above.TABLET_PORTRAIT(`padding-right: 40vw;`)}
-  ${above.TABLET_LANDSCAPE(`padding-right: 33vw;`)}
+  ${activeMenu}
 `
 
 export const PasswordField = styled(Box)`

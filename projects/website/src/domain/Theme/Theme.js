@@ -5,7 +5,7 @@ import { ThemeProvider } from 'emotion-theming'
 import { checkWindowExists } from '@utils/url'
 import { assoc, reject, fromPairs, toPairs } from 'ramda'
 import { fork } from 'fluture'
-import { engraved } from '@root/engraved-raw'
+import { engraved } from 'engraved'
 
 console.log('engraved', engraved)
 

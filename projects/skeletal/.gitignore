@@ -6,5 +6,3 @@ example/change-me.txt
 .vscode
 *.swp
 *.output
-skeletal.*
-bone-cli.*

@@ -1,6 +1,6 @@
 {
   "name": "skeletal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Build the bones of a project",
   "main": "skeletal.js",
   "module": "skeletal.mjs",

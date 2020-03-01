@@ -34,12 +34,16 @@ import {
   fork as rawFork
 } from "fluture"
 import { j2, box, tacit, futurizeWithCancel } from "ensorcel"
-import { compile as handleThemBars, registerHelper } from "handlebars"
+import {
+  compile as handleThemBars,
+  registerPartial,
+  registerHelper
+} from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
 import { prompt, ui } from "inquirer"
 import cleanStack from "clean-stack"
 import PKG from "../package.json"
-import * as helpers from "./helpers"
+import * as bakedIn from "./helpers"
 import { austereStack, deepfreeze } from "./utils"
 
 export const fork = tacit(2, rawFork)
@@ -133,7 +137,7 @@ const bakeIn = sideEffect(() =>
   pipe(
     toPairs,
     map(([k, v]) => registerHelper(k, v))
-  )(helpers)
+  )(bakedIn)
 )
 
 const writeTemplate = curry(
@@ -217,15 +221,17 @@ const talker = curry((conf, bar, text) => {
 })
 
 export const skeletal = config => {
+  // STATE
+  const patterns = {}
+  // UI
   const bar = new ui.BottomBar()
   const talk = talker(config, bar)
   const say = x => sideEffect(() => talk(x + "\n"))
   const boneUI = { bar, talk, say }
   const threads = propOr(10, "threads", config)
   const which = propOr(false, "pattern", config)
+  // CANCELLATION
   let isCancelled = false
-  /* const patterns = [] */
-  const patterns = {}
   const cancel = () => {
     isCancelled = true
     process.exit(1)
@@ -239,8 +245,11 @@ export const skeletal = config => {
     threads,
     cancel,
     checkCancelled,
-    config: deepfreeze(config)
+    config: deepfreeze(config),
+    registerPartial,
+    registerHelper
   }
+  // inject functions into ligament
   ligament.pattern = saveKeyed(patterns, pattern(ligament))
   return pipe(
     propOr("skeletal", "namespace"),

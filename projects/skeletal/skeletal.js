@@ -16,7 +16,7 @@ var cleanStack = _interopDefault(require('clean-stack'));
 var changeCase = require('change-case');
 
 var name = "skeletal";
-var version = "0.0.3";
+var version = "0.0.5-beta.1";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module$1 = "skeletal.mjs";
@@ -242,7 +242,7 @@ var segmentTrace = segment({
 
 
 
-var helpers = /*#__PURE__*/Object.freeze({
+var bakedIn = /*#__PURE__*/Object.freeze({
   __proto__: null,
   capitalCase: changeCase.capitalCase,
   constantCase: changeCase.constantCase,
@@ -390,7 +390,7 @@ var bakeIn = call(function () { return ramda.pipe(
 
       return handlebars.registerHelper(k, v);
     })
-  )(helpers); }
+  )(bakedIn); }
 );
 
 var writeTemplate = ramda.curry(
@@ -479,15 +479,17 @@ var talker = ramda.curry(function (conf, bar, text) {
 });
 
 var skeletal = function (config) {
+  // STATE
+  var patterns = {};
+  // UI
   var bar = new inquirer.ui.BottomBar();
   var talk = talker(config, bar);
   var say = function (x) { return call(function () { return talk(x + "\n"); }); };
   var boneUI = { bar: bar, talk: talk, say: say };
   var threads = ramda.propOr(10, "threads", config);
   var which = ramda.propOr(false, "pattern", config);
+  // CANCELLATION
   var isCancelled = false;
-  /* const patterns = [] */
-  var patterns = {};
   var cancel = function () {
     isCancelled = true;
     process.exit(1);
@@ -501,8 +503,11 @@ var skeletal = function (config) {
     threads: threads,
     cancel: cancel,
     checkCancelled: checkCancelled,
-    config: deepfreeze(config)
+    config: deepfreeze(config),
+    registerPartial: handlebars.registerPartial,
+    registerHelper: handlebars.registerHelper
   };
+  // inject functions into ligament
   ligament.pattern = saveKeyed(patterns, pattern(ligament));
   return ramda.pipe(
     ramda.propOr("skeletal", "namespace"),

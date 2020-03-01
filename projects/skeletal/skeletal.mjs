@@ -3,14 +3,14 @@ import { curry as curry$1, replace, when, identity, pipe as pipe$1, split, map, 
 import { readFile, writeFile } from 'torpor';
 import { fork as fork$1, resolve, Future, mapRej, reject, parallel } from 'fluture';
 import { tacit, futurizeWithCancel, box } from 'ensorcel';
-import { registerHelper, compile } from 'handlebars';
+import { registerHelper, compile, registerPartial } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
 import cleanStack from 'clean-stack';
 import { capitalCase, constantCase, camelCase, dotCase, headerCase, noCase, paramCase, pascalCase, pathCase, sentenceCase, snakeCase } from 'change-case';
 
 var name = "skeletal";
-var version = "0.0.3";
+var version = "0.0.5-beta.1";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";
@@ -236,7 +236,7 @@ var segmentTrace = segment({
 
 
 
-var helpers = /*#__PURE__*/Object.freeze({
+var bakedIn = /*#__PURE__*/Object.freeze({
   __proto__: null,
   capitalCase: capitalCase,
   constantCase: constantCase,
@@ -384,7 +384,7 @@ var bakeIn = call(function () { return pipe$1(
 
       return registerHelper(k, v);
     })
-  )(helpers); }
+  )(bakedIn); }
 );
 
 var writeTemplate = curry$1(
@@ -473,15 +473,17 @@ var talker = curry$1(function (conf, bar, text) {
 });
 
 var skeletal = function (config) {
+  // STATE
+  var patterns = {};
+  // UI
   var bar = new ui.BottomBar();
   var talk = talker(config, bar);
   var say = function (x) { return call(function () { return talk(x + "\n"); }); };
   var boneUI = { bar: bar, talk: talk, say: say };
   var threads = propOr(10, "threads", config);
   var which = propOr(false, "pattern", config);
+  // CANCELLATION
   var isCancelled = false;
-  /* const patterns = [] */
-  var patterns = {};
   var cancel = function () {
     isCancelled = true;
     process.exit(1);
@@ -495,8 +497,11 @@ var skeletal = function (config) {
     threads: threads,
     cancel: cancel,
     checkCancelled: checkCancelled,
-    config: deepfreeze(config)
+    config: deepfreeze(config),
+    registerPartial: registerPartial,
+    registerHelper: registerHelper
   };
+  // inject functions into ligament
   ligament.pattern = saveKeyed(patterns, pattern(ligament));
   return pipe$1(
     propOr("skeletal", "namespace"),

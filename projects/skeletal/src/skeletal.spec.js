@@ -1,4 +1,5 @@
-import { skeletal, fork } from "./skeletal"
+import { skeletal } from "./skeletal"
+import { fork } from "./utils"
 
 test("skeletal - basic", done => {
   fork(

@@ -1,21 +1,40 @@
+export const UNSET = `%UNSET%`
+
+export const STRINGS = Object.freeze({
+  // cli stuff
+  debug: `debug`,
+  force: `force`,
+  init: `init`,
+  namespace: `namespace`,
+  pattern: `pattern`,
+  silent: `silent`,
+  threads: `threads`,
+  verbose: `verbose`,
+  // errors
+  NO_CONFIG: `noConfig`
+})
+
 export const CLI_OPTIONS = Object.freeze({
   number: ["t"],
-  string: ["n", "p"],
+  string: ["n", "p", "I"],
   boolean: ["f", "w", "s", "d"],
   default: {
-    force: false,
-    threads: 10,
-    namespace: "skeletal",
-    verbose: false,
-    silent: false
+    [STRINGS.debug]: false,
+    [STRINGS.force]: false,
+    [STRINGS.init]: "",
+    [STRINGS.namespace]: "skeletal",
+    [STRINGS.silent]: false,
+    [STRINGS.threads]: 10,
+    [STRINGS.verbose]: false
   },
   alias: {
-    debug: ["d"],
-    verbose: ["w"],
-    silent: ["s"],
-    force: ["f"],
-    pattern: ["p"],
-    threads: ["t"],
-    namespace: ["n"]
+    [STRINGS.debug]: ["d"],
+    [STRINGS.force]: ["f"],
+    [STRINGS.init]: ["I"],
+    [STRINGS.namespace]: ["n"],
+    [STRINGS.pattern]: ["p"],
+    [STRINGS.silent]: ["s"],
+    [STRINGS.threads]: ["t"],
+    [STRINGS.verbose]: ["w"]
   }
 })

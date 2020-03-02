@@ -1,6 +1,7 @@
+import { fork as rawFork } from "fluture"
 import {
-  replace,
   curry,
+  replace,
   identity as I,
   pipe,
   split,
@@ -9,6 +10,7 @@ import {
   includes,
   join
 } from "ramda"
+import { tacit } from "ensorcel"
 const freeze = Object.freeze
 const own = z => Object.getOwnPropertyNames(z)
 
@@ -44,3 +46,4 @@ export const austereStack = when(
     join("\n")
   )
 )
+export const fork = tacit(2, rawFork)

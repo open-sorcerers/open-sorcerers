@@ -3,5 +3,6 @@ node_modules/
 example/folder/
 example/change-me.txt
 .idea
-.vscode*.swp
+.vscode
+*.swp
 *.output

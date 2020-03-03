@@ -1,5 +1,5 @@
-import { once, curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, identity, split, includes, join, chain, __, equals, propOr, pathOr, ap, ifElse, any, reduce, mergeRight, propEq, cond, prop as prop$1, keys as keys$1, unless } from 'ramda';
-import { fork as fork$1, mapRej, reject, parallel, resolve, Future } from 'fluture';
+import { once, curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, assoc, __, chain, equals, propOr, pathOr, ap, ifElse, any, identity, reduce, mergeRight, propEq, cond, keys as keys$1, unless } from 'ramda';
+import { fork as fork$1, reject, mapRej, parallel, resolve, Future } from 'fluture';
 import { registerHelper, compile, registerPartial } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
@@ -10,7 +10,7 @@ import { writeFile, readFile } from 'torpor';
 import cleanStack from 'clean-stack';
 
 var name = "skeletal";
-var version = "0.0.5-beta.2";
+var version = "0.0.5";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";
@@ -275,6 +275,46 @@ var bakeIn = call(function () { return pipe$1(
   )(bakedIn); }
 );
 
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+var deepfreeze = function (o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { freeze(o); }
+    own(o).forEach(function (pp) {
+      if (pp !== "constructor") { deepfreeze(o[pp]); }
+    });
+  }
+  return o
+};
+
+var NM = "node_modules";
+
+var cutAfterStringAdjust = curry$1(function (alter, aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length + alter); }
+);
+
+var unwrap = replace(")", "");
+
+var austereStack = when(
+  function (e) { return e && e.stack; },
+  function (e) { return pipe$1(
+      prop$1("stack"),
+      function (ST) { return cleanStack(ST, { pretty: true }); },
+      split("\n"),
+      map(
+        when(
+          includes(NM),
+          /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
+          function (z) { return "    at " + pipe$1(cutAfterStringAdjust(1, NM), unwrap)(z); }
+        ),
+        when(includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+      ),
+      join("\n"),
+      assoc("stack", __, e)
+    )(e); }
+);
+var fork = tacit(2, fork$1);
+
 var obj, obj$1;
 var UNSET = "%UNSET%";
 
@@ -300,42 +340,6 @@ var CLI_OPTIONS = Object.freeze({
   alias: ( obj$1 = {}, obj$1[STRINGS.debug] = ["d"], obj$1[STRINGS.force] = ["f"], obj$1[STRINGS.init] = ["I"], obj$1[STRINGS.namespace] = ["n"], obj$1[STRINGS.pattern] = ["p"], obj$1[STRINGS.silent] = ["s"], obj$1[STRINGS.threads] = ["t"], obj$1[STRINGS.verbose] = ["w"], obj$1 )
 });
 
-var freeze = Object.freeze;
-var own = function (z) { return Object.getOwnPropertyNames(z); };
-
-var deepfreeze = function (o) {
-  if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { freeze(o); }
-    own(o).forEach(function (prop) {
-      if (prop !== "constructor") { deepfreeze(o[prop]); }
-    });
-  }
-  return o
-};
-
-var NM = "node_modules";
-
-var cutAfterString = curry$1(function (aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length); }
-);
-
-var unwrap = replace(")", "");
-
-var austereStack = when(
-  identity,
-  pipe$1(
-    split("\n"),
-    map(
-      when(
-        includes(NM),
-        /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-        function (z) { return "    at " + pipe$1(cutAfterString(NM), unwrap)(z); }
-      )
-    ),
-    join("\n")
-  )
-);
-var fork = tacit(2, fork$1);
-
 var nameAndVersion = function () { return PKG.name + PKG.version; };
 var nameVersion = pipe$1(nameAndVersion, bold);
 
@@ -344,8 +348,7 @@ var error = curry$1(function (ns, message, data) {
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  e.stack = pipe$1(function (ST) { return cleanStack(ST, { pretty: true }); }, austereStack)(e.stack);
-  return e
+  return austereStack(e)
 });
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
@@ -362,7 +365,14 @@ var processHandlebars = curry$1(function (boneUI, answers, templateFile, templat
     pipe$1(
       compile,
       boneUI.say("Processing handlebars..."),
-      function (fn) { return fn(answers); },
+      function (fn) {
+        try {
+          return fn(answers)
+        } catch (ee) {
+          pipe$1(trace("barf"), austereStack, trace("stackies"), reject)(ee);
+          process.exit(2);
+        }
+      },
       boneUI.say(("Converted " + templateFile))
     )
   )(templateF); }
@@ -402,7 +412,12 @@ var templatizeActions = curry$1(function (answers, actions) { return map(
         try {
           return temp(answers)
         } catch (ee) {
-          console.warn(ee);
+          pipe$1(
+            trace("action template barf"),
+            austereStack,
+            trace("nein"),
+            reject
+          )(ee);
           process.exit(2);
         }
       })
@@ -629,7 +644,10 @@ var skeletal = function (config) {
     checkCancelled: checkCancelled,
     config: deepfreeze(config),
     registerPartial: registerPartial,
-    registerHelper: registerHelper
+    registerHelper: function (a, b) {
+      console.log("adding helper", a, "b", b.toString());
+      return registerHelper(a, b)
+    }
   };
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism
@@ -641,11 +659,10 @@ var skeletal = function (config) {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     mapRej(function (ee) {
-      if (ee && ee.stack) { ee.stack = austereStack(ee.stack); }
       console.warn(("🤕 " + (nameVersion()) + " failed!"));
-      return ee
+      return austereStack(ee)
     })
   )(config)
 };
 
-export { austereStack, cutAfterString, deepfreeze, fork, name, skeletal, version };
+export { austereStack, cutAfterStringAdjust, deepfreeze, fork, name, skeletal, version };

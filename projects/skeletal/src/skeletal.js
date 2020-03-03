@@ -103,7 +103,10 @@ export const skeletal = config => {
     checkCancelled,
     config: deepfreeze(config),
     registerPartial,
-    registerHelper
+    registerHelper: (a, b) => {
+      console.log("adding helper", a, "b", b.toString())
+      return registerHelper(a, b)
+    }
   }
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism
@@ -115,9 +118,8 @@ export const skeletal = config => {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     mapRej(ee => {
-      if (ee && ee.stack) ee.stack = austereStack(ee.stack)
       console.warn(`🤕 ${nameVersion()} failed!`)
-      return ee
+      return austereStack(ee)
     })
   )(config)
 }

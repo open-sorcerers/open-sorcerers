@@ -1,5 +1,4 @@
-import { curry, pipe } from "ramda"
-import cleanStack from "clean-stack"
+import { curry } from "ramda"
 import { austereStack, deepfreeze } from "./utils"
 import { nameVersion } from "./instance"
 
@@ -8,8 +7,7 @@ export const error = curry((ns, message, data) => {
   const e = new Error(message)
   e.name = name
   e.data = data
-  e.stack = pipe(ST => cleanStack(ST, { pretty: true }), austereStack)(e.stack)
-  return e
+  return austereStack(e)
 })
 export const ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(

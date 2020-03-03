@@ -208,6 +208,46 @@ var bakeIn = call(function () { return ramda.pipe(
   )(bakedIn); }
 );
 
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+var deepfreeze = function (o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { freeze(o); }
+    own(o).forEach(function (pp) {
+      if (pp !== "constructor") { deepfreeze(o[pp]); }
+    });
+  }
+  return o
+};
+
+var NM = "node_modules";
+
+var cutAfterStringAdjust = ramda.curry(function (alter, aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length + alter); }
+);
+
+var unwrap = ramda.replace(")", "");
+
+var austereStack = ramda.when(
+  function (e) { return e && e.stack; },
+  function (e) { return ramda.pipe(
+      ramda.prop("stack"),
+      function (ST) { return cleanStack(ST, { pretty: true }); },
+      ramda.split("\n"),
+      ramda.map(
+        ramda.when(
+          ramda.includes(NM),
+          /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
+          function (z) { return "    at " + ramda.pipe(cutAfterStringAdjust(1, NM), unwrap)(z); }
+        ),
+        ramda.when(ramda.includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+      ),
+      ramda.join("\n"),
+      ramda.assoc("stack", ramda.__, e)
+    )(e); }
+);
+var fork = ensorcel.tacit(2, fluture.fork);
+
 var obj, obj$1;
 var UNSET = "%UNSET%";
 
@@ -233,44 +273,8 @@ var CLI_OPTIONS = Object.freeze({
   alias: ( obj$1 = {}, obj$1[STRINGS.debug] = ["d"], obj$1[STRINGS.force] = ["f"], obj$1[STRINGS.init] = ["I"], obj$1[STRINGS.namespace] = ["n"], obj$1[STRINGS.pattern] = ["p"], obj$1[STRINGS.silent] = ["s"], obj$1[STRINGS.threads] = ["t"], obj$1[STRINGS.verbose] = ["w"], obj$1 )
 });
 
-var freeze = Object.freeze;
-var own = function (z) { return Object.getOwnPropertyNames(z); };
-
-var deepfreeze = function (o) {
-  if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { freeze(o); }
-    own(o).forEach(function (prop) {
-      if (prop !== "constructor") { deepfreeze(o[prop]); }
-    });
-  }
-  return o
-};
-
-var NM = "node_modules";
-
-var cutAfterString = ramda.curry(function (aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length); }
-);
-
-var unwrap = ramda.replace(")", "");
-
-var austereStack = ramda.when(
-  ramda.identity,
-  ramda.pipe(
-    ramda.split("\n"),
-    ramda.map(
-      ramda.when(
-        ramda.includes(NM),
-        /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-        function (z) { return "    at " + ramda.pipe(cutAfterString(NM), unwrap)(z); }
-      )
-    ),
-    ramda.join("\n")
-  )
-);
-var fork = ensorcel.tacit(2, fluture.fork);
-
 var name = "skeletal";
-var version = "0.0.5-beta.2";
+var version = "0.0.5";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module$1 = "skeletal.mjs";
@@ -350,8 +354,7 @@ var error = ramda.curry(function (ns, message, data) {
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  e.stack = ramda.pipe(function (ST) { return cleanStack(ST, { pretty: true }); }, austereStack)(e.stack);
-  return e
+  return austereStack(e)
 });
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
@@ -368,7 +371,14 @@ var processHandlebars = ramda.curry(function (boneUI, answers, templateFile, tem
     ramda.pipe(
       handlebars.compile,
       boneUI.say("Processing handlebars..."),
-      function (fn) { return fn(answers); },
+      function (fn) {
+        try {
+          return fn(answers)
+        } catch (ee) {
+          ramda.pipe(trace("barf"), austereStack, trace("stackies"), fluture.reject)(ee);
+          process.exit(2);
+        }
+      },
       boneUI.say(("Converted " + templateFile))
     )
   )(templateF); }
@@ -408,7 +418,12 @@ var templatizeActions = ramda.curry(function (answers, actions) { return ramda.m
         try {
           return temp(answers)
         } catch (ee) {
-          console.warn(ee);
+          ramda.pipe(
+            trace("action template barf"),
+            austereStack,
+            trace("nein"),
+            fluture.reject
+          )(ee);
           process.exit(2);
         }
       })
@@ -635,7 +650,10 @@ var skeletal = function (config) {
     checkCancelled: checkCancelled,
     config: deepfreeze(config),
     registerPartial: handlebars.registerPartial,
-    registerHelper: handlebars.registerHelper
+    registerHelper: function (a, b) {
+      console.log("adding helper", a, "b", b.toString());
+      return handlebars.registerHelper(a, b)
+    }
   };
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism
@@ -647,9 +665,8 @@ var skeletal = function (config) {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     fluture.mapRej(function (ee) {
-      if (ee && ee.stack) { ee.stack = austereStack(ee.stack); }
       console.warn(("🤕 " + (nameVersion()) + " failed!"));
-      return ee
+      return austereStack(ee)
     })
   )(config)
 };

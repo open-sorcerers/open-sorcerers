@@ -1,8 +1,10 @@
 import { fork as rawFork } from "fluture"
 import {
+  prop,
+  __ as $,
+  assoc,
   curry,
   replace,
-  identity as I,
   pipe,
   split,
   map,
@@ -11,14 +13,15 @@ import {
   join
 } from "ramda"
 import { tacit } from "ensorcel"
+import cleanStack from "clean-stack"
 const freeze = Object.freeze
 const own = z => Object.getOwnPropertyNames(z)
 
 export const deepfreeze = o => {
   if (o === Object(o)) {
     if (!Object.isFrozen(o)) freeze(o)
-    own(o).forEach(prop => {
-      if (prop !== "constructor") deepfreeze(o[prop])
+    own(o).forEach(pp => {
+      if (pp !== "constructor") deepfreeze(o[pp])
     })
   }
   return o
@@ -26,24 +29,29 @@ export const deepfreeze = o => {
 
 const NM = "node_modules"
 
-export const cutAfterString = curry((aa, bb) =>
-  bb.slice(bb.indexOf(aa) + aa.length)
+export const cutAfterStringAdjust = curry((alter, aa, bb) =>
+  bb.slice(bb.indexOf(aa) + aa.length + alter)
 )
 
 const unwrap = replace(")", "")
 
 export const austereStack = when(
-  I,
-  pipe(
-    split("\n"),
-    map(
-      when(
-        includes(NM),
-        /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-        z => "    at " + pipe(cutAfterString(NM), unwrap)(z)
-      )
-    ),
-    join("\n")
-  )
+  e => e && e.stack,
+  e =>
+    pipe(
+      prop("stack"),
+      ST => cleanStack(ST, { pretty: true }),
+      split("\n"),
+      map(
+        when(
+          includes(NM),
+          /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
+          z => "    at " + pipe(cutAfterStringAdjust(1, NM), unwrap)(z)
+        ),
+        when(includes(","), z => z.slice(0, z.indexOf(",")))
+      ),
+      join("\n"),
+      assoc("stack", $, e)
+    )(e)
 )
 export const fork = tacit(2, rawFork)

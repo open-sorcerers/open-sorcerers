@@ -17,9 +17,9 @@ import { box } from "ensorcel"
 import { reject, mapRej, parallel } from "fluture"
 import { readFile, writeFile } from "torpor"
 import { compile as handleThemBars } from "handlebars"
-/* import { trace } from "xtrace" */
+import { trace } from "xtrace"
 
-/* import { bakeIn } from "./helpers" */
+import { austereStack } from "./utils"
 import { UNSET } from "./constants"
 import { ERROR } from "./errors"
 import { nameVersion } from "./instance"
@@ -29,7 +29,14 @@ const processHandlebars = curry((boneUI, answers, templateFile, templateF) =>
     pipe(
       handleThemBars,
       boneUI.say(`Processing handlebars...`),
-      fn => fn(answers),
+      fn => {
+        try {
+          return fn(answers)
+        } catch (ee) {
+          pipe(trace("barf"), austereStack, trace("stackies"), reject)(ee)
+          process.exit(2)
+        }
+      },
       boneUI.say(`Converted ${templateFile}`)
     )
   )(templateF)
@@ -68,7 +75,12 @@ export const templatizeActions = curry((answers, actions) =>
         try {
           return temp(answers)
         } catch (ee) {
-          console.warn(ee)
+          pipe(
+            trace("action template barf"),
+            austereStack,
+            trace("nein"),
+            reject
+          )(ee)
           process.exit(2)
         }
       })

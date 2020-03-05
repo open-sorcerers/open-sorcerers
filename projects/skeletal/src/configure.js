@@ -1,5 +1,6 @@
 import { curry, propOr, pipe, map, identity as I, ifElse, pathOr } from "ramda"
 import { futurizeWithCancel } from "ensorcel"
+import { austereStack } from "./utils"
 /* import { trace } from "xtrace" */
 import { STRINGS } from "./constants"
 
@@ -8,7 +9,15 @@ const { NO_CONFIG } = STRINGS
 const configure = curry((state, ligament, xxx) =>
   pipe(
     propOr(() => ({ [NO_CONFIG]: true }), "config"),
-    z => z(ligament) || state.patterns
+    z => {
+      try {
+        z(ligament)
+        return state.patterns
+      } catch (err) {
+        console.warn(austereStack(err))
+        process.exit(4)
+      }
+    }
   )(xxx)
 )
 

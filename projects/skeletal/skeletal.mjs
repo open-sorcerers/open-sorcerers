@@ -1,4 +1,4 @@
-import { once, curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, assoc, __, chain, equals, propOr, pathOr, ap, ifElse, any, identity, reduce, mergeRight, propEq, cond, keys as keys$1, unless } from 'ramda';
+import { once, curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, assoc, __, chain, equals, propOr, pathOr, ap, ifElse, any, is, cond, propSatisfies, toLower, length, mergeRight, filter as filter$1, lt, identity, reduce, propEq, keys as keys$1, unless } from 'ramda';
 import { fork as fork$1, reject, mapRej, parallel, resolve, Future } from 'fluture';
 import { registerHelper, compile, registerPartial } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
@@ -369,7 +369,7 @@ var processHandlebars = curry$1(function (boneUI, answers, templateFile, templat
         try {
           return fn(answers)
         } catch (ee) {
-          pipe$1(trace("barf"), austereStack, trace("stackies"), reject)(ee);
+          pipe$1(austereStack, reject)(ee);
           process.exit(2);
         }
       },
@@ -412,12 +412,7 @@ var templatizeActions = curry$1(function (answers, actions) { return map(
         try {
           return temp(answers)
         } catch (ee) {
-          pipe$1(
-            trace("action template barf"),
-            austereStack,
-            trace("nein"),
-            reject
-          )(ee);
+          pipe$1(austereStack, reject)(ee);
           process.exit(2);
         }
       })
@@ -425,7 +420,7 @@ var templatizeActions = curry$1(function (answers, actions) { return map(
   )(actions); }
 );
 
-var render = curry$1(function (boneUI, ligament, filled) {
+var render = curry$1(function (config, boneUI, ligament, filled) {
   var threads = propOr(10, "threads", ligament);
   var forceWrite = pathOr(false, ["config", "force"], ligament);
   var answers = filled.answers;
@@ -473,6 +468,116 @@ var saveKeyed = curry$1(function (struct, fn, input) {
   return ff
 });
 
+var getChoiceValue = when(
+  is(Object),
+  cond([
+    [propOr(false, "value"), prop$1("value")],
+    [propOr(false, "name"), prop$1("name")],
+    [propOr(false, "key"), prop$1("key")]
+  ])
+);
+
+var propIsString = propSatisfies(is(String));
+var casedEqual = curry$1(function (a, b) { return toLower(a) === toLower(b); });
+
+var choiceMatchesValue = curry$1(function (cx, ix, val) {
+  var cv = getChoiceValue(cx);
+  var matchesChoice = cv && casedEqual(cv, val);
+  var matchesKey = propIsString("key", cx) && casedEqual(cx.key, val);
+  var matchesName = propIsString("name", cx) && casedEqual(cx.name, val);
+  var matchesIndex = ix.toString() === val;
+  return matchesChoice || matchesKey || matchesName || matchesIndex
+});
+
+var isFlag = curry$1(function (list, v) { return pipe$1(includes(toLower(v)))(list); });
+
+var flag = {
+  isTrue: isFlag(["yes", "y", "true", "t"]),
+  isFalse: isFlag(["no", "n", "false", "f"]),
+  isPrompt: function (vv) { return /^_+$/.test(vv); }
+};
+
+var listTypeBypass = curry$1(function (val, prompt) {
+  var choice = prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, val); }
+  );
+  if (!choice) { return getChoiceValue(choice) }
+  return new Error("Invalid choice")
+});
+
+var typeBypass = {
+  confirm: function (v) { return flag.isTrue(v)
+      ? true
+      : flag.isFalse(v)
+      ? false
+      : new Error("Invalid input"); },
+  checkbox: function (v, prompt) { return pipe$1(
+      split(","),
+      filter$1(
+        function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
+      ),
+      ifElse(
+        pipe$1(length, lt(0)),
+        function (xx) { return new Error(("No match for " + (xx.join('", "')))); },
+        map(function (vv) { return getChoiceValue(
+            prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); })
+          ); }
+        )
+      )
+    )(v); },
+  list: listTypeBypass,
+  rawlist: listTypeBypass,
+  expand: listTypeBypass
+};
+
+var bypass = function (prompts, arr) {
+  var noop = [prompts, {}, []];
+  var arrLength = length(arr);
+  if (!Array.isArray(prompts) || arrLength === 0) { return noop }
+  var inqPrompts = prompt.prompts;
+  var answers = {};
+  var failures = [];
+
+  prompts.forEach(function (pr, ix) {
+    if (ix >= arrLength) { return false }
+    var val = arr[ix].toString();
+    if (flag.isPrompt(val)) { return false }
+    if (is(Function, pr.when)) {
+      failures.push("You cannot bypass conditional prompts.");
+      return false
+    }
+    try {
+      var iq = propOr({}, pr.type, inqPrompts);
+      var bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type];
+      var value = is(Function, bypassFn) ? bypassFn(null, val, pr) : val;
+      var answer = pr.filter ? pr.filter(value) : value;
+      if (pr.validate) {
+        var valid = pr.validate(value);
+        if (!valid) {
+          failures.push(valid);
+          return false
+        }
+      }
+      answers[pr.name] = answer;
+    } catch (err) {
+      failures.push(
+        ("The \"" + (pr.name) + "\" prompt didn't recognize \"" + val + "\" as a valid " + (pr.type) + " value. (ERROR: " + (err.message) + ")")
+      );
+      return false
+    }
+  });
+  var postBypassPrompts = map(
+    when(
+      function (x) { return !!answers[x.name]; },
+      function (x) { return mergeRight(x, { default: answers[x.name], when: false }); }
+    )
+  )(prompts);
+  if (failures.length > 0) {
+    throw new Error(failures[0])
+  } else {
+    return [postBypassPrompts, answers]
+  }
+};
+
 var getName = propOr(UNSET, "name");
 var getPrompts = propOr(UNSET, "prompts");
 var getActions = propOr(UNSET, "actions");
@@ -494,40 +599,72 @@ var validatePatternAndSubmit = curry$1(function (bad, good, raw) { return pipe$1
     good
   )(raw); }
 );
-var pattern = curry$1(function (config, raw) {
-  var cancel = propOr(identity, "cancel", config);
+var pattern = curry$1(function (ligature, raw) {
+  var cancel = propOr(identity, "cancel", ligature);
+  var unpromptedAnswers = pathOr([], ["config", "_"], ligature);
   var willPrompt = futurizeWithCancel(cancel, 1, prompt);
+  var build = function (xxx) { return new Future(function (bad, good) {
+      validatePatternAndSubmit(bad, good, xxx);
+      return cancel
+    }); };
   return [
     raw.name,
     pipe$1(
-      chain(function (futurePattern) { return pipe$1(
+      build,
+      map(function (x) {
+        var ref = bypass(raw.prompts, unpromptedAnswers);
+        var newPrompts = ref[0];
+        var answers = ref[1];
+        return mergeRight(x, {
+          prompts: newPrompts,
+          preAnswered: answers
+        })
+      }),
+      chain(function (given) {
+        return pipe$1(
+          function (xx) {
+            return xx
+          },
           propOr([], "prompts"),
           map(willPrompt),
           reduce(
             function (left, right) { return chain(function (ll) { return map(mergeRight(ll), right); }, left); },
             resolve({})
           ),
-          map(function (answers) { return mergeRight(futurePattern, { answers: answers }); })
-        )(futurePattern); }
-      )
-    )(
-      new Future(function (bad, good) {
-        validatePatternAndSubmit(bad, good, raw);
-        return cancel
+          map(function (answers) { return mergeRight(given, {
+              answers: mergeRight(
+                given.preAnswered ? given.preAnswered : {},
+                answers
+              )
+            }); }
+          )
+        )(given)
       })
-    )
+    )(raw)
   ]
 });
 
 var NO_CONFIG = STRINGS.NO_CONFIG;
 
 var configure = curry$1(function (state, ligament, xxx) { return pipe$1(
+    function (x) {
+      console.log("the ligagwing", ligament);
+      return x
+    },
     propOr(function () {
       var obj;
 
       return (( obj = {}, obj[NO_CONFIG] = true, obj ));
     }, "config"),
-    function (z) { return z(ligament) || state.patterns; }
+    function (z) {
+      try {
+        z(ligament);
+        return state.patterns
+      } catch (err) {
+        console.warn(austereStack(err));
+        process.exit(4);
+      }
+    }
   )(xxx); }
 );
 
@@ -597,7 +734,7 @@ var boneDance = curry$1(function (config, ref, boneUI, ligament, configF) {
             return pipe$1(
               boneUI.say(("Using \"" + which + "\" pattern...\n")),
               prop$1(which),
-              chain(render(boneUI, ligament))
+              chain(render(config, boneUI, ligament))
             )(patterns)
           }
         ],

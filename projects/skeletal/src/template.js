@@ -33,7 +33,7 @@ const processHandlebars = curry((boneUI, answers, templateFile, templateF) =>
         try {
           return fn(answers)
         } catch (ee) {
-          pipe(trace("barf"), austereStack, trace("stackies"), reject)(ee)
+          pipe(austereStack, reject)(ee)
           process.exit(2)
         }
       },
@@ -75,12 +75,7 @@ export const templatizeActions = curry((answers, actions) =>
         try {
           return temp(answers)
         } catch (ee) {
-          pipe(
-            trace("action template barf"),
-            austereStack,
-            trace("nein"),
-            reject
-          )(ee)
+          pipe(austereStack, reject)(ee)
           process.exit(2)
         }
       })
@@ -88,7 +83,7 @@ export const templatizeActions = curry((answers, actions) =>
   )(actions)
 )
 
-export const render = curry((boneUI, ligament, filled) => {
+export const render = curry((config, boneUI, ligament, filled) => {
   const threads = propOr(10, "threads", ligament)
   const forceWrite = pathOr(false, ["config", "force"], ligament)
   const { answers, actions } = filled

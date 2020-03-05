@@ -375,7 +375,7 @@ var processHandlebars = ramda.curry(function (boneUI, answers, templateFile, tem
         try {
           return fn(answers)
         } catch (ee) {
-          ramda.pipe(trace("barf"), austereStack, trace("stackies"), fluture.reject)(ee);
+          ramda.pipe(austereStack, fluture.reject)(ee);
           process.exit(2);
         }
       },
@@ -418,12 +418,7 @@ var templatizeActions = ramda.curry(function (answers, actions) { return ramda.m
         try {
           return temp(answers)
         } catch (ee) {
-          ramda.pipe(
-            trace("action template barf"),
-            austereStack,
-            trace("nein"),
-            fluture.reject
-          )(ee);
+          ramda.pipe(austereStack, fluture.reject)(ee);
           process.exit(2);
         }
       })
@@ -431,7 +426,7 @@ var templatizeActions = ramda.curry(function (answers, actions) { return ramda.m
   )(actions); }
 );
 
-var render = ramda.curry(function (boneUI, ligament, filled) {
+var render = ramda.curry(function (config, boneUI, ligament, filled) {
   var threads = ramda.propOr(10, "threads", ligament);
   var forceWrite = ramda.pathOr(false, ["config", "force"], ligament);
   var answers = filled.answers;
@@ -479,6 +474,116 @@ var saveKeyed = ramda.curry(function (struct, fn, input) {
   return ff
 });
 
+var getChoiceValue = ramda.when(
+  ramda.is(Object),
+  ramda.cond([
+    [ramda.propOr(false, "value"), ramda.prop("value")],
+    [ramda.propOr(false, "name"), ramda.prop("name")],
+    [ramda.propOr(false, "key"), ramda.prop("key")]
+  ])
+);
+
+var propIsString = ramda.propSatisfies(ramda.is(String));
+var casedEqual = ramda.curry(function (a, b) { return ramda.toLower(a) === ramda.toLower(b); });
+
+var choiceMatchesValue = ramda.curry(function (cx, ix, val) {
+  var cv = getChoiceValue(cx);
+  var matchesChoice = cv && casedEqual(cv, val);
+  var matchesKey = propIsString("key", cx) && casedEqual(cx.key, val);
+  var matchesName = propIsString("name", cx) && casedEqual(cx.name, val);
+  var matchesIndex = ix.toString() === val;
+  return matchesChoice || matchesKey || matchesName || matchesIndex
+});
+
+var isFlag = ramda.curry(function (list, v) { return ramda.pipe(ramda.includes(ramda.toLower(v)))(list); });
+
+var flag = {
+  isTrue: isFlag(["yes", "y", "true", "t"]),
+  isFalse: isFlag(["no", "n", "false", "f"]),
+  isPrompt: function (vv) { return /^_+$/.test(vv); }
+};
+
+var listTypeBypass = ramda.curry(function (val, prompt) {
+  var choice = prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, val); }
+  );
+  if (!choice) { return getChoiceValue(choice) }
+  return new Error("Invalid choice")
+});
+
+var typeBypass = {
+  confirm: function (v) { return flag.isTrue(v)
+      ? true
+      : flag.isFalse(v)
+      ? false
+      : new Error("Invalid input"); },
+  checkbox: function (v, prompt) { return ramda.pipe(
+      ramda.split(","),
+      ramda.filter(
+        function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
+      ),
+      ramda.ifElse(
+        ramda.pipe(ramda.length, ramda.lt(0)),
+        function (xx) { return new Error(("No match for " + (xx.join('", "')))); },
+        ramda.map(function (vv) { return getChoiceValue(
+            prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); })
+          ); }
+        )
+      )
+    )(v); },
+  list: listTypeBypass,
+  rawlist: listTypeBypass,
+  expand: listTypeBypass
+};
+
+var bypass = function (prompts, arr) {
+  var noop = [prompts, {}, []];
+  var arrLength = ramda.length(arr);
+  if (!Array.isArray(prompts) || arrLength === 0) { return noop }
+  var inqPrompts = inquirer.prompt.prompts;
+  var answers = {};
+  var failures = [];
+
+  prompts.forEach(function (pr, ix) {
+    if (ix >= arrLength) { return false }
+    var val = arr[ix].toString();
+    if (flag.isPrompt(val)) { return false }
+    if (ramda.is(Function, pr.when)) {
+      failures.push("You cannot bypass conditional prompts.");
+      return false
+    }
+    try {
+      var iq = ramda.propOr({}, pr.type, inqPrompts);
+      var bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type];
+      var value = ramda.is(Function, bypassFn) ? bypassFn(null, val, pr) : val;
+      var answer = pr.filter ? pr.filter(value) : value;
+      if (pr.validate) {
+        var valid = pr.validate(value);
+        if (!valid) {
+          failures.push(valid);
+          return false
+        }
+      }
+      answers[pr.name] = answer;
+    } catch (err) {
+      failures.push(
+        ("The \"" + (pr.name) + "\" prompt didn't recognize \"" + val + "\" as a valid " + (pr.type) + " value. (ERROR: " + (err.message) + ")")
+      );
+      return false
+    }
+  });
+  var postBypassPrompts = ramda.map(
+    ramda.when(
+      function (x) { return !!answers[x.name]; },
+      function (x) { return ramda.mergeRight(x, { default: answers[x.name], when: false }); }
+    )
+  )(prompts);
+  if (failures.length > 0) {
+    throw new Error(failures[0])
+  } else {
+    return [postBypassPrompts, answers]
+  }
+};
+
 var getName = ramda.propOr(UNSET, "name");
 var getPrompts = ramda.propOr(UNSET, "prompts");
 var getActions = ramda.propOr(UNSET, "actions");
@@ -500,40 +605,72 @@ var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ra
     good
   )(raw); }
 );
-var pattern = ramda.curry(function (config, raw) {
-  var cancel = ramda.propOr(ramda.identity, "cancel", config);
+var pattern = ramda.curry(function (ligature, raw) {
+  var cancel = ramda.propOr(ramda.identity, "cancel", ligature);
+  var unpromptedAnswers = ramda.pathOr([], ["config", "_"], ligature);
   var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
+  var build = function (xxx) { return new fluture.Future(function (bad, good) {
+      validatePatternAndSubmit(bad, good, xxx);
+      return cancel
+    }); };
   return [
     raw.name,
     ramda.pipe(
-      ramda.chain(function (futurePattern) { return ramda.pipe(
+      build,
+      ramda.map(function (x) {
+        var ref = bypass(raw.prompts, unpromptedAnswers);
+        var newPrompts = ref[0];
+        var answers = ref[1];
+        return ramda.mergeRight(x, {
+          prompts: newPrompts,
+          preAnswered: answers
+        })
+      }),
+      ramda.chain(function (given) {
+        return ramda.pipe(
+          function (xx) {
+            return xx
+          },
           ramda.propOr([], "prompts"),
           ramda.map(willPrompt),
           ramda.reduce(
             function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
             fluture.resolve({})
           ),
-          ramda.map(function (answers) { return ramda.mergeRight(futurePattern, { answers: answers }); })
-        )(futurePattern); }
-      )
-    )(
-      new fluture.Future(function (bad, good) {
-        validatePatternAndSubmit(bad, good, raw);
-        return cancel
+          ramda.map(function (answers) { return ramda.mergeRight(given, {
+              answers: ramda.mergeRight(
+                given.preAnswered ? given.preAnswered : {},
+                answers
+              )
+            }); }
+          )
+        )(given)
       })
-    )
+    )(raw)
   ]
 });
 
 var NO_CONFIG = STRINGS.NO_CONFIG;
 
 var configure = ramda.curry(function (state, ligament, xxx) { return ramda.pipe(
+    function (x) {
+      console.log("the ligagwing", ligament);
+      return x
+    },
     ramda.propOr(function () {
       var obj;
 
       return (( obj = {}, obj[NO_CONFIG] = true, obj ));
     }, "config"),
-    function (z) { return z(ligament) || state.patterns; }
+    function (z) {
+      try {
+        z(ligament);
+        return state.patterns
+      } catch (err) {
+        console.warn(austereStack(err));
+        process.exit(4);
+      }
+    }
   )(xxx); }
 );
 
@@ -603,7 +740,7 @@ var boneDance = ramda.curry(function (config, ref, boneUI, ligament, configF) {
             return ramda.pipe(
               boneUI.say(("Using \"" + which + "\" pattern...\n")),
               ramda.prop(which),
-              ramda.chain(render(boneUI, ligament))
+              ramda.chain(render(config, boneUI, ligament))
             )(patterns)
           }
         ],

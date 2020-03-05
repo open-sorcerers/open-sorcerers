@@ -56,7 +56,7 @@ const boneDance = curry((config, { patterns }, boneUI, ligament, configF) =>
             return pipe(
               boneUI.say(`Using "${which}" pattern...\n`),
               prop(which),
-              chain(render(boneUI, ligament))
+              chain(render(config, boneUI, ligament))
             )(patterns)
           }
         ],
@@ -103,10 +103,7 @@ export const skeletal = config => {
     checkCancelled,
     config: deepfreeze(config),
     registerPartial,
-    registerHelper: (a, b) => {
-      console.log("adding helper", a, "b", b.toString())
-      return registerHelper(a, b)
-    }
+    registerHelper
   }
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism

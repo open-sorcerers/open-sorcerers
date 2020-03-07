@@ -24,25 +24,25 @@ import { UNSET } from "./constants"
 import { ERROR } from "./errors"
 import { nameVersion } from "./instance"
 
-const processHandlebars = curry((boneUI, answers, templateFile, templateF) =>
-  map(
-    pipe(
-      handleThemBars,
-      boneUI.say(`Processing handlebars...`),
-      fn => {
-        try {
-          return fn(answers)
-        } catch (ee) {
-          pipe(austereStack, reject)(ee)
-          process.exit(2)
-        }
-      },
-      boneUI.say(`Converted ${templateFile}`)
-    )
-  )(templateF)
+export const processHandlebars = curry(
+  (boneUI, answers, templateFile, templateF) =>
+    map(
+      pipe(
+        handleThemBars,
+        boneUI.say(`Processing handlebars...`),
+        fn => {
+          try {
+            return fn(answers)
+          } catch (ee) {
+            return pipe(austereStack, reject)(ee)
+          }
+        },
+        boneUI.say(`Converted ${templateFile}`)
+      )
+    )(templateF)
 )
 
-const writeOutput = curry((flag, outputFile, processedHandlebarsF) =>
+export const writeOutput = curry((flag, outputFile, processedHandlebarsF) =>
   chain(content =>
     pipe(
       writeFile(outputFile, $, { format: "utf8", flag }),

@@ -6,7 +6,7 @@ import { STRINGS } from "./constants"
 
 const { NO_CONFIG } = STRINGS
 
-const configure = curry((state, ligament, xxx) =>
+export const configure = curry((state, ligament, xxx) =>
   pipe(
     propOr(() => ({ [NO_CONFIG]: true }), "config"),
     z => {
@@ -14,8 +14,7 @@ const configure = curry((state, ligament, xxx) =>
         z(ligament)
         return state.patterns
       } catch (err) {
-        console.warn(austereStack(err))
-        process.exit(4)
+        throw austereStack(err)
       }
     }
   )(xxx)

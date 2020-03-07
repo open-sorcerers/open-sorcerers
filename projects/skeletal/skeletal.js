@@ -9,11 +9,11 @@ var fluture = require('fluture');
 var handlebars = require('handlebars');
 var cosmiconfig = require('cosmiconfig');
 var inquirer = require('inquirer');
-var kleur = require('kleur');
 var changeCase = require('change-case');
 var ensorcel = require('ensorcel');
 var torpor = require('torpor');
 var cleanStack = _interopDefault(require('clean-stack'));
+var kleur = require('kleur');
 
 var name = "skeletal";
 var version = "0.0.5";
@@ -240,19 +240,16 @@ var segmentTrace = segment({
   effect: console.log
 });
 
-var logOnce = ramda.once(console.log);
-
 var talker = ramda.curry(function (conf, bar, text) {
-  if (conf.debug) { logOnce(kleur.cyan("DEBUG"), conf); }
   if (conf.silent) { return }
   var up = function (txt) {
     if (conf.verbose) { bar.log.write(txt); }
     bar.updateBottomBar(txt);
   };
-  if (typeof text === "string") {
-    up(text);
-  } else if (text.text) {
+  if (text && text.text) {
     up(text.text);
+  } else {
+    up(text);
   }
 });
 
@@ -281,6 +278,7 @@ var bakeIn = call(function () { return ramda.pipe(
   )(bakedIn); }
 );
 
+/* import { trace } from "xtrace" */
 var freeze = Object.freeze;
 var own = function (z) { return Object.getOwnPropertyNames(z); };
 
@@ -308,12 +306,13 @@ var austereStack = ramda.when(
       function (ST) { return cleanStack(ST, { pretty: true }); },
       ramda.split("\n"),
       ramda.map(
-        ramda.when(
-          ramda.includes(NM),
-          /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-          function (z) { return "    at " + ramda.pipe(cutAfterStringAdjust(1, NM), unwrap)(z); }
-        ),
-        ramda.when(ramda.includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+        ramda.pipe(
+          ramda.when(
+            ramda.includes(NM),
+            function (z) { return "    at " + ramda.pipe(cutAfterStringAdjust(1, NM), unwrap)(z); }
+          ),
+          ramda.when(ramda.includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+        )
       ),
       ramda.join("\n"),
       ramda.assoc("stack", ramda.__, e)
@@ -354,7 +353,8 @@ var error = ramda.curry(function (ns, message, data) {
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  return austereStack(e)
+  return e
+  /* return austereStack(e) */
 });
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
@@ -367,21 +367,21 @@ var ERROR = deepfreeze({
   )
 });
 
-var processHandlebars = ramda.curry(function (boneUI, answers, templateFile, templateF) { return ramda.map(
-    ramda.pipe(
-      handlebars.compile,
-      boneUI.say("Processing handlebars..."),
-      function (fn) {
-        try {
-          return fn(answers)
-        } catch (ee) {
-          ramda.pipe(austereStack, fluture.reject)(ee);
-          process.exit(2);
-        }
-      },
-      boneUI.say(("Converted " + templateFile))
-    )
-  )(templateF); }
+var processHandlebars = ramda.curry(
+  function (boneUI, answers, templateFile, templateF) { return ramda.map(
+      ramda.pipe(
+        handlebars.compile,
+        boneUI.say("Processing handlebars..."),
+        function (fn) {
+          try {
+            return fn(answers)
+          } catch (ee) {
+            return ramda.pipe(austereStack, fluture.reject)(ee)
+          }
+        },
+        boneUI.say(("Converted " + templateFile))
+      )
+    )(templateF); }
 );
 
 var writeOutput = ramda.curry(function (flag, outputFile, processedHandlebarsF) { return ramda.chain(function (content) { return ramda.pipe(
@@ -489,10 +489,10 @@ var casedEqual = ramda.curry(function (a, b) { return ramda.toLower(a) === ramda
 var choiceMatchesValue = ramda.curry(function (cx, ix, val) {
   var cv = getChoiceValue(cx);
   var matchesChoice = cv && casedEqual(cv, val);
-  var matchesKey = propIsString("key", cx) && casedEqual(cx.key, val);
-  var matchesName = propIsString("name", cx) && casedEqual(cx.name, val);
-  var matchesIndex = ix.toString() === val;
-  return matchesChoice || matchesKey || matchesName || matchesIndex
+  /* const matchesKey = is(String, cx.key) && casedEqual(cx.key, val) */
+  /* const matchesName = is(String, cx.name) && casedEqual(cx.name, val) */
+  var matchesIndex = casedEqual(ix.toString(), val);
+  return matchesChoice || matchesIndex
 });
 
 var isFlag = ramda.curry(function (list, v) { return ramda.pipe(ramda.includes(ramda.toLower(v)))(list); });
@@ -509,6 +509,7 @@ var listTypeBypass = ramda.curry(function (val, prompt) {
   if (!choice) { return getChoiceValue(choice) }
   return new Error("Invalid choice")
 });
+var ifind = ramda.addIndex(ramda.find);
 
 var typeBypass = {
   confirm: function (v) { return flag.isTrue(v)
@@ -518,15 +519,18 @@ var typeBypass = {
       : new Error("Invalid input"); },
   checkbox: function (v, prompt) { return ramda.pipe(
       ramda.split(","),
-      ramda.filter(
-        function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
-      ),
       ramda.ifElse(
-        ramda.pipe(ramda.length, ramda.lt(0)),
-        function (xx) { return new Error(("No match for " + (xx.join('", "')))); },
-        ramda.map(function (vv) { return getChoiceValue(
-            prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); })
-          ); }
+        ramda.pipe(
+          ramda.filter(
+            function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
+          ),
+          function (found) { return found.length !== 0; }
+        ),
+        function (xx) { return new Error(("No match for \"" + (xx.join('", "')) + "\"")); },
+        ramda.map(function (vv) { return ramda.pipe(
+            ifind(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }),
+            getChoiceValue
+          )(prompt.choices); }
         )
       )
     )(v); },
@@ -535,15 +539,19 @@ var typeBypass = {
   expand: listTypeBypass
 };
 
-var bypass = function (prompts, arr) {
-  var noop = [prompts, {}, []];
+var iforEach = ramda.addIndex(ramda.forEach);
+
+var bypass = ramda.curryN(2, function (prompts, arr) {
+  var noop = [prompts, {}];
   var arrLength = ramda.length(arr);
-  if (!Array.isArray(prompts) || arrLength === 0) { return noop }
+  if (!Array.isArray(prompts) || !Array.isArray(arr) || arrLength === 0) {
+    return noop
+  }
   var inqPrompts = inquirer.prompt.prompts;
   var answers = {};
   var failures = [];
 
-  prompts.forEach(function (pr, ix) {
+  iforEach(function (pr, ix) {
     if (ix >= arrLength) { return false }
     var val = arr[ix].toString();
     if (flag.isPrompt(val)) { return false }
@@ -554,12 +562,12 @@ var bypass = function (prompts, arr) {
     try {
       var iq = ramda.propOr({}, pr.type, inqPrompts);
       var bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type];
-      var value = ramda.is(Function, bypassFn) ? bypassFn(null, val, pr) : val;
+      var value = ramda.is(Function, bypassFn) ? bypassFn(val, pr) : val;
       var answer = pr.filter ? pr.filter(value) : value;
       if (pr.validate) {
         var valid = pr.validate(value);
         if (!valid) {
-          failures.push(valid);
+          failures.push(new Error(("\"" + (pr.name) + "\" did not pass validation.")));
           return false
         }
       }
@@ -570,7 +578,7 @@ var bypass = function (prompts, arr) {
       );
       return false
     }
-  });
+  })(prompts);
   var postBypassPrompts = ramda.map(
     ramda.when(
       function (x) { return !!answers[x.name]; },
@@ -582,7 +590,7 @@ var bypass = function (prompts, arr) {
   } else {
     return [postBypassPrompts, answers]
   }
-};
+});
 
 var getName = ramda.propOr(UNSET, "name");
 var getPrompts = ramda.propOr(UNSET, "prompts");
@@ -605,47 +613,52 @@ var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ra
     good
   )(raw); }
 );
+
+var reduceFutures = ramda.curry(function (fn, list) { return ramda.reduce(
+    function (left, right) { return ramda.chain(function (ll) { return ramda.map(fn(ll), right); }, left); },
+    fluture.resolve({})
+  )(list); }
+);
+var sequentialResolve = reduceFutures(ramda.mergeRight);
+
+var handleUnpromptedAnswers = ramda.curry(function (ligature, rawF) {
+  var answers = ramda.pathOr([], ["config", "_"], ligature);
+  return ramda.map(function (x) {
+    var givenPrompts = ramda.propOr([], "prompts", x);
+    var ref = bypass(givenPrompts, answers);
+    var prompts = ref[0];
+    var preAnswered = ref[1];
+    return ramda.mergeRight(x, {
+      prompts: prompts,
+      preAnswered: preAnswered
+    })
+  })(rawF)
+});
+
+var mergePreAnswers = ramda.curry(function (given, answers) { return ramda.mergeRight(given, {
+    answers: ramda.mergeRight(given.preAnswered ? given.preAnswered : {}, answers)
+  }); }
+);
 var pattern = ramda.curry(function (ligature, raw) {
   var cancel = ramda.propOr(ramda.identity, "cancel", ligature);
-  var unpromptedAnswers = ramda.pathOr([], ["config", "_"], ligature);
   var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
   var build = function (xxx) { return new fluture.Future(function (bad, good) {
       validatePatternAndSubmit(bad, good, xxx);
       return cancel
     }); };
+
   return [
     raw.name,
     ramda.pipe(
       build,
-      ramda.map(function (x) {
-        var ref = bypass(raw.prompts, unpromptedAnswers);
-        var newPrompts = ref[0];
-        var answers = ref[1];
-        return ramda.mergeRight(x, {
-          prompts: newPrompts,
-          preAnswered: answers
-        })
-      }),
-      ramda.chain(function (given) {
-        return ramda.pipe(
-          function (xx) {
-            return xx
-          },
+      handleUnpromptedAnswers(ligature),
+      ramda.chain(function (given) { return ramda.pipe(
           ramda.propOr([], "prompts"),
           ramda.map(willPrompt),
-          ramda.reduce(
-            function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
-            fluture.resolve({})
-          ),
-          ramda.map(function (answers) { return ramda.mergeRight(given, {
-              answers: ramda.mergeRight(
-                given.preAnswered ? given.preAnswered : {},
-                answers
-              )
-            }); }
-          )
-        )(given)
-      })
+          sequentialResolve,
+          ramda.map(mergePreAnswers(given))
+        )(given); }
+      )
     )(raw)
   ]
 });
@@ -653,10 +666,6 @@ var pattern = ramda.curry(function (ligature, raw) {
 var NO_CONFIG = STRINGS.NO_CONFIG;
 
 var configure = ramda.curry(function (state, ligament, xxx) { return ramda.pipe(
-    function (x) {
-      console.log("the ligagwing", ligament);
-      return x
-    },
     ramda.propOr(function () {
       var obj;
 
@@ -667,8 +676,7 @@ var configure = ramda.curry(function (state, ligament, xxx) { return ramda.pipe(
         z(ligament);
         return state.patterns
       } catch (err) {
-        console.warn(austereStack(err));
-        process.exit(4);
+        throw austereStack(err)
       }
     }
   )(xxx); }
@@ -695,15 +703,18 @@ var MADLIB = "// a 🦴 " + (nameAndVersion()) + " madlib\n\n{{name}} is a very 
 
 var initialBoneFile = function (config) {
   var ns = ramda.propOr("skeletal", "init", config);
+  var templatePath = ramda.propOr(
+    "templates/example-madlib.hbs",
+    "templatePath",
+    config
+  );
+  var outPath = ramda.propOr((ns + ".config.js"), "outPath", config);
   return ramda.pipe(
-    torpor.writeFile("templates/example-madlib.hbs", MADLIB),
-    ramda.chain(function () { return torpor.writeFile((ns + ".config.js"), INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }
-    ),
-    fluture.mapRej(
-      function () { return ("Unable to write file to " + ns + ".config.js, it may already exist?"); }
-    ),
+    torpor.writeFile(templatePath, MADLIB),
+    ramda.chain(function () { return torpor.writeFile(outPath, INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }),
+    fluture.mapRej(function () { return ("Unable to write file to " + outPath + ", it may already exist?"); }),
     ramda.map(
-      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns : "") + " -p madlib' :)"); }
+      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns + " " : "") + "-p madlib' :)"); }
     )
   )({ format: "utf8", flag: "w" })
 };
@@ -714,47 +725,48 @@ var hasNoConfig = ramda.propEq(NO_CONFIG$1, true);
 
 var getPattern = ramda.propOr(false, "pattern");
 
-var boneDance = ramda.curry(function (config, ref, boneUI, ligament, configF) {
-    var patterns = ref.patterns;
+var boneDance = ramda.curry(
+  function (config, ref, boneUI, ligament, configF) {
+      var patterns = ref.patterns;
 
-    return ramda.pipe(
-    ramda.chain(
-      ramda.cond([
-        [
-          ligament.checkCancelled,
-          ramda.pipe(boneUI.say("Aborting..."), function () { return fluture.reject("Aborted"); })
-        ],
-        [
-          hasNoConfig,
-          ramda.pipe(boneUI.say("No config found!"), function () {
-            var ns = ramda.propOr("skeletal", "namespace", config);
-            return fluture.reject(
-              ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
-            )
-          })
-        ],
-        [
-          function () { return getPattern(config); },
-          function () {
-            var which = getPattern(config);
-            return ramda.pipe(
-              boneUI.say(("Using \"" + which + "\" pattern...\n")),
-              ramda.prop(which),
-              ramda.chain(render(config, boneUI, ligament))
-            )(patterns)
-          }
-        ],
-        [
-          function () { return true; },
-          function () { return fluture.resolve(
-              ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (ramda.keys(
-                patterns
-              ).join("\n\t- ")))
-            ); }
-        ]
-      ])
-    )
-  )(configF);
+      return ramda.pipe(
+      ramda.chain(
+        ramda.cond([
+          [
+            ligament.checkCancelled,
+            ramda.pipe(boneUI.say("Aborting..."), function () { return fluture.reject("Aborted"); })
+          ],
+          [
+            hasNoConfig,
+            ramda.pipe(boneUI.say("No config found!"), function () {
+              var ns = ramda.propOr("skeletal", "namespace", config);
+              return fluture.reject(
+                ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
+              )
+            })
+          ],
+          [
+            function () { return getPattern(config); },
+            function () {
+              var which = getPattern(config);
+              return ramda.pipe(
+                boneUI.say(("Using \"" + which + "\" pattern...\n")),
+                ramda.prop(which),
+                ramda.chain(render(config, boneUI, ligament))
+              )(patterns)
+            }
+          ],
+          [
+            function () { return true; },
+            function () { return fluture.resolve(
+                ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (ramda.keys(
+                  patterns
+                ).join("\n\t- ")))
+              ); }
+          ]
+        ])
+      )
+    )(configF);
 }
 );
 
@@ -787,10 +799,7 @@ var skeletal = function (config) {
     checkCancelled: checkCancelled,
     config: deepfreeze(config),
     registerPartial: handlebars.registerPartial,
-    registerHelper: function (a, b) {
-      console.log("adding helper", a, "b", b.toString());
-      return handlebars.registerHelper(a, b)
-    }
+    registerHelper: handlebars.registerHelper
   };
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism
@@ -809,9 +818,11 @@ var skeletal = function (config) {
 };
 
 exports.austereStack = austereStack;
+exports.boneDance = boneDance;
 exports.cutAfterStringAdjust = cutAfterStringAdjust;
 exports.deepfreeze = deepfreeze;
 exports.fork = fork;
+exports.getPattern = getPattern;
 exports.name = name;
 exports.skeletal = skeletal;
 exports.version = version;

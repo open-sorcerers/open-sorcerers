@@ -14,6 +14,7 @@ import {
 } from "ramda"
 import { tacit } from "ensorcel"
 import cleanStack from "clean-stack"
+/* import { trace } from "xtrace" */
 const freeze = Object.freeze
 const own = z => Object.getOwnPropertyNames(z)
 
@@ -43,12 +44,13 @@ export const austereStack = when(
       ST => cleanStack(ST, { pretty: true }),
       split("\n"),
       map(
-        when(
-          includes(NM),
-          /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-          z => "    at " + pipe(cutAfterStringAdjust(1, NM), unwrap)(z)
-        ),
-        when(includes(","), z => z.slice(0, z.indexOf(",")))
+        pipe(
+          when(
+            includes(NM),
+            z => "    at " + pipe(cutAfterStringAdjust(1, NM), unwrap)(z)
+          ),
+          when(includes(","), z => z.slice(0, z.indexOf(",")))
+        )
       ),
       join("\n"),
       assoc("stack", $, e)

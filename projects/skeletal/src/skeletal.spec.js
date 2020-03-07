@@ -6,7 +6,6 @@ test("skeletal - basic", done => {
     done,
     out => {
       console.log("OUTPUT", out)
-      expect(Object.keys(out)).toMatchSnapshot()
       done()
     },
     skeletal({

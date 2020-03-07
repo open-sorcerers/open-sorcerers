@@ -10,12 +10,7 @@ pipe(
   skeletal,
   fork(
     e => {
-      if (e && e.stack) {
-        e.stack = austereStack(e.stack)
-        console.warn(e.stack)
-      } else {
-        console.warn(e)
-      }
+      pipe(austereStack, console.warn)(e)
       process.exit(1)
     },
     out => {

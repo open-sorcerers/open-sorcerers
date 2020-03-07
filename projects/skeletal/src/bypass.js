@@ -1,4 +1,8 @@
 import {
+  curryN,
+  forEach,
+  addIndex,
+  find,
   lt,
   cond,
   curry,
@@ -18,8 +22,9 @@ import {
   when
 } from "ramda"
 import { prompt as inquirerPrompt } from "inquirer"
+import { trace } from "xtrace"
 
-const getChoiceValue = when(
+export const getChoiceValue = when(
   is(Object),
   cond([
     [propOr(false, "value"), prop("value")],
@@ -28,35 +33,36 @@ const getChoiceValue = when(
   ])
 )
 
-const propIsString = propSatisfies(is(String))
-const casedEqual = curry((a, b) => toLower(a) === toLower(b))
+export const propIsString = propSatisfies(is(String))
+export const casedEqual = curry((a, b) => toLower(a) === toLower(b))
 
-const choiceMatchesValue = curry((cx, ix, val) => {
+export const choiceMatchesValue = curry((cx, ix, val) => {
   const cv = getChoiceValue(cx)
   const matchesChoice = cv && casedEqual(cv, val)
-  const matchesKey = propIsString("key", cx) && casedEqual(cx.key, val)
-  const matchesName = propIsString("name", cx) && casedEqual(cx.name, val)
-  const matchesIndex = ix.toString() === val
-  return matchesChoice || matchesKey || matchesName || matchesIndex
+  /* const matchesKey = is(String, cx.key) && casedEqual(cx.key, val) */
+  /* const matchesName = is(String, cx.name) && casedEqual(cx.name, val) */
+  const matchesIndex = casedEqual(ix.toString(), val)
+  return matchesChoice || matchesIndex
 })
 
-const isFlag = curry((list, v) => pipe(includes(toLower(v)))(list))
+export const isFlag = curry((list, v) => pipe(includes(toLower(v)))(list))
 
-const flag = {
+export const flag = {
   isTrue: isFlag(["yes", "y", "true", "t"]),
   isFalse: isFlag(["no", "n", "false", "f"]),
   isPrompt: vv => /^_+$/.test(vv)
 }
 
-const listTypeBypass = curry((val, prompt) => {
+export const listTypeBypass = curry((val, prompt) => {
   const choice = prompt.choices.find((cx, ix) =>
     choiceMatchesValue(cx, ix, val)
   )
   if (!choice) return getChoiceValue(choice)
   return new Error("Invalid choice")
 })
+const ifind = addIndex(find)
 
-const typeBypass = {
+export const typeBypass = {
   confirm: v =>
     flag.isTrue(v)
       ? true
@@ -66,16 +72,20 @@ const typeBypass = {
   checkbox: (v, prompt) =>
     pipe(
       split(","),
-      filter(
-        vv => !prompt.choices.some((cx, ix) => choiceMatchesValue(cx, ix, vv))
-      ),
       ifElse(
-        pipe(length, lt(0)),
-        xx => new Error(`No match for ${xx.join('", "')}`),
+        pipe(
+          filter(
+            vv =>
+              !prompt.choices.some((cx, ix) => choiceMatchesValue(cx, ix, vv))
+          ),
+          found => found.length !== 0
+        ),
+        xx => new Error(`No match for "${xx.join('", "')}"`),
         map(vv =>
-          getChoiceValue(
-            prompt.choices.find((cx, ix) => choiceMatchesValue(cx, ix, vv))
-          )
+          pipe(
+            ifind((cx, ix) => choiceMatchesValue(cx, ix, vv)),
+            getChoiceValue
+          )(prompt.choices)
         )
       )
     )(v),
@@ -84,15 +94,19 @@ const typeBypass = {
   expand: listTypeBypass
 }
 
-export const bypass = (prompts, arr) => {
-  const noop = [prompts, {}, []]
+const iforEach = addIndex(forEach)
+
+export const bypass = curryN(2, (prompts, arr) => {
+  const noop = [prompts, {}]
   const arrLength = length(arr)
-  if (!Array.isArray(prompts) || arrLength === 0) return noop
+  if (!Array.isArray(prompts) || !Array.isArray(arr) || arrLength === 0) {
+    return noop
+  }
   const { prompts: inqPrompts } = inquirerPrompt
   const answers = {}
   const failures = []
 
-  prompts.forEach((pr, ix) => {
+  iforEach((pr, ix) => {
     if (ix >= arrLength) return false
     const val = arr[ix].toString()
     if (flag.isPrompt(val)) return false
@@ -103,12 +117,12 @@ export const bypass = (prompts, arr) => {
     try {
       const iq = propOr({}, pr.type, inqPrompts)
       const bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type]
-      const value = is(Function, bypassFn) ? bypassFn(null, val, pr) : val
+      const value = is(Function, bypassFn) ? bypassFn(val, pr) : val
       const answer = pr.filter ? pr.filter(value) : value
       if (pr.validate) {
         const valid = pr.validate(value)
         if (!valid) {
-          failures.push(valid)
+          failures.push(new Error(`"${pr.name}" did not pass validation.`))
           return false
         }
       }
@@ -119,7 +133,7 @@ export const bypass = (prompts, arr) => {
       )
       return false
     }
-  })
+  })(prompts)
   const postBypassPrompts = map(
     when(
       x => !!answers[x.name],
@@ -131,4 +145,4 @@ export const bypass = (prompts, arr) => {
   } else {
     return [postBypassPrompts, answers]
   }
-}
+})

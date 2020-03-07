@@ -15,7 +15,7 @@ import {
   snakeCase
 } from "change-case"
 
-const bakedIn = {
+export const bakedIn = {
   capitalCase,
   constantCase,
   camelCase,

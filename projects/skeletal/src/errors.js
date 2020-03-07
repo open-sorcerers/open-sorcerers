@@ -7,7 +7,8 @@ export const error = curry((ns, message, data) => {
   const e = new Error(message)
   e.name = name
   e.data = data
-  return austereStack(e)
+  return e
+  /* return austereStack(e) */
 })
 export const ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(

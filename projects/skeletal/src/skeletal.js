@@ -30,48 +30,49 @@ const { NO_CONFIG } = STRINGS
 
 const hasNoConfig = propEq(NO_CONFIG, true)
 
-const getPattern = propOr(false, "pattern")
+export const getPattern = propOr(false, "pattern")
 
-const boneDance = curry((config, { patterns }, boneUI, ligament, configF) =>
-  pipe(
-    chain(
-      cond([
-        [
-          ligament.checkCancelled,
-          pipe(boneUI.say("Aborting..."), () => reject("Aborted"))
-        ],
-        [
-          hasNoConfig,
-          pipe(boneUI.say("No config found!"), () => {
-            const ns = propOr("skeletal", "namespace", config)
-            return reject(
-              `No config file found for namespace: "${ns}". Try "bone --init ${ns}"?`
-            )
-          })
-        ],
-        [
-          () => getPattern(config),
-          () => {
-            const which = getPattern(config)
-            return pipe(
-              boneUI.say(`Using "${which}" pattern...\n`),
-              prop(which),
-              chain(render(config, boneUI, ligament))
-            )(patterns)
-          }
-        ],
-        [
-          () => true,
-          () =>
-            resolve(
-              `🦴 ${nameVersion()} - Available patterns:\n\t- ${keys(
-                patterns
-              ).join("\n\t- ")}`
-            )
-        ]
-      ])
-    )
-  )(configF)
+export const boneDance = curry(
+  (config, { patterns }, boneUI, ligament, configF) =>
+    pipe(
+      chain(
+        cond([
+          [
+            ligament.checkCancelled,
+            pipe(boneUI.say("Aborting..."), () => reject("Aborted"))
+          ],
+          [
+            hasNoConfig,
+            pipe(boneUI.say("No config found!"), () => {
+              const ns = propOr("skeletal", "namespace", config)
+              return reject(
+                `No config file found for namespace: "${ns}". Try "bone --init ${ns}"?`
+              )
+            })
+          ],
+          [
+            () => getPattern(config),
+            () => {
+              const which = getPattern(config)
+              return pipe(
+                boneUI.say(`Using "${which}" pattern...\n`),
+                prop(which),
+                chain(render(config, boneUI, ligament))
+              )(patterns)
+            }
+          ],
+          [
+            () => true,
+            () =>
+              resolve(
+                `🦴 ${nameVersion()} - Available patterns:\n\t- ${keys(
+                  patterns
+                ).join("\n\t- ")}`
+              )
+          ]
+        ])
+      )
+    )(configF)
 )
 
 export const skeletal = config => {

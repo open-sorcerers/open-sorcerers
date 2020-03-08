@@ -1,4 +1,5 @@
 import {
+  identity as I,
   chain,
   cond,
   keys,
@@ -9,7 +10,7 @@ import {
   unless,
   curry
 } from "ramda"
-import { sideEffect } from "xtrace"
+import { trace, sideEffect } from "xtrace"
 import { mapRej, reject, resolve } from "fluture"
 import { registerPartial, registerHelper } from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
@@ -87,11 +88,12 @@ export const skeletal = config => {
   const say = x => sideEffect(() => talk(x + "\n"))
   const boneUI = { bar, talk, say }
   const threads = propOr(10, "threads", config)
+  const canceller = propOr(I, "cancel", config)
   // CANCELLATION
   let isCancelled = false
   const cancel = () => {
     isCancelled = true
-    process.exit(1)
+    canceller()
   }
   // closured, for your safety
   const checkCancelled = () => isCancelled

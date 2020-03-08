@@ -21,7 +21,7 @@ test("configure - no config", done => {
   const ligament = { noConfig: true }
   const dunce = once(done)
   const out = configure(state, ligament, {})
-  expect(out).toEqual(state.patterns)
+  expect(out).toEqual({ noConfig: true })
   setTimeout(() => dunce(), 10)
 })
 

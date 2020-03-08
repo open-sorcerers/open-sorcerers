@@ -1,4 +1,5 @@
 import {
+  identity as I,
   when,
   propOr,
   pathOr,
@@ -14,9 +15,9 @@ import {
   __ as $
 } from "ramda"
 import { box } from "ensorcel"
-import { reject, mapRej, parallel } from "fluture"
+import { reject, mapRej, Future, parallel } from "fluture"
 import { readFile, writeFile } from "torpor"
-import { compile as handleThemBars } from "handlebars"
+import handlebars from "handlebars"
 import { trace } from "xtrace"
 
 import { austereStack } from "./utils"
@@ -25,21 +26,28 @@ import { ERROR } from "./errors"
 import { nameVersion } from "./instance"
 
 export const processHandlebars = curry(
-  (boneUI, answers, templateFile, templateF) =>
-    map(
-      pipe(
-        handleThemBars,
-        boneUI.say(`Processing handlebars...`),
-        fn => {
-          try {
-            return fn(answers)
-          } catch (ee) {
-            return pipe(austereStack, reject)(ee)
-          }
-        },
-        boneUI.say(`Converted ${templateFile}`)
-      )
+  (ligament, boneUI, answers, templateFile, templateF) => {
+    const cancel = propOr(I, "cancel", ligament)
+    return chain(
+      xxx =>
+        new Future((bad, good) => {
+          pipe(
+            handlebars.compile,
+            boneUI.say(`Processing handlebars...`),
+            fn => {
+              try {
+                return fn(answers)
+              } catch (ee) {
+                bad(austereStack(ee))
+              }
+            },
+            boneUI.say(`Converted ${templateFile}`),
+            good
+          )(xxx)
+          return cancel
+        })
     )(templateF)
+  }
 )
 
 export const writeOutput = curry((flag, outputFile, processedHandlebarsF) =>
@@ -56,27 +64,27 @@ export const writeOutput = curry((flag, outputFile, processedHandlebarsF) =>
 )
 
 export const writeTemplate = curry(
-  (boneUI, answers, flag, [type, templateFile, outputFile]) =>
-    when(
+  (ligament, boneUI, answers, flag, [type, templateFile, outputFile]) =>
+    ifElse(
       () => equals(type, "add"),
       pipe(
         boneUI.say(`Reading ${templateFile}...`),
         readFile(templateFile),
-        processHandlebars(boneUI, answers, templateFile),
+        processHandlebars(ligament, boneUI, answers, templateFile),
         writeOutput(flag, outputFile)
-      )
+      ),
+      () => reject(`Only add actions are currently supported`)
     )("utf8")
 )
 
 export const templatizeActions = curry((answers, actions) =>
   map(
     map(
-      pipe(handleThemBars, temp => {
+      pipe(handlebars.compile, temp => {
         try {
           return temp(answers)
         } catch (ee) {
-          pipe(austereStack, reject)(ee)
-          process.exit(2)
+          throw austereStack(ee)
         }
       })
     )
@@ -101,7 +109,7 @@ export const render = curry((config, boneUI, ligament, filled) => {
         ifElse(
           any(equals(UNSET)),
           pipe(ERROR.INCOMPLETE_ACTION, reject),
-          writeTemplate(boneUI, answers, flag)
+          writeTemplate(ligament, boneUI, answers, flag)
         )
       )
     ),

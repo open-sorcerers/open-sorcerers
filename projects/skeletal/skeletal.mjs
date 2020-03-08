@@ -1,6 +1,6 @@
-import { curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, assoc, __, chain, equals, propOr, pathOr, ap, ifElse, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, identity, propEq, keys as keys$1, unless } from 'ramda';
-import { fork as fork$1, reject, mapRej, parallel, resolve, Future } from 'fluture';
-import { registerHelper, compile, registerPartial } from 'handlebars';
+import { curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, propOr, identity, chain, __, ifElse, equals, pathOr, ap, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, propEq, keys as keys$1, unless } from 'ramda';
+import { fork as fork$1, Future, mapRej, reject, parallel, resolve } from 'fluture';
+import handlebars, { registerPartial, registerHelper } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
 import { capitalCase, constantCase, camelCase, dotCase, headerCase, noCase, paramCase, pascalCase, pathCase, sentenceCase, snakeCase } from 'change-case';
@@ -267,7 +267,7 @@ var bakeIn = call(function () { return pipe$1(
       var k = ref[0];
       var v = ref[1];
 
-      return registerHelper(k, v);
+      return k && v && handlebars.registerHelper(k, v);
     })
   )(bakedIn); }
 );
@@ -309,7 +309,10 @@ var austereStack = when(
         )
       ),
       join("\n"),
-      assoc("stack", __, e)
+      function (stack) {
+        e.stack = stack;
+        return e
+      }
     )(e); }
 );
 var fork = tacit(2, fork$1);
@@ -362,20 +365,27 @@ var ERROR = deepfreeze({
 });
 
 var processHandlebars = curry$1(
-  function (boneUI, answers, templateFile, templateF) { return map(
-      pipe$1(
-        compile,
-        boneUI.say("Processing handlebars..."),
-        function (fn) {
-          try {
-            return fn(answers)
-          } catch (ee) {
-            return pipe$1(austereStack, reject)(ee)
-          }
-        },
-        boneUI.say(("Converted " + templateFile))
-      )
-    )(templateF); }
+  function (ligament, boneUI, answers, templateFile, templateF) {
+    var cancel = propOr(identity, "cancel", ligament);
+    return chain(
+      function (xxx) { return new Future(function (bad, good) {
+          pipe$1(
+            handlebars.compile,
+            boneUI.say("Processing handlebars..."),
+            function (fn) {
+              try {
+                return fn(answers)
+              } catch (ee) {
+                bad(austereStack(ee));
+              }
+            },
+            boneUI.say(("Converted " + templateFile)),
+            good
+          )(xxx);
+          return cancel
+        }); }
+    )(templateF)
+  }
 );
 
 var writeOutput = curry$1(function (flag, outputFile, processedHandlebarsF) { return chain(function (content) { return pipe$1(
@@ -389,31 +399,31 @@ var writeOutput = curry$1(function (flag, outputFile, processedHandlebarsF) { re
 );
 
 var writeTemplate = curry$1(
-  function (boneUI, answers, flag, ref) {
+  function (ligament, boneUI, answers, flag, ref) {
       var type = ref[0];
       var templateFile = ref[1];
       var outputFile = ref[2];
 
-      return when(
+      return ifElse(
       function () { return equals(type, "add"); },
       pipe$1(
         boneUI.say(("Reading " + templateFile + "...")),
         readFile(templateFile),
-        processHandlebars(boneUI, answers, templateFile),
+        processHandlebars(ligament, boneUI, answers, templateFile),
         writeOutput(flag, outputFile)
-      )
+      ),
+      function () { return reject("Only add actions are currently supported"); }
     )("utf8");
 }
 );
 
 var templatizeActions = curry$1(function (answers, actions) { return map(
     map(
-      pipe$1(compile, function (temp) {
+      pipe$1(handlebars.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
-          pipe$1(austereStack, reject)(ee);
-          process.exit(2);
+          throw austereStack(ee)
         }
       })
     )
@@ -439,7 +449,7 @@ var render = curry$1(function (config, boneUI, ligament, filled) {
         ifElse(
           any(equals(UNSET)),
           pipe$1(ERROR.INCOMPLETE_ACTION, reject),
-          writeTemplate(boneUI, answers, flag)
+          writeTemplate(ligament, boneUI, answers, flag)
         )
       )
     ),

@@ -1,5 +1,5 @@
-import { sideEffect } from "xtrace"
-import { registerHelper } from "handlebars"
+import { trace, sideEffect } from "xtrace"
+import bars from "handlebars"
 import { pipe, toPairs, map } from "ramda"
 import {
   capitalCase,
@@ -32,6 +32,6 @@ export const bakedIn = {
 export const bakeIn = sideEffect(() =>
   pipe(
     toPairs,
-    map(([k, v]) => registerHelper(k, v))
+    map(([k, v]) => k && v && bars.registerHelper(k, v))
   )(bakedIn)
 )

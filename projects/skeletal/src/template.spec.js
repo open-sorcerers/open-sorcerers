@@ -1,16 +1,20 @@
 import { Future, isFuture, fork as rawFork, resolve, mapRej } from "fluture"
+
 import { after } from "ramda"
 import {
+  writeOutput,
   processHandlebars,
   writeTemplate,
   templatizeActions,
   render
 } from "./template"
+import { nameVersion } from "./instance"
 import { fork } from "./utils"
 
 test("processHandlebars", done => {
   expect(!!processHandlebars).toBeTruthy()
   let sayings = 0
+  const ligament = { cancel: () => {} }
   const boneUI = {
     bar: { updateBottomBar: () => {}, log: { write: () => {} } },
     say: function say(xxx) {
@@ -24,7 +28,13 @@ test("processHandlebars", done => {
   const answers = { cool: "yes" }
   const input = `is it {{cool}}?`
   const templateF = resolve(input)
-  const processF = processHandlebars(boneUI, answers, templateFile, templateF)
+  const processF = processHandlebars(
+    ligament,
+    boneUI,
+    answers,
+    templateFile,
+    templateF
+  )
   expect(isFuture(processF)).toBeTruthy()
   fork(done, e => {
     expect(e).toEqual("is it yes?")
@@ -32,7 +42,6 @@ test("processHandlebars", done => {
   })(processF)
 })
 test("processHandlebars - error", done => {
-  expect(!!processHandlebars).toBeTruthy()
   const ligament = { cancel: () => {} }
   const boneUI = {
     say: () => x => x
@@ -49,20 +58,34 @@ test("processHandlebars - error", done => {
     templateF
   )
   expect(isFuture(processF)).toBeTruthy()
+  fork(e => {
+    expect(e.message).toEqual("uhhh")
+    done()
+  }, done)(processF)
+})
+test("writeOutput", done => {
+  expect(!!writeOutput).toBeTruthy()
   fork(
-    e => {
-      console.log("JSJSJJSJSJ", e)
-      expect(e.message).toEqual("uhhh")
+    done,
+    xxx => {
+      expect(xxx).toEqual("Generated fakefake")
       done()
     },
-    xxx => {
-      console.log("HHUHUH", xxx)
-      done()
-    }
-  )(processF)
+    writeOutput("wx", "fakefake", resolve(`cool`))
+  )
 })
-test("writeTemplate", () => {
-  expect(!!writeTemplate).toBeTruthy()
+
+test("writeOutput - error", done => {
+  expect(!!writeOutput).toBeTruthy()
+  fork(
+    xxx => {
+      expect(xxx).toEqual(`Unable to write to fail.
+\tYou can use the --force flag, but it may overwrite existing files.`)
+      done()
+    },
+    done,
+    writeOutput("wx", "fail", resolve(`cool`))
+  )
 })
 test("templatizeActions", () => {
   expect(!!templatizeActions).toBeTruthy()
@@ -76,6 +99,68 @@ test("templatizeActions", () => {
     { templatePath: "yes-very-so-dope.out" }
   ])
 })
-test("render", () => {
+test("templatizeActions - error", () => {
+  expect(!!templatizeActions).toBeTruthy()
+  const answers = { cool: "yes-very", dope: "so-dope" }
+  const actions = [
+    {
+      templatePath: `{{failure cool}}-{{dope}}.out`
+    }
+  ]
+  expect(() => templatizeActions(answers, actions)).toThrow()
+})
+test("writeTemplate - error case", done => {
+  expect(!!writeTemplate).toBeTruthy()
+  const ligament = { cancel: () => {} }
+  const boneUI = { say: () => x => x }
+  const answers = { cool: "so cool" }
+  const flag = "wx"
+  const input = ["not add", "failfail", "fail"]
+  fork(
+    e => {
+      expect(e).toEqual("Only add actions are currently supported")
+      done()
+    },
+    done,
+    writeTemplate(ligament, boneUI, answers, flag, input)
+  )
+})
+test("render", done => {
   expect(!!render).toBeTruthy()
+  const config = {}
+  const boneUI = { say: () => x => x }
+  const ligament = { cancel: () => {} }
+  const answers = { cool: "so cool" }
+  const actions = [{ template: "whatever", path: "whatever", type: "add" }]
+  const filled = { answers, actions }
+  fork(
+    done,
+    xxx => {
+      expect(xxx).toEqual(
+        `🦴 ${nameVersion()} - bone-setting complete!\n\t- Generated whatever`
+      )
+      done()
+    },
+    render(config, boneUI, ligament, filled)
+  )
+})
+
+test("render - force", done => {
+  expect(!!render).toBeTruthy()
+  const config = { force: true }
+  const boneUI = { say: () => x => x }
+  const ligament = { cancel: () => {}, config: { force: true } }
+  const answers = { cool: "so cool" }
+  const actions = [{ template: "whatever", path: "whatever", type: "add" }]
+  const filled = { answers, actions }
+  fork(
+    done,
+    xxx => {
+      expect(xxx).toEqual(
+        `🦴 ${nameVersion()} - bone-setting complete!\n\t- Generated whatever`
+      )
+      done()
+    },
+    render(config, boneUI, ligament, filled)
+  )
 })

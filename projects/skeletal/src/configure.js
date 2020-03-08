@@ -11,8 +11,8 @@ export const configure = curry((state, ligament, xxx) =>
     propOr(() => ({ [NO_CONFIG]: true }), "config"),
     z => {
       try {
-        z(ligament)
-        return state.patterns
+        const out = z(ligament)
+        return out && out[NO_CONFIG] ? out : state.patterns
       } catch (err) {
         throw austereStack(err)
       }

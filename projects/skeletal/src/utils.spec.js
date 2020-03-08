@@ -56,8 +56,9 @@ test("cutAfterStringAdjust", () => {
 
 test("austereStack", () => {
   const e = new Error("Computers are hard!")
+  const estack = e.stack
   const b = austereStack(e)
-  expect(e.stack).not.toEqual(b.stack)
+  expect(estack).not.toEqual(b.stack)
   const eIsh = {
     stack: [
       "at node_modules/someplace/cool",

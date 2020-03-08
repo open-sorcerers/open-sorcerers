@@ -53,7 +53,10 @@ export const austereStack = when(
         )
       ),
       join("\n"),
-      assoc("stack", $, e)
+      stack => {
+        e.stack = stack
+        return e
+      }
     )(e)
 )
 export const fork = tacit(2, rawFork)

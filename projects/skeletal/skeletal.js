@@ -17,7 +17,7 @@ var cleanStack = _interopDefault(require('clean-stack'));
 var kleur = require('kleur');
 
 var name = "skeletal";
-var version = "0.0.5";
+var version = "0.0.6-beta.1";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module$1 = "skeletal.mjs";

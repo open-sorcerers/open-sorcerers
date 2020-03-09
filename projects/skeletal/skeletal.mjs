@@ -10,7 +10,7 @@ import cleanStack from 'clean-stack';
 import { bold } from 'kleur';
 
 var name = "skeletal";
-var version = "0.0.5";
+var version = "0.0.6-beta.1";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";

@@ -1,6 +1,6 @@
 {
   "name": "skeletal",
-  "version": "0.0.5",
+  "version": "0.0.6-beta.1",
   "description": "Build the bones of a project",
   "main": "skeletal.js",
   "module": "skeletal.mjs",
@@ -56,5 +56,7 @@
     "skeletal.mjs",
     "bone-cli.js"
   ],
-  "scripts": { "prepublish": "nps build" }
+  "scripts": {
+    "prepublish": "nps build"
+  }
 }

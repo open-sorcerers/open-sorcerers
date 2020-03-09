@@ -38,10 +38,10 @@ export const boneDance = curry(
     pipe(
       chain(
         cond([
-          [
-            ligament.checkCancelled,
-            pipe(boneUI.say("Aborting..."), () => reject("Aborted"))
-          ],
+          /* [ */
+          /*   ligament.checkCancelled, */
+          /*   pipe(boneUI.say("Aborting..."), () => reject("Aborted")) */
+          /* ], */
           [
             hasNoConfig,
             pipe(boneUI.say("No config found!"), () => {

@@ -15,6 +15,22 @@ test("skeletal - basic", done => {
   )
 })
 
+test("skeletal - pattern", done => {
+  fork(
+    done,
+    out => {
+      expect(out).toMatchSnapshot()
+      done()
+    },
+    skeletal({
+      _: ["dope", "cool"],
+      namespace: "example-basic",
+      pattern: "one",
+      p: "one"
+    })
+  )
+})
+
 test("skeletal - no config", done => {
   const namespace = "namespace" + Math.round(Math.random() * 1e5)
   fork(

@@ -6,3 +6,8 @@ exports[`skeletal - basic 1`] = `
 	- two
 	- madlib"
 `;
+
+exports[`skeletal - pattern 1`] = `
+"🦴 [1mskeletal0.0.5[22m - bone-setting complete!
+	- Generated one.output"
+`;

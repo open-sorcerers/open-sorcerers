@@ -261,16 +261,18 @@ var bakedIn = {
   snakeCase: snakeCase
 };
 
-var bakeIn = call(function () { return pipe$1(
-    toPairs,
-    map(function (ref) {
-      var k = ref[0];
-      var v = ref[1];
+var enbaken = function (register) { return call(function () { return pipe$1(
+      toPairs,
+      map(function (ref) {
+        var k = ref[0];
+        var v = ref[1];
 
-      return k && v && handlebars.registerHelper(k, v);
-    })
-  )(bakedIn); }
-);
+        return k && v && register(k, v);
+      })
+    )(bakedIn); }
+  ); };
+
+var bakeIn = enbaken(handlebars.registerHelper);
 
 /* import { trace } from "xtrace" */
 var freeze = Object.freeze;
@@ -677,8 +679,8 @@ var configure = curry$1(function (state, ligament, xxx) { return pipe$1(
     }, "config"),
     function (z) {
       try {
-        z(ligament);
-        return state.patterns
+        var out = z(ligament);
+        return out && out[NO_CONFIG] ? out : state.patterns
       } catch (err) {
         throw austereStack(err)
       }
@@ -786,11 +788,12 @@ var skeletal = function (config) {
   var say = function (x) { return call(function () { return talk(x + "\n"); }); };
   var boneUI = { bar: bar, talk: talk, say: say };
   var threads = propOr(10, "threads", config);
+  var canceller = propOr(identity, "cancel", config);
   // CANCELLATION
   var isCancelled = false;
   var cancel = function () {
     isCancelled = true;
-    process.exit(1);
+    canceller();
   };
   // closured, for your safety
   var checkCancelled = function () { return isCancelled; };

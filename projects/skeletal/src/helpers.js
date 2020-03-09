@@ -29,9 +29,12 @@ export const bakedIn = {
   snakeCase
 }
 
-export const bakeIn = sideEffect(() =>
-  pipe(
-    toPairs,
-    map(([k, v]) => k && v && bars.registerHelper(k, v))
-  )(bakedIn)
-)
+export const enbaken = register =>
+  sideEffect(() =>
+    pipe(
+      toPairs,
+      map(([k, v]) => k && v && register(k, v))
+    )(bakedIn)
+  )
+
+export const bakeIn = enbaken(bars.registerHelper.bind(bars))

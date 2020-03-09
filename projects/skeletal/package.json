@@ -55,5 +55,6 @@
     "skeletal.js",
     "skeletal.mjs",
     "bone-cli.js"
-  ]
+  ],
+  "scripts": { "prepublish": "nps build" }
 }

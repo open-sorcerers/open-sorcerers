@@ -1,16 +1,16 @@
-import { once, curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, identity, split, includes, join, chain, __, equals, propOr, pathOr, ap, ifElse, any, reduce, mergeRight, propEq, cond, prop as prop$1, keys as keys$1, unless } from 'ramda';
-import { fork as fork$1, mapRej, reject, parallel, resolve, Future } from 'fluture';
-import { registerHelper, compile, registerPartial } from 'handlebars';
+import { curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, propOr, identity, chain, __, ifElse, equals, pathOr, ap, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, propEq, keys as keys$1, unless } from 'ramda';
+import { fork as fork$1, Future, mapRej, reject, parallel, resolve } from 'fluture';
+import handlebars, { registerPartial, registerHelper } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
-import { cyan, bold } from 'kleur';
 import { capitalCase, constantCase, camelCase, dotCase, headerCase, noCase, paramCase, pascalCase, pathCase, sentenceCase, snakeCase } from 'change-case';
 import { tacit, box, futurizeWithCancel } from 'ensorcel';
 import { writeFile, readFile } from 'torpor';
 import cleanStack from 'clean-stack';
+import { bold } from 'kleur';
 
 var name = "skeletal";
-var version = "0.0.5-beta.2";
+var version = "0.0.5";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";
@@ -234,19 +234,16 @@ var segmentTrace = segment({
   effect: console.log
 });
 
-var logOnce = once(console.log);
-
 var talker = curry$1(function (conf, bar, text) {
-  if (conf.debug) { logOnce(cyan("DEBUG"), conf); }
   if (conf.silent) { return }
   var up = function (txt) {
     if (conf.verbose) { bar.log.write(txt); }
     bar.updateBottomBar(txt);
   };
-  if (typeof text === "string") {
-    up(text);
-  } else if (text.text) {
+  if (text && text.text) {
     up(text.text);
+  } else {
+    up(text);
   }
 });
 
@@ -264,16 +261,63 @@ var bakedIn = {
   snakeCase: snakeCase
 };
 
-var bakeIn = call(function () { return pipe$1(
-    toPairs,
-    map(function (ref) {
-      var k = ref[0];
-      var v = ref[1];
+var enbaken = function (register) { return call(function () { return pipe$1(
+      toPairs,
+      map(function (ref) {
+        var k = ref[0];
+        var v = ref[1];
 
-      return registerHelper(k, v);
-    })
-  )(bakedIn); }
+        return k && v && register(k, v);
+      })
+    )(bakedIn); }
+  ); };
+
+var bakeIn = enbaken(handlebars.registerHelper);
+
+/* import { trace } from "xtrace" */
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+var deepfreeze = function (o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { freeze(o); }
+    own(o).forEach(function (pp) {
+      if (pp !== "constructor") { deepfreeze(o[pp]); }
+    });
+  }
+  return o
+};
+
+var NM = "node_modules";
+
+var cutAfterStringAdjust = curry$1(function (alter, aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length + alter); }
 );
+
+var unwrap = replace(")", "");
+
+var austereStack = when(
+  function (e) { return e && e.stack; },
+  function (e) { return pipe$1(
+      prop$1("stack"),
+      function (ST) { return cleanStack(ST, { pretty: true }); },
+      split("\n"),
+      map(
+        pipe$1(
+          when(
+            includes(NM),
+            function (z) { return "    at " + pipe$1(cutAfterStringAdjust(1, NM), unwrap)(z); }
+          ),
+          when(includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+        )
+      ),
+      join("\n"),
+      function (stack) {
+        e.stack = stack;
+        return e
+      }
+    )(e); }
+);
+var fork = tacit(2, fork$1);
 
 var obj, obj$1;
 var UNSET = "%UNSET%";
@@ -300,42 +344,6 @@ var CLI_OPTIONS = Object.freeze({
   alias: ( obj$1 = {}, obj$1[STRINGS.debug] = ["d"], obj$1[STRINGS.force] = ["f"], obj$1[STRINGS.init] = ["I"], obj$1[STRINGS.namespace] = ["n"], obj$1[STRINGS.pattern] = ["p"], obj$1[STRINGS.silent] = ["s"], obj$1[STRINGS.threads] = ["t"], obj$1[STRINGS.verbose] = ["w"], obj$1 )
 });
 
-var freeze = Object.freeze;
-var own = function (z) { return Object.getOwnPropertyNames(z); };
-
-var deepfreeze = function (o) {
-  if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { freeze(o); }
-    own(o).forEach(function (prop) {
-      if (prop !== "constructor") { deepfreeze(o[prop]); }
-    });
-  }
-  return o
-};
-
-var NM = "node_modules";
-
-var cutAfterString = curry$1(function (aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length); }
-);
-
-var unwrap = replace(")", "");
-
-var austereStack = when(
-  identity,
-  pipe$1(
-    split("\n"),
-    map(
-      when(
-        includes(NM),
-        /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-        function (z) { return "    at " + pipe$1(cutAfterString(NM), unwrap)(z); }
-      )
-    ),
-    join("\n")
-  )
-);
-var fork = tacit(2, fork$1);
-
 var nameAndVersion = function () { return PKG.name + PKG.version; };
 var nameVersion = pipe$1(nameAndVersion, bold);
 
@@ -344,8 +352,8 @@ var error = curry$1(function (ns, message, data) {
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  e.stack = pipe$1(function (ST) { return cleanStack(ST, { pretty: true }); }, austereStack)(e.stack);
   return e
+  /* return austereStack(e) */
 });
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
@@ -358,14 +366,28 @@ var ERROR = deepfreeze({
   )
 });
 
-var processHandlebars = curry$1(function (boneUI, answers, templateFile, templateF) { return map(
-    pipe$1(
-      compile,
-      boneUI.say("Processing handlebars..."),
-      function (fn) { return fn(answers); },
-      boneUI.say(("Converted " + templateFile))
-    )
-  )(templateF); }
+var processHandlebars = curry$1(
+  function (ligament, boneUI, answers, templateFile, templateF) {
+    var cancel = propOr(identity, "cancel", ligament);
+    return chain(
+      function (xxx) { return new Future(function (bad, good) {
+          pipe$1(
+            handlebars.compile,
+            boneUI.say("Processing handlebars..."),
+            function (fn) {
+              try {
+                return fn(answers)
+              } catch (ee) {
+                bad(austereStack(ee));
+              }
+            },
+            boneUI.say(("Converted " + templateFile)),
+            good
+          )(xxx);
+          return cancel
+        }); }
+    )(templateF)
+  }
 );
 
 var writeOutput = curry$1(function (flag, outputFile, processedHandlebarsF) { return chain(function (content) { return pipe$1(
@@ -379,38 +401,38 @@ var writeOutput = curry$1(function (flag, outputFile, processedHandlebarsF) { re
 );
 
 var writeTemplate = curry$1(
-  function (boneUI, answers, flag, ref) {
+  function (ligament, boneUI, answers, flag, ref) {
       var type = ref[0];
       var templateFile = ref[1];
       var outputFile = ref[2];
 
-      return when(
+      return ifElse(
       function () { return equals(type, "add"); },
       pipe$1(
         boneUI.say(("Reading " + templateFile + "...")),
         readFile(templateFile),
-        processHandlebars(boneUI, answers, templateFile),
+        processHandlebars(ligament, boneUI, answers, templateFile),
         writeOutput(flag, outputFile)
-      )
+      ),
+      function () { return reject("Only add actions are currently supported"); }
     )("utf8");
 }
 );
 
 var templatizeActions = curry$1(function (answers, actions) { return map(
     map(
-      pipe$1(compile, function (temp) {
+      pipe$1(handlebars.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
-          console.warn(ee);
-          process.exit(2);
+          throw austereStack(ee)
         }
       })
     )
   )(actions); }
 );
 
-var render = curry$1(function (boneUI, ligament, filled) {
+var render = curry$1(function (config, boneUI, ligament, filled) {
   var threads = propOr(10, "threads", ligament);
   var forceWrite = pathOr(false, ["config", "force"], ligament);
   var answers = filled.answers;
@@ -429,7 +451,7 @@ var render = curry$1(function (boneUI, ligament, filled) {
         ifElse(
           any(equals(UNSET)),
           pipe$1(ERROR.INCOMPLETE_ACTION, reject),
-          writeTemplate(boneUI, answers, flag)
+          writeTemplate(ligament, boneUI, answers, flag)
         )
       )
     ),
@@ -458,6 +480,124 @@ var saveKeyed = curry$1(function (struct, fn, input) {
   return ff
 });
 
+var getChoiceValue = when(
+  is(Object),
+  cond([
+    [propOr(false, "value"), prop$1("value")],
+    [propOr(false, "name"), prop$1("name")],
+    [propOr(false, "key"), prop$1("key")]
+  ])
+);
+
+var propIsString = propSatisfies(is(String));
+var casedEqual = curry$1(function (a, b) { return toLower(a) === toLower(b); });
+
+var choiceMatchesValue = curry$1(function (cx, ix, val) {
+  var cv = getChoiceValue(cx);
+  var matchesChoice = cv && casedEqual(cv, val);
+  /* const matchesKey = is(String, cx.key) && casedEqual(cx.key, val) */
+  /* const matchesName = is(String, cx.name) && casedEqual(cx.name, val) */
+  var matchesIndex = casedEqual(ix.toString(), val);
+  return matchesChoice || matchesIndex
+});
+
+var isFlag = curry$1(function (list, v) { return pipe$1(includes(toLower(v)))(list); });
+
+var flag = {
+  isTrue: isFlag(["yes", "y", "true", "t"]),
+  isFalse: isFlag(["no", "n", "false", "f"]),
+  isPrompt: function (vv) { return /^_+$/.test(vv); }
+};
+
+var listTypeBypass = curry$1(function (val, prompt) {
+  var choice = prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, val); }
+  );
+  if (!choice) { return getChoiceValue(choice) }
+  return new Error("Invalid choice")
+});
+var ifind = addIndex(find);
+
+var typeBypass = {
+  confirm: function (v) { return flag.isTrue(v)
+      ? true
+      : flag.isFalse(v)
+      ? false
+      : new Error("Invalid input"); },
+  checkbox: function (v, prompt) { return pipe$1(
+      split(","),
+      ifElse(
+        pipe$1(
+          filter$1(
+            function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
+          ),
+          function (found) { return found.length !== 0; }
+        ),
+        function (xx) { return new Error(("No match for \"" + (xx.join('", "')) + "\"")); },
+        map(function (vv) { return pipe$1(
+            ifind(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }),
+            getChoiceValue
+          )(prompt.choices); }
+        )
+      )
+    )(v); },
+  list: listTypeBypass,
+  rawlist: listTypeBypass,
+  expand: listTypeBypass
+};
+
+var iforEach = addIndex(forEach);
+
+var bypass = curryN(2, function (prompts, arr) {
+  var noop = [prompts, {}];
+  var arrLength = length(arr);
+  if (!Array.isArray(prompts) || !Array.isArray(arr) || arrLength === 0) {
+    return noop
+  }
+  var inqPrompts = prompt.prompts;
+  var answers = {};
+  var failures = [];
+
+  iforEach(function (pr, ix) {
+    if (ix >= arrLength) { return false }
+    var val = arr[ix].toString();
+    if (flag.isPrompt(val)) { return false }
+    if (is(Function, pr.when)) {
+      failures.push("You cannot bypass conditional prompts.");
+      return false
+    }
+    try {
+      var iq = propOr({}, pr.type, inqPrompts);
+      var bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type];
+      var value = is(Function, bypassFn) ? bypassFn(val, pr) : val;
+      var answer = pr.filter ? pr.filter(value) : value;
+      if (pr.validate) {
+        var valid = pr.validate(value);
+        if (!valid) {
+          failures.push(new Error(("\"" + (pr.name) + "\" did not pass validation.")));
+          return false
+        }
+      }
+      answers[pr.name] = answer;
+    } catch (err) {
+      failures.push(
+        ("The \"" + (pr.name) + "\" prompt didn't recognize \"" + val + "\" as a valid " + (pr.type) + " value. (ERROR: " + (err.message) + ")")
+      );
+      return false
+    }
+  })(prompts);
+  var postBypassPrompts = map(
+    when(
+      function (x) { return !!answers[x.name]; },
+      function (x) { return mergeRight(x, { default: answers[x.name], when: false }); }
+    )
+  )(prompts);
+  if (failures.length > 0) {
+    throw new Error(failures[0])
+  } else {
+    return [postBypassPrompts, answers]
+  }
+});
+
 var getName = propOr(UNSET, "name");
 var getPrompts = propOr(UNSET, "prompts");
 var getActions = propOr(UNSET, "actions");
@@ -479,28 +619,53 @@ var validatePatternAndSubmit = curry$1(function (bad, good, raw) { return pipe$1
     good
   )(raw); }
 );
-var pattern = curry$1(function (config, raw) {
-  var cancel = propOr(identity, "cancel", config);
+
+var reduceFutures = curry$1(function (fn, list) { return reduce(
+    function (left, right) { return chain(function (ll) { return map(fn(ll), right); }, left); },
+    resolve({})
+  )(list); }
+);
+var sequentialResolve = reduceFutures(mergeRight);
+
+var handleUnpromptedAnswers = curry$1(function (ligature, rawF) {
+  var answers = pathOr([], ["config", "_"], ligature);
+  return map(function (x) {
+    var givenPrompts = propOr([], "prompts", x);
+    var ref = bypass(givenPrompts, answers);
+    var prompts = ref[0];
+    var preAnswered = ref[1];
+    return mergeRight(x, {
+      prompts: prompts,
+      preAnswered: preAnswered
+    })
+  })(rawF)
+});
+
+var mergePreAnswers = curry$1(function (given, answers) { return mergeRight(given, {
+    answers: mergeRight(given.preAnswered ? given.preAnswered : {}, answers)
+  }); }
+);
+var pattern = curry$1(function (ligature, raw) {
+  var cancel = propOr(identity, "cancel", ligature);
   var willPrompt = futurizeWithCancel(cancel, 1, prompt);
+  var build = function (xxx) { return new Future(function (bad, good) {
+      validatePatternAndSubmit(bad, good, xxx);
+      return cancel
+    }); };
+
   return [
     raw.name,
     pipe$1(
-      chain(function (futurePattern) { return pipe$1(
+      build,
+      handleUnpromptedAnswers(ligature),
+      chain(function (given) { return pipe$1(
           propOr([], "prompts"),
           map(willPrompt),
-          reduce(
-            function (left, right) { return chain(function (ll) { return map(mergeRight(ll), right); }, left); },
-            resolve({})
-          ),
-          map(function (answers) { return mergeRight(futurePattern, { answers: answers }); })
-        )(futurePattern); }
+          sequentialResolve,
+          map(mergePreAnswers(given))
+        )(given); }
       )
-    )(
-      new Future(function (bad, good) {
-        validatePatternAndSubmit(bad, good, raw);
-        return cancel
-      })
-    )
+    )(raw)
   ]
 });
 
@@ -512,7 +677,14 @@ var configure = curry$1(function (state, ligament, xxx) { return pipe$1(
 
       return (( obj = {}, obj[NO_CONFIG] = true, obj ));
     }, "config"),
-    function (z) { return z(ligament) || state.patterns; }
+    function (z) {
+      try {
+        var out = z(ligament);
+        return out && out[NO_CONFIG] ? out : state.patterns
+      } catch (err) {
+        throw austereStack(err)
+      }
+    }
   )(xxx); }
 );
 
@@ -537,15 +709,18 @@ var MADLIB = "// a 🦴 " + (nameAndVersion()) + " madlib\n\n{{name}} is a very 
 
 var initialBoneFile = function (config) {
   var ns = propOr("skeletal", "init", config);
+  var templatePath = propOr(
+    "templates/example-madlib.hbs",
+    "templatePath",
+    config
+  );
+  var outPath = propOr((ns + ".config.js"), "outPath", config);
   return pipe$1(
-    writeFile("templates/example-madlib.hbs", MADLIB),
-    chain(function () { return writeFile((ns + ".config.js"), INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }
-    ),
-    mapRej(
-      function () { return ("Unable to write file to " + ns + ".config.js, it may already exist?"); }
-    ),
+    writeFile(templatePath, MADLIB),
+    chain(function () { return writeFile(outPath, INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }),
+    mapRej(function () { return ("Unable to write file to " + outPath + ", it may already exist?"); }),
     map(
-      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns : "") + " -p madlib' :)"); }
+      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns + " " : "") + "-p madlib' :)"); }
     )
   )({ format: "utf8", flag: "w" })
 };
@@ -556,47 +731,48 @@ var hasNoConfig = propEq(NO_CONFIG$1, true);
 
 var getPattern = propOr(false, "pattern");
 
-var boneDance = curry$1(function (config, ref, boneUI, ligament, configF) {
-    var patterns = ref.patterns;
+var boneDance = curry$1(
+  function (config, ref, boneUI, ligament, configF) {
+      var patterns = ref.patterns;
 
-    return pipe$1(
-    chain(
-      cond([
-        [
-          ligament.checkCancelled,
-          pipe$1(boneUI.say("Aborting..."), function () { return reject("Aborted"); })
-        ],
-        [
-          hasNoConfig,
-          pipe$1(boneUI.say("No config found!"), function () {
-            var ns = propOr("skeletal", "namespace", config);
-            return reject(
-              ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
-            )
-          })
-        ],
-        [
-          function () { return getPattern(config); },
-          function () {
-            var which = getPattern(config);
-            return pipe$1(
-              boneUI.say(("Using \"" + which + "\" pattern...\n")),
-              prop$1(which),
-              chain(render(boneUI, ligament))
-            )(patterns)
-          }
-        ],
-        [
-          function () { return true; },
-          function () { return resolve(
-              ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (keys$1(
-                patterns
-              ).join("\n\t- ")))
-            ); }
-        ]
-      ])
-    )
-  )(configF);
+      return pipe$1(
+      chain(
+        cond([
+          [
+            ligament.checkCancelled,
+            pipe$1(boneUI.say("Aborting..."), function () { return reject("Aborted"); })
+          ],
+          [
+            hasNoConfig,
+            pipe$1(boneUI.say("No config found!"), function () {
+              var ns = propOr("skeletal", "namespace", config);
+              return reject(
+                ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
+              )
+            })
+          ],
+          [
+            function () { return getPattern(config); },
+            function () {
+              var which = getPattern(config);
+              return pipe$1(
+                boneUI.say(("Using \"" + which + "\" pattern...\n")),
+                prop$1(which),
+                chain(render(config, boneUI, ligament))
+              )(patterns)
+            }
+          ],
+          [
+            function () { return true; },
+            function () { return resolve(
+                ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (keys$1(
+                  patterns
+                ).join("\n\t- ")))
+              ); }
+          ]
+        ])
+      )
+    )(configF);
 }
 );
 
@@ -612,11 +788,12 @@ var skeletal = function (config) {
   var say = function (x) { return call(function () { return talk(x + "\n"); }); };
   var boneUI = { bar: bar, talk: talk, say: say };
   var threads = propOr(10, "threads", config);
+  var canceller = propOr(identity, "cancel", config);
   // CANCELLATION
   var isCancelled = false;
   var cancel = function () {
     isCancelled = true;
-    process.exit(1);
+    canceller();
   };
   // closured, for your safety
   var checkCancelled = function () { return isCancelled; };
@@ -641,11 +818,10 @@ var skeletal = function (config) {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     mapRej(function (ee) {
-      if (ee && ee.stack) { ee.stack = austereStack(ee.stack); }
       console.warn(("🤕 " + (nameVersion()) + " failed!"));
-      return ee
+      return austereStack(ee)
     })
   )(config)
 };
 
-export { austereStack, cutAfterString, deepfreeze, fork, name, skeletal, version };
+export { austereStack, boneDance, cutAfterStringAdjust, deepfreeze, fork, getPattern, name, skeletal, version };

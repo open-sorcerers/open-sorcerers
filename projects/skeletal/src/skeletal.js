@@ -1,4 +1,5 @@
 import {
+  identity as I,
   chain,
   cond,
   keys,
@@ -9,7 +10,7 @@ import {
   unless,
   curry
 } from "ramda"
-import { sideEffect } from "xtrace"
+import { trace, sideEffect } from "xtrace"
 import { mapRej, reject, resolve } from "fluture"
 import { registerPartial, registerHelper } from "handlebars"
 import { cosmiconfig } from "cosmiconfig"
@@ -30,48 +31,49 @@ const { NO_CONFIG } = STRINGS
 
 const hasNoConfig = propEq(NO_CONFIG, true)
 
-const getPattern = propOr(false, "pattern")
+export const getPattern = propOr(false, "pattern")
 
-const boneDance = curry((config, { patterns }, boneUI, ligament, configF) =>
-  pipe(
-    chain(
-      cond([
-        [
-          ligament.checkCancelled,
-          pipe(boneUI.say("Aborting..."), () => reject("Aborted"))
-        ],
-        [
-          hasNoConfig,
-          pipe(boneUI.say("No config found!"), () => {
-            const ns = propOr("skeletal", "namespace", config)
-            return reject(
-              `No config file found for namespace: "${ns}". Try "bone --init ${ns}"?`
-            )
-          })
-        ],
-        [
-          () => getPattern(config),
-          () => {
-            const which = getPattern(config)
-            return pipe(
-              boneUI.say(`Using "${which}" pattern...\n`),
-              prop(which),
-              chain(render(boneUI, ligament))
-            )(patterns)
-          }
-        ],
-        [
-          () => true,
-          () =>
-            resolve(
-              `🦴 ${nameVersion()} - Available patterns:\n\t- ${keys(
-                patterns
-              ).join("\n\t- ")}`
-            )
-        ]
-      ])
-    )
-  )(configF)
+export const boneDance = curry(
+  (config, { patterns }, boneUI, ligament, configF) =>
+    pipe(
+      chain(
+        cond([
+          /* [ */
+          /*   ligament.checkCancelled, */
+          /*   pipe(boneUI.say("Aborting..."), () => reject("Aborted")) */
+          /* ], */
+          [
+            hasNoConfig,
+            pipe(boneUI.say("No config found!"), () => {
+              const ns = propOr("skeletal", "namespace", config)
+              return reject(
+                `No config file found for namespace: "${ns}". Try "bone --init ${ns}"?`
+              )
+            })
+          ],
+          [
+            () => getPattern(config),
+            () => {
+              const which = getPattern(config)
+              return pipe(
+                boneUI.say(`Using "${which}" pattern...\n`),
+                prop(which),
+                chain(render(config, boneUI, ligament))
+              )(patterns)
+            }
+          ],
+          [
+            () => true,
+            () =>
+              resolve(
+                `🦴 ${nameVersion()} - Available patterns:\n\t- ${keys(
+                  patterns
+                ).join("\n\t- ")}`
+              )
+          ]
+        ])
+      )
+    )(configF)
 )
 
 export const skeletal = config => {
@@ -86,11 +88,12 @@ export const skeletal = config => {
   const say = x => sideEffect(() => talk(x + "\n"))
   const boneUI = { bar, talk, say }
   const threads = propOr(10, "threads", config)
+  const canceller = propOr(I, "cancel", config)
   // CANCELLATION
   let isCancelled = false
   const cancel = () => {
     isCancelled = true
-    process.exit(1)
+    canceller()
   }
   // closured, for your safety
   const checkCancelled = () => isCancelled
@@ -115,9 +118,8 @@ export const skeletal = config => {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     mapRej(ee => {
-      if (ee && ee.stack) ee.stack = austereStack(ee.stack)
       console.warn(`🤕 ${nameVersion()} failed!`)
-      return ee
+      return austereStack(ee)
     })
   )(config)
 }

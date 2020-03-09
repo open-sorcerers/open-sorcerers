@@ -7,13 +7,14 @@ var yargsParser = _interopDefault(require('yargs-parser'));
 var ramda = require('ramda');
 var fluture = require('fluture');
 var handlebars = require('handlebars');
+var handlebars__default = _interopDefault(handlebars);
 var cosmiconfig = require('cosmiconfig');
 var inquirer = require('inquirer');
-var kleur = require('kleur');
 var changeCase = require('change-case');
 var ensorcel = require('ensorcel');
 var torpor = require('torpor');
 var cleanStack = _interopDefault(require('clean-stack'));
+var kleur = require('kleur');
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -167,19 +168,16 @@ var segmentTrace = segment({
   effect: console.log
 });
 
-var logOnce = ramda.once(console.log);
-
 var talker = ramda.curry(function (conf, bar, text) {
-  if (conf.debug) { logOnce(kleur.cyan("DEBUG"), conf); }
   if (conf.silent) { return }
   var up = function (txt) {
     if (conf.verbose) { bar.log.write(txt); }
     bar.updateBottomBar(txt);
   };
-  if (typeof text === "string") {
-    up(text);
-  } else if (text.text) {
+  if (text && text.text) {
     up(text.text);
+  } else {
+    up(text);
   }
 });
 
@@ -197,16 +195,63 @@ var bakedIn = {
   snakeCase: changeCase.snakeCase
 };
 
-var bakeIn = call(function () { return ramda.pipe(
-    ramda.toPairs,
-    ramda.map(function (ref) {
-      var k = ref[0];
-      var v = ref[1];
+var enbaken = function (register) { return call(function () { return ramda.pipe(
+      ramda.toPairs,
+      ramda.map(function (ref) {
+        var k = ref[0];
+        var v = ref[1];
 
-      return handlebars.registerHelper(k, v);
-    })
-  )(bakedIn); }
+        return k && v && register(k, v);
+      })
+    )(bakedIn); }
+  ); };
+
+var bakeIn = enbaken(handlebars__default.registerHelper);
+
+/* import { trace } from "xtrace" */
+var freeze = Object.freeze;
+var own = function (z) { return Object.getOwnPropertyNames(z); };
+
+var deepfreeze = function (o) {
+  if (o === Object(o)) {
+    if (!Object.isFrozen(o)) { freeze(o); }
+    own(o).forEach(function (pp) {
+      if (pp !== "constructor") { deepfreeze(o[pp]); }
+    });
+  }
+  return o
+};
+
+var NM = "node_modules";
+
+var cutAfterStringAdjust = ramda.curry(function (alter, aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length + alter); }
 );
+
+var unwrap = ramda.replace(")", "");
+
+var austereStack = ramda.when(
+  function (e) { return e && e.stack; },
+  function (e) { return ramda.pipe(
+      ramda.prop("stack"),
+      function (ST) { return cleanStack(ST, { pretty: true }); },
+      ramda.split("\n"),
+      ramda.map(
+        ramda.pipe(
+          ramda.when(
+            ramda.includes(NM),
+            function (z) { return "    at " + ramda.pipe(cutAfterStringAdjust(1, NM), unwrap)(z); }
+          ),
+          ramda.when(ramda.includes(","), function (z) { return z.slice(0, z.indexOf(",")); })
+        )
+      ),
+      ramda.join("\n"),
+      function (stack) {
+        e.stack = stack;
+        return e
+      }
+    )(e); }
+);
+var fork = ensorcel.tacit(2, fluture.fork);
 
 var obj, obj$1;
 var UNSET = "%UNSET%";
@@ -233,44 +278,8 @@ var CLI_OPTIONS = Object.freeze({
   alias: ( obj$1 = {}, obj$1[STRINGS.debug] = ["d"], obj$1[STRINGS.force] = ["f"], obj$1[STRINGS.init] = ["I"], obj$1[STRINGS.namespace] = ["n"], obj$1[STRINGS.pattern] = ["p"], obj$1[STRINGS.silent] = ["s"], obj$1[STRINGS.threads] = ["t"], obj$1[STRINGS.verbose] = ["w"], obj$1 )
 });
 
-var freeze = Object.freeze;
-var own = function (z) { return Object.getOwnPropertyNames(z); };
-
-var deepfreeze = function (o) {
-  if (o === Object(o)) {
-    if (!Object.isFrozen(o)) { freeze(o); }
-    own(o).forEach(function (prop) {
-      if (prop !== "constructor") { deepfreeze(o[prop]); }
-    });
-  }
-  return o
-};
-
-var NM = "node_modules";
-
-var cutAfterString = ramda.curry(function (aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length); }
-);
-
-var unwrap = ramda.replace(")", "");
-
-var austereStack = ramda.when(
-  ramda.identity,
-  ramda.pipe(
-    ramda.split("\n"),
-    ramda.map(
-      ramda.when(
-        ramda.includes(NM),
-        /* z => "    at " + z.slice(z.indexOf(NM) + NM_LENGTH).replace(")", "") */
-        function (z) { return "    at " + ramda.pipe(cutAfterString(NM), unwrap)(z); }
-      )
-    ),
-    ramda.join("\n")
-  )
-);
-var fork = ensorcel.tacit(2, fluture.fork);
-
 var name = "skeletal";
-var version = "0.0.5-beta.2";
+var version = "0.0.5";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module$1 = "skeletal.mjs";
@@ -350,8 +359,8 @@ var error = ramda.curry(function (ns, message, data) {
   var e = new Error(message);
   e.name = name;
   e.data = data;
-  e.stack = ramda.pipe(function (ST) { return cleanStack(ST, { pretty: true }); }, austereStack)(e.stack);
   return e
+  /* return austereStack(e) */
 });
 var ERROR = deepfreeze({
   EXPECTED_NAME_AND_MORE: error(
@@ -364,14 +373,28 @@ var ERROR = deepfreeze({
   )
 });
 
-var processHandlebars = ramda.curry(function (boneUI, answers, templateFile, templateF) { return ramda.map(
-    ramda.pipe(
-      handlebars.compile,
-      boneUI.say("Processing handlebars..."),
-      function (fn) { return fn(answers); },
-      boneUI.say(("Converted " + templateFile))
-    )
-  )(templateF); }
+var processHandlebars = ramda.curry(
+  function (ligament, boneUI, answers, templateFile, templateF) {
+    var cancel = ramda.propOr(ramda.identity, "cancel", ligament);
+    return ramda.chain(
+      function (xxx) { return new fluture.Future(function (bad, good) {
+          ramda.pipe(
+            handlebars__default.compile,
+            boneUI.say("Processing handlebars..."),
+            function (fn) {
+              try {
+                return fn(answers)
+              } catch (ee) {
+                bad(austereStack(ee));
+              }
+            },
+            boneUI.say(("Converted " + templateFile)),
+            good
+          )(xxx);
+          return cancel
+        }); }
+    )(templateF)
+  }
 );
 
 var writeOutput = ramda.curry(function (flag, outputFile, processedHandlebarsF) { return ramda.chain(function (content) { return ramda.pipe(
@@ -385,38 +408,38 @@ var writeOutput = ramda.curry(function (flag, outputFile, processedHandlebarsF) 
 );
 
 var writeTemplate = ramda.curry(
-  function (boneUI, answers, flag, ref) {
+  function (ligament, boneUI, answers, flag, ref) {
       var type = ref[0];
       var templateFile = ref[1];
       var outputFile = ref[2];
 
-      return ramda.when(
+      return ramda.ifElse(
       function () { return ramda.equals(type, "add"); },
       ramda.pipe(
         boneUI.say(("Reading " + templateFile + "...")),
         torpor.readFile(templateFile),
-        processHandlebars(boneUI, answers, templateFile),
+        processHandlebars(ligament, boneUI, answers, templateFile),
         writeOutput(flag, outputFile)
-      )
+      ),
+      function () { return fluture.reject("Only add actions are currently supported"); }
     )("utf8");
 }
 );
 
 var templatizeActions = ramda.curry(function (answers, actions) { return ramda.map(
     ramda.map(
-      ramda.pipe(handlebars.compile, function (temp) {
+      ramda.pipe(handlebars__default.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
-          console.warn(ee);
-          process.exit(2);
+          throw austereStack(ee)
         }
       })
     )
   )(actions); }
 );
 
-var render = ramda.curry(function (boneUI, ligament, filled) {
+var render = ramda.curry(function (config, boneUI, ligament, filled) {
   var threads = ramda.propOr(10, "threads", ligament);
   var forceWrite = ramda.pathOr(false, ["config", "force"], ligament);
   var answers = filled.answers;
@@ -435,7 +458,7 @@ var render = ramda.curry(function (boneUI, ligament, filled) {
         ramda.ifElse(
           ramda.any(ramda.equals(UNSET)),
           ramda.pipe(ERROR.INCOMPLETE_ACTION, fluture.reject),
-          writeTemplate(boneUI, answers, flag)
+          writeTemplate(ligament, boneUI, answers, flag)
         )
       )
     ),
@@ -464,6 +487,124 @@ var saveKeyed = ramda.curry(function (struct, fn, input) {
   return ff
 });
 
+var getChoiceValue = ramda.when(
+  ramda.is(Object),
+  ramda.cond([
+    [ramda.propOr(false, "value"), ramda.prop("value")],
+    [ramda.propOr(false, "name"), ramda.prop("name")],
+    [ramda.propOr(false, "key"), ramda.prop("key")]
+  ])
+);
+
+var propIsString = ramda.propSatisfies(ramda.is(String));
+var casedEqual = ramda.curry(function (a, b) { return ramda.toLower(a) === ramda.toLower(b); });
+
+var choiceMatchesValue = ramda.curry(function (cx, ix, val) {
+  var cv = getChoiceValue(cx);
+  var matchesChoice = cv && casedEqual(cv, val);
+  /* const matchesKey = is(String, cx.key) && casedEqual(cx.key, val) */
+  /* const matchesName = is(String, cx.name) && casedEqual(cx.name, val) */
+  var matchesIndex = casedEqual(ix.toString(), val);
+  return matchesChoice || matchesIndex
+});
+
+var isFlag = ramda.curry(function (list, v) { return ramda.pipe(ramda.includes(ramda.toLower(v)))(list); });
+
+var flag = {
+  isTrue: isFlag(["yes", "y", "true", "t"]),
+  isFalse: isFlag(["no", "n", "false", "f"]),
+  isPrompt: function (vv) { return /^_+$/.test(vv); }
+};
+
+var listTypeBypass = ramda.curry(function (val, prompt) {
+  var choice = prompt.choices.find(function (cx, ix) { return choiceMatchesValue(cx, ix, val); }
+  );
+  if (!choice) { return getChoiceValue(choice) }
+  return new Error("Invalid choice")
+});
+var ifind = ramda.addIndex(ramda.find);
+
+var typeBypass = {
+  confirm: function (v) { return flag.isTrue(v)
+      ? true
+      : flag.isFalse(v)
+      ? false
+      : new Error("Invalid input"); },
+  checkbox: function (v, prompt) { return ramda.pipe(
+      ramda.split(","),
+      ramda.ifElse(
+        ramda.pipe(
+          ramda.filter(
+            function (vv) { return !prompt.choices.some(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }); }
+          ),
+          function (found) { return found.length !== 0; }
+        ),
+        function (xx) { return new Error(("No match for \"" + (xx.join('", "')) + "\"")); },
+        ramda.map(function (vv) { return ramda.pipe(
+            ifind(function (cx, ix) { return choiceMatchesValue(cx, ix, vv); }),
+            getChoiceValue
+          )(prompt.choices); }
+        )
+      )
+    )(v); },
+  list: listTypeBypass,
+  rawlist: listTypeBypass,
+  expand: listTypeBypass
+};
+
+var iforEach = ramda.addIndex(ramda.forEach);
+
+var bypass = ramda.curryN(2, function (prompts, arr) {
+  var noop = [prompts, {}];
+  var arrLength = ramda.length(arr);
+  if (!Array.isArray(prompts) || !Array.isArray(arr) || arrLength === 0) {
+    return noop
+  }
+  var inqPrompts = inquirer.prompt.prompts;
+  var answers = {};
+  var failures = [];
+
+  iforEach(function (pr, ix) {
+    if (ix >= arrLength) { return false }
+    var val = arr[ix].toString();
+    if (flag.isPrompt(val)) { return false }
+    if (ramda.is(Function, pr.when)) {
+      failures.push("You cannot bypass conditional prompts.");
+      return false
+    }
+    try {
+      var iq = ramda.propOr({}, pr.type, inqPrompts);
+      var bypassFn = pr.bypass || iq.bypass || typeBypass[pr.type];
+      var value = ramda.is(Function, bypassFn) ? bypassFn(val, pr) : val;
+      var answer = pr.filter ? pr.filter(value) : value;
+      if (pr.validate) {
+        var valid = pr.validate(value);
+        if (!valid) {
+          failures.push(new Error(("\"" + (pr.name) + "\" did not pass validation.")));
+          return false
+        }
+      }
+      answers[pr.name] = answer;
+    } catch (err) {
+      failures.push(
+        ("The \"" + (pr.name) + "\" prompt didn't recognize \"" + val + "\" as a valid " + (pr.type) + " value. (ERROR: " + (err.message) + ")")
+      );
+      return false
+    }
+  })(prompts);
+  var postBypassPrompts = ramda.map(
+    ramda.when(
+      function (x) { return !!answers[x.name]; },
+      function (x) { return ramda.mergeRight(x, { default: answers[x.name], when: false }); }
+    )
+  )(prompts);
+  if (failures.length > 0) {
+    throw new Error(failures[0])
+  } else {
+    return [postBypassPrompts, answers]
+  }
+});
+
 var getName = ramda.propOr(UNSET, "name");
 var getPrompts = ramda.propOr(UNSET, "prompts");
 var getActions = ramda.propOr(UNSET, "actions");
@@ -485,28 +626,53 @@ var validatePatternAndSubmit = ramda.curry(function (bad, good, raw) { return ra
     good
   )(raw); }
 );
-var pattern = ramda.curry(function (config, raw) {
-  var cancel = ramda.propOr(ramda.identity, "cancel", config);
+
+var reduceFutures = ramda.curry(function (fn, list) { return ramda.reduce(
+    function (left, right) { return ramda.chain(function (ll) { return ramda.map(fn(ll), right); }, left); },
+    fluture.resolve({})
+  )(list); }
+);
+var sequentialResolve = reduceFutures(ramda.mergeRight);
+
+var handleUnpromptedAnswers = ramda.curry(function (ligature, rawF) {
+  var answers = ramda.pathOr([], ["config", "_"], ligature);
+  return ramda.map(function (x) {
+    var givenPrompts = ramda.propOr([], "prompts", x);
+    var ref = bypass(givenPrompts, answers);
+    var prompts = ref[0];
+    var preAnswered = ref[1];
+    return ramda.mergeRight(x, {
+      prompts: prompts,
+      preAnswered: preAnswered
+    })
+  })(rawF)
+});
+
+var mergePreAnswers = ramda.curry(function (given, answers) { return ramda.mergeRight(given, {
+    answers: ramda.mergeRight(given.preAnswered ? given.preAnswered : {}, answers)
+  }); }
+);
+var pattern = ramda.curry(function (ligature, raw) {
+  var cancel = ramda.propOr(ramda.identity, "cancel", ligature);
   var willPrompt = ensorcel.futurizeWithCancel(cancel, 1, inquirer.prompt);
+  var build = function (xxx) { return new fluture.Future(function (bad, good) {
+      validatePatternAndSubmit(bad, good, xxx);
+      return cancel
+    }); };
+
   return [
     raw.name,
     ramda.pipe(
-      ramda.chain(function (futurePattern) { return ramda.pipe(
+      build,
+      handleUnpromptedAnswers(ligature),
+      ramda.chain(function (given) { return ramda.pipe(
           ramda.propOr([], "prompts"),
           ramda.map(willPrompt),
-          ramda.reduce(
-            function (left, right) { return ramda.chain(function (ll) { return ramda.map(ramda.mergeRight(ll), right); }, left); },
-            fluture.resolve({})
-          ),
-          ramda.map(function (answers) { return ramda.mergeRight(futurePattern, { answers: answers }); })
-        )(futurePattern); }
+          sequentialResolve,
+          ramda.map(mergePreAnswers(given))
+        )(given); }
       )
-    )(
-      new fluture.Future(function (bad, good) {
-        validatePatternAndSubmit(bad, good, raw);
-        return cancel
-      })
-    )
+    )(raw)
   ]
 });
 
@@ -518,7 +684,14 @@ var configure = ramda.curry(function (state, ligament, xxx) { return ramda.pipe(
 
       return (( obj = {}, obj[NO_CONFIG] = true, obj ));
     }, "config"),
-    function (z) { return z(ligament) || state.patterns; }
+    function (z) {
+      try {
+        var out = z(ligament);
+        return out && out[NO_CONFIG] ? out : state.patterns
+      } catch (err) {
+        throw austereStack(err)
+      }
+    }
   )(xxx); }
 );
 
@@ -543,15 +716,18 @@ var MADLIB = "// a 🦴 " + (nameAndVersion()) + " madlib\n\n{{name}} is a very 
 
 var initialBoneFile = function (config) {
   var ns = ramda.propOr("skeletal", "init", config);
+  var templatePath = ramda.propOr(
+    "templates/example-madlib.hbs",
+    "templatePath",
+    config
+  );
+  var outPath = ramda.propOr((ns + ".config.js"), "outPath", config);
   return ramda.pipe(
-    torpor.writeFile("templates/example-madlib.hbs", MADLIB),
-    ramda.chain(function () { return torpor.writeFile((ns + ".config.js"), INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }
-    ),
-    fluture.mapRej(
-      function () { return ("Unable to write file to " + ns + ".config.js, it may already exist?"); }
-    ),
+    torpor.writeFile(templatePath, MADLIB),
+    ramda.chain(function () { return torpor.writeFile(outPath, INITIAL_BONEFILE, UTF8_NO_OVERWRITE); }),
+    fluture.mapRej(function () { return ("Unable to write file to " + outPath + ", it may already exist?"); }),
     ramda.map(
-      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns : "") + " -p madlib' :)"); }
+      function () { return ("🦴 " + (nameVersion()) + " - Wrote initial config file to " + ns + ".config.js!\n\tRun 'bone " + (ns !== "skeletal" ? "-n " + ns + " " : "") + "-p madlib' :)"); }
     )
   )({ format: "utf8", flag: "w" })
 };
@@ -562,47 +738,48 @@ var hasNoConfig = ramda.propEq(NO_CONFIG$1, true);
 
 var getPattern = ramda.propOr(false, "pattern");
 
-var boneDance = ramda.curry(function (config, ref, boneUI, ligament, configF) {
-    var patterns = ref.patterns;
+var boneDance = ramda.curry(
+  function (config, ref, boneUI, ligament, configF) {
+      var patterns = ref.patterns;
 
-    return ramda.pipe(
-    ramda.chain(
-      ramda.cond([
-        [
-          ligament.checkCancelled,
-          ramda.pipe(boneUI.say("Aborting..."), function () { return fluture.reject("Aborted"); })
-        ],
-        [
-          hasNoConfig,
-          ramda.pipe(boneUI.say("No config found!"), function () {
-            var ns = ramda.propOr("skeletal", "namespace", config);
-            return fluture.reject(
-              ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
-            )
-          })
-        ],
-        [
-          function () { return getPattern(config); },
-          function () {
-            var which = getPattern(config);
-            return ramda.pipe(
-              boneUI.say(("Using \"" + which + "\" pattern...\n")),
-              ramda.prop(which),
-              ramda.chain(render(boneUI, ligament))
-            )(patterns)
-          }
-        ],
-        [
-          function () { return true; },
-          function () { return fluture.resolve(
-              ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (ramda.keys(
-                patterns
-              ).join("\n\t- ")))
-            ); }
-        ]
-      ])
-    )
-  )(configF);
+      return ramda.pipe(
+      ramda.chain(
+        ramda.cond([
+          [
+            ligament.checkCancelled,
+            ramda.pipe(boneUI.say("Aborting..."), function () { return fluture.reject("Aborted"); })
+          ],
+          [
+            hasNoConfig,
+            ramda.pipe(boneUI.say("No config found!"), function () {
+              var ns = ramda.propOr("skeletal", "namespace", config);
+              return fluture.reject(
+                ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
+              )
+            })
+          ],
+          [
+            function () { return getPattern(config); },
+            function () {
+              var which = getPattern(config);
+              return ramda.pipe(
+                boneUI.say(("Using \"" + which + "\" pattern...\n")),
+                ramda.prop(which),
+                ramda.chain(render(config, boneUI, ligament))
+              )(patterns)
+            }
+          ],
+          [
+            function () { return true; },
+            function () { return fluture.resolve(
+                ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (ramda.keys(
+                  patterns
+                ).join("\n\t- ")))
+              ); }
+          ]
+        ])
+      )
+    )(configF);
 }
 );
 
@@ -618,11 +795,12 @@ var skeletal = function (config) {
   var say = function (x) { return call(function () { return talk(x + "\n"); }); };
   var boneUI = { bar: bar, talk: talk, say: say };
   var threads = ramda.propOr(10, "threads", config);
+  var canceller = ramda.propOr(ramda.identity, "cancel", config);
   // CANCELLATION
   var isCancelled = false;
   var cancel = function () {
     isCancelled = true;
-    process.exit(1);
+    canceller();
   };
   // closured, for your safety
   var checkCancelled = function () { return isCancelled; };
@@ -647,9 +825,8 @@ var skeletal = function (config) {
     bakeIn,
     boneDance(config, state, boneUI, ligament),
     fluture.mapRej(function (ee) {
-      if (ee && ee.stack) { ee.stack = austereStack(ee.stack); }
       console.warn(("🤕 " + (nameVersion()) + " failed!"));
-      return ee
+      return austereStack(ee)
     })
   )(config)
 };
@@ -660,12 +837,7 @@ ramda.pipe(
   skeletal,
   fork(
     function (e) {
-      if (e && e.stack) {
-        e.stack = austereStack(e.stack);
-        console.warn(e.stack);
-      } else {
-        console.warn(e);
-      }
+      ramda.pipe(austereStack, console.warn)(e);
       process.exit(1);
     },
     function (out) {

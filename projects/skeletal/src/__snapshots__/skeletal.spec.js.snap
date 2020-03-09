@@ -1,10 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`skeletal - basic 1`] = `
-Array [
-  "cancel",
-  "checkCancelled",
-  "config",
-  "pattern",
-]
+"🦴 [1mskeletal0.0.5[22m - Available patterns:
+	- one
+	- two
+	- madlib"
+`;
+
+exports[`skeletal - pattern 1`] = `
+"🦴 [1mskeletal0.0.5[22m - bone-setting complete!
+	- Generated one.output"
 `;

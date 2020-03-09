@@ -1,5 +1,5 @@
-import { sideEffect } from "xtrace"
-import { registerHelper } from "handlebars"
+import { trace, sideEffect } from "xtrace"
+import bars from "handlebars"
 import { pipe, toPairs, map } from "ramda"
 import {
   capitalCase,
@@ -15,7 +15,7 @@ import {
   snakeCase
 } from "change-case"
 
-const bakedIn = {
+export const bakedIn = {
   capitalCase,
   constantCase,
   camelCase,
@@ -29,9 +29,12 @@ const bakedIn = {
   snakeCase
 }
 
-export const bakeIn = sideEffect(() =>
-  pipe(
-    toPairs,
-    map(([k, v]) => registerHelper(k, v))
-  )(bakedIn)
-)
+export const enbaken = register =>
+  sideEffect(() =>
+    pipe(
+      toPairs,
+      map(([k, v]) => k && v && register(k, v))
+    )(bakedIn)
+  )
+
+export const bakeIn = enbaken(bars.registerHelper.bind(bars))

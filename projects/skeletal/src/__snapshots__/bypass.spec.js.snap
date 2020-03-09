@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bypass - advanced path - bypass 1`] = `"yours"`;
+
+exports[`bypass - advanced path - bypass 2`] = `
+Object {
+  "bypass": [Function],
+  "message": "(pro)noun?",
+  "name": "noun",
+  "type": "input",
+}
+`;

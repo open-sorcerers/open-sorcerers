@@ -1,4 +1,5 @@
 import {
+  pathOr,
   propOr,
   curry,
   ap,
@@ -12,18 +13,19 @@ import {
   mergeRight,
   identity as I
 } from "ramda"
-/* import { trace } from "xtrace" */
+import { trace, sideEffect } from "xtrace"
 import { prompt } from "inquirer"
 import { box, futurizeWithCancel } from "ensorcel"
 import { Future, resolve } from "fluture"
 import { UNSET } from "./constants"
 import { ERROR } from "./errors"
+import { bypass } from "./bypass"
 
-const getName = propOr(UNSET, "name")
-const getPrompts = propOr(UNSET, "prompts")
-const getActions = propOr(UNSET, "actions")
+export const getName = propOr(UNSET, "name")
+export const getPrompts = propOr(UNSET, "prompts")
+export const getActions = propOr(UNSET, "actions")
 
-const validatePatternAndSubmit = curry((bad, good, raw) =>
+export const validatePatternAndSubmit = curry((bad, good, raw) =>
   pipe(
     box,
     ap([getName, getPrompts, getActions]),
@@ -35,28 +37,54 @@ const validatePatternAndSubmit = curry((bad, good, raw) =>
     good
   )(raw)
 )
-export const pattern = curry((config, raw) => {
-  const cancel = propOr(I, "cancel", config)
+
+export const reduceFutures = curry((fn, list) =>
+  reduce(
+    (left, right) => chain(ll => map(fn(ll), right), left),
+    resolve({})
+  )(list)
+)
+export const sequentialResolve = reduceFutures(mergeRight)
+
+export const handleUnpromptedAnswers = curry((ligature, rawF) => {
+  const answers = pathOr([], ["config", "_"], ligature)
+  return map(x => {
+    const givenPrompts = propOr([], "prompts", x)
+    const [prompts, preAnswered] = bypass(givenPrompts, answers)
+    return mergeRight(x, {
+      prompts,
+      preAnswered
+    })
+  })(rawF)
+})
+
+export const mergePreAnswers = curry((given, answers) =>
+  mergeRight(given, {
+    answers: mergeRight(given.preAnswered ? given.preAnswered : {}, answers)
+  })
+)
+export const pattern = curry((ligature, raw) => {
+  const cancel = propOr(I, "cancel", ligature)
   const willPrompt = futurizeWithCancel(cancel, 1, prompt)
+  const build = xxx =>
+    new Future((bad, good) => {
+      validatePatternAndSubmit(bad, good, xxx)
+      return cancel
+    })
+
   return [
     raw.name,
     pipe(
-      chain(futurePattern =>
+      build,
+      handleUnpromptedAnswers(ligature),
+      chain(given =>
         pipe(
           propOr([], "prompts"),
           map(willPrompt),
-          reduce(
-            (left, right) => chain(ll => map(mergeRight(ll), right), left),
-            resolve({})
-          ),
-          map(answers => mergeRight(futurePattern, { answers }))
-        )(futurePattern)
+          sequentialResolve,
+          map(mergePreAnswers(given))
+        )(given)
       )
-    )(
-      new Future((bad, good) => {
-        validatePatternAndSubmit(bad, good, raw)
-        return cancel
-      })
-    )
+    )(raw)
   ]
 })

@@ -3,7 +3,6 @@ import {
   forEach,
   addIndex,
   find,
-  lt,
   cond,
   curry,
   mergeRight,
@@ -13,7 +12,6 @@ import {
   is,
   length,
   map,
-  pipe,
   prop,
   propOr,
   propSatisfies,
@@ -23,6 +21,7 @@ import {
 } from "ramda"
 import { prompt as inquirerPrompt } from "inquirer"
 import { trace } from "xtrace"
+import { pipe } from "./utils"
 
 export const getChoiceValue = when(
   is(Object),

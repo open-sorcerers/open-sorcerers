@@ -1,6 +1,5 @@
 import {
   identity as I,
-  when,
   propOr,
   pathOr,
   join,
@@ -9,7 +8,6 @@ import {
   ifElse,
   any,
   curry,
-  pipe,
   map,
   chain,
   __ as $
@@ -18,9 +16,9 @@ import { box } from "ensorcel"
 import { reject, mapRej, Future, parallel } from "fluture"
 import { readFile, writeFile } from "torpor"
 import handlebars from "handlebars"
-import { trace } from "xtrace"
+/* import { trace } from "xtrace" */
 
-import { austereStack } from "./utils"
+import { pipe, austereStack } from "./utils"
 import { UNSET } from "./constants"
 import { ERROR } from "./errors"
 import { nameVersion } from "./instance"

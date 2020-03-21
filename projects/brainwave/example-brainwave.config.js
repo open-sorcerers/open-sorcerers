@@ -28,6 +28,7 @@ module.exports = () => ({
     ]
   },
   telepathy: {
-    learnPages: R.propEq("menu", "learn")
+    learnPages: R.propEq("menu", "learn"),
+    authors: x => x && x.author
   }
 })

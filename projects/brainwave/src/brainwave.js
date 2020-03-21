@@ -1,11 +1,11 @@
 import path from "path"
 import {
+  prop,
   is,
   curryN,
   when,
   __ as $,
   reduce,
-  keys,
   values,
   mergeRight,
   fromPairs,
@@ -20,12 +20,11 @@ import {
 } from "ramda"
 import { parallel, Future } from "fluture"
 import { writeFile } from "torpor"
-/* import { trace } from "xtrace" */
 import { cosmiconfig as cosmic } from "cosmiconfig"
 import { box, smooth, futurizeWithCancel } from "ensorcel"
 import { safeDump as yamlize } from "js-yaml"
 
-import { fork, globWithCancel } from "./utils"
+import { stringInString, fork, globWithCancel } from "./utils"
 
 import {
   INIT,
@@ -40,20 +39,22 @@ import {
   MC,
   NS,
   RT,
-  TK
+  TK,
+  GLOB
 } from "./constants"
 import { consumeData } from "./consumers"
 
-const joint = curry((xx, aa, bb) => aa + xx + bb)
+const joint = curry((xx, aa, bb) => path.join(aa, xx + "." + bb))
 
 const toYAML = curryN(2, yamlize)
 
-export const findBrainsRelativeTo = curry((cancel, basePath, fileTypes) =>
-  pipe(
-    joint("/**/*.", basePath),
-    globWithCancel(cancel),
-    chain(consumeData)
-  )(fileTypes)
+export const findBrainsRelativeTo = curry(
+  (cancel, basePath, lookup, fileTypes) =>
+    pipe(
+      joint(lookup, basePath),
+      globWithCancel(cancel),
+      chain(consumeData)
+    )(fileTypes)
 )
 
 const ERRORS = Object.freeze({
@@ -105,22 +106,24 @@ const runTelepathy = curry(
 
 const NO_CHANGE = `NO_CHANGE`
 
-const mindMapper = curry((conditions, mind) =>
-  reduce(
-    (agg, [kk, [pred, trans]]) => {
-      const changed = ifElse(pred, trans, () => NO_CHANGE)(mind)
-      const hasChanged = changed !== NO_CHANGE
-      if (!hasChanged) return agg
-      const matched = agg.matched.concat(kk)
-      const transformed = mergeRight(agg.transformed, changed)
-      return {
-        transformed,
-        matched
-      }
-    },
-    { transformed: {}, matched: [] },
-    conditions
-  )
+const mindMapper = curry((brains, conditions) =>
+  map(mind =>
+    reduce(
+      (agg, [kk, [pred, trans]]) => {
+        const changed = ifElse(pred, trans, () => NO_CHANGE)(mind)
+        const hasChanged = changed !== NO_CHANGE
+        if (!hasChanged) return agg
+        const matched = agg.matched.concat(kk)
+        const transformed = mergeRight(agg.transformed, changed)
+        return {
+          transformed,
+          matched
+        }
+      },
+      { transformed: {}, matched: [] },
+      conditions
+    )
+  )(brains)
 )
 
 const runMindControl = curry(
@@ -136,7 +139,7 @@ const runMindControl = curry(
         pipe(
           toPairs,
           // cond short-circuits, so we are gonna use when + reduce instead
-          conditions => map(mindMapper(conditions), brains),
+          mindMapper(brains), // conditions => map(mindMapper(conditions), brains),
           control => ({ control, brains, telepathy: tk }),
           good
         )(ct)
@@ -152,10 +155,11 @@ const search = curry((cancellationPolicy, config, network) => {
   const control = propOr(null, MC, network)
   const telepathy = propOr(null, TK, network)
   const basePath = propOr(process.cwd(), RT, config)
-  const getFileTypes = propOr("{mdx}", FT)
+  const lookup = propOr(path.join("**", "*"), GLOB, config)
+  const getFileTypes = propOr("{md,mdx}", FT)
   return pipe(
     getFileTypes,
-    findBrainsRelativeTo(cancellationPolicy.cancel, basePath),
+    findBrainsRelativeTo(cancellationPolicy.cancel, basePath, lookup),
     map(brains => ({ brains, control, telepathy })),
     chain(runTelepathy(cancellationPolicy)),
     chain(runMindControl(cancellationPolicy))
@@ -163,13 +167,18 @@ const search = curry((cancellationPolicy, config, network) => {
 })
 
 export const psychic = curry(
-  ({ isCancelled, cancel, loadOrSearch }, bad, config) =>
-    pipe(
-      propOr(false, CF),
-      loadOrSearch,
-      map(generateNeuralNetwork(bad)),
-      chain(search({ isCancelled, cancel }, config))
-    )(config)
+  ({ isCancelled, cancel, loadOrSearch }, bad, config) => {
+    try {
+      return pipe(
+        propOr(false, CF),
+        loadOrSearch,
+        map(generateNeuralNetwork(bad)),
+        chain(search({ isCancelled, cancel }, config))
+      )(config)
+    } catch (e) {
+      bad(e)
+    }
+  }
 )
 
 export const telepath = curry((cancellationPolicy, bad, config) =>
@@ -217,9 +226,21 @@ export const reyaml = curry(
     tripleDash +
     content
 )
+const mapKeys = fn =>
+  pipe(
+    toPairs,
+    map(([k, v]) => [fn(k), v]),
+    fromPairs
+  )
 
-const relativize = x =>
-  x.substr(path.resolve(x, process.cwd()).length, Infinity)
+const relativize = x => {
+  const ind = path.resolve(x, process.cwd())
+  if (x && x.substr) {
+    if (!stringInString(ind, x)) return x
+    return x.substr(ind.length, Infinity)
+  }
+  return mapKeys(relativize)(x)
+}
 
 export const runTransformationWithWriter = curry((writer, config, xxx) =>
   pipe(
@@ -245,12 +266,16 @@ export const runTransformationWithWriter = curry((writer, config, xxx) =>
 
 export const runTransformation = runTransformationWithWriter(writeFile)
 
+const relativeKeys = curry((config, obj) =>
+  when(propOr(false, RP), () => map(relativize)(obj))(config)
+)
+
 const printOut = curry((config, xxx) =>
   map(
     pipe(
       ifElse(
         () => config.telepathy,
-        pipe(map(map(relativize)), x =>
+        pipe(relativeKeys(config), x =>
           toYAML(x, config.yamlOpts || DEFAULT_YAML_OPTS)
         ),
         pipe(
@@ -273,8 +298,11 @@ const printOut = curry((config, xxx) =>
   )(xxx)
 )
 
+/* istanbul ignore next */
 export const makeDefaultBrainwaveConfig = () =>
+  /* istanbul ignore next */
   writeFile(
+    /* istanbul ignore next */
     path.resolve(process.cwd(), "brainwave.config.js"),
     `module.exports = {
   // telepathy specifies function predicates to run against the codebase 
@@ -304,7 +332,9 @@ export const makeDefaultBrainwaveConfig = () =>
 export const brainwave = config => {
   const ccf = propOr("brainwave", NS, config)
   const initialize = propOr(false, INIT, config)
+  /* istanbul ignore if */
   if (initialize)
+    /* istanbul ignore next */
     return pipe(
       makeDefaultBrainwaveConfig,
       map(z =>
@@ -331,7 +361,7 @@ export const brainwave = config => {
       mindControl(bad),
       ifElse(
         () => telepathyOnly,
-        map(({ telepathy }) => map(keys)(telepathy)),
+        map(pipe(prop("telepathy"))),
         structureTransformation
       ),
       ifElse(

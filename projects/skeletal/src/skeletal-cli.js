@@ -1,21 +1,28 @@
 import yargsParser from "yargs-parser"
-import { pipe, slice } from "ramda"
+import { fork as rawFork } from "fluture"
+import { slice, map } from "ramda"
+import { trace } from "xtrace"
 import { skeletal } from "./skeletal"
 import { CLI_OPTIONS } from "./constants"
-import { austereStack, fork } from "./utils"
+import { pipe, fork } from "./utils"
 
-pipe(
-  slice(2, Infinity),
-  z => yargsParser(z, CLI_OPTIONS),
-  skeletal,
-  fork(
-    e => {
-      pipe(austereStack, console.warn)(e)
+function bonedance(xxx) {
+  setTimeout(() => {
+    console.warn("Never finished!")
+    process.exit(3)
+  }, 10e3)
+  return pipe(
+    slice(2, Infinity),
+    z => yargsParser(z, CLI_OPTIONS),
+    skeletal,
+    rawFork(e => {
+      console.warn("crap!", e)
       process.exit(1)
-    },
-    out => {
-      console.log(out)
+    })(out => {
+      console.log("done!", out)
       process.exit(0)
-    }
-  )
-)(process.argv)
+    })
+  )(xxx)
+}
+
+bonedance(process.argv)

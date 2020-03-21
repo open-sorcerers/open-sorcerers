@@ -1,5 +1,7 @@
-import { cosmicConfigurate, configure } from "./configure"
 import { once } from "ramda"
+import { isFuture, resolve } from "fluture"
+import { cosmicConfigurate, configure } from "./configure"
+import { fork } from "./utils"
 
 test("cosmicConfigurate", () => {
   expect(!!cosmicConfigurate).toBeTruthy()
@@ -7,27 +9,54 @@ test("cosmicConfigurate", () => {
 test("configure", done => {
   expect(!!configure).toBeTruthy()
   const state = { patterns: "yes" }
-  const ligament = { ligagwing: true }
+  const ligament = { ligagwing: true, cancel: function cancelllllllll() {} }
   const input = consumed => {
     expect(consumed).toEqual(ligament)
-    setTimeout(() => done(), 10)
   }
-  const out = configure(state, ligament, { config: input })
-  expect(out).toEqual(state.patterns)
+  const out = configure(state, ligament, resolve({ config: input }))
+  expect(isFuture(out)).toBeTruthy()
+  fork(
+    done,
+    xxx => {
+      expect(xxx).toEqual(state.patterns)
+      done()
+    },
+    out
+  )
 })
 
 test("configure - no config", done => {
   const state = { patterns: "yes" }
-  const ligament = { noConfig: true }
-  const dunce = once(done)
-  const out = configure(state, ligament, {})
-  expect(out).toEqual({ noConfig: true })
-  setTimeout(() => dunce(), 10)
+  const ligament = { noConfig: true, cancel: function cancelllllllll() {} }
+  fork(
+    done,
+    out => {
+      expect(out).toEqual({ noConfig: true })
+      done()
+    },
+    configure(state, ligament, resolve({}))
+  )
 })
 
-test("configure - broken config", () => {
+test("configure - broken config", done => {
   const config = () => {
     throw new Error("shit")
   }
-  expect(() => configure("state", "ligament", { config })).toThrow()
+  const confF = configure(
+    "state",
+    { cancel: function cancellllelellele() {} },
+    resolve({ config })
+  )
+  fork(
+    err => {
+      console.log("ERR", err)
+      expect(err.message).toEqual("?")
+      done()
+    },
+    out => {
+      console.log("OPUT", out)
+      done()
+    },
+    confF
+  )
 })

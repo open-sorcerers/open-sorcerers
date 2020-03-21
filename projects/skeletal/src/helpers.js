@@ -1,6 +1,6 @@
-import { trace, sideEffect } from "xtrace"
+import { sideEffect } from "xtrace"
 import bars from "handlebars"
-import { pipe, toPairs, map } from "ramda"
+import { toPairs, map } from "ramda"
 import {
   capitalCase,
   constantCase,
@@ -14,6 +14,7 @@ import {
   sentenceCase,
   snakeCase
 } from "change-case"
+import { pipe } from "./utils"
 
 export const bakedIn = {
   capitalCase,

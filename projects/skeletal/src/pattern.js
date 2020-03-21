@@ -5,7 +5,6 @@ import {
   ap,
   ifElse,
   any,
-  pipe,
   equals,
   chain,
   map,
@@ -13,10 +12,11 @@ import {
   mergeRight,
   identity as I
 } from "ramda"
-import { trace, sideEffect } from "xtrace"
+/* import { trace, sideEffect } from "xtrace" */
 import { prompt } from "inquirer"
 import { box, futurizeWithCancel } from "ensorcel"
 import { Future, resolve } from "fluture"
+import { pipe } from "./utils"
 import { UNSET } from "./constants"
 import { ERROR } from "./errors"
 import { bypass } from "./bypass"

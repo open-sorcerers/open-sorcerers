@@ -1,17 +1,16 @@
-import { curry as curry$1, replace, when, pipe as pipe$1, prop as prop$1, split, map, includes, join, toPairs, propOr, identity, chain, __, ifElse, equals, pathOr, ap, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, propEq, keys as keys$1, unless } from 'ramda';
-export { pipe } from 'ramda';
+import { curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, propOr, identity, chain, __, ifElse, equals, pathOr, ap, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, propEq, keys as keys$1, unless } from 'ramda';
 import { fork as fork$1, Future, mapRej, reject, parallel, resolve } from 'fluture';
-import bars, { registerPartial, registerHelper } from 'handlebars';
+import handlebars, { registerPartial, registerHelper } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
 import { capitalCase, constantCase, camelCase, dotCase, headerCase, noCase, paramCase, pascalCase, pathCase, sentenceCase, snakeCase } from 'change-case';
 import { tacit, box, futurizeWithCancel } from 'ensorcel';
-import cleanStack from 'clean-stack';
 import { writeFile, readFile } from 'torpor';
+import cleanStack from 'clean-stack';
 import { bold } from 'kleur';
 
 var name = "skeletal";
-var version = "0.0.6";
+var version = "0.0.5";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";
@@ -67,9 +66,6 @@ var files = [
 	"skeletal.mjs",
 	"bone-cli.js"
 ];
-var scripts = {
-	prepublish: "nps build"
-};
 var PKG = {
 	name: name,
 	version: version,
@@ -83,8 +79,7 @@ var PKG = {
 	license: license,
 	devDependencies: devDependencies,
 	dependencies: dependencies,
-	files: files,
-	scripts: scripts
+	files: files
 };
 
 var PLACEHOLDER = "🍛";
@@ -252,6 +247,34 @@ var talker = curry$1(function (conf, bar, text) {
   }
 });
 
+var bakedIn = {
+  capitalCase: capitalCase,
+  constantCase: constantCase,
+  camelCase: camelCase,
+  dotCase: dotCase,
+  headerCase: headerCase,
+  noCase: noCase,
+  paramCase: paramCase,
+  pascalCase: pascalCase,
+  pathCase: pathCase,
+  sentenceCase: sentenceCase,
+  snakeCase: snakeCase
+};
+
+var enbaken = function (register) { return call(function () { return pipe$1(
+      toPairs,
+      map(function (ref) {
+        var k = ref[0];
+        var v = ref[1];
+
+        return k && v && register(k, v);
+      })
+    )(bakedIn); }
+  ); };
+
+var bakeIn = enbaken(handlebars.registerHelper);
+
+/* import { trace } from "xtrace" */
 var freeze = Object.freeze;
 var own = function (z) { return Object.getOwnPropertyNames(z); };
 
@@ -269,41 +292,6 @@ var NM = "node_modules";
 
 var cutAfterStringAdjust = curry$1(function (alter, aa, bb) { return bb.slice(bb.indexOf(aa) + aa.length + alter); }
 );
-
-/*
-export function neupipe() {
-  let args = [].slice.call(arguments)
-
-  const magicHelp = f => f && typeof f === "string" && f.includes("help")
-  const logStuff = args.find(magicHelp)
-  if (logStuff) {
-    const name = logStuff.split(":")[1] || "x "
-
-    args = reduce(
-      (agg, next) => ({
-        count: agg.count + 1,
-        args: agg.args.concat([
-          z =>
-            isFuture(z)
-              ? map(trace(name + agg.count), z)
-              : trace(name + agg.count, z),
-          next
-        ])
-      }),
-      { count: 0, args: [] },
-      reject(magicHelp, args)
-    )
-    args = args.args
-  }
-  const notAFunction = args.find(f => typeof f !== "function")
-  if (notAFunction) {
-    throw new TypeError(
-      "pipe: " + toString(notAFunction) + " is not a function."
-    )
-  }
-  return rawPipe(...args)
-}
-*/
 
 var unwrap = replace(")", "");
 
@@ -330,33 +318,6 @@ var austereStack = when(
     )(e); }
 );
 var fork = tacit(2, fork$1);
-
-var bakedIn = {
-  capitalCase: capitalCase,
-  constantCase: constantCase,
-  camelCase: camelCase,
-  dotCase: dotCase,
-  headerCase: headerCase,
-  noCase: noCase,
-  paramCase: paramCase,
-  pascalCase: pascalCase,
-  pathCase: pathCase,
-  sentenceCase: sentenceCase,
-  snakeCase: snakeCase
-};
-
-var enbaken = function (register) { return call(function () { return pipe$1(
-      toPairs,
-      map(function (ref) {
-        var k = ref[0];
-        var v = ref[1];
-
-        return k && v && register(k, v);
-      })
-    )(bakedIn); }
-  ); };
-
-var bakeIn = enbaken(bars.registerHelper.bind(bars));
 
 var obj, obj$1;
 var UNSET = "%UNSET%";
@@ -411,7 +372,7 @@ var processHandlebars = curry$1(
     return chain(
       function (xxx) { return new Future(function (bad, good) {
           pipe$1(
-            bars.compile,
+            handlebars.compile,
             boneUI.say("Processing handlebars..."),
             function (fn) {
               try {
@@ -460,7 +421,7 @@ var writeTemplate = curry$1(
 
 var templatizeActions = curry$1(function (answers, actions) { return map(
     map(
-      pipe$1(bars.compile, function (temp) {
+      pipe$1(handlebars.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
@@ -710,57 +671,32 @@ var pattern = curry$1(function (ligature, raw) {
 
 var NO_CONFIG = STRINGS.NO_CONFIG;
 
-var configure = curry$1(function (state, ligament, xxx) {
-  var cancel = propOr(identity, "cancel", ligament || {});
-  var pass = curry$1(function (bad, good, input) { return pipe$1(
-      propOr(function () {
-        var obj;
+var configure = curry$1(function (state, ligament, xxx) { return pipe$1(
+    propOr(function () {
+      var obj;
 
-        return (( obj = {}, obj[NO_CONFIG] = true, obj ));
-      }, "config"),
-      function (fn) { return function (lig) {
-        try {
-          return fn(lig)
-        } catch (e) {
-          pipe$1(austereStack, bad)(e);
-        }
-      }; },
-      function (z) {
-        try {
-          var out = z(ligament);
-          var result = out && out[NO_CONFIG] ? out : state.patterns;
-          return result
-        } catch (e) {
-          pipe$1(austereStack, bad)(e);
-        }
-      },
-      good
-    )(input); }
-  );
-  return chain(
-    function (yyy) { return new Future(function (bad, good) {
-        pass(bad, good, yyy);
-        return cancel
-      }); },
-    xxx
-  )
-});
+      return (( obj = {}, obj[NO_CONFIG] = true, obj ));
+    }, "config"),
+    function (z) {
+      try {
+        var out = z(ligament);
+        return out && out[NO_CONFIG] ? out : state.patterns
+      } catch (err) {
+        throw austereStack(err)
+      }
+    }
+  )(xxx); }
+);
 
 var cosmicConfigurate = curry$1(function (state, boneUI, ligament, cosmic) {
   var cancel = propOr(identity, "cancel", ligament);
-  console.log("COSMISISISISIS", cosmic);
   var futurize = futurizeWithCancel(cancel);
   var cosmicLoad = futurize(1, cosmic.load);
   var cosmicSearch = futurize(0, cosmic.search);
   return pipe$1(
-    trace("inputtttt"),
-    ifElse(
-      pathOr(false, ["config", "configFile"]),
-      cosmicLoad,
-      function () { return console.log("searching...") || cosmicSearch(); }
+    ifElse(pathOr(false, ["config", "configFile"]), cosmicLoad, function () { return cosmicSearch(); }
     ),
-    configure(state, ligament),
-    trace("out...")
+    map(configure(state, ligament))
   )(ligament)
 });
 
@@ -795,29 +731,25 @@ var hasNoConfig = propEq(NO_CONFIG$1, true);
 
 var getPattern = propOr(false, "pattern");
 
-var boneDance = curry$1(function (ref, boneUI, ligament, configF) {
-  var patterns = ref.patterns;
+var boneDance = curry$1(
+  function (config, ref, boneUI, ligament, configF) {
+      var patterns = ref.patterns;
 
-  console.log("WELCOME TO THE BONE ZONE, MANTZOUKAS");
-  var config = propOr({}, "config", ligament);
-  return chain(
-    function (xxx) { return console.log("chain gang", xxx) ||
-      new Future(function (bad, good) {
+      return pipe$1(
+      chain(
         cond([
-          /* [ */
-          /*   ligament.checkCancelled, */
-          /*   pipe(boneUI.say("Aborting..."), () => reject("Aborted")) */
-          /* ], */
+          [
+            ligament.checkCancelled,
+            pipe$1(boneUI.say("Aborting..."), function () { return reject("Aborted"); })
+          ],
           [
             hasNoConfig,
-            pipe$1(
-              boneUI.say("No config found!"),
-              function () {
-                var ns = propOr("skeletal", "namespace", config);
-                return ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
-              },
-              bad
-            )
+            pipe$1(boneUI.say("No config found!"), function () {
+              var ns = propOr("skeletal", "namespace", config);
+              return reject(
+                ("No config file found for namespace: \"" + ns + "\". Try \"bone --init " + ns + "\"?")
+              )
+            })
           ],
           [
             function () { return getPattern(config); },
@@ -826,25 +758,23 @@ var boneDance = curry$1(function (ref, boneUI, ligament, configF) {
               return pipe$1(
                 boneUI.say(("Using \"" + which + "\" pattern...\n")),
                 prop$1(which),
-                chain(render(config, boneUI, ligament)),
-                good
+                chain(render(config, boneUI, ligament))
               )(patterns)
             }
           ],
           [
             function () { return true; },
-            function () { return good(
+            function () { return resolve(
                 ("🦴 " + (nameVersion()) + " - Available patterns:\n\t- " + (keys$1(
                   patterns
                 ).join("\n\t- ")))
               ); }
           ]
-        ])(xxx);
-        return ligament.cancel
-      }); },
-    configF
-  )
-});
+        ])
+      )
+    )(configF);
+}
+);
 
 var skeletal = function (config) {
   var init = propOr(false, "init", config);
@@ -885,11 +815,8 @@ var skeletal = function (config) {
     propOr("skeletal", "namespace"),
     cosmiconfig,
     cancellable(cosmicConfigurate(state, boneUI, ligament)),
-    trace("configuration!"),
     bakeIn,
-    trace("🥓?"),
-    boneDance(state, boneUI, ligament),
-    trace("👯‍♂️"),
+    boneDance(config, state, boneUI, ligament),
     mapRej(function (ee) {
       console.warn(("🤕 " + (nameVersion()) + " failed!"));
       return austereStack(ee)

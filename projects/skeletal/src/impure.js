@@ -1,6 +1,5 @@
-import { curry } from "ramda"
+import { curry, pipe } from "ramda"
 import { sideEffect } from "xtrace"
-import { pipe } from "./utils"
 
 export const pushInto = curry((into, fn) =>
   pipe(

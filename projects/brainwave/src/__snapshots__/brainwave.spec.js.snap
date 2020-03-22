@@ -11,10 +11,8 @@ exports[`basic - configFile 1`] = `
   changes:
 /src/fixture/frontmatter-3.mdx:
   because:
-    - publishingPublished
     - publishingEdited
   changes:
-    draft: false
 /src/fixture/no-frontmatter.md:
   because:
     - publishingEdited
@@ -33,10 +31,8 @@ exports[`basic - namespace 1`] = `
   changes:
 /src/fixture/frontmatter-3.mdx:
   because:
-    - publishingPublished
     - publishingEdited
   changes:
-    draft: false
 /src/fixture/no-frontmatter.md:
   because:
     - publishingEdited
@@ -45,9 +41,12 @@ exports[`basic - namespace 1`] = `
 `;
 
 exports[`brainwave - telepathy 1`] = `
-"learnPages:
-  - /src/fixture/frontmatter-2.mdx
-  - /src/fixture/frontmatter-3.mdx
+"authors:
+  /src/fixture/frontmatter-2.mdx: different
+  /src/fixture/frontmatter-3.mdx: brekk
+learnPages:
+  /src/fixture/frontmatter-2.mdx: true
+  /src/fixture/frontmatter-3.mdx: true
 "
 `;
 

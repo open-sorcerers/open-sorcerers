@@ -2,6 +2,7 @@ import path from "path"
 import { resolve, fork } from "fluture"
 import { map, curry } from "ramda"
 import {
+  psychic,
   runTransformationWithWriter,
   reyaml,
   telepath,
@@ -13,7 +14,7 @@ test("basic - no valid config", done => {
   const xxx = brainwave({ dryRun: true })
   fork(error => {
     expect(error.message).toEqual(
-      "Expected to have brainwave config return a function!"
+      "Expected to have brainwave config return a function! Have you run 'brainwave --init'?"
     )
     done()
   })(done)(xxx)
@@ -132,4 +133,16 @@ test("runTransformationWithWriter", done => {
     expect(x).toMatchSnapshot()
     done()
   })(forkable)
+})
+
+test("psychic", done => {
+  const lig = { isCancelled: false, cancel: () => {}, loadOrSearch: () => {} }
+  const bad = e => {
+    expect(e.message).toEqual(
+      "Cannot read property 'fantasy-land/map' of undefined"
+    )
+    done()
+  }
+  const config = {}
+  psychic(lig, bad, config)
 })

@@ -1,0 +1,22 @@
+{
+  "name": "codex",
+  "version": "0.0.0",
+  "description": "ast transformation from the future",
+  "main": "codex.js",
+  "repository": "https://github.com/open-sorcerers/codex",
+  "author": "brekk",
+  "license": "ISC",
+  "private": false,
+  "dependencies": {
+    "astravel": "^0.5.0",
+    "astring": "^1.4.3",
+    "fluture": "^12.3.1",
+    "ramda": "^0.27.0",
+    "zippa": "^0.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "prettier": "^2.0.5",
+    "prettier-eslint": "^11.0.0"
+  }
+}

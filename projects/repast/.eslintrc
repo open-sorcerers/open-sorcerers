@@ -1,0 +1,5 @@
+extends: ../eslint-config-sorcerers/eslint.config.js
+plugins:
+  - eslint-plugin-string-literal
+rules:
+  string-literal/no-string-literal: 2

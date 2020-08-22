@@ -30,7 +30,14 @@ Array [
     "->",
     "Number",
   ],
-  undefined,
+  Object {
+    "arity": 1,
+    "name": "Container",
+    "params": Array [
+      "value",
+    ],
+    "type": "HMType",
+  },
   Array [
     "x",
     "->",

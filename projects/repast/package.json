@@ -1,0 +1,19 @@
+{
+  "name": "repast",
+  "version": "0.0.0",
+  "description": "static types for functional kids",
+  "main": "repast.js",
+  "repository": "github.com/open-sorcerers/open-sorcerers",
+  "author": "brekk",
+  "license": "ISC",
+  "private": false,
+  "devDependencies": {},
+  "dependencies": {
+    "fluture": "^13.0.1",
+    "globby": "^11.0.1",
+    "nopt": "^5.0.0",
+    "ramda": "^0.27.1",
+    "recast": "^0.19.1",
+    "torpor": "^0.0.4"
+  }
+}

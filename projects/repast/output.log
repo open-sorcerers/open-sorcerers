@@ -1,0 +1,95 @@
+[
+  {
+    type: 'HMSignature',
+    name: 'myFn',
+    signature: [ 'Number', '->', 'String', '->', 'Number' ],
+    ast: VariableDeclaration {
+      type: 'VariableDeclaration',
+      declarations: [Array],
+      kind: 'const',
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMSignature',
+    name: '_myFn',
+    signature: [ 'Number', '->', 'String', '->', 'Number' ],
+    ast: FunctionDeclaration {
+      type: 'FunctionDeclaration',
+      id: [Identifier],
+      params: [Array],
+      body: [BlockStatement],
+      generator: false,
+      expression: false,
+      async: false,
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMSignature',
+    name: '_myMixedFn',
+    signature: [ 'Number', '->', 'String', '->', 'Number' ],
+    ast: FunctionDeclaration {
+      type: 'FunctionDeclaration',
+      id: [Identifier],
+      params: [Array],
+      body: [BlockStatement],
+      generator: false,
+      expression: false,
+      async: false,
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMSignature',
+    name: '_myComboFn',
+    signature: [ 'Number', '->', 'String', '->', 'Number' ],
+    ast: VariableDeclaration {
+      type: 'VariableDeclaration',
+      declarations: [Array],
+      kind: 'const',
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMType',
+    name: 'Container',
+    ast: FunctionDeclaration {
+      type: 'FunctionDeclaration',
+      id: [Identifier],
+      params: [Array],
+      body: [BlockStatement],
+      generator: false,
+      expression: false,
+      async: false,
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMSignature',
+    name: 'Container.of',
+    signature: [ 'x', '->', 'Container', 'x' ],
+    ast: ExpressionStatement {
+      type: 'ExpressionStatement',
+      expression: [AssignmentExpression],
+      loc: [Object],
+      comments: [Array]
+    }
+  },
+  {
+    type: 'HMSignature',
+    name: 'Container.prototype.map',
+    signature: [ [Array], '->', 'Container', 'a', '->', 'Container', 'b' ],
+    ast: ExpressionStatement {
+      type: 'ExpressionStatement',
+      expression: [AssignmentExpression],
+      loc: [Object],
+      comments: [Array]
+    }
+  }
+]

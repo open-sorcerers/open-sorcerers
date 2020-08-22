@@ -230,14 +230,18 @@ var hindleymilnerize = ramda.pipe(
   ramda.prop("value"),
   ramda.ifElse(
     function (x) { return x[0] === "@hm-type"; },
-    ramda.pipe(ramda.nth(1), ramda.objOf("name"), ramda.mergeRight({type: 'HMType'})),
+    ramda.pipe(ramda.nth(1), ramda.objOf("name"), ramda.mergeRight({ type: "HMType" })),
     ramda.ifElse(
       ramda.pipe(
         ramda.of,
         ramda.ap([ramda.pipe(ramda.nth(0), ramda.equals("@hm")), ramda.pipe(ramda.nth(2), ramda.equals("::"))]),
         ramda.all(function (x) { return x; })
       ),
-      function (x) { return ({ type: 'HMSignature', name: ramda.nth(1, x), signature: x.slice(3, Infinity) }); },
+      function (x) { return ({
+        type: "HMSignature",
+        name: ramda.nth(1, x),
+        signature: x.slice(3, Infinity)
+      }); },
       trace("This is not a correctly formatted comment?")
     )
   )

@@ -12,12 +12,35 @@ var recast = _interopDefault(require('recast'));
 
 /* eslint-disable string-literal/no-string-literal */
 
+var REGEXES = {
+  startsWithParens: /^\(/,
+  endsWithParens: /\)$/
+};
+
+var TYPES = {
+  HM_TYPE: "HMType",
+  HM_SIGNATURE: "HMSignature"
+};
+
 var CHARACTERS = Object.freeze({
   __of__: "∋",
   newline: "\n",
   comment: "//",
-  space: " "
+  space: " ",
+  openParens: "(",
+  closeParens: ")",
+  asterisk: "*",
+  empty: "",
+  space: " ",
+  doubleColon: "::"
 });
+var C = CHARACTERS;
+
+var KEYWORDS = Object.freeze({
+  HM: "@hm",
+  HM_TYPE: "@hm-type"
+});
+var K = KEYWORDS;
 
 var makeObjectFromStrings = ramda.pipe(
   ramda.reduce(function (xx, yy) {
@@ -40,7 +63,13 @@ var LITERALS = makeObjectFromStrings([
   "object",
   "string",
   "undefined",
-  "utf8"
+  "utf8",
+  "value",
+  "name",
+  "type",
+  "program",
+  "body",
+  "signature"
 ]);
 
 var L = LITERALS;
@@ -198,50 +227,51 @@ var segmentTrace = segment({
 });
 
 var box = function (x) { return (Array.isArray(x) ? x : [x]); };
+
+var readNestedSignatures = function (agg, xx) {
+  var starter = xx.startsWith(C.openParens);
+  var ender = xx.endsWith(C.closeParens);
+  var nested = agg.nested;
+  var value = agg.value;
+  var lastWasEnder = agg.lastWasEnder;
+  var sliced = { start: ramda.init(value), end: ramda.last(value) };
+
+  var yy = xx
+    .replace(REGEXES.startsWithParens, C.empty)
+    .replace(REGEXES.endsWithParens, C.empty);
+  return {
+    lastWasEnder: ender,
+    value: starter
+      ? ramda.concat(value, box(yy))
+      : nested
+      ? ramda.concat(box(ramda.init(value)), [ramda.concat(box(ramda.last(value)), box(yy))])
+      : ramda.concat(value, [yy]),
+    nested: ender ? false : nested || starter ? true : nested
+  }
+};
 var hasString = ramda.curry(function (a, b) { return ramda.indexOf(a, b) > -1; });
 var trim = function (x) { return x.trim(); };
 var hindleymilnerize = ramda.pipe(
-  ramda.split(" "),
+  ramda.split(C.space),
   ramda.map(trim),
-  ramda.map(function (z) { return (z[0] === "*" ? z.slice(1, Infinity) : z); }),
+  ramda.map(function (z) { return (z[0] === C.asterisk ? z.slice(1, Infinity) : z); }),
   ramda.filter(Boolean),
-  ramda.reduce(
-    function (agg, xx) {
-      var starter = xx.startsWith("(");
-      var ender = xx.endsWith(")");
-      var nested = agg.nested;
-      var value = agg.value;
-      var lastWasEnder = agg.lastWasEnder;
-      var sliced = { start: ramda.init(value), end: ramda.last(value) };
-
-      var yy = xx.replace(/^\(/, "").replace(/\)$/, "");
-      return {
-        lastWasEnder: ender,
-        value: starter
-          ? ramda.concat(value, box(yy))
-          : nested
-          ? ramda.concat(box(ramda.init(value)), [ramda.concat(box(ramda.last(value)), box(yy))])
-          : ramda.concat(value, [yy]),
-        nested: ender ? false : nested || starter ? true : nested
-      }
-    },
-    { nested: false, value: [] }
-  ),
-  ramda.prop("value"),
+  ramda.reduce(readNestedSignatures, { nested: false, value: [] }),
+  ramda.prop(L.value),
   ramda.ifElse(
-    function (x) { return x[0] === "@hm-type"; },
-    ramda.pipe(ramda.nth(1), ramda.objOf("name"), ramda.mergeRight({ type: "HMType" })),
+    function (x) { return x[0] === K.HM_TYPE; },
+    ramda.pipe(ramda.nth(1), ramda.objOf(L.name), ramda.mergeRight({ type: TYPES.HM_TYPE })),
     ramda.ifElse(
       ramda.pipe(
         ramda.of,
-        ramda.ap([ramda.pipe(ramda.nth(0), ramda.equals("@hm")), ramda.pipe(ramda.nth(2), ramda.equals("::"))]),
+        ramda.ap([ramda.pipe(ramda.nth(0), ramda.equals(K.HM)), ramda.pipe(ramda.nth(2), ramda.equals(C.doubleColon))]),
         ramda.all(function (x) { return x; })
       ),
-      function (x) { return ({
-        type: "HMSignature",
-        name: ramda.nth(1, x),
-        signature: x.slice(3, Infinity)
-      }); },
+      function (x) {
+        var obj;
+
+        return (( obj = {}, obj[L.type] = TYPES.HM_SIGNATURE, obj[L.name] = ramda.nth(1, x), obj[L.signature] = x.slice(3, Infinity), obj ));
+},
       trace("This is not a correctly formatted comment?")
     )
   )
@@ -250,16 +280,16 @@ var hindleymilnerize = ramda.pipe(
 // @hm parseWithConfig :: Object -> String -> Array
 var parseWithConfig = ramda.curry(function (config, str) { return ramda.pipe(
     recast.parse,
-    ramda.pathOr([], ["program", "body"]),
+    ramda.pathOr([], [L.program, L.body]),
     ramda.reduce(function (agg, expression) {
       var comments = expression.comments;
       if (
         comments.length &&
-        ramda.filter(ramda.pipe(ramda.prop("value"), hasString("@hm")), comments).length
+        ramda.filter(ramda.pipe(ramda.prop(L.value), hasString(K.HM)), comments).length
       ) {
         return ramda.pipe(
-          ramda.map(ramda.prop("value")),
-          ramda.filter(hasString("@hm")),
+          ramda.map(ramda.prop(L.value)),
+          ramda.filter(hasString(K.HM)),
           ramda.map(function (comment) { return ramda.mergeRight(hindleymilnerize(comment), { ast: expression }); }
           ),
           ramda.concat(agg)

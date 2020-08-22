@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic 1`] = `
+Array [
+  Array [
+    "Number",
+    "->",
+    "String",
+    "->",
+    "Number",
+  ],
+  Array [
+    "Number",
+    "->",
+    "String",
+    "->",
+    "Number",
+  ],
+  Array [
+    "Number",
+    "->",
+    "String",
+    "->",
+    "Number",
+  ],
+  Array [
+    "Number",
+    "->",
+    "String",
+    "->",
+    "Number",
+  ],
+  undefined,
+  Array [
+    "x",
+    "->",
+    "Container",
+    "x",
+  ],
+  Array [
+    Array [
+      "a",
+      "->",
+      "b",
+    ],
+    "->",
+    "Container",
+    "a",
+    "->",
+    "Container",
+    "b",
+  ],
+]
+`;

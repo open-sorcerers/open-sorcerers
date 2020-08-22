@@ -22,54 +22,55 @@ import {
   splitWhen,
   startsWith
 } from "ramda"
-import recast from "recast"
+import { parse } from "recast"
 import { trace } from "xtrace"
-import { C } from "./constants"
+import { C, L, K, REGEXES, TYPES } from "./constants"
 
 const box = x => (Array.isArray(x) ? x : [x])
+
+const readNestedSignatures = (agg, xx) => {
+  const starter = xx.startsWith(C.openParens)
+  const ender = xx.endsWith(C.closeParens)
+  const { nested, value, lastWasEnder } = agg
+  const sliced = { start: init(value), end: last(value) }
+
+  const yy = xx
+    .replace(REGEXES.startsWithParens, C.empty)
+    .replace(REGEXES.endsWithParens, C.empty)
+  return {
+    lastWasEnder: ender,
+    value: starter
+      ? concat(value, box(yy))
+      : nested
+      ? concat(box(init(value)), [concat(box(last(value)), box(yy))])
+      : concat(value, [yy]),
+    nested: ender ? false : nested || starter ? true : nested
+  }
+}
 
 const j2 = x => JSON.stringify(x, null, 2)
 const hasString = curry((a, b) => indexOf(a, b) > -1)
 const trim = x => x.trim()
 const hindleymilnerize = pipe(
-  split(" "),
+  split(C.space),
   map(trim),
-  map(z => (z[0] === "*" ? z.slice(1, Infinity) : z)),
+  map(z => (z[0] === C.asterisk ? z.slice(1, Infinity) : z)),
   filter(Boolean),
-  reduce(
-    (agg, xx) => {
-      const starter = xx.startsWith("(")
-      const ender = xx.endsWith(")")
-      const { nested, value, lastWasEnder } = agg
-      const sliced = { start: init(value), end: last(value) }
-
-      const yy = xx.replace(/^\(/, "").replace(/\)$/, "")
-      return {
-        lastWasEnder: ender,
-        value: starter
-          ? concat(value, box(yy))
-          : nested
-          ? concat(box(init(value)), [concat(box(last(value)), box(yy))])
-          : concat(value, [yy]),
-        nested: ender ? false : nested || starter ? true : nested
-      }
-    },
-    { nested: false, value: [] }
-  ),
-  prop("value"),
+  reduce(readNestedSignatures, { nested: false, value: [] }),
+  prop(L.value),
   ifElse(
-    x => x[0] === "@hm-type",
-    pipe(nth(1), objOf("name"), mergeRight({ type: "HMType" })),
+    x => x[0] === K.HM_TYPE,
+    pipe(nth(1), objOf(L.name), mergeRight({ type: TYPES.HM_TYPE })),
     ifElse(
       pipe(
         of,
-        ap([pipe(nth(0), equals("@hm")), pipe(nth(2), equals("::"))]),
+        ap([pipe(nth(0), equals(K.HM)), pipe(nth(2), equals(C.doubleColon))]),
         all(x => x)
       ),
       x => ({
-        type: "HMSignature",
-        name: nth(1, x),
-        signature: x.slice(3, Infinity)
+        [L.type]: TYPES.HM_SIGNATURE,
+        [L.name]: nth(1, x),
+        [L.signature]: x.slice(3, Infinity)
       }),
       trace("This is not a correctly formatted comment?")
     )
@@ -79,17 +80,17 @@ const hindleymilnerize = pipe(
 // @hm parseWithConfig :: Object -> String -> Array
 export const parseWithConfig = curry((config, str) =>
   pipe(
-    recast.parse,
-    pathOr([], ["program", "body"]),
+    parse,
+    pathOr([], [L.program, L.body]),
     reduce((agg, expression) => {
       const { comments } = expression
       if (
         comments.length &&
-        filter(pipe(prop("value"), hasString("@hm")), comments).length
+        filter(pipe(prop(L.value), hasString(K.HM)), comments).length
       ) {
         return pipe(
-          map(prop("value")),
-          filter(hasString("@hm")),
+          map(prop(L.value)),
+          filter(hasString(K.HM)),
           map(comment =>
             mergeRight(hindleymilnerize(comment), { ast: expression })
           ),
@@ -98,7 +99,5 @@ export const parseWithConfig = curry((config, str) =>
       }
       return agg
     }, [])
-    // map(prop("hm")),
-    // j2
   )(str)
 )

@@ -1,10 +1,11 @@
 import {
-  mergeRight,
-  objOf,
+  __,
   all,
   ap,
+  assoc,
   concat,
   curry,
+  dissoc,
   equals,
   filter,
   ifElse,
@@ -12,19 +13,25 @@ import {
   init,
   last,
   map,
+  mergeRight,
   nth,
+  objOf,
   of,
   pathOr,
   pipe,
   prop,
+  propEq,
   reduce,
   split,
   splitWhen,
-  startsWith
+  identity as I,
+  startsWith,
+  uniq,
+  when
 } from "ramda"
 import { parse } from "recast"
 import { trace } from "xtrace"
-import { C, L, K, REGEXES, TYPES } from "./constants"
+import { C, GLOBALS, L, K, REGEXES, TYPES } from "./constants"
 
 const box = x => (Array.isArray(x) ? x : [x])
 
@@ -51,30 +58,53 @@ const readNestedSignatures = (agg, xx) => {
 const j2 = x => JSON.stringify(x, null, 2)
 const hasString = curry((a, b) => indexOf(a, b) > -1)
 const trim = x => x.trim()
-const hindleymilnerize = pipe(
-  split(C.space),
-  map(trim),
-  map(z => (z[0] === C.asterisk ? z.slice(1, Infinity) : z)),
-  filter(Boolean),
-  reduce(readNestedSignatures, { nested: false, value: [] }),
-  prop(L.value),
-  ifElse(
-    x => x[0] === K.HM_TYPE,
-    pipe(nth(1), objOf(L.name), mergeRight({ type: TYPES.HM_TYPE })),
+
+const resolveHMType = pipe(
+  nth(1),
+  objOf(L.name),
+  mergeRight({ type: TYPES.HM_TYPE })
+)
+
+const resolveBlockComments = map(z =>
+  z[0] === C.asterisk ? z.slice(1, Infinity) : z
+)
+const getGlobalsFromSignature = curry((config, sig) =>
+  pipe(
+    filter(z => !!GLOBALS[z]),
+    config.json ? map(z => GLOBALS[z]) : I,
+    uniq
+  )(sig)
+)
+const hindleymilnerize = curry((config, str) =>
+  pipe(
+    split(C.space),
+    map(trim),
+    resolveBlockComments,
+    filter(Boolean),
+    reduce(readNestedSignatures, { nested: false, value: [] }),
+    prop(L.value),
     ifElse(
-      pipe(
-        of,
-        ap([pipe(nth(0), equals(K.HM)), pipe(nth(2), equals(C.doubleColon))]),
-        all(x => x)
-      ),
-      x => ({
-        [L.type]: TYPES.HM_SIGNATURE,
-        [L.name]: nth(1, x),
-        [L.signature]: x.slice(3, Infinity)
-      }),
-      trace("This is not a correctly formatted comment?")
+      x => x[0] === K.HM_TYPE,
+      resolveHMType,
+      ifElse(
+        pipe(
+          of,
+          ap([pipe(nth(0), equals(K.HM)), pipe(nth(2), equals(C.doubleColon))]),
+          all(x => x)
+        ),
+        x => {
+          const sig = x.slice(3, Infinity)
+          return {
+            [L.type]: TYPES.HM_SIGNATURE,
+            [L.name]: nth(1, x),
+            [L.signature]: sig,
+            [L.globals]: getGlobalsFromSignature(config, sig)
+          }
+        },
+        trace("This is not a correctly formatted comment?")
+      )
     )
-  )
+  )(str)
 )
 
 // @hm parseWithConfig :: Object -> String -> Array
@@ -92,12 +122,27 @@ export const parseWithConfig = curry((config, str) =>
           map(prop(L.value)),
           filter(hasString(K.HM)),
           map(comment =>
-            mergeRight(hindleymilnerize(comment), { ast: expression })
+            mergeRight(hindleymilnerize(config, comment), { ast: expression })
           ),
           concat(agg)
         )(comments)
       }
       return agg
-    }, [])
+    }, []),
+    map(
+      when(
+        propEq(L.type, TYPES.HM_TYPE),
+        pipe(x =>
+          pipe(
+            pathOr([], [L.ast, L.params]),
+            filter(propEq(L.type, L.Identifier)),
+            map(prop(L.name)),
+            params =>
+              pipe(assoc(L.params, params), assoc(L.arity, params.length))(x)
+          )(x)
+        )
+      )
+    ),
+    when(() => prop(L.json, config), map(pipe(dissoc(L.ast), j2)))
   )(str)
 )

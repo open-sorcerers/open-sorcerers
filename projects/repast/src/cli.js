@@ -10,12 +10,14 @@ import { trace } from "xtrace"
 // const cli = pipe(readFile(__, L.utf8), map(parseWithConfig({})))
 const api = {
   [FLAGS.input]: String,
-  [FLAGS.output]: String
+  [FLAGS.output]: String,
+  [FLAGS.json]: Boolean
 }
 
 const shortflags = {
   i: nf([FLAGS.input]),
-  o: nf([FLAGS.output])
+  o: nf([FLAGS.output]),
+  j: nf([FLAGS.json])
 }
 
 const standardOut = fromStream =>
@@ -24,10 +26,13 @@ const standardOut = fromStream =>
 function cli(xx) {
   return pipe(
     vv => nopt(api, shortflags, vv, 2),
-    prop("input"),
-    readFile(__, L.utf8),
-    map(parseWithConfig({})),
-    fork(trace("bad"))(standardOut)
+    config =>
+      pipe(
+        prop("input"),
+        readFile(__, L.utf8),
+        map(parseWithConfig(config)),
+        fork(trace("bad"))(standardOut)
+      )(config)
   )(xx)
 }
 

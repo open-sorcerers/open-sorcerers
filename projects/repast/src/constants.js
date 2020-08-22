@@ -36,25 +36,51 @@ const makeObjectFromStrings = pipe(
   Object.freeze
 )
 
-export const FLAGS = makeObjectFromStrings(["input", "output"])
-export const nf = map(z => "--" + z)
-
 // read !cat file.js | grep 'L\..'
 export const LITERALS = makeObjectFromStrings([
   "Boolean",
   "Global",
+  "Identifier",
   "String",
+  "ast",
+  "arity",
+  "body",
+  "globals",
+  "input",
+  "json",
+  "loc",
+  "name",
   "nil",
   "object",
+  "output",
+  "params",
+  "program",
+  "signature",
   "string",
+  "type",
   "undefined",
   "utf8",
-  "value",
-  "name",
-  "type",
-  "program",
-  "body",
-  "signature"
+  "value"
 ])
 
 export const L = LITERALS
+
+export const FLAGS = makeObjectFromStrings([L.input, L.output, L.json])
+export const nf = map(z => "--" + z)
+
+export const GLOBALS = pipe(
+  reduce((agg, thing) => mergeRight(agg, { [thing.name]: thing }), {})
+)([
+  Array,
+  Boolean,
+  Date,
+  Error,
+  Function,
+  Number,
+  Object,
+  Promise,
+  Proxy,
+  RegExp,
+  String,
+  Symbol
+])

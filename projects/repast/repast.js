@@ -8,7 +8,7 @@ var nopt = _interopDefault(require('nopt'));
 var torpor = require('torpor');
 var fluture = require('fluture');
 var ramda = require('ramda');
-var recast = _interopDefault(require('recast'));
+var recast = require('recast');
 
 /* eslint-disable string-literal/no-string-literal */
 
@@ -51,28 +51,58 @@ var makeObjectFromStrings = ramda.pipe(
   Object.freeze
 );
 
-var FLAGS = makeObjectFromStrings(["input", "output"]);
-var nf = ramda.map(function (z) { return "--" + z; });
-
 // read !cat file.js | grep 'L\..'
 var LITERALS = makeObjectFromStrings([
   "Boolean",
   "Global",
+  "Identifier",
   "String",
+  "ast",
+  "arity",
+  "body",
+  "globals",
+  "input",
+  "json",
+  "loc",
+  "name",
   "nil",
   "object",
+  "output",
+  "params",
+  "program",
+  "signature",
   "string",
+  "type",
   "undefined",
   "utf8",
-  "value",
-  "name",
-  "type",
-  "program",
-  "body",
-  "signature"
+  "value"
 ]);
 
 var L = LITERALS;
+
+var FLAGS = makeObjectFromStrings([L.input, L.output, L.json]);
+var nf = ramda.map(function (z) { return "--" + z; });
+
+var GLOBALS = ramda.pipe(
+  ramda.reduce(function (agg, thing) {
+    var obj;
+
+    return ramda.mergeRight(agg, ( obj = {}, obj[thing.name] = thing, obj ));
+}, {})
+)([
+  Array,
+  Boolean,
+  Date,
+  Error,
+  Function,
+  Number,
+  Object,
+  Promise,
+  Proxy,
+  RegExp,
+  String,
+  Symbol
+]);
 
 var PLACEHOLDER = "🍛";
 var $ = PLACEHOLDER;
@@ -249,32 +279,51 @@ var readNestedSignatures = function (agg, xx) {
     nested: ender ? false : nested || starter ? true : nested
   }
 };
+
+var j2 = function (x) { return JSON.stringify(x, null, 2); };
 var hasString = ramda.curry(function (a, b) { return ramda.indexOf(a, b) > -1; });
 var trim = function (x) { return x.trim(); };
-var hindleymilnerize = ramda.pipe(
-  ramda.split(C.space),
-  ramda.map(trim),
-  ramda.map(function (z) { return (z[0] === C.asterisk ? z.slice(1, Infinity) : z); }),
-  ramda.filter(Boolean),
-  ramda.reduce(readNestedSignatures, { nested: false, value: [] }),
-  ramda.prop(L.value),
-  ramda.ifElse(
-    function (x) { return x[0] === K.HM_TYPE; },
-    ramda.pipe(ramda.nth(1), ramda.objOf(L.name), ramda.mergeRight({ type: TYPES.HM_TYPE })),
-    ramda.ifElse(
-      ramda.pipe(
-        ramda.of,
-        ramda.ap([ramda.pipe(ramda.nth(0), ramda.equals(K.HM)), ramda.pipe(ramda.nth(2), ramda.equals(C.doubleColon))]),
-        ramda.all(function (x) { return x; })
-      ),
-      function (x) {
-        var obj;
 
-        return (( obj = {}, obj[L.type] = TYPES.HM_SIGNATURE, obj[L.name] = ramda.nth(1, x), obj[L.signature] = x.slice(3, Infinity), obj ));
-},
-      trace("This is not a correctly formatted comment?")
+var resolveHMType = ramda.pipe(
+  ramda.nth(1),
+  ramda.objOf(L.name),
+  ramda.mergeRight({ type: TYPES.HM_TYPE })
+);
+
+var resolveBlockComments = ramda.map(function (z) { return z[0] === C.asterisk ? z.slice(1, Infinity) : z; }
+);
+var getGlobalsFromSignature = ramda.curry(function (config, sig) { return ramda.pipe(
+    ramda.filter(function (z) { return !!GLOBALS[z]; }),
+    config.json ? ramda.map(function (z) { return GLOBALS[z]; }) : ramda.identity,
+    ramda.uniq
+  )(sig); }
+);
+var hindleymilnerize = ramda.curry(function (config, str) { return ramda.pipe(
+    ramda.split(C.space),
+    ramda.map(trim),
+    resolveBlockComments,
+    ramda.filter(Boolean),
+    ramda.reduce(readNestedSignatures, { nested: false, value: [] }),
+    ramda.prop(L.value),
+    ramda.ifElse(
+      function (x) { return x[0] === K.HM_TYPE; },
+      resolveHMType,
+      ramda.ifElse(
+        ramda.pipe(
+          ramda.of,
+          ramda.ap([ramda.pipe(ramda.nth(0), ramda.equals(K.HM)), ramda.pipe(ramda.nth(2), ramda.equals(C.doubleColon))]),
+          ramda.all(function (x) { return x; })
+        ),
+        function (x) {
+          var obj;
+
+          var sig = x.slice(3, Infinity);
+          return ( obj = {}, obj[L.type] = TYPES.HM_SIGNATURE, obj[L.name] = ramda.nth(1, x), obj[L.signature] = sig, obj[L.globals] = getGlobalsFromSignature(config, sig), obj )
+        },
+        trace("This is not a correctly formatted comment?")
+      )
     )
-  )
+  )(str); }
 );
 
 // @hm parseWithConfig :: Object -> String -> Array
@@ -290,15 +339,26 @@ var parseWithConfig = ramda.curry(function (config, str) { return ramda.pipe(
         return ramda.pipe(
           ramda.map(ramda.prop(L.value)),
           ramda.filter(hasString(K.HM)),
-          ramda.map(function (comment) { return ramda.mergeRight(hindleymilnerize(comment), { ast: expression }); }
+          ramda.map(function (comment) { return ramda.mergeRight(hindleymilnerize(config, comment), { ast: expression }); }
           ),
           ramda.concat(agg)
         )(comments)
       }
       return agg
-    }, [])
-    // map(prop("hm")),
-    // j2
+    }, []),
+    ramda.map(
+      ramda.when(
+        ramda.propEq(L.type, TYPES.HM_TYPE),
+        ramda.pipe(function (x) { return ramda.pipe(
+            ramda.pathOr([], [L.ast, L.params]),
+            ramda.filter(ramda.propEq(L.type, L.Identifier)),
+            ramda.map(ramda.prop(L.name)),
+            function (params) { return ramda.pipe(ramda.assoc(L.params, params), ramda.assoc(L.arity, params.length))(x); }
+          )(x); }
+        )
+      )
+    ),
+    ramda.when(function () { return ramda.prop(L.json, config); }, ramda.map(ramda.pipe(ramda.dissoc(L.ast), j2)))
   )(str); }
 );
 
@@ -306,10 +366,12 @@ var parseWithConfig = ramda.curry(function (config, str) { return ramda.pipe(
 var api = {};
 api[FLAGS.input] = String;
 api[FLAGS.output] = String;
+api[FLAGS.json] = Boolean;
 
 var shortflags = {
   i: nf([FLAGS.input]),
-  o: nf([FLAGS.output])
+  o: nf([FLAGS.output]),
+  j: nf([FLAGS.json])
 };
 
 var standardOut = function (fromStream) { return fromStream ? console.log(fromStream) : console.log("Wrote file to output"); };
@@ -317,10 +379,12 @@ var standardOut = function (fromStream) { return fromStream ? console.log(fromSt
 function cli(xx) {
   return ramda.pipe(
     function (vv) { return nopt(api, shortflags, vv, 2); },
-    ramda.prop("input"),
-    torpor.readFile(ramda.__, L.utf8),
-    ramda.map(parseWithConfig({})),
-    fluture.fork(trace("bad"))(standardOut)
+    function (config) { return ramda.pipe(
+        ramda.prop("input"),
+        torpor.readFile(ramda.__, L.utf8),
+        ramda.map(parseWithConfig(config)),
+        fluture.fork(trace("bad"))(standardOut)
+      )(config); }
   )(xx)
 }
 

@@ -8,6 +8,7 @@ import {
   dissoc,
   equals,
   filter,
+  identity as I,
   ifElse,
   indexOf,
   init,
@@ -22,9 +23,9 @@ import {
   prop,
   propEq,
   reduce,
+  slice,
   split,
   splitWhen,
-  identity as I,
   startsWith,
   uniq,
   when
@@ -59,10 +60,13 @@ const j2 = x => JSON.stringify(x, null, 2)
 const hasString = curry((a, b) => indexOf(a, b) > -1)
 const trim = x => x.trim()
 
-const resolveHMType = pipe(
-  nth(1),
-  objOf(L.name),
-  mergeRight({ type: TYPES.HM_TYPE })
+const resolveDataType = pipe(
+  of,
+  ap([nth(1), slice(3, Infinity)]),
+  ([name, definition]) => {
+    const def = JSON.parse(definition.join(" "))
+    return { name, definition: def, type: HM.TYPE }
+  }
 )
 
 const resolveBlockComments = map(z =>
@@ -75,6 +79,7 @@ const getGlobalsFromSignature = curry((config, sig) =>
     uniq
   )(sig)
 )
+const isRepastDataDefinition = x => x[0] === K.REPAST && x[1] === C.equal
 const hindleymilnerize = curry((config, str) =>
   pipe(
     split(C.space),
@@ -84,12 +89,15 @@ const hindleymilnerize = curry((config, str) =>
     reduce(readNestedSignatures, { nested: false, value: [] }),
     prop(L.value),
     ifElse(
-      x => x[0] === K.HM_TYPE,
-      resolveHMType,
+      isRepastDataDefinition,
+      resolveDataType,
       ifElse(
         pipe(
           of,
-          ap([pipe(nth(0), equals(K.HM)), pipe(nth(2), equals(C.doubleColon))]),
+          ap([
+            pipe(nth(0), equals(K.REPAST)),
+            pipe(nth(2), equals(C.doubleColon))
+          ]),
           all(x => x)
         ),
         x => {
@@ -116,11 +124,11 @@ export const parseWithConfig = curry((config, str) =>
       const { comments } = expression
       if (
         comments.length &&
-        filter(pipe(prop(L.value), hasString(K.HM)), comments).length
+        filter(pipe(prop(L.value), hasString(K.REPAST)), comments).length
       ) {
         return pipe(
           map(prop(L.value)),
-          filter(hasString(K.HM)),
+          filter(hasString(K.REPAST)),
           map(comment =>
             mergeRight(hindleymilnerize(config, comment), { ast: expression })
           ),
@@ -132,6 +140,8 @@ export const parseWithConfig = curry((config, str) =>
     map(
       when(
         propEq(L.type, TYPES.HM_TYPE),
+        trace("this is a thing")
+        /*
         pipe(x =>
           pipe(
             pathOr([], [L.ast, L.params]),
@@ -141,6 +151,7 @@ export const parseWithConfig = curry((config, str) =>
               pipe(assoc(L.params, params), assoc(L.arity, params.length))(x)
           )(x)
         )
+        */
       )
     ),
     when(() => prop(L.json, config), map(pipe(dissoc(L.ast), j2)))

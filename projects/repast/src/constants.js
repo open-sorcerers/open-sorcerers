@@ -7,8 +7,8 @@ export const REGEXES = {
 }
 
 export const TYPES = {
-  HM_TYPE: "HMType",
-  HM_SIGNATURE: "HMSignature"
+  HM_TYPE: "RepastData",
+  HM_SIGNATURE: "RepastSignature"
 }
 
 export const CHARACTERS = Object.freeze({
@@ -21,13 +21,13 @@ export const CHARACTERS = Object.freeze({
   asterisk: "*",
   empty: "",
   space: " ",
-  doubleColon: "::"
+  doubleColon: "::",
+  equal: "="
 })
 export const C = CHARACTERS
 
 export const KEYWORDS = Object.freeze({
-  HM: "@hm",
-  HM_TYPE: "@hm-type"
+  REPAST: "@repast"
 })
 export const K = KEYWORDS
 

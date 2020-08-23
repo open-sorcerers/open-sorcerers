@@ -31,12 +31,17 @@ Array [
     "Number",
   ],
   Object {
-    "arity": 1,
-    "name": "Container",
-    "params": Array [
-      "value",
-    ],
-    "type": "HMType",
+    "0": "@repast",
+    "1": "Container",
+    "2": "=",
+    "3": "{",
+    "4": "value:",
+    "5": "String",
+    "6": "}",
+  },
+  Object {
+    "0": "@repast",
+    "1": "Container",
   },
   Array [
     "x",

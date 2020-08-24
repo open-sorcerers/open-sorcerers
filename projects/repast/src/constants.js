@@ -68,6 +68,11 @@ export const L = LITERALS
 export const FLAGS = makeObjectFromStrings([L.input, L.output, L.json])
 export const nf = map(z => "--" + z)
 
+export const PRIMITIVE_TYPES = makeObjectFromStrings([
+  "Boolean",
+  "String",
+]);
+
 export const GLOBALS = pipe(
   reduce((agg, thing) => mergeRight(agg, { [thing.name]: thing }), {})
 )([

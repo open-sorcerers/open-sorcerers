@@ -1,3 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`validate 1`] = `"THAT IS CORRECT !"`;
+exports[`validate 1`] = `
+Array [
+  Object {
+    "context": Object {},
+    "error": true,
+  },
+]
+`;

@@ -7,7 +7,6 @@ import { L, FLAGS, nf } from "./constants"
 import { parseWithConfig } from "./parser"
 import { trace } from "xtrace"
 
-// const cli = pipe(readFile(__, L.utf8), map(parseWithConfig({})))
 const api = {
   [FLAGS.input]: String,
   [FLAGS.output]: String,
@@ -25,12 +24,16 @@ const standardOut = fromStream =>
 
 function cli(xx) {
   return pipe(
+    // parse argv and turn into object
     vv => nopt(api, shortflags, vv, 2),
     config =>
       pipe(
         prop("input"),
+        // read -i input
         readFile(__, L.utf8),
+        // parse given nopt object
         map(parseWithConfig(config)),
+        // barf or print
         fork(trace("bad"))(standardOut)
       )(config)
   )(xx)

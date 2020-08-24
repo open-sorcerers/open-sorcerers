@@ -7,16 +7,22 @@ import {
   last,
   length,
   map,
+  nth,
   pipe,
   propEq,
   reduce,
   reject,
+  isNil,
+  anyPass,
+  __,
+  any,
 } from "ramda";
 import { print } from "recast";
 import F from "fluture";
 import vm from "vm";
 
 import { PRIMITIVE_TYPES } from "./constants";
+import { isUnionType, parseUnionType } from "./types";
 
 const parseSignature = pipe(
   reduce(
@@ -29,19 +35,25 @@ const parseSignature = pipe(
 const typeToValue = (type) => {
   if (type === "String") {
     return "stringValue";
+  } else if (isUnionType(type)) {
+    const types = parseUnionType(type);
+    return pipe(map(typeToValue), reject(isNil), nth(0))(types);
   }
 
   return undefined;
 };
 
-export const typeMatch = (type, value) => {
+export const typeMatch = curry((type, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
+  } else if (isUnionType(type)) {
+    const types = parseUnionType(type);
+    return any(typeMatch(__, value), types);
   }
   return false;
-};
+});
 
 export const validate = (params) =>
   pipe(

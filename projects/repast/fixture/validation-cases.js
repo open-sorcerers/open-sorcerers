@@ -27,3 +27,8 @@ const fromB = (b) => ({ some: { depth: { contains: { b } } } });
  * @repast fromDepth :: {some:{depth:{contains:{value:String}}}} -> String
  */
 const fromDepth = (o) => o.some.depth.contains.value;
+
+/*
+ * @repast getName :: Object -> String
+ */
+const getName = (u) => u.personalData.name;

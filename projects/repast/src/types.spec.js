@@ -16,6 +16,7 @@ isCompositeTypeCases.forEach(([type, expected]) => {
 const parseCompositeTypeCases = [
   ["{a:String}", { a: "String" }],
   ["{a:String, b:Number}", { a: "String", b: "Number" }],
+  ["{a: { b: Number }}", { a: { b: "Number" }}],
 ];
 
 parseCompositeTypeCases.forEach(([type, expected]) => {

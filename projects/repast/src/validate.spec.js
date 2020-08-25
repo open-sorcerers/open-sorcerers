@@ -18,10 +18,10 @@ test("validate", (done) => {
 });
 
 const typeMatchCases = [
-  [PRIMITIVE_TYPES.Boolean, true, true],
-  [PRIMITIVE_TYPES.Boolean, false, true],
-  [PRIMITIVE_TYPES.Boolean, "false", false],
-  [PRIMITIVE_TYPES.String, "string", true],
+  [{ type: PRIMITIVE_TYPES.Boolean, typeClass: "PRIMITIVE" }, true, true],
+  [{ type: PRIMITIVE_TYPES.Boolean, typeClass: "PRIMITIVE" }, false, true],
+  [{ type: PRIMITIVE_TYPES.Boolean, typeClass: "PRIMITIVE" }, "false", false],
+  [{ type: PRIMITIVE_TYPES.String, typeClass: "PRIMITIVE" }, "string", true],
 ];
 
 typeMatchCases.forEach(([type, value, expected]) => {

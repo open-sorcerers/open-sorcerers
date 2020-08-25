@@ -2,12 +2,8 @@ import {
   trim,
   pipe,
   contains,
-  map,
-  reduce,
+  replace,
   split,
-  drop,
-  dropLast,
-  assoc,
 } from "ramda";
 
 // @repast isCompositeType :: String -> Boolean
@@ -15,14 +11,8 @@ export const isCompositeType = pipe(trim, ([h, ...t]) => h === "{");
 
 // @repast parseCompositeType :: String -> Object
 export const parseCompositeType = pipe(
-  trim,
-  drop(1),
-  dropLast(1),
-  split(","),
-  reduce(
-    (r, pair) => pipe(split(":"), map(trim), ([k, v]) => assoc(k, v, r))(pair),
-    {}
-  )
+  replace(/(\w+)/g, `"$1"`),
+  JSON.parse,
 );
 
 // @repast isUnionType :: String -> Boolean

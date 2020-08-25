@@ -49,26 +49,43 @@ const typeToValue = (type) => {
   return undefined;
 };
 
-const matchCompositeType = curry((type, value) =>
+const matchCompositeType = curry(({ type, typeClass }, value) =>
   pipe(
     keys,
-    reduce((r, k) => typeMatch(type[k], value[k]) && r, true)
+    reduce(
+      (r, k) => typeMatch({ type: type[k], typeClass }, value[k]) && r,
+      true
+    )
   )(type)
 );
 
-export const typeMatch = curry((type, value) => {
+// Type should be parsed before that function so that it always expect the same thing
+// in case of recursion.
+export const typeMatch = curry(({ type, typeClass }, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
-  } else if (isUnionType(type)) {
-    const types = parseUnionType(type);
+  } else if (typeClass === "UNION") {
+    const types = map(typeWithContext)(type);
     return any(typeMatch(__, value), types);
-  } else if (isCompositeType(type)) {
-    return matchCompositeType(parseCompositeType(type), value);
+  } else if (typeClass === "COMPOSITE") {
+    return matchCompositeType({ type, typeClass }, value);
   }
   return false;
 });
+
+const typeWithContext = (type) => {
+  if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
+    return { typeClass: "PRIMITIVE", type };
+  } else if (isUnionType(type)) {
+    return { typeClass: "UNION", type: parseUnionType(type) };
+  } else if (isCompositeType(type)) {
+    return { typeClass: "COMPOSITE", type: parseCompositeType(type) };
+  }
+
+  return { typeClass: "NOT_SUPPORTED", type };
+};
 
 export const validate = (params) =>
   pipe(
@@ -89,10 +106,12 @@ export const validate = (params) =>
         fn
       )(signature.params);
 
-      if (typeMatch(signature.returnType, output)) {
+      const returnType = typeWithContext(signature.returnType);
+
+      if (typeMatch(returnType, output)) {
         return { error: false };
       } else {
-        return { error: true, context: {} };
+        return { error: true, context: { functionName: param.name } };
       }
     }),
     reject(propEq("error", false)),

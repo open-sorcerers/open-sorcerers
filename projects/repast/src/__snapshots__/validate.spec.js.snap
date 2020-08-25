@@ -3,7 +3,9 @@
 exports[`validate 1`] = `
 Array [
   Object {
-    "context": Object {},
+    "context": Object {
+      "functionName": "notValid",
+    },
     "error": true,
   },
 ]

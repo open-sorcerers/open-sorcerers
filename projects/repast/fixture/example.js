@@ -27,12 +27,14 @@ const _myComboFn = x =>
 
 // @repast Container = { value: String }
 
-// @repast Container
-function Container(value) {
+// @repast Container :: x -> Container x
+function Container({ value }) {
   this.value = value
   return this
 }
 // @repast Container.of :: x -> Container x
-Container.of = x => new Container(x)
+Container.of = x => new Container({ value: x })
 // @repast Container.prototype.map :: (a -> b) -> Container a -> Container b
-Container.prototype.map = fn => Container.of(fn(this.value))
+Container.prototype.map = function map(fn) {
+  return Container.of(fn(this.value))
+}

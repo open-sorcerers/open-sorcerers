@@ -4,6 +4,7 @@ import {
   curry,
   dropLast,
   ifElse,
+  keys,
   last,
   length,
   map,
@@ -22,7 +23,12 @@ import F from "fluture";
 import vm from "vm";
 
 import { PRIMITIVE_TYPES } from "./constants";
-import { isUnionType, parseUnionType } from "./types";
+import {
+  isUnionType,
+  parseUnionType,
+  isCompositeType,
+  parseCompositeType,
+} from "./types";
 
 const parseSignature = pipe(
   reduce(
@@ -43,6 +49,13 @@ const typeToValue = (type) => {
   return undefined;
 };
 
+const matchCompositeType = curry((type, value) =>
+  pipe(
+    keys,
+    reduce((r, k) => typeMatch(type[k], value[k]) && r, true)
+  )(type)
+);
+
 export const typeMatch = curry((type, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
@@ -51,6 +64,8 @@ export const typeMatch = curry((type, value) => {
   } else if (isUnionType(type)) {
     const types = parseUnionType(type);
     return any(typeMatch(__, value), types);
+  } else if (isCompositeType(type)) {
+    return matchCompositeType(parseCompositeType(type), value);
   }
   return false;
 });

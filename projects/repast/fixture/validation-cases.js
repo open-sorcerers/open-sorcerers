@@ -13,3 +13,9 @@ const notValid = x => x + '?';
  * @repast union :: String|Number -> String|Number -> String|Number
  */
 const union = x => y => x + y;
+
+
+/*
+ * @repast fromA :: String -> {a:String}
+ */
+const fromA = a => ({ a });

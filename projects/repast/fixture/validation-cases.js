@@ -22,3 +22,8 @@ const fromA = (a) => ({ a });
  * @repast fromB :: String -> {some:{depth:{contains:{b:String}}}}
  */
 const fromB = (b) => ({ some: { depth: { contains: { b } } } });
+
+/*
+ * @repast fromDepth :: {some:{depth:{contains:{value:String}}}} -> String
+ */
+const fromDepth = (o) => o.some.depth.contains.value;

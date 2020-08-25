@@ -71,6 +71,10 @@ export const nf = map(z => "--" + z)
 export const PRIMITIVE_TYPES = makeObjectFromStrings([
   "Boolean",
   "String",
+  "Number",
+  "Void",
+  "Object",
+  "Array",
 ]);
 
 export const GLOBALS = pipe(

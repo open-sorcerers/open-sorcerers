@@ -14,9 +14,9 @@ import {
   reduce,
   reject,
   isNil,
-  anyPass,
   __,
   any,
+  assoc,
 } from "ramda";
 import { print } from "recast";
 import F from "fluture";
@@ -38,12 +38,24 @@ const parseSignature = pipe(
   (s) => ({ params: dropLast(1, s), returnType: last(s) })
 );
 
-const typeToValue = (type) => {
+const compositeTypeToValue = (type) =>
+  pipe(
+    keys,
+    reduce(
+      (r, k) =>
+        assoc(k, typeToValue({ type: type[k], typeClass: "COMPOSITE" }), r),
+      {}
+    )
+  )(type);
+
+const typeToValue = ({ type, typeClass }) => {
   if (type === "String") {
     return "stringValue";
-  } else if (isUnionType(type)) {
-    const types = parseUnionType(type);
-    return pipe(map(typeToValue), reject(isNil), nth(0))(types);
+  } else if (typeClass === "UNION") {
+      console.log(type);
+    return pipe(map(typeToValue), reject(isNil), nth(0))(type);
+  } else if (typeClass === "COMPOSITE") {
+    return compositeTypeToValue(type);
   }
 
   return undefined;
@@ -59,16 +71,13 @@ const matchCompositeType = curry(({ type, typeClass }, value) =>
   )(type)
 );
 
-// Type should be parsed before that function so that it always expect the same thing
-// in case of recursion.
 export const typeMatch = curry(({ type, typeClass }, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
   } else if (typeClass === "UNION") {
-    const types = map(typeWithContext)(type);
-    return any(typeMatch(__, value), types);
+    return any(typeMatch(__, value), type);
   } else if (typeClass === "COMPOSITE") {
     return matchCompositeType({ type, typeClass }, value);
   }
@@ -79,7 +88,7 @@ const typeWithContext = (type) => {
   if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
     return { typeClass: "PRIMITIVE", type };
   } else if (isUnionType(type)) {
-    return { typeClass: "UNION", type: parseUnionType(type) };
+    return { typeClass: "UNION", type: map(typeWithContext)(parseUnionType(type)) };
   } else if (isCompositeType(type)) {
     return { typeClass: "COMPOSITE", type: parseCompositeType(type) };
   }
@@ -102,7 +111,7 @@ export const validate = (params) =>
       const fn = curry(script.runInThisContext());
 
       const output = reduce(
-        (returned, param) => returned(typeToValue(param)),
+        (returned, param) => returned(typeToValue(typeWithContext(param))),
         fn
       )(signature.params);
 

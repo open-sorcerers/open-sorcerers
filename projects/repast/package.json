@@ -7,13 +7,19 @@
   "author": "brekk",
   "license": "ISC",
   "private": false,
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/plugin-transform-destructuring": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "jest": "^26.4.2"
+  },
   "dependencies": {
     "fluture": "^13.0.1",
     "globby": "^11.0.1",
     "nopt": "^5.0.0",
     "ramda": "^0.27.1",
     "recast": "^0.19.1",
-    "torpor": "^0.0.4"
+    "torpor": "^0.0.4",
+    "xtrace": "^0.3.0"
   }
 }

@@ -1,7 +1,6 @@
 import { readFile } from "torpor"
 import { dissoc, __, pipe, map, propEq, prop, ifElse } from "ramda"
 import { fork } from "fluture"
-import { parse } from "recast"
 import { parseWithConfig } from "./parser"
 import { TYPES } from "./constants"
 

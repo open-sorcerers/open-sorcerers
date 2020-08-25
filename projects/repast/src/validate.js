@@ -51,8 +51,9 @@ const compositeTypeToValue = (type) =>
 const typeToValue = ({ type, typeClass }) => {
   if (type === "String") {
     return "stringValue";
+  } else if (type === "Object") {
+    return undefined;
   } else if (typeClass === "UNION") {
-      console.log(type);
     return pipe(map(typeToValue), reject(isNil), nth(0))(type);
   } else if (typeClass === "COMPOSITE") {
     return compositeTypeToValue(type);
@@ -88,12 +89,63 @@ const typeWithContext = (type) => {
   if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
     return { typeClass: "PRIMITIVE", type };
   } else if (isUnionType(type)) {
-    return { typeClass: "UNION", type: map(typeWithContext)(parseUnionType(type)) };
+    return {
+      typeClass: "UNION",
+      type: map(typeWithContext)(parseUnionType(type)),
+    };
   } else if (isCompositeType(type)) {
     return { typeClass: "COMPOSITE", type: parseCompositeType(type) };
   }
 
   return { typeClass: "NOT_SUPPORTED", type };
+};
+
+// addPropLayer adds a prop with name propName at every level of the current object
+// @repast addPropLayer :: Object -> String -> Object
+const addPropLayer = (object, propName) => {
+  const keysFromObj = keys(object);
+  const newObj = assoc(propName, undefined, object);
+  if (length(keysFromObj) > 0) {
+    return reduce(
+      (obj, k) => ({ ...obj, [k]: addPropLayer(obj[k], propName) }),
+      newObj
+    )(keysFromObj);
+  }
+
+  return newObj;
+};
+
+const generateParamValues = (params) =>
+  map((type) =>
+    pipe(typeWithContext, typeToValue, (value) => ({ type, value }))(type)
+  )(params);
+
+const computeOutput = (params, fn) => {
+  const paramsWithValues = generateParamValues(params);
+
+  const recurse = (currentParams) => {
+    try {
+      return reduce(
+        (returned, param) => returned(param.value),
+        fn
+      )(currentParams);
+    } catch (e) {
+      const missingProp = e.message.replace(
+        /Cannot\ read\ property\ '(\w+)'\ of\ undefined/,
+        "$1"
+      );
+
+      const nextParams = map((p) =>
+        p.type === "Object"
+          ? { ...p, value: addPropLayer(p.value, missingProp) }
+          : p
+      )(currentParams);
+
+      return recurse(nextParams);
+    }
+  };
+
+  return recurse(paramsWithValues);
 };
 
 export const validate = (params) =>
@@ -110,10 +162,7 @@ export const validate = (params) =>
       const script = new vm.Script(withCall);
       const fn = curry(script.runInThisContext());
 
-      const output = reduce(
-        (returned, param) => returned(typeToValue(typeWithContext(param))),
-        fn
-      )(signature.params);
+      const output = computeOutput(signature.params, fn);
 
       const returnType = typeWithContext(signature.returnType);
 

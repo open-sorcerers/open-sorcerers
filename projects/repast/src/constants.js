@@ -45,6 +45,7 @@ export const LITERALS = makeObjectFromStrings([
   "ast",
   "arity",
   "body",
+  "data",
   "globals",
   "input",
   "json",
@@ -56,11 +57,13 @@ export const LITERALS = makeObjectFromStrings([
   "params",
   "program",
   "signature",
+  "signatures",
   "string",
   "type",
   "undefined",
   "utf8",
-  "value"
+  "value",
+  "returnType"
 ])
 
 export const L = LITERALS
@@ -74,8 +77,8 @@ export const PRIMITIVE_TYPES = makeObjectFromStrings([
   "Number",
   "Void",
   "Object",
-  "Array",
-]);
+  "Array"
+])
 
 export const GLOBALS = pipe(
   reduce((agg, thing) => mergeRight(agg, { [thing.name]: thing }), {})

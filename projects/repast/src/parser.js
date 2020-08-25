@@ -3,11 +3,14 @@ import {
   all,
   ap,
   assoc,
+  complement,
   concat,
   curry,
   dissoc,
   equals,
   filter,
+  findLastIndex,
+  groupBy,
   identity as I,
   ifElse,
   indexOf,
@@ -25,8 +28,10 @@ import {
   reduce,
   slice,
   split,
+  splitEvery,
   splitWhen,
   startsWith,
+  tail,
   uniq,
   when
 } from "ramda"
@@ -79,11 +84,22 @@ const trim = x => x.trim()
 
 // @repast resolveDataDefinitions :: AST -> RepastDefinition
 const resolveDataDefinitions = pipe(
+  trace("resolving data defs"),
   of,
   ap([nth(1), slice(3, Infinity)]),
   ([name, definition]) => {
-    const def = JSON.parse(definition.join(" "))
-    return { name, definition: def, type: HM.TYPE }
+    const def = pipe(
+      init,
+      tail,
+      splitEvery(2),
+      reduce(
+        (agg, [k, v]) => mergeRight(agg, { [k.substr(0, k.length - 1)]: v }),
+        {}
+      )
+    )(definition)
+    console.log("fergalicious", def)
+    // const def = JSON.parse(definition.join(" "))
+    return { name, definition: def, type: TYPES.HM_TYPE }
   }
 )
 
@@ -101,7 +117,7 @@ const getGlobalsFromSignature = curry((config, sig) =>
   )(sig)
 )
 // @repast isRepastDataDefinition :: [String] -> Boolean
-const isRepastDataDefinition = x => x[0] === K.REPAST && x[1] === C.equal
+const isRepastDataDefinition = x => x[0] === K.REPAST && x[2] === C.equal
 
 // @repast matchesExpectedPattern :: [String] -> Boolean
 const matchesExpectedPattern = pipe(
@@ -110,10 +126,20 @@ const matchesExpectedPattern = pipe(
   all(x => x)
 )
 
+const isCapitalized = z => z[0].toLowerCase() !== z[0]
+
+const inferReturn = xx => {
+  const lastCap = findLastIndex(isCapitalized, xx)
+  const successiveParams = slice(lastCap, Infinity, xx)
+  if (map(complement(isCapitalized), successiveParams)) return nth(lastCap, xx)
+  return last(xx)
+}
+
 // @repast parseSignatureGivenConfig :: Config -> [String] -> RepastSignature
 const parseSignatureGivenConfig = curry((config, x) => {
   const sig = x.slice(3, Infinity)
   return {
+    [L.returnType]: inferReturn(sig),
     [L.type]: TYPES.HM_SIGNATURE,
     [L.name]: nth(1, x),
     [L.signature]: sig,
@@ -149,6 +175,8 @@ const hindleymilnerize = curry((config, str) =>
 )
 
 // @repast grabEntitiesWithMagicComments :: Config -> [String] -> RepastParse
+// because of the nature of comments, we can have ast entities which are
+// unrelated to our search space
 const grabEntitiesWithMagicComments = curry((config, list) =>
   reduce((agg, ast) => {
     const { comments } = ast
@@ -169,7 +197,14 @@ const grabEntitiesWithMagicComments = curry((config, list) =>
 
 // @hm conditionallyConvertToJSON :: Config -> [AST] -> [AST]|JSON
 const conditionallyConvertToJSON = curry((config, xx) =>
-  when(() => prop(L.json, config), map(pipe(dissoc(L.ast), j2)))(xx)
+  when(() => prop(L.json, config), map(map(pipe(dissoc(L.ast), j2))))(xx)
+)
+
+// @hm rename :: String -> String -> Object -> Object
+const rename = curry((fromName, toName, xx) =>
+  pipe(prop(fromName), grabbed =>
+    pipe(dissoc(fromName), assoc(toName, grabbed))(xx)
+  )(xx)
 )
 
 // @hm parseWithConfig :: Object -> String -> Array
@@ -178,6 +213,9 @@ export const parseWithConfig = curry((config, str) =>
     parse,
     pathOr([], [L.program, L.body]),
     grabEntitiesWithMagicComments(config),
+    groupBy(prop(L.type)),
+    rename(TYPES.HM_TYPE, L.data),
+    rename(TYPES.HM_SIGNATURE, L.signatures),
     map(when(propEq(L.type, TYPES.HM_TYPE), trace("this is a thing"))),
     conditionallyConvertToJSON(config)
   )(str)

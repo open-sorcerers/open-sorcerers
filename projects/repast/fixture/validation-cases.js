@@ -37,3 +37,38 @@ const getName = u => u.personalData.name;
  * @repast getMajor :: Object -> Boolean
  */
 const getMajor = u => u.personalData.major;
+
+/*
+ * @repast toObj :: String -> Object
+ */
+const toObj = x => ({ x });
+
+/*
+ * @repast ofNumber :: Number -> Object
+ */
+const ofNumber = x => ({ x });
+
+/*
+ * @repast add :: Number -> Number -> Number
+ */
+const add = (x, y) => x + y;
+
+/*
+ * @repast swallow :: Object -> Void
+ */
+const swallow = x => {};
+
+/*
+ * @repast fourtyTwo :: Void -> Number
+ */
+const fourtyTwo = () => 42;
+
+/*
+ * @repast box :: Number -> [Number]
+ */
+const box = x => [x];
+
+/*
+ * @repast head :: [String] -> String
+ */
+const head = x => x[0];

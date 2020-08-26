@@ -26,10 +26,23 @@ import F from "fluture";
 import vm from "vm";
 
 import { PRIMITIVE_TYPES, TYPE_CATEGORIES } from "./constants";
-import { isUnionType, parseUnionType, isCompositeType, parseCompositeType } from "./types";
+import {
+  isUnionType,
+  parseUnionType,
+  isCompositeType,
+  parseCompositeType,
+  isArrayType,
+  getArrayType,
+} from "./types";
 
 const augmentType = type => {
-  if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
+  if (
+    type === PRIMITIVE_TYPES.Boolean ||
+    type === PRIMITIVE_TYPES.String ||
+    type === PRIMITIVE_TYPES.Object ||
+    type === PRIMITIVE_TYPES.Number ||
+    type === PRIMITIVE_TYPES.Array
+  ) {
     return { cat: TYPE_CATEGORIES.Primitive, type };
   } else if (isUnionType(type)) {
     return {
@@ -62,8 +75,14 @@ const typeToValue = ({ type, cat }) => {
     return "stringValue";
   } else if (type === PRIMITIVE_TYPES.Boolean) {
     return false;
+  } else if (type === PRIMITIVE_TYPES.Number) {
+    return 42;
+  } else if (type === PRIMITIVE_TYPES.Void) {
+    return undefined;
   } else if (type === PRIMITIVE_TYPES.Object) {
     return undefined;
+  } else if (isArrayType(type)) {
+    return [typeToValue(augmentType(getArrayType(type)))];
   } else if (cat === TYPE_CATEGORIES.Union) {
     return pipe(map(typeToValue), reject(isNil), nth(0))(type);
   } else if (cat === TYPE_CATEGORIES.Composite) {
@@ -85,6 +104,14 @@ export const typeMatch = curry(({ type, cat }, value) => {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
+  } else if (type === PRIMITIVE_TYPES.Number) {
+    return typeof value === "number";
+  } else if (type === PRIMITIVE_TYPES.Void) {
+    return typeof value === "undefined";
+  } else if (type === PRIMITIVE_TYPES.Object) {
+    return typeof value === "object" && !Array.isArray(value);
+  } else if (isArrayType(type)) {
+    return Array.isArray(value);
   } else if (cat === TYPE_CATEGORIES.Union) {
     return any(typeMatch(__, value), type);
   } else if (cat === TYPE_CATEGORIES.Composite) {

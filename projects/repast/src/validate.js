@@ -1,6 +1,5 @@
 import {
   always,
-  append,
   curry,
   dropLast,
   ifElse,
@@ -17,144 +16,128 @@ import {
   __,
   any,
   assoc,
+  equals,
+  prop,
+  concat,
+  inc,
 } from "ramda";
 import { print } from "recast";
 import F from "fluture";
 import vm from "vm";
 
-import { PRIMITIVE_TYPES } from "./constants";
-import {
-  isUnionType,
-  parseUnionType,
-  isCompositeType,
-  parseCompositeType,
-} from "./types";
+import { PRIMITIVE_TYPES, TYPE_CATEGORIES } from "./constants";
+import { isUnionType, parseUnionType, isCompositeType, parseCompositeType } from "./types";
 
-const parseSignature = pipe(
-  reduce(
-    (parsed, symbol) => (symbol === "->" ? parsed : append(symbol, parsed)),
-    []
-  ),
-  (s) => ({ params: dropLast(1, s), returnType: last(s) })
-);
+const augmentType = type => {
+  if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
+    return { cat: TYPE_CATEGORIES.Primitive, type };
+  } else if (isUnionType(type)) {
+    return {
+      cat: TYPE_CATEGORIES.Union,
+      type: map(augmentType)(parseUnionType(type)),
+    };
+  } else if (isCompositeType(type)) {
+    return { cat: TYPE_CATEGORIES.Composite, type: parseCompositeType(type) };
+  }
 
-const compositeTypeToValue = (type) =>
+  return { cat: TYPE_CATEGORIES.Unknown, type };
+};
+
+const parseSignature = pipe(reject(equals("->")), map(augmentType), s => ({
+  params: dropLast(1, s),
+  returnType: last(s),
+}));
+
+const compositeTypeToValue = type =>
   pipe(
     keys,
     reduce(
-      (r, k) =>
-        assoc(k, typeToValue({ type: type[k], typeClass: "COMPOSITE" }), r),
+      (r, k) => assoc(k, typeToValue({ type: type[k], cat: TYPE_CATEGORIES.Composite }), r),
       {}
     )
   )(type);
 
-const typeToValue = ({ type, typeClass }) => {
-  if (type === "String") {
+const typeToValue = ({ type, cat }) => {
+  if (type === PRIMITIVE_TYPES.String) {
     return "stringValue";
-  } else if (type === "Object") {
+  } else if (type === PRIMITIVE_TYPES.Object) {
     return undefined;
-  } else if (typeClass === "UNION") {
+  } else if (cat === TYPE_CATEGORIES.Union) {
     return pipe(map(typeToValue), reject(isNil), nth(0))(type);
-  } else if (typeClass === "COMPOSITE") {
+  } else if (cat === TYPE_CATEGORIES.Composite) {
     return compositeTypeToValue(type);
   }
 
   return undefined;
 };
 
-const matchCompositeType = curry(({ type, typeClass }, value) =>
+const matchCompositeType = curry(({ type, cat }, value) =>
   pipe(
     keys,
-    reduce(
-      (r, k) => typeMatch({ type: type[k], typeClass }, value[k]) && r,
-      true
-    )
+    reduce((r, k) => typeMatch({ type: type[k], cat }, value[k]) && r, true)
   )(type)
 );
 
-export const typeMatch = curry(({ type, typeClass }, value) => {
+export const typeMatch = curry(({ type, cat }, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
-  } else if (typeClass === "UNION") {
+  } else if (cat === TYPE_CATEGORIES.Union) {
     return any(typeMatch(__, value), type);
-  } else if (typeClass === "COMPOSITE") {
-    return matchCompositeType({ type, typeClass }, value);
+  } else if (cat === TYPE_CATEGORIES.Composite) {
+    return matchCompositeType({ type, cat }, value);
   }
   return false;
 });
 
-const typeWithContext = (type) => {
-  if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
-    return { typeClass: "PRIMITIVE", type };
-  } else if (isUnionType(type)) {
-    return {
-      typeClass: "UNION",
-      type: map(typeWithContext)(parseUnionType(type)),
-    };
-  } else if (isCompositeType(type)) {
-    return { typeClass: "COMPOSITE", type: parseCompositeType(type) };
-  }
-
-  return { typeClass: "NOT_SUPPORTED", type };
-};
-
 // addPropLayer adds a prop with name propName at every level of the current object
 // @repast addPropLayer :: Object -> String -> Object
-const addPropLayer = curry((object, propName) => {
-  const keysFromObj = keys(object);
-  const newObj = assoc(propName, undefined, object);
-  if (length(keysFromObj) > 0) {
-    return reduce(
-      (obj, k) => ({ ...obj, [k]: addPropLayer(obj[k], propName) }),
-      newObj
-    )(keysFromObj);
-  }
-
-  return newObj;
-});
-
-const populateObject = curry((object, value) => {
-  const keysFromObj = keys(object);
-  console.log(keysFromObj);
-  return reduce((obj, k) => {
-    console.log(obj[k]);
-    if (obj[k] === undefined) {
-      return { ...obj, [k]: value };
-    } else {
-      // If it's not undefined it must be another object
-      return { ...obj, [k]: populateObject(obj[k], value) };
-    }
-  }, object)(keysFromObj);
-});
-
-const hasObjectParam = any((p) => p.type === "Object");
-
-const generateParamValues = (params) =>
-  map((type) =>
-    pipe(typeWithContext, typeToValue, (value) => ({ type, value }))(type)
-  )(params);
-
-const computeOutput = curry((params, fn) =>
-  reduce((returned, param) => returned(param.value), fn)(params)
+const addPropLayer = curry((object, propName) =>
+  pipe(
+    keys,
+    ifElse(
+      length,
+      reduce(
+        (o, k) => ({ ...o, [k]: addPropLayer(o[k], propName) }),
+        assoc(propName, undefined, object)
+      ),
+      always(assoc(propName, undefined, object))
+    )
+  )(object)
 );
 
-const generateObjectParamStructure = curry((params, fn) => {
-  const recurse = (currentParams) => {
+const populateObject = curry((object, value) =>
+  pipe(
+    keys,
+    reduce(
+      (obj, k) =>
+        obj[k] === undefined
+          ? { ...obj, [k]: value }
+          : { ...obj, [k]: populateObject(obj[k], value) },
+      object
+    )
+  )(object)
+);
+
+const hasObjectParam = any(p => p.type === PRIMITIVE_TYPES.Object);
+
+// @repast generateParamValues :: [AugmentedParam] -> [AugmentedParamWithValue]
+const generateParamValues = map(d => ({ ...d, value: typeToValue(d) }));
+
+const runFnWith = curry((fn, params) => reduce((r, p) => r(p.value), fn)(params));
+
+// @repast generateObjectParamStructure :: [AugmentedParamWithValue] -> [AugmentedParamWithValue]
+const guessObjectStructures = curry((params, fn) => {
+  const recurse = currentParams => {
     try {
-      reduce((returned, param) => returned(param.value), fn)(currentParams);
+      runFnWith(fn, currentParams);
       return currentParams;
     } catch (e) {
-      const missingProp = e.message.replace(
-        /Cannot\ read\ property\ '(\w+)'\ of\ undefined/,
-        "$1"
-      );
+      const missingProp = e.message.replace(/Cannot\ read\ property\ '(\w+)'\ of\ undefined/, "$1");
 
-      const nextParams = map((p) =>
-        p.type === "Object"
-          ? { ...p, value: addPropLayer(p.value, missingProp) }
-          : p
+      const nextParams = map(p =>
+        p.type === PRIMITIVE_TYPES.Object ? { ...p, value: addPropLayer(p.value, missingProp) } : p
       )(currentParams);
 
       return recurse(nextParams);
@@ -164,48 +147,44 @@ const generateObjectParamStructure = curry((params, fn) => {
   return recurse(params);
 });
 
-export const validate = (params) =>
+// @repast makeFunctionFromAST :: String -> AST -> Function
+const makeFunctionFromAST = curry((fnName, ast) =>
   pipe(
-    map((param) => {
-      const code = print(param.ast).code;
+    print,
+    prop("code"),
+    concat(__, `; ${fnName}`),
+    c => new vm.Script(c),
+    s => s.runInThisContext(),
+    curry
+  )(ast)
+);
+
+export const validate = params =>
+  pipe(
+    map(param => {
       const signature = parseSignature(param.signature);
+      const fn = makeFunctionFromAST(param.name, param.ast);
 
-      const withCall = `
-        ${code}
-        ${param.name}
-      `;
-
-      const script = new vm.Script(withCall);
-      const fn = curry(script.runInThisContext());
-
-      const paramsWithValues = generateObjectParamStructure(
-        generateParamValues(signature.params),
-        fn
-      );
+      const paramsWithValues = guessObjectStructures(generateParamValues(signature.params), fn);
 
       const maxTries = hasObjectParam(paramsWithValues) ? 30 : 1;
       let currentTries = 0;
       let match = false;
 
       while (currentTries < maxTries && !match) {
-        const paramsWithPopulatedObjectParams = map((p) => {
-          if (p.type === "Object") {
-            return { ...p, value: populateObject(p.value, "stringValue") };
-          }
-          return p;
-        })(paramsWithValues);
-        const output = computeOutput(paramsWithPopulatedObjectParams, fn);
+        const paramsWithPopulatedObjectParams = map(p =>
+          p.type === "Object" ? { ...p, value: populateObject(p.value, "stringValue") } : p
+        )(paramsWithValues);
 
-        const returnType = typeWithContext(signature.returnType);
-        match = typeMatch(returnType, output);
-        currentTries = currentTries + 1;
+        match = pipe(
+          runFnWith(fn),
+          typeMatch(signature.returnType)
+        )(paramsWithPopulatedObjectParams);
+
+        currentTries = inc(currentTries);
       }
 
-      if (match) {
-        return { error: false };
-      } else {
-        return { error: true, context: { functionName: param.name } };
-      }
+      return match ? { error: false } : { error: true, context: { functionName: param.name } };
     }),
     reject(propEq("error", false)),
     ifElse(length, F.reject, always(F.resolve(true)))

@@ -77,6 +77,13 @@ export const PRIMITIVE_TYPES = makeObjectFromStrings([
   "Array",
 ]);
 
+export const TYPE_CATEGORIES = makeObjectFromStrings([
+  "Primitive",
+  "Union",
+  "Composite",
+  "Unknown",
+])
+
 export const GLOBALS = pipe(
   reduce((agg, thing) => mergeRight(agg, { [thing.name]: thing }), {})
 )([

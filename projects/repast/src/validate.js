@@ -60,6 +60,8 @@ const compositeTypeToValue = type =>
 const typeToValue = ({ type, cat }) => {
   if (type === PRIMITIVE_TYPES.String) {
     return "stringValue";
+  } else if (type === PRIMITIVE_TYPES.Boolean) {
+    return false;
   } else if (type === PRIMITIVE_TYPES.Object) {
     return undefined;
   } else if (cat === TYPE_CATEGORIES.Union) {
@@ -159,6 +161,15 @@ const makeFunctionFromAST = curry((fnName, ast) =>
   )(ast)
 );
 
+const generateArgsToTry = params => {
+  return [PRIMITIVE_TYPES.String, PRIMITIVE_TYPES.Boolean].map(type => {
+    const augmentedType = augmentType(type);
+    return map(p =>
+      p.type === "Object" ? { ...p, value: populateObject(p.value, typeToValue(augmentedType)) } : p
+    )(params);
+  });
+};
+
 export const validate = params =>
   pipe(
     map(param => {
@@ -167,22 +178,14 @@ export const validate = params =>
 
       const paramsWithValues = guessObjectStructures(generateParamValues(signature.params), fn);
 
-      const maxTries = hasObjectParam(paramsWithValues) ? 30 : 1;
-      let currentTries = 0;
-      let match = false;
+      const argsToTry = hasObjectParam(paramsWithValues)
+        ? generateArgsToTry(paramsWithValues)
+        : [paramsWithValues];
 
-      while (currentTries < maxTries && !match) {
-        const paramsWithPopulatedObjectParams = map(p =>
-          p.type === "Object" ? { ...p, value: populateObject(p.value, "stringValue") } : p
-        )(paramsWithValues);
-
-        match = pipe(
-          runFnWith(fn),
-          typeMatch(signature.returnType)
-        )(paramsWithPopulatedObjectParams);
-
-        currentTries = inc(currentTries);
-      }
+      const match = reduce(
+        (m, args) => pipe(runFnWith(fn), typeMatch(signature.returnType))(args) || m,
+        false
+      )(argsToTry);
 
       return match ? { error: false } : { error: true, context: { functionName: param.name } };
     }),

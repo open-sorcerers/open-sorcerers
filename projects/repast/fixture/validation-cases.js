@@ -32,3 +32,8 @@ const fromDepth = o => o.some.depth.contains.value;
  * @repast getName :: Object -> String
  */
 const getName = u => u.personalData.name;
+
+/*
+ * @repast getMajor :: Object -> Boolean
+ */
+const getMajor = u => u.personalData.major;

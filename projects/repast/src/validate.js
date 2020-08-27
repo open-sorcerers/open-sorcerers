@@ -1,6 +1,5 @@
 import {
   always,
-  append,
   curry,
   dropLast,
   ifElse,
@@ -17,111 +16,205 @@ import {
   __,
   any,
   assoc,
+  equals,
+  prop,
+  concat,
+  inc,
 } from "ramda";
 import { print } from "recast";
 import F from "fluture";
 import vm from "vm";
 
-import { PRIMITIVE_TYPES } from "./constants";
+import { PRIMITIVE_TYPES, TYPE_CATEGORIES } from "./constants";
 import {
   isUnionType,
   parseUnionType,
   isCompositeType,
   parseCompositeType,
+  isArrayType,
+  getArrayType,
 } from "./types";
 
-const parseSignature = pipe(
-  reduce(
-    (parsed, symbol) => (symbol === "->" ? parsed : append(symbol, parsed)),
-    []
-  ),
-  (s) => ({ params: dropLast(1, s), returnType: last(s) })
-);
+const augmentType = type => {
+  if (
+    type === PRIMITIVE_TYPES.Boolean ||
+    type === PRIMITIVE_TYPES.String ||
+    type === PRIMITIVE_TYPES.Object ||
+    type === PRIMITIVE_TYPES.Number ||
+    type === PRIMITIVE_TYPES.Array
+  ) {
+    return { cat: TYPE_CATEGORIES.Primitive, type };
+  } else if (isUnionType(type)) {
+    return {
+      cat: TYPE_CATEGORIES.Union,
+      type: map(augmentType)(parseUnionType(type)),
+    };
+  } else if (isCompositeType(type)) {
+    return { cat: TYPE_CATEGORIES.Composite, type: parseCompositeType(type) };
+  }
 
-const compositeTypeToValue = (type) =>
+  return { cat: TYPE_CATEGORIES.Unknown, type };
+};
+
+const parseSignature = pipe(reject(equals("->")), map(augmentType), s => ({
+  params: dropLast(1, s),
+  returnType: last(s),
+}));
+
+const compositeTypeToValue = type =>
   pipe(
     keys,
     reduce(
-      (r, k) =>
-        assoc(k, typeToValue({ type: type[k], typeClass: "COMPOSITE" }), r),
+      (r, k) => assoc(k, typeToValue({ type: type[k], cat: TYPE_CATEGORIES.Composite }), r),
       {}
     )
   )(type);
 
-const typeToValue = ({ type, typeClass }) => {
-  if (type === "String") {
+const typeToValue = ({ type, cat }) => {
+  if (type === PRIMITIVE_TYPES.String) {
     return "stringValue";
-  } else if (typeClass === "UNION") {
-      console.log(type);
+  } else if (type === PRIMITIVE_TYPES.Boolean) {
+    return false;
+  } else if (type === PRIMITIVE_TYPES.Number) {
+    return 42;
+  } else if (type === PRIMITIVE_TYPES.Void) {
+    return undefined;
+  } else if (type === PRIMITIVE_TYPES.Object) {
+    return undefined;
+  } else if (isArrayType(type)) {
+    return [typeToValue(augmentType(getArrayType(type)))];
+  } else if (cat === TYPE_CATEGORIES.Union) {
     return pipe(map(typeToValue), reject(isNil), nth(0))(type);
-  } else if (typeClass === "COMPOSITE") {
+  } else if (cat === TYPE_CATEGORIES.Composite) {
     return compositeTypeToValue(type);
   }
 
   return undefined;
 };
 
-const matchCompositeType = curry(({ type, typeClass }, value) =>
+const matchCompositeType = curry(({ type, cat }, value) =>
   pipe(
     keys,
-    reduce(
-      (r, k) => typeMatch({ type: type[k], typeClass }, value[k]) && r,
-      true
-    )
+    reduce((r, k) => typeMatch({ type: type[k], cat }, value[k]) && r, true)
   )(type)
 );
 
-export const typeMatch = curry(({ type, typeClass }, value) => {
+export const typeMatch = curry(({ type, cat }, value) => {
   if (type === PRIMITIVE_TYPES.Boolean) {
     return typeof value === "boolean";
   } else if (type === PRIMITIVE_TYPES.String) {
     return typeof value === "string";
-  } else if (typeClass === "UNION") {
+  } else if (type === PRIMITIVE_TYPES.Number) {
+    return typeof value === "number";
+  } else if (type === PRIMITIVE_TYPES.Void) {
+    return typeof value === "undefined";
+  } else if (type === PRIMITIVE_TYPES.Object) {
+    return typeof value === "object" && !Array.isArray(value);
+  } else if (isArrayType(type)) {
+    return Array.isArray(value);
+  } else if (cat === TYPE_CATEGORIES.Union) {
     return any(typeMatch(__, value), type);
-  } else if (typeClass === "COMPOSITE") {
-    return matchCompositeType({ type, typeClass }, value);
+  } else if (cat === TYPE_CATEGORIES.Composite) {
+    return matchCompositeType({ type, cat }, value);
   }
   return false;
 });
 
-const typeWithContext = (type) => {
-  if (type === PRIMITIVE_TYPES.Boolean || type === PRIMITIVE_TYPES.String) {
-    return { typeClass: "PRIMITIVE", type };
-  } else if (isUnionType(type)) {
-    return { typeClass: "UNION", type: map(typeWithContext)(parseUnionType(type)) };
-  } else if (isCompositeType(type)) {
-    return { typeClass: "COMPOSITE", type: parseCompositeType(type) };
-  }
+// addPropLayer adds a prop with name propName at every level of the current object
+// @repast addPropLayer :: Object -> String -> Object
+const addPropLayer = curry((object, propName) =>
+  pipe(
+    keys,
+    ifElse(
+      length,
+      reduce(
+        (o, k) => ({ ...o, [k]: addPropLayer(o[k], propName) }),
+        assoc(propName, undefined, object)
+      ),
+      always(assoc(propName, undefined, object))
+    )
+  )(object)
+);
 
-  return { typeClass: "NOT_SUPPORTED", type };
+const populateObject = curry((object, value) =>
+  pipe(
+    keys,
+    reduce(
+      (obj, k) =>
+        obj[k] === undefined
+          ? { ...obj, [k]: value }
+          : { ...obj, [k]: populateObject(obj[k], value) },
+      object
+    )
+  )(object)
+);
+
+const hasObjectParam = any(p => p.type === PRIMITIVE_TYPES.Object);
+
+// @repast generateParamValues :: [AugmentedParam] -> [AugmentedParamWithValue]
+const generateParamValues = map(d => ({ ...d, value: typeToValue(d) }));
+
+const runFnWith = curry((fn, params) => reduce((r, p) => r(p.value), fn)(params));
+
+// @repast generateObjectParamStructure :: [AugmentedParamWithValue] -> [AugmentedParamWithValue]
+const guessObjectStructures = curry((params, fn) => {
+  const recurse = currentParams => {
+    try {
+      runFnWith(fn, currentParams);
+      return currentParams;
+    } catch (e) {
+      const missingProp = e.message.replace(/Cannot\ read\ property\ '(\w+)'\ of\ undefined/, "$1");
+
+      const nextParams = map(p =>
+        p.type === PRIMITIVE_TYPES.Object ? { ...p, value: addPropLayer(p.value, missingProp) } : p
+      )(currentParams);
+
+      return recurse(nextParams);
+    }
+  };
+
+  return recurse(params);
+});
+
+// @repast makeFunctionFromAST :: String -> AST -> Function
+const makeFunctionFromAST = curry((fnName, ast) =>
+  pipe(
+    print,
+    prop("code"),
+    concat(__, `; ${fnName}`),
+    c => new vm.Script(c),
+    s => s.runInThisContext(),
+    curry
+  )(ast)
+);
+
+const generateArgsToTry = params => {
+  return [PRIMITIVE_TYPES.String, PRIMITIVE_TYPES.Boolean].map(type => {
+    const augmentedType = augmentType(type);
+    return map(p =>
+      p.type === "Object" ? { ...p, value: populateObject(p.value, typeToValue(augmentedType)) } : p
+    )(params);
+  });
 };
 
-export const validate = (params) =>
+export const validate = params =>
   pipe(
-    map((param) => {
-      const code = print(param.ast).code;
+    map(param => {
       const signature = parseSignature(param.signature);
+      const fn = makeFunctionFromAST(param.name, param.ast);
 
-      const withCall = `
-        ${code}
-        ${param.name}
-      `;
+      const paramsWithValues = guessObjectStructures(generateParamValues(signature.params), fn);
 
-      const script = new vm.Script(withCall);
-      const fn = curry(script.runInThisContext());
+      const argsToTry = hasObjectParam(paramsWithValues)
+        ? generateArgsToTry(paramsWithValues)
+        : [paramsWithValues];
 
-      const output = reduce(
-        (returned, param) => returned(typeToValue(typeWithContext(param))),
-        fn
-      )(signature.params);
+      const match = reduce(
+        (m, args) => pipe(runFnWith(fn), typeMatch(signature.returnType))(args) || m,
+        false
+      )(argsToTry);
 
-      const returnType = typeWithContext(signature.returnType);
-
-      if (typeMatch(returnType, output)) {
-        return { error: false };
-      } else {
-        return { error: true, context: { functionName: param.name } };
-      }
+      return match ? { error: false } : { error: true, context: { functionName: param.name } };
     }),
     reject(propEq("error", false)),
     ifElse(length, F.reject, always(F.resolve(true)))

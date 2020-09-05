@@ -49,7 +49,7 @@
     "ora": "^4.0.3",
     "ramda": "^0.27.0",
     "torpor": "^0.0.4",
-    "yargs-parser": "^17.0.0"
+    "yargs-parser": "^19.0.4"
   },
   "files": [
     "skeletal.js",

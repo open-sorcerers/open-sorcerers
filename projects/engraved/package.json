@@ -23,7 +23,7 @@
     "polished": "^3.4.4",
     "ramda": "^0.26.1",
     "torpor": "^0.0.4",
-    "yargs-parser": "^16.1.0"
+    "yargs-parser": "^19.0.4"
   },
   "devDependencies": {
     "chance": "^1.1.4",

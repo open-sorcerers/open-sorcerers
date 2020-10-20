@@ -9,7 +9,6 @@ import {
   includes,
   values,
   identity as I,
-  when,
   range,
   keys,
   reduce,
@@ -19,9 +18,8 @@ import {
   map
 } from "ramda"
 import facepaint from "facepaint"
-import { trace } from "xtrace"
 
-export const DEFAULT_BREAKPOINTS = {
+export const LEGACY_BREAKPOINTS = {
   XT: 320,
   T: 480,
   XXXS: 600,
@@ -36,6 +34,34 @@ export const DEFAULT_BREAKPOINTS = {
   XXL: 2560,
   XXXL: 4000
 }
+
+export const HORIZONTAL_BREAKPOINTS = {
+  T0: 320,
+  T1: 480,
+  S0: 600,
+  S1: 736,
+  S2: 864,
+  S3: 900,
+  M0: 976,
+  M1: 1088,
+  M2: 1200,
+  M3: 1300,
+  L0: 1800,
+  L1: 2048,
+  L2: 2560,
+  L3: 4000
+}
+export const VERTICAL_BREAKPOINTS = {
+  H0: 160,
+  H1: 320,
+  H2: 480,
+  H3: 640,
+  H4: 800,
+  H5: 960,
+  H6: 1120,
+  H7: 1280,
+  H8: 1440
+}
 export const withUnit = curry((suffix, o) => map(z => z + suffix, o))
 
 export const asRelativeUnit = curry((ratio, name, points) =>
@@ -46,8 +72,11 @@ export const asRem = curry((base, points) =>
   asRelativeUnit(z => z / base, "rem")(points)
 )
 
-export const minMedia = z => `@media(min-width: ${z})`
-export const maxMedia = z => `@media(max-width: ${z})`
+const media = curry((y, z) => `@media(${y}: ${z})`)
+export const minWidth = media(`min-width`)
+export const maxWidth = media(`max-width`)
+export const maxHeight = media(`max-height`)
+export const minHeight = media(`min-height`)
 export const GAP = "%GAP%"
 export const __ = GAP
 
@@ -74,14 +103,21 @@ export const fillGaps = curry((points, xxx) =>
   )(xxx)
 )
 
-export const paint = curry((useMin, baseFontSize, xxx) =>
+export const directionalPaint = curry((useHeight, useMin, baseFontSize, xxx) =>
   pipe(
     asRem(baseFontSize),
-    map(useMin ? minMedia : maxMedia),
+    map(
+      useHeight
+      ? useMin ? minHeight : minWidth
+      : useMin ? minWidth : maxWidth
+    ),
     values,
     facepaint
   )(xxx)
 )
+
+export const paint = directionalPaint(false)
+export const vpaint = directionalPaint(true)
 
 const orderedKeyReduction = reduce(
   (agg, [kk, vv, doStuff]) =>
@@ -141,9 +177,15 @@ export const gaplessPlayback = curry((pattern, mqInput) => {
   )(mqInput)
 })
 
-export const makePainter = ({ useMin, baseFontSize, points, implicit }) => {
+export const makePainter = ({
+  useHeight = false,
+  useMin,
+  baseFontSize,
+  points,
+  implicit
+}) => {
   const rawPoints = Object.freeze(points)
-  const painter = paint(useMin, baseFontSize, rawPoints)
+  const painter = directionalPaint(useHeight, useMin, baseFontSize, rawPoints)
   return pipe(
     implicit ? gaplessPlayback(rawPoints) : I,
     map(fillGaps(rawPoints)),
@@ -152,8 +194,9 @@ export const makePainter = ({ useMin, baseFontSize, points, implicit }) => {
 }
 
 export const bodypaint = makePainter({
+  useHeight: false,
   useMin: true,
   baseFontSize: 16,
-  points: DEFAULT_BREAKPOINTS,
+  points: HORIZONTAL_BREAKPOINTS,
   implicit: true
 })

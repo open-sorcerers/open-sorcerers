@@ -11,6 +11,32 @@ Object {
 }
 `;
 
+exports[`directionalPaint - useHeight 1`] = `
+Array [
+  Object {
+    "&:hover": Object {
+      "svg": Object {
+        "fill": Object {
+          "H0": "cyan",
+          "H1": "magenta",
+        },
+      },
+    },
+    "color": Object {
+      "H0": "red",
+      "H1": "orange",
+      "H2": "yellow",
+    },
+    "svg": Object {
+      "fill": Object {
+        "H0": "lime",
+        "H3": "blue",
+      },
+    },
+  },
+]
+`;
+
 exports[`makePainter - implicit 1`] = `
 Array [
   Object {
@@ -41,6 +67,9 @@ Array [
           "fill": "cyan",
         },
         "@media(min-width: 56.25rem)": Object {
+          "fill": "cyan",
+        },
+        "@media(min-width: 61rem)": Object {
           "fill": "magenta",
         },
         "@media(min-width: 68rem)": Object {
@@ -82,6 +111,9 @@ Array [
     "@media(min-width: 56.25rem)": Object {
       "color": "yellow",
     },
+    "@media(min-width: 61rem)": Object {
+      "color": "yellow",
+    },
     "@media(min-width: 68rem)": Object {
       "color": "yellow",
     },
@@ -118,6 +150,9 @@ Array [
         "fill": "blue",
       },
       "@media(min-width: 56.25rem)": Object {
+        "fill": "blue",
+      },
+      "@media(min-width: 61rem)": Object {
         "fill": "blue",
       },
       "@media(min-width: 68rem)": Object {
@@ -165,6 +200,9 @@ Array [
           "fill": "cyan",
         },
         "@media(min-width: 56.25rem)": Object {
+          "fill": "cyan",
+        },
+        "@media(min-width: 61rem)": Object {
           "fill": "magenta",
         },
         "@media(min-width: 68rem)": Object {
@@ -206,128 +244,7 @@ Array [
     "@media(min-width: 56.25rem)": Object {
       "color": "yellow",
     },
-    "@media(min-width: 68rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 75rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 81.25rem)": Object {
-      "color": "yellow",
-    },
-    "color": "red",
-    "svg": Object {
-      "@media(min-width: 112.5rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 128rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 160rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 20rem)": Object {
-        "fill": "lime",
-      },
-      "@media(min-width: 30rem)": Object {
-        "fill": "lime",
-      },
-      "@media(min-width: 37.5rem)": Object {
-        "fill": "lime",
-      },
-      "@media(min-width: 46rem)": Object {
-        "fill": "lime",
-      },
-      "@media(min-width: 54rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 56.25rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 68rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 75rem)": Object {
-        "fill": "blue",
-      },
-      "@media(min-width: 81.25rem)": Object {
-        "fill": "blue",
-      },
-      "fill": "lime",
-    },
-  },
-]
-`;
-
-exports[`makePainter - objectStyle 1`] = `
-Array [
-  Object {
-    "&:hover": Object {
-      "svg": Object {
-        "@media(min-width: 112.5rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 128rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 160rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 20rem)": Object {
-          "fill": "cyan",
-        },
-        "@media(min-width: 30rem)": Object {
-          "fill": "cyan",
-        },
-        "@media(min-width: 37.5rem)": Object {
-          "fill": "cyan",
-        },
-        "@media(min-width: 46rem)": Object {
-          "fill": "cyan",
-        },
-        "@media(min-width: 54rem)": Object {
-          "fill": "cyan",
-        },
-        "@media(min-width: 56.25rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 68rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 75rem)": Object {
-          "fill": "magenta",
-        },
-        "@media(min-width: 81.25rem)": Object {
-          "fill": "magenta",
-        },
-        "fill": "cyan",
-      },
-    },
-    "@media(min-width: 112.5rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 128rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 160rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 20rem)": Object {
-      "color": "orange",
-    },
-    "@media(min-width: 30rem)": Object {
-      "color": "orange",
-    },
-    "@media(min-width: 37.5rem)": Object {
-      "color": "orange",
-    },
-    "@media(min-width: 46rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 54rem)": Object {
-      "color": "yellow",
-    },
-    "@media(min-width: 56.25rem)": Object {
+    "@media(min-width: 61rem)": Object {
       "color": "yellow",
     },
     "@media(min-width: 68rem)": Object {
@@ -366,6 +283,9 @@ Array [
         "fill": "blue",
       },
       "@media(min-width: 56.25rem)": Object {
+        "fill": "blue",
+      },
+      "@media(min-width: 61rem)": Object {
         "fill": "blue",
       },
       "@media(min-width: 68rem)": Object {

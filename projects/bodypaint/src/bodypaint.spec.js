@@ -2,7 +2,9 @@ import {
   gaplessPlayback,
   makePainter,
   GAP,
-  DEFAULT_BREAKPOINTS,
+  directionalPaint,
+  VERTICAL_BREAKPOINTS,
+  HORIZONTAL_BREAKPOINTS,
   bodypaint,
   fillGaps,
   asRelativeUnit
@@ -15,25 +17,42 @@ const RAW_ARRAY_STYLE = {
   },
   "&:hover": {
     svg: {
-      fill: ["cyan", GAP, GAP, GAP, GAP, GAP, "magenta"]
+      fill: ["cyan", GAP, GAP, GAP, GAP, GAP, GAP, "magenta"]
     }
   }
 }
 
 const RAW = {
   color: {
-    XT: "red",
-    T: "orange",
-    XS: "yellow"
+    T0: "red",
+    T1: "orange",
+    S2: "yellow"
   },
   svg: {
     fill: {
-      XT: "lime",
-      S: "blue"
+      T0: "lime",
+      S3: "blue"
     }
   },
   "&:hover": {
-    svg: { fill: { XT: "cyan", XXM: "magenta" } }
+    svg: { fill: { T0: "cyan", M1: "magenta" } }
+  }
+}
+
+const RAW_VERT = {
+  color: {
+    H0: "red",
+    H1: "orange",
+    H2: "yellow"
+  },
+  svg: {
+    fill: {
+      H0: "lime",
+      H3: "blue"
+    }
+  },
+  "&:hover": {
+    svg: { fill: { H0: "cyan", H1: "magenta" } }
   }
 }
 
@@ -41,7 +60,7 @@ test("makePainter", () => {
   const input = {
     useMin: true,
     baseFontSize: 16,
-    points: DEFAULT_BREAKPOINTS
+    points: HORIZONTAL_BREAKPOINTS
   }
   const mq = makePainter(input)
   expect(
@@ -53,18 +72,20 @@ test("makePainter", () => {
   )
   expect(
     makePainter({
+      useHeight: false,
       useMin: false,
       baseFontSize: 16,
-      points: DEFAULT_BREAKPOINTS
+      points: HORIZONTAL_BREAKPOINTS
     })
   ).toMatchSnapshot()
 })
 
 test("makePainter - nested", () => {
   const input = {
+    useHeight: false,
     useMin: true,
     baseFontSize: 16,
-    points: DEFAULT_BREAKPOINTS,
+    points: HORIZONTAL_BREAKPOINTS,
     implicit: true
   }
 
@@ -162,9 +183,10 @@ test("gaplessPlayback - complex", () => {
 
 test("makePainter - implicit", () => {
   const input = {
+    useHeight: false,
     useMin: true,
     baseFontSize: 16,
-    points: DEFAULT_BREAKPOINTS,
+    points: HORIZONTAL_BREAKPOINTS,
     implicit: true
   }
   const customPainter = makePainter(input)
@@ -172,4 +194,11 @@ test("makePainter - implicit", () => {
   const arrayStyleOutput = bodypaint(RAW_ARRAY_STYLE)
   expect(output).toEqual(arrayStyleOutput)
   expect(output).toMatchSnapshot()
+})
+
+test("directionalPaint - useHeight", () => {
+  const painter = directionalPaint(true, true, 16, VERTICAL_BREAKPOINTS)
+  expect(painter(RAW_VERT)).toMatchSnapshot()
+  const painter2 = directionalPaint(true, false, 16, VERTICAL_BREAKPOINTS)
+  expect(painter2(RAW_VERT)).toMatchSnapshot()
 })

@@ -13,7 +13,7 @@
     "kleur": "^3.0.3",
     "ripgrep-js": "^1.1.0",
     "snang": "^0.0.6",
-    "yargs-parser": "^16.1.0"
+    "yargs-parser": "^19.0.4"
   },
   "devDependencies": {
     "@rollup/plugin-buble": "^0.21.0",

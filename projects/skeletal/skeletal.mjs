@@ -1,6 +1,6 @@
 import { curry as curry$1, pipe as pipe$1, toPairs, map, replace, when, prop as prop$1, split, includes, join, propOr, identity, chain, __, ifElse, equals, pathOr, ap, any, is, cond, propSatisfies, toLower, addIndex, find, forEach, curryN, length, mergeRight, filter as filter$1, reduce, propEq, keys as keys$1, unless } from 'ramda';
 import { fork as fork$1, Future, mapRej, reject, parallel, resolve } from 'fluture';
-import handlebars, { registerPartial, registerHelper } from 'handlebars';
+import bars, { registerPartial, registerHelper } from 'handlebars';
 import { cosmiconfig } from 'cosmiconfig';
 import { prompt, ui } from 'inquirer';
 import { capitalCase, constantCase, camelCase, dotCase, headerCase, noCase, paramCase, pascalCase, pathCase, sentenceCase, snakeCase } from 'change-case';
@@ -10,7 +10,7 @@ import cleanStack from 'clean-stack';
 import { bold } from 'kleur';
 
 var name = "skeletal";
-var version = "0.0.5";
+var version = "0.0.6";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module = "skeletal.mjs";
@@ -66,6 +66,9 @@ var files = [
 	"skeletal.mjs",
 	"bone-cli.js"
 ];
+var scripts = {
+	prepublish: "nps build"
+};
 var PKG = {
 	name: name,
 	version: version,
@@ -79,7 +82,8 @@ var PKG = {
 	license: license,
 	devDependencies: devDependencies,
 	dependencies: dependencies,
-	files: files
+	files: files,
+	scripts: scripts
 };
 
 var PLACEHOLDER = "🍛";
@@ -272,7 +276,7 @@ var enbaken = function (register) { return call(function () { return pipe$1(
     )(bakedIn); }
   ); };
 
-var bakeIn = enbaken(handlebars.registerHelper);
+var bakeIn = enbaken(bars.registerHelper.bind(bars));
 
 /* import { trace } from "xtrace" */
 var freeze = Object.freeze;
@@ -372,7 +376,7 @@ var processHandlebars = curry$1(
     return chain(
       function (xxx) { return new Future(function (bad, good) {
           pipe$1(
-            handlebars.compile,
+            bars.compile,
             boneUI.say("Processing handlebars..."),
             function (fn) {
               try {
@@ -421,7 +425,7 @@ var writeTemplate = curry$1(
 
 var templatizeActions = curry$1(function (answers, actions) { return map(
     map(
-      pipe$1(handlebars.compile, function (temp) {
+      pipe$1(bars.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
@@ -738,10 +742,10 @@ var boneDance = curry$1(
       return pipe$1(
       chain(
         cond([
-          [
-            ligament.checkCancelled,
-            pipe$1(boneUI.say("Aborting..."), function () { return reject("Aborted"); })
-          ],
+          /* [ */
+          /*   ligament.checkCancelled, */
+          /*   pipe(boneUI.say("Aborting..."), () => reject("Aborted")) */
+          /* ], */
           [
             hasNoConfig,
             pipe$1(boneUI.say("No config found!"), function () {

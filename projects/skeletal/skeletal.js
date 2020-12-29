@@ -6,8 +6,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var ramda = require('ramda');
 var fluture = require('fluture');
-var handlebars = require('handlebars');
-var handlebars__default = _interopDefault(handlebars);
+var bars = require('handlebars');
+var bars__default = _interopDefault(bars);
 var cosmiconfig = require('cosmiconfig');
 var inquirer = require('inquirer');
 var changeCase = require('change-case');
@@ -17,7 +17,7 @@ var cleanStack = _interopDefault(require('clean-stack'));
 var kleur = require('kleur');
 
 var name = "skeletal";
-var version = "0.0.5";
+var version = "0.0.6";
 var description = "Build the bones of a project";
 var main = "skeletal.js";
 var module$1 = "skeletal.mjs";
@@ -73,6 +73,9 @@ var files = [
 	"skeletal.mjs",
 	"bone-cli.js"
 ];
+var scripts = {
+	prepublish: "nps build"
+};
 var PKG = {
 	name: name,
 	version: version,
@@ -86,7 +89,8 @@ var PKG = {
 	license: license,
 	devDependencies: devDependencies,
 	dependencies: dependencies,
-	files: files
+	files: files,
+	scripts: scripts
 };
 
 var PLACEHOLDER = "🍛";
@@ -279,7 +283,7 @@ var enbaken = function (register) { return call(function () { return ramda.pipe(
     )(bakedIn); }
   ); };
 
-var bakeIn = enbaken(handlebars__default.registerHelper);
+var bakeIn = enbaken(bars__default.registerHelper.bind(bars__default));
 
 /* import { trace } from "xtrace" */
 var freeze = Object.freeze;
@@ -379,7 +383,7 @@ var processHandlebars = ramda.curry(
     return ramda.chain(
       function (xxx) { return new fluture.Future(function (bad, good) {
           ramda.pipe(
-            handlebars__default.compile,
+            bars__default.compile,
             boneUI.say("Processing handlebars..."),
             function (fn) {
               try {
@@ -428,7 +432,7 @@ var writeTemplate = ramda.curry(
 
 var templatizeActions = ramda.curry(function (answers, actions) { return ramda.map(
     ramda.map(
-      ramda.pipe(handlebars__default.compile, function (temp) {
+      ramda.pipe(bars__default.compile, function (temp) {
         try {
           return temp(answers)
         } catch (ee) {
@@ -745,10 +749,10 @@ var boneDance = ramda.curry(
       return ramda.pipe(
       ramda.chain(
         ramda.cond([
-          [
-            ligament.checkCancelled,
-            ramda.pipe(boneUI.say("Aborting..."), function () { return fluture.reject("Aborted"); })
-          ],
+          /* [ */
+          /*   ligament.checkCancelled, */
+          /*   pipe(boneUI.say("Aborting..."), () => reject("Aborted")) */
+          /* ], */
           [
             hasNoConfig,
             ramda.pipe(boneUI.say("No config found!"), function () {
@@ -812,8 +816,8 @@ var skeletal = function (config) {
     cancel: cancel,
     checkCancelled: checkCancelled,
     config: deepfreeze(config),
-    registerPartial: handlebars.registerPartial,
-    registerHelper: handlebars.registerHelper
+    registerPartial: bars.registerPartial,
+    registerHelper: bars.registerHelper
   };
   // inject ligament consuming functions into ligament
   // js: a wild beast of dynamism
